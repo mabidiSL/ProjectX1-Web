@@ -278,4 +278,7 @@ onPhoneNumberChanged(phoneNumber: string) {
     this.destroy$.next();
     this.destroy$.complete();
   }
+  toggleViewMode(){
+    this.router.navigateByUrl('/private/coupons/approve');
+  }
 }

@@ -348,5 +348,8 @@ removeFile(event: any) {
     this.storeForm.reset();
     this.router.navigateByUrl('/private/stores');
   }
+  toggleViewMode(){
+    this.router.navigateByUrl('/private/stores/approve');
+  }
 
 }
