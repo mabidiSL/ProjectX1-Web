@@ -532,7 +532,7 @@
   "Bank_Account_Number": "Bank Account Number",
   "Role_is_required": "Role is required",
   "Add_merchant": "Add Merchant",
-  "Update_merchant": "Update Merchant",
+  "update_merchant": "Update Merchant",
   "Number_Of_Offers":"Number Of Offers",
   "Store_Pictures": "Branch Pictures",
   "Add_store": "Add Branch",
@@ -652,7 +652,13 @@
   "update_role": "Update Role",
   "View_store": "View store",
   "View_coupon": "View coupon",
-  "Go_Back": "Go Back"
+  "Go_Back": "Go Back",
+  "View_giftcard": "View Gift Card",
+  "edit_merchant": "Edit Merchant",
+  "View_merchant":"View Merchant"
+
+ 
+
 
  
 

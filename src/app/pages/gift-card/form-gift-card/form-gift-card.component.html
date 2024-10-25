@@ -7,14 +7,14 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="name">{{'Name'|translate}}</label>
-                            <input class="form-control" id="name" formControlName="name" type="text" />
+                            <input class="form-control" id="name" formControlName="name" type="text" [readonly]="type==='view'"/>
                             <div *ngIf="formGiftCard.get('name').invalid && formGiftCard.get('name').touched" class="text-danger">
                                 {{'Name is required'|translate}}
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="name_ar">{{'Name_in_arabic'|translate}}</label>
-                            <input class="form-control" id="name_ar" formControlName="name_ar" type="text" />
+                            <input class="form-control" id="name_ar" formControlName="name_ar" type="text" [readonly]="type==='view'"/>
                             <div *ngIf="formGiftCard.get('name_ar').invalid && formGiftCard.get('name_ar').touched" class="text-danger">
                                 {{'Name in arabic is required'|translate}}
                             </div>
@@ -22,14 +22,14 @@
                         
                         <div class="col-md-6 mb-3">
                             <label for="termsAndConditions">{{'Terms and Conditions'|translate}}</label>
-                            <textarea class="form-control" id="termsAndConditions" formControlName="termsAndConditions" rows="5"></textarea>
+                            <textarea class="form-control" id="termsAndConditions" formControlName="termsAndConditions" rows="5"[readonly]="type==='view'"></textarea>
                             <!-- <div *ngIf="formGiftCard.get('transTermsAndConditions').invalid && formGiftCard.get('transTermsAndConditions').touched" class="text-danger">
                                 {{'Translated Terms and Conditions are required'|translate}}
                             </div> -->
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="termsAndConditions_ar">{{'Terms and Conditions in arabic'|translate}}</label>
-                            <textarea class="form-control" id="termsAndConditions_ar" formControlName="termsAndConditions_ar" rows="5"></textarea>
+                            <textarea class="form-control" id="termsAndConditions_ar" formControlName="termsAndConditions_ar" rows="5" [readonly]="type==='view'"></textarea>
                             <!-- <div *ngIf="formGiftCard.get('termsAndConditions').invalid && formGiftCard.get('termsAndConditions').touched" class="text-danger">
                                 {{'Terms and Conditions are required'|translate}}
                             </div> -->
@@ -38,14 +38,14 @@
                        
                         <div class="col-md-6 mb-3">
                           <label for="description">{{'Description'|translate}}</label>
-                          <textarea class="form-control" id="description" formControlName="description" rows="5"></textarea>
+                          <textarea class="form-control" id="description" formControlName="description" rows="5" [readonly]="type==='view'"></textarea>
                           <div *ngIf="formGiftCard.get('description').invalid && formGiftCard.get('description').touched" class="text-danger">
                               {{'Description is required'|translate}}
                           </div>
                       </div>
                       <div class="col-md-6 mb-3">
                         <label for="description_ar">{{'Description in arabic'|translate}}</label>
-                        <textarea class="form-control" id="description_ar" formControlName="description_ar" rows="5"></textarea>
+                        <textarea class="form-control" id="description_ar" formControlName="description_ar" rows="5" [readonly]="type==='view'"></textarea>
                         <div *ngIf="formGiftCard.get('description_ar').invalid && formGiftCard.get('description_ar').touched" class="text-danger">
                             {{'Description in arabic is required'|translate}}
                         </div>
@@ -53,7 +53,13 @@
                       
                         <div *ngIf="currentRole == 'Admin'" class="col-md-6 mb-3">
                           <label for="merchant_id">{{'Merchant Name'|translate}}</label>
-                          <select  id="merchant_id" class="form-control"  formControlName="merchant_id" (change)="onChangeMerchantSelection($event)" >
+                          <input *ngIf="type === 'view'"
+                          type="text" 
+                          class="form-control" 
+                          [value]="getMerchantName(formGiftCard.get('merchant_id').value)" 
+                          readonly 
+                      />
+                          <select [hidden]="type === 'view'" id="merchant_id" class="form-control"  formControlName="merchant_id" (change)="onChangeMerchantSelection($event)" >
                             <option value="" disabled selected>{{'Select_the_merchant' | translate}}</option>
                             <option *ngFor="let merchant of (merchantList$ |async)" [value]="merchant.id">
                              {{ merchant.merchantName }}
@@ -66,6 +72,7 @@
                         <div class="col-md-6 mb-3">
                           <label for="stores">{{'Stores'|translate}}</label>
                           <ng-multiselect-dropdown
+                            [disabled]="type === 'view'"
                             [placeholder]="'Select Stores'"
                             [data]="(storeList$ |async)"
                             formControlName="stores"
@@ -79,7 +86,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="quantity">{{'Quantity'|translate}}</label>
-                            <input class="form-control" id="quantity" formControlName="quantity" type="number" />
+                            <input class="form-control" id="quantity" formControlName="quantity" type="number" [readonly]="type==='view'"/>
                             <div *ngIf="formGiftCard.get('quantity').invalid && formGiftCard.get('quantity').touched">
                               {{'Quantity is required'|translate}}
                             </div>
@@ -87,7 +94,7 @@
                        
                         <div class="col-md-6 mb-3">
                           <label for="startDateGiftCard">{{'Start Date'|translate}}</label>
-                          <input class="form-control" id="startDateGiftCard" formControlName="startDateGiftCard" type="date" />
+                          <input class="form-control" id="startDateGiftCard" formControlName="startDateGiftCard" type="date" [readonly]="type==='view'"/>
                           <div *ngIf="formGiftCard.get('startDateGiftCard').invalid && formGiftCard.get('startDateGiftCard').touched">
                             {{'Start Date is required'|translate}}
                           </div>
@@ -95,7 +102,7 @@
                       
                         <div class="col-md-6 mb-3">
                           <label for="endDateGiftCard">{{'End Date'|translate}}</label>
-                          <input  class="form-control" id="endDateGiftCard" formControlName="endDateGiftCard" type="date" />
+                          <input  class="form-control" id="endDateGiftCard" formControlName="endDateGiftCard" type="date" [readonly]="type==='view'"/>
                           <div *ngIf="formGiftCard.get('endDateGiftCard').invalid && formGiftCard.get('endDateGiftCard').touched">
                             {{'End Date is required'|translate}}
                           </div>
@@ -112,7 +119,7 @@
                 
                   <div class="col-md-6 mb-3">
                     <label for="managerName">{{'Manager Name'|translate}}</label>
-                    <input class="form-control" id="managerName" formControlName="managerName" type="text" />
+                    <input class="form-control" id="managerName" formControlName="managerName" type="text" [readonly]="type==='view'"/>
                     <!-- <div *ngIf="formGiftCard.get('managerName').invalid && formGiftCard.get('managerName').touched">
                       {{'Manager Name is required'|translate}}
                     </div> -->
@@ -120,7 +127,11 @@
                 
                   <div class="col-md-6 mb-3">
                     <label for="managerPhone">{{'Manager Phone'|translate}}</label>
-                    <input class="form-control" id="managerPhone" formControlName="managerPhone" type="tel" />
+                    <app-phone-number
+                     [disabled]="type === 'view'"
+                     [initialPhoneNumber]="formGiftCard.get('managerPhone').value"
+                     (phoneNumberChanged)="onPhoneNumberChanged($event)" >
+                    </app-phone-number>
                     <!-- <div *ngIf="formGiftCard.get('managerPhone').invalid && formGiftCard.get('managerPhone').touched">
                       {{'Manager Phone is required'|translate}}
                     </div> -->
@@ -141,6 +152,7 @@
                     readonly
                   >
                     <input 
+                    [disabled]="type==='view'"
                     class="form-control" 
                     id="giftCardImage"  
                     type="file" 
@@ -159,22 +171,16 @@
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
                       <label for="sectionOrderAppearance">{{'Section_Order_Appearance'| translate}}</label>
-                      <select  id="sectionOrderAppearance"class="form-control"  formControlName="sectionOrderAppearance"  >
-                        <option value="first" >{{'First' | translate}}</option>
-                        <option value="middle" >{{'Middle' | translate}}</option>
-                        <option value="end" >{{'End' | translate}}</option>
-                      </select>  
-                       
+                      <input class="form-control" id="sectionOrderAppearance" formControlName="sectionOrderAppearance" type="text" [readonly]="type==='view'"/>
+
+                      
                      </div>
                   </div>
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
                       <label for="categoryOrderAppearance">{{'Category_Order_Appearance'| translate}}</label>
-                      <select  id="categoryOrderAppearance"class="form-control"  formControlName="categoryOrderAppearance"  >
-                        <option value="first" >{{'First' | translate}}</option>
-                        <option value="middle" >{{'Middle' | translate}}</option>
-                        <option value="end" >{{'End' | translate}}</option>
-                      </select>  
+                      <input class="form-control" id="categoryOrderAppearance" formControlName="categoryOrderAppearance" type="text" [readonly]="type==='view'"/>
+
                       
                      </div>
                   </div>
@@ -198,9 +204,13 @@
                   
                   <div class="col-12  mt-4">
                     <div class="d-flex justify-content-end">
-                        <button type="button" id="cancel-btn" class="btn btn-outline-secondary me-2" (click)="onCancel()">{{'Cancel'|translate}}</button>
-                        <button type="submit" class="btn btn-success" [disabled]="formGiftCard.invalid"> {{ (type == 'create' ? 'Add gift card' : 'update_gift_card') | translate }}
-                        </button>
+                      <ng-container *ngIf="type =='view'; else editModeButtons">
+                        <button type="button" class="btn btn-success" (click)="toggleViewMode()">{{ 'Go_Back' | translate }}</button>
+                      </ng-container>
+                      <ng-template #editModeButtons>
+                        <button type="button" id="cancel-btn" class="btn btn-outline-secondary me-2" (click)="onCancel()">{{ 'Cancel' | translate }}</button>
+                        <button type="submit" class="btn btn-success" [disabled]="formGiftCard.invalid">{{ (type === 'create' ? 'Add_gift_card' : 'Update_gift_card') | translate }}</button>
+                      </ng-template>
                     </div>
                   </div>
                   </div>

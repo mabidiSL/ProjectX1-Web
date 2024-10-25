@@ -12,6 +12,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { UIModule } from 'src/app/shared/ui/ui.module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { ViewGiftCardComponent } from './view-gift-card/view-gift-card.component';
+import { WidgetModule } from 'src/app/shared/widget/widget.module';
 
 
 @NgModule({
@@ -20,13 +22,15 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     CreateGiftCardComponent,
     EditGiftCardComponent,
     FormGiftCardComponent,
-    ApproveGiftCardComponent
+    ApproveGiftCardComponent,
+    ViewGiftCardComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
     FormsModule, 
     UIModule,
+    WidgetModule,
     ReactiveFormsModule ,
     TranslateModule,
     NgMultiSelectDropDownModule,

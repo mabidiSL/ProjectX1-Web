@@ -591,7 +591,7 @@
     "Bank_Account_Number": "رقم الحساب البنكي",
     "Role_is_required": "الوظيفة مطلوبة",
     "Add_merchant": "إضافة تاجر",
-    "Update_merchant": "تعديل تاجر",
+    "update_merchant": "تعديل تاجر",
     "Number_Of_Offers":"عدد العروض",
     "Store_Pictures": "صور المتجر",
     "Add_store": "إضافة متجر",
@@ -693,7 +693,10 @@
     "update_role": "تحديث وظيفة",
     "View_store": "عرض المتجر",
     "View_coupon": "عرض القسيمة",
-    "Go_Back": "رجوع"
+    "Go_Back": "رجوع",
+    "Edit_merchant": "تعديل التاجر",
+    "View_giftcard": "عرض بطاقة الهدايا",
+    "View_merchant": "عرض التاجر"
     
 
 

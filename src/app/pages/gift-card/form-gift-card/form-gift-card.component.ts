@@ -21,7 +21,8 @@ export class FormGiftCardComponent implements OnInit{
   @Input() type: string;
   merchantList$: Observable<any[]>;
   storeList$: Observable<any[]> | undefined ;
-  selectedStores: any[];
+  selectedStores: any[]= [];
+  merchantList: any[] = [];
   existantGiftCardLogo: string = null;
   fileName: string = ''; 
 
@@ -106,6 +107,8 @@ export class FormGiftCardComponent implements OnInit{
   ngOnInit() {
 
     this.merchantList$ = this.store.pipe(select(selectDataMerchant)); // Observing the merchant list from store
+    this.merchantList$.subscribe(data => this.merchantList = data);
+
     this.storeList$ = this.store.pipe(select(selectData));
 
     this.dropdownSettings = {
@@ -153,6 +156,11 @@ export class FormGiftCardComponent implements OnInit{
           }
         });
     }
+  
+}
+getMerchantName(MerchantId: any){
+  
+  return this.merchantList.find(merchant => merchant.id === MerchantId)?.merchantName ;
   
 }
 private formatDate(dateString: string): string {
@@ -256,5 +264,12 @@ async uploadGiftCardLogo(event: any){
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+  toggleViewMode(){
+    this.router.navigateByUrl('/private/giftCards/approve');
+  }
+  onPhoneNumberChanged(phoneNumber: string) {
+    console.log('PHONE NUMBER', phoneNumber);
+    this.formGiftCard.get('managerPhone').setValue(phoneNumber);
   }
 }
