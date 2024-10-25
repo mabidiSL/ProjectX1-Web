@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { _User } from 'src/app/store/Authentication/auth.models';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @Component({
@@ -42,6 +43,7 @@ export class CustomTableComponent  {
   approveAction : boolean = false;
   loading : boolean = false;
   items : any[] = [];
+  currentLanguage: string = '';
 
   @Input() checkedStatus?: any;
   @Input() uncheckedStatus?: any;
@@ -80,7 +82,16 @@ export class CustomTableComponent  {
     { value: 'Status', label: 'Status' },
     { value: 'Phone', label: 'Phone' }
   ];
-  constructor(private DatePipe: DatePipe, private router: Router,private  translateService : TranslateService) {
+  constructor(
+    private DatePipe: DatePipe, 
+    private router: Router,
+    private  translateService : TranslateService, 
+    private cookieService: CookieService,
+  ) {
+    
+    this.currentLanguage  = this.cookieService.get('lang');
+    //The retreival of arabic attribute from backendside is done in this component according to the language stored in cookie service
+
     this.currentUserSubject = new BehaviorSubject<_User>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
     this.currentUser.subscribe(user => {
@@ -110,10 +121,7 @@ export class CustomTableComponent  {
      // this.searchEvent(); // Reapply search filter if there's a term
     }
   }
-  rowClick(id: any){
-    
-    this.router.navigate([`${this.viewButtonLink},${id}`]);
-  }
+  
   getProperty(data: any, propertyPath: string): any {
 
     const value = propertyPath.split('.').reduce((acc, key) => acc && acc[key], data);
