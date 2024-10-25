@@ -133,11 +133,11 @@
                    <a href="javascript:void(0);" class="btn btn-sm btn-soft-primary" *hasClaim="viewButtonPermission" (click)="view(data.id)"><i class="mdi mdi-eye-outline"></i></a>
                  </li> -->
                  <li data-bs-toggle="tooltip" data-bs-placement="top" title="{{'Edit'|translate}}">
-                   <a [routerLink]="[editButtonLink, data.id]" class="btn btn-sm btn-soft-info" *hasClaim="editButtonPermission" ><i class="mdi mdi-pencil-outline"></i></a>
+                   <a [routerLink]="[editButtonLink, data.id]" class="btn btn-sm btn-soft-info" *hasClaim="editButtonPermission" (click)="$event.stopPropagation()"><i class="mdi mdi-pencil-outline"></i></a>
  
                  </li>
                  <li data-bs-toggle="tooltip" data-bs-placement="top" title="{{'Delete'| translate}}">
-                   <a href="javascript:void(0);" data-bs-toggle="modal" class="btn btn-sm btn-soft-danger" *hasClaim="deleteButtonPermission" (click)="deleteData(data.id)"><i class="mdi mdi-delete-outline"></i></a>
+                   <a  data-bs-toggle="modal" class="btn btn-sm btn-soft-danger" *hasClaim="deleteButtonPermission" (click)="$event.stopPropagation();deleteData(data.id)"><i class="mdi mdi-delete-outline"></i></a>
                  </li>
                </ul>
            </td>
@@ -154,14 +154,14 @@
                   *hasClaim="approveButtonPermission"
                   type="button"
                   class="btn btn-success me-2"
-                  (click)="approveItem(data, 'approve')">
+                  (click)="$event.stopPropagation();approveItem(data, 'approve')">
                   {{'Approve' | translate}}
               </button>
               <button 
                   *hasClaim="declineButtonPermission"
                   type="button"
                   class="btn btn-danger"
-                  (click)="approveItem(data, 'decline')">
+                  (click)="$event.stopPropagation();approveItem(data, 'decline')">
                   {{'Decline' | translate}}
               </button>
             </td>

@@ -649,7 +649,10 @@
   "Pending_stores": "Pending Branches",
   "Previous": "Previous",
   "Next": "Next",
-  "update_role": "Update Role"
+  "update_role": "Update Role",
+  "View_store": "View store",
+  "View_coupon": "View coupon",
+  "Go_Back": "Go Back"
 
  
 

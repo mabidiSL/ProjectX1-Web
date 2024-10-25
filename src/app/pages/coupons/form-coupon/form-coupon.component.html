@@ -251,7 +251,7 @@
                 <div class="col-12  mt-4">
                   <div class="d-flex justify-content-end">
                     <ng-container *ngIf="type =='view'; else editModeButtons">
-                      <button type="button" class="btn btn-success" (click)="toggleViewMode()">{{ 'Go Back' | translate }}</button>
+                      <button type="button" class="btn btn-success" (click)="toggleViewMode()">{{ 'Go_Back' | translate }}</button>
                     </ng-container>
                     <ng-template #editModeButtons>
                       <button type="button" id="cancel-btn" class="btn btn-outline-secondary me-2" (click)="onCancel()">{{'Cancel'|translate}}</button>
