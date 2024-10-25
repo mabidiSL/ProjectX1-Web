@@ -29,6 +29,8 @@ export class FormCouponComponent implements OnInit{
   existantcouponLogo: string = null;
   fileName: string = ''; 
 
+  fromPendingContext: boolean = false;
+
   merchantId: number =  null;
   currentRole: string = '';
 
@@ -51,7 +53,9 @@ export class FormCouponComponent implements OnInit{
     private formBuilder: UntypedFormBuilder, 
     private router: Router,
     private route: ActivatedRoute){
-   
+      
+      this.getNavigationState();
+
       this.currentUserSubject = new BehaviorSubject<_User>(JSON.parse(localStorage.getItem('currentUser')));
       this.currentUser = this.currentUserSubject.asObservable();
       this.currentUser.subscribe(user => {
@@ -112,7 +116,7 @@ export class FormCouponComponent implements OnInit{
 
   
   ngOnInit() {
-   
+
     this.dropdownSettings = {
         singleSelection: false,
         idField: 'id',
@@ -164,6 +168,13 @@ export class FormCouponComponent implements OnInit{
         });
     }
   
+}
+private getNavigationState(){
+  /**Determining the context of the routing if it is from Approved State or Pending State */
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras.state) {
+      this.fromPendingContext = navigation.extras.state.fromPending ;
+    }
 }
 private formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -278,7 +289,15 @@ onPhoneNumberChanged(phoneNumber: string) {
     this.destroy$.next();
     this.destroy$.complete();
   }
+ 
   toggleViewMode(){
-    this.router.navigateByUrl('/private/coupons/approve');
+    
+    if(this.fromPendingContext){
+      this.router.navigateByUrl('/private/coupons/approve');
+    }
+    else{
+      this.router.navigateByUrl('/private/coupons');
+    }
+
   }
 }

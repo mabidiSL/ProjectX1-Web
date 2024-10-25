@@ -5,9 +5,12 @@
     <app-page-title title="{{'Pending_merchants'| translate}}" [breadcrumbItems]="breadCrumbItems"></app-page-title>
     <app-custom-table
       [columns]="columns"
+      [viewButtonLink]="'/private/merchants/view'"
+      [viewButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Merchants, claimValue: [Permission.View]}]"
       [approveButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Merchants, claimValue: [Permission.Approve]}]"
       [declineButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Merchants, claimValue: [Permission.Decline]}]"
       [ArrayData]="originalArray"
+      [pending]="true"
       [totalItems]="(totalItems$ | async)"
       (onPageSizeChanged)="onPageSizeChanged($event)"
       (pageChanged)="onPageChanged($event)"

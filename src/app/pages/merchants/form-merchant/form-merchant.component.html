@@ -8,7 +8,7 @@
                   <div class="col-md-6 mb-3">
                     <div class="form-group ">
                     <label for="merchantName" >Merchant Name <span class="text-danger">*</span></label>
-                    <input type="text" id="merchantName" class="form-control" formControlName="merchantName" required>
+                    <input type="text" id="merchantName" class="form-control" formControlName="merchantName" required [readonly]="type==='view'">
                     <div *ngIf="merchantForm.get('merchantName').touched && merchantForm.get('merchantName').invalid" class="invalid-feedback d-block">
                       <span *ngIf="merchantForm.get('merchantName').errors?.['required']">{{'Merchant Name is required'| translate}}.</span>
                     </div>  
@@ -19,7 +19,7 @@
                     <div class="form-group ">
                        
                         <label for="username" >{{'Username' | translate}} <span class="text-danger">*</span></label>
-                        <input type="text" id="username" class="form-control" formControlName="username" required>
+                        <input type="text" id="username" class="form-control" formControlName="username" required [readonly]="type==='view'">
                         <div *ngIf="merchantForm.get('username').touched && merchantForm.get('username').invalid" class="invalid-feedback d-block">
                             <span *ngIf="merchantForm.get('username').errors?.['required']">{{'Username is required'| translate}}.</span>
                           </div>
@@ -29,7 +29,7 @@
                   <div class="col-md-6 mb-3">
                     <div class="form-group ">
                       <label for="email">Email <span class="text-danger">*</span></label>
-                      <input  type="email" id="email" class="form-control" formControlName="email"  required>
+                      <input  type="email" id="email" class="form-control" formControlName="email"  required [readonly]="type==='view'">
                       <div *ngIf="merchantForm.get('email').touched && merchantForm.get('email').invalid" class="invalid-feedback d-block">
                         <span *ngIf="merchantForm.get('email').errors?.['required']">{{'Email is required'| translate}}.</span>
                       </div>
@@ -39,7 +39,7 @@
                   <div class="col-md-6 mb-3">
                       <div class="form-group ">
                         <label for="id_number" >{{'ID Number' | translate}} <span class="text-danger">*</span></label>
-                        <input type="text" id="id_number" class="form-control" formControlName="id_number" required>
+                        <input type="text" id="id_number" class="form-control" formControlName="id_number" required [readonly]="type==='view'">
                         <div *ngIf="merchantForm.get('id_number').touched && merchantForm.get('id_number').invalid" class="invalid-feedback d-block">
                             <span *ngIf="merchantForm.get('id_number').errors?.['required']">{{'id_number is required'| translate}}.</span>
                           </div>
@@ -66,9 +66,9 @@
                         <div class="form-group ">
                           <label for="confpassword" >Confirm password <span class="text-danger">*</span></label>
                           <input type="password" id="confpassword" class="form-control" formControlName="confpassword" required>
-                          <!-- <button class="btn btn-light" type="button" id="password-addon2">
+                          <button class="btn btn-light" type="button" id="password-addon2">
                             <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()"></i>
-                          </button> -->
+                          </button>
                           <div *ngIf="merchantForm.get('confpassword').touched && merchantForm.get('confpassword').invalid" class="invalid-feedback d-block">
                             <span *ngIf="merchantForm.get('confpassword').errors?.['required']">{{'Confirm password is required' | translate}}.</span>
                             <div *ngIf="passwordMatchError">{{ 'confirm_password_does_not_matched' | translate }}</div>
@@ -82,6 +82,7 @@
                       <div class="form-group">
                         <label for="phone" >Phone Number <span class="text-danger">*</span></label><br>
                        <app-phone-number
+                       [disabled]="type === 'view'"
                        [initialPhoneNumber]="merchantForm.get('phone').value"
                        *ngIf="merchantForm"
                         (phoneNumberChanged)="onPhoneNumberChanged($event)" >
@@ -94,7 +95,13 @@
                     <div class="col-md-6 mb-3">
                       <div class="form-group">
                         <label for="section_id">Merchant Section</label>
-                        <select id="section_id" class="form-control" formControlName="section_id">
+                        <input *ngIf="type === 'view'"
+                          type="text" 
+                          class="form-control" 
+                          [value]="getSectionName(merchantForm.get('section_id').value)" 
+                          readonly 
+                        />
+                        <select [hidden]="type === 'view'" id="section_id" class="form-control" formControlName="section_id">
                           <option value="">{{'Select a section' | translate}}</option>
                           <option *ngFor="let section of sectionlist" [value]="section.id">
                             {{ section.name }}
@@ -121,6 +128,7 @@
                         <!-- File input for selecting or uploading a new image -->
                         <input
                           type="file"
+                          [disabled]="type==='view'"
                           id="merchantLogo"
                           class="form-control"
                           accept="image/png, image/gif, image/jpeg"
@@ -145,6 +153,7 @@
                        >
                       <input 
                         type="file" 
+                        [disabled]="type==='view'"
                         id="merchantPicture" 
                         class="form-control"  
                         accept="image/png, image/gif, image/jpeg" 
@@ -155,7 +164,13 @@
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
                       <label for="country_id" >Country</label>
-                      <select  id="country_id"class="form-control"  formControlName="country_id" (change)="onChangeCountrySelection($event)" >
+                      <input *ngIf="type === 'view'"
+                      type="text" 
+                      class="form-control" 
+                      [value]="getCountryName(merchantForm.get('country_id').value)" 
+                      readonly 
+                  />
+                      <select [hidden]="type === 'view'" id="country_id"class="form-control"  formControlName="country_id" (change)="onChangeCountrySelection($event)" >
                         <option value="" disabled selected>{{'Select_the_Country' | translate}}</option>
                         <option *ngFor="let country of countrylist" [value]="country.id">
                          {{ country.name }}
@@ -167,7 +182,13 @@
                     <div class="col-md-6 mb-3">
                       <div class="form-group">
                         <label for="area_id">Area</label>
-                        <select  id="area_id"class="form-control"  formControlName="area_id" (change)="onChangeAreaSelection($event)" >
+                        <input *ngIf="type === 'view'"
+                          type="text" 
+                          class="form-control" 
+                          [value]="getAreaName(merchantForm.get('area_id').value)" 
+                          readonly 
+                      />
+                        <select  [hidden]="type === 'view'" id="area_id"class="form-control"  formControlName="area_id" (change)="onChangeAreaSelection($event)" >
                           <option value="" disabled selected>{{'Select_the_Area' | translate}}</option>
                           <option *ngFor="let area of filteredAreas" [value]="area.id">
                            {{ area.name }}
@@ -179,7 +200,13 @@
                   <div class="col-md-6 mb-3">
                     <div class="form-group ">
                       <label for="city_id" >City</label>
-                      <select  id="city_id"class="form-control"  formControlName="city_id"  >
+                      <input *ngIf="type === 'view'"
+                      type="text" 
+                      class="form-control" 
+                      [value]="getCityName(merchantForm.get('city_id').value)" 
+                      readonly 
+                  />
+                      <select [hidden]="type === 'view'" id="city_id"class="form-control"  formControlName="city_id"  >
                         <option value="" disabled selected>{{'Select_the_City' | translate}}</option>
                         <option *ngFor="let city of filteredCities" [value]="city.id">
                          {{ city.name }}
@@ -192,40 +219,35 @@
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
                       <label for="serviceType">Service Type</label>
-                      <input type="text" id="serviceType" class="form-control" formControlName="serviceType">
+                      <input type="text" id="serviceType" class="form-control" formControlName="serviceType" [readonly]="type==='view'">
                     </div>
                   </div>
                
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
                       <label for="supervisorName">Supervisor Name</label>
-                      <input type="text" id="supervisorName" class="form-control" formControlName="supervisorName">
+                      <input type="text" id="supervisorName" class="form-control" formControlName="supervisorName" [readonly]="type==='view'">
                     </div>
                   </div>
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
                       <label for="supervisorPhone">Supervisor Phone</label>
-                      <input type="text" id="supervisorPhone" class="form-control" formControlName="supervisorPhone">
+                      <input type="text" id="supervisorPhone" class="form-control" formControlName="supervisorPhone" [readonly]="type==='view'">
                     </div>
                   </div>
                 
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
                       <label for="bankAccountNumber">Bank Account Number</label>
-                      <input type="text" id="bankAccountNumber" class="form-control" formControlName="bankAccountNumber">
+                      <input type="text" id="bankAccountNumber" class="form-control" formControlName="bankAccountNumber" [readonly]="type==='view'">
                     </div>
                   </div>
 
-                  <div class="col-md-6 mb-3">
-                    <div class="form-group">
-                      <label for="registerCode">Registration Code</label>
-                      <input type="text" id="registerCode" class="form-control" formControlName="registerCode">
-                    </div>
-                  </div>
+                  
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
                       <label for="website">Merchant Website</label>
-                      <input type="text" id="website" class="form-control" formControlName="website">
+                      <input type="text" id="website" class="form-control" formControlName="website"[readonly]="type==='view'">
                     </div>
                   </div>
                
@@ -234,7 +256,7 @@
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
                     <label for="whatsup">WhatsApp</label>
-                    <input type="text" id="whatsup" class="form-control" formControlName="whatsup">
+                    <input type="text" id="whatsup" class="form-control" formControlName="whatsup"[readonly]="type==='view'">
                   </div>
                 </div>
                
@@ -242,30 +264,36 @@
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
                     <label for="facebook">Facebook</label>
-                    <input type="text" id="facebook" class="form-control" formControlName="facebook">
+                    <input type="text" id="facebook" class="form-control" formControlName="facebook"[readonly]="type==='view'">
                   </div>
                 </div>
               
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
                     <label for="twitter">Twitter</label>
-                    <input type="text" id="twitter" class="form-control" formControlName="twitter">
+                    <input type="text" id="twitter" class="form-control" formControlName="twitter"[readonly]="type==='view'">
                   </div>
                 </div>
                 
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
                     <label for="instagram">Instagram</label>
-                    <input type="text" id="instagram" class="form-control" formControlName="instagram">
+                    <input type="text" id="instagram" class="form-control" formControlName="instagram" [readonly]="type==='view'">
                   </div>
                 </div>
                     
                   </div>
                 <div class="col-12  mt-4">
                     <div class="d-flex justify-content-end">
-                        <button type="button" id="cancel-btn" class="btn btn-outline-secondary me-2" (click)="onCancel()">{{'Cancel'|translate}}</button>
-                        <button type="submit" class="btn btn-success" [disabled]="merchantForm.invalid"> {{ (type == 'create' ? 'Add_merchant' : 'update_merchant') | translate }}
-                        </button>
+                      <div class="d-flex justify-content-end">
+                        <ng-container *ngIf="type =='view'; else editModeButtons">
+                          <button type="button" class="btn btn-success" (click)="toggleViewMode()">{{ 'Go_Back' | translate }}</button>
+                        </ng-container>
+                        <ng-template #editModeButtons>
+                          <button type="button" id="cancel-btn" class="btn btn-outline-secondary me-2" (click)="onCancel()">{{ 'Cancel' | translate }}</button>
+                          <button type="submit" class="btn btn-success" [disabled]="merchantForm.invalid">{{ (type === 'create' ? 'Add_merchant' : 'update_merchant') | translate }}</button>
+                        </ng-template>
+                      </div>
                     </div>
                 </div>
               </form>

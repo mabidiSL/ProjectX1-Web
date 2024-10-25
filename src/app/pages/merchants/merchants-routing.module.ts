@@ -6,6 +6,7 @@ import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { RoleGuard } from 'src/app/core/guards/role.guard';
 import { EditMerchantComponent } from './edit-merchant/edit-merchant.component';
 import { CreateMerchantComponent } from './create-merchant/create-merchant.component';
+import { ViewMerchantComponent } from './view-merchant/view-merchant.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,15 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: {
     claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Merchants, claimValue:[Permission.ViewAll,Permission.Update]}]
+  
+     }
+  },
+  {
+    path: "view/:id",
+    component: ViewMerchantComponent,
+    canActivate: [RoleGuard],
+    data: {
+    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Merchants, claimValue:[Permission.ViewAll,Permission.View]}]
   
      }
   },

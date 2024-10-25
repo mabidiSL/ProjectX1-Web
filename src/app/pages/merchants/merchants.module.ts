@@ -24,6 +24,7 @@ import { UiSwitchModule } from 'ngx-ui-switch';
 import { CreateMerchantComponent } from './create-merchant/create-merchant.component';
 import { EditMerchantComponent } from './edit-merchant/edit-merchant.component';
 import { FormMerchantComponent } from './form-merchant/form-merchant.component';
+import { ViewMerchantComponent } from './view-merchant/view-merchant.component';
 
 
 
@@ -33,7 +34,8 @@ import { FormMerchantComponent } from './form-merchant/form-merchant.component';
     ApproveMerchantComponent,
     CreateMerchantComponent,
     EditMerchantComponent,
-    FormMerchantComponent
+    FormMerchantComponent,
+    ViewMerchantComponent
   ],
   imports: [
     CommonModule, 

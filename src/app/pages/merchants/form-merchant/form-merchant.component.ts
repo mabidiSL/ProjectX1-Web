@@ -40,12 +40,14 @@ export class FormMerchantComponent implements OnInit {
   merchantPictureBase64: string = null;
   storeLogoBase64: string = null;
   isEditing: boolean = false;
-  
+  fromPendingContext: boolean = false;
+
   countrylist: any[] = [];
   arealist$:  Observable<any[]>  ;
   citylist$:  Observable<any[]> ;
   sectionlist:  any[] = [];
-
+  
+  filteredCountries: any[] = [];
   filteredAreas :  any[] = [];
   filteredCities:  any[] = [];
 
@@ -56,6 +58,8 @@ export class FormMerchantComponent implements OnInit {
     private route: ActivatedRoute, 
     private router: Router,
     public store: Store) {
+
+      this.getNavigationState();
       
       this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 10, status: 'active' }));
       this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 10, status: 'active' }));
@@ -123,12 +127,16 @@ export class FormMerchantComponent implements OnInit {
   globalId : string = '';
 
   ngOnInit() {
-
+    
     this.store.select(selectDataCountry).subscribe((data) =>{
-        this.countrylist = data;
+        this.filteredCountries = data;
     });
     this.arealist$ = this.store.select(selectDataArea);
+    this.arealist$.subscribe((areas) => { this.filteredAreas = areas});
+    
+
     this.citylist$ = this.store.select(selectDataCity);
+    this.citylist$.subscribe((cities) => { this.filteredCities = cities});
   
     this.store.select(selectDataSection).subscribe((data) =>{
       this.sectionlist = data;
@@ -148,9 +156,7 @@ export class FormMerchantComponent implements OnInit {
           if (merchant) {
             console.log('Retrieved merchant:', merchant);
 
-            this.arealist$.subscribe((areas) => { this.filteredAreas = areas});
-            this.citylist$.subscribe((cities) => { this.filteredCities = cities});
-
+           
             this.existantmerchantLogo = merchant.merchantLogo;
             this.existantmerchantPicture = merchant.merchantPicture;
             this.fileName1 = merchant.merchantLogo.split('/').pop();
@@ -160,6 +166,8 @@ export class FormMerchantComponent implements OnInit {
             this.merchantForm.controls['country_id'].setValue(merchant.user.city.area.country_id);
             this.merchantForm.controls['area_id'].setValue(merchant.user.city.area_id);
             this.merchantForm.controls['city_id'].setValue(merchant.user.city_id);
+            this.merchantForm.controls['section_id'].setValue(merchant.section_id);
+
             this.merchantForm.patchValue(merchant);
             this.globalId = merchant.id;
             this.merchantForm.patchValue(merchant.user);
@@ -171,7 +179,26 @@ export class FormMerchantComponent implements OnInit {
     }
    
   }
-  
+  private getNavigationState(){
+    /**Determining the context of the routing if it is from Approved State or Pending State */
+      const navigation = this.router.getCurrentNavigation();
+      if (navigation?.extras.state) {
+        this.fromPendingContext = navigation.extras.state.fromPending ;
+      }
+  }
+  getCountryName(id: any){
+    return this.filteredCountries.find(country => country.id === id)?.name ;
+  }
+  getAreaName(id: any){
+    return this.filteredAreas.find(area => area.id === id)?.name ;
+  }
+  getCityName(id: any){
+    return this.filteredCities.find(city => city.id === id)?.name ;
+  }
+  getSectionName(id: any){
+    return this.sectionlist.find(section => section.id === id)?.name ;
+  }
+
   onChangeCountrySelection(event: any){
     const country = event.target.value;
     console.log(country);
@@ -329,6 +356,14 @@ export class FormMerchantComponent implements OnInit {
     console.log('Form errors:', this.merchantForm.errors);
     this.merchantForm.reset();
     this.router.navigateByUrl('/private/merchants/list');
+  }
+  toggleViewMode(){
+
+    if(this.fromPendingContext)
+      this.router.navigateByUrl('/private/merchants/approve');
+    else
+      this.router.navigateByUrl('/private/merchants/list');
+
   }
 
 }

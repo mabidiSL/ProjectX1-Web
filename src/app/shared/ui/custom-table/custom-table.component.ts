@@ -91,6 +91,7 @@ export class CustomTableComponent  {
    }
 
   ngOnInit(){
+    
 
     this.items = [
       { label: this.translateService.instant('Previous'), class: 'prev' },
@@ -102,7 +103,7 @@ export class CustomTableComponent  {
     this.loading = false; // Set loading to false once data is ready
   }, 1000);
   }
-
+  
   ngOnChanges(changes: SimpleChanges) {
     if (changes.ArrayData) {
       this.filteredArray = changes.ArrayData.currentValue; // Reset filtered data when ArrayData changes
@@ -231,8 +232,18 @@ export class CustomTableComponent  {
       });
     }
   }
-  navigateToView(id: number) {
-    console.log(this.viewButtonLink);
-    //
+  navigateToView(data: any) {
+
+  if(this.pending !== undefined){
+    console.log('PENDING CONTEXT', this.pending);
+
+    this.router.navigate([`${this.viewButtonLink}`, data.id], { 
+      state: { fromPending: this.pending }
+    });
   }
+  else{
+    console.log('NO PENDING CONTEXT', this.pending);
+    this.router.navigate([`${this.viewButtonLink}`, data.id]);
+  }
+}
 }

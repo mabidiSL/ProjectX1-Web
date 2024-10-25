@@ -29,6 +29,8 @@ export class FormGiftCardComponent implements OnInit{
   merchantId: number =  null;
   currentRole: string = '';
 
+  fromPendingContext: boolean = false;
+
 
 
   private currentUserSubject: BehaviorSubject<_User>;
@@ -48,6 +50,7 @@ export class FormGiftCardComponent implements OnInit{
     private router: Router,
     private route: ActivatedRoute){
       
+      this.getNavigationState();
       this.currentUserSubject = new BehaviorSubject<_User>(JSON.parse(localStorage.getItem('currentUser')));
       this.currentUser = this.currentUserSubject.asObservable();
       this.currentUser.subscribe(user => {
@@ -105,6 +108,7 @@ export class FormGiftCardComponent implements OnInit{
 
   
   ngOnInit() {
+    
 
     this.merchantList$ = this.store.pipe(select(selectDataMerchant)); // Observing the merchant list from store
     this.merchantList$.subscribe(data => this.merchantList = data);
@@ -158,6 +162,13 @@ export class FormGiftCardComponent implements OnInit{
     }
   
 }
+private getNavigationState(){
+  /**Determining the context of the routing if it is from Approved State or Pending State */
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras.state) {
+      this.fromPendingContext = navigation.extras.state.fromPending ;
+    }
+}
 getMerchantName(MerchantId: any){
   
   return this.merchantList.find(merchant => merchant.id === MerchantId)?.merchantName ;
@@ -184,7 +195,10 @@ onChangeMerchantSelection(event: any){
   }
    
 }
-
+onPhoneNumberChanged(phoneNumber: string) {
+  console.log('PHONE NUMBER', phoneNumber);
+  this.formGiftCard.get('managerPhone').setValue(phoneNumber);
+}
   onSubmit(){
 
     console.log('Submitting form...');
@@ -265,11 +279,15 @@ async uploadGiftCardLogo(event: any){
     this.destroy$.next();
     this.destroy$.complete();
   }
+  
   toggleViewMode(){
-    this.router.navigateByUrl('/private/giftCards/approve');
+
+    if(this.fromPendingContext)
+      this.router.navigateByUrl('/private/giftCards/approve');
+    else
+      this.router.navigateByUrl('/private/giftCards');
+
   }
-  onPhoneNumberChanged(phoneNumber: string) {
-    console.log('PHONE NUMBER', phoneNumber);
-    this.formGiftCard.get('managerPhone').setValue(phoneNumber);
-  }
+
+  
 }

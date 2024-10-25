@@ -47,6 +47,8 @@ export class FormStoreComponent implements OnInit {
   error: any = '';
   successmsg: any = false;
   fieldTextType!: boolean;
+  fromPendingContext: boolean = false;
+
   imageURL: string | undefined;
   existantStoreLogo: string = null;
   existantStorePicture: string = null
@@ -66,7 +68,8 @@ export class FormStoreComponent implements OnInit {
     private route: ActivatedRoute, 
     private router: Router,
     public store: Store) {
-      
+
+      this.getNavigationState();
       this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 10 , status: 'active'}));
       this.store.dispatch(fetchCountrylistData({ page: 1, itemsPerPage: 10 , status: 'active'}));
       this.store.dispatch(fetchArealistData({ page: 1, itemsPerPage: 10 , status: 'active'}));
@@ -104,7 +107,7 @@ export class FormStoreComponent implements OnInit {
 
 
   ngOnInit() {
-   
+    
       this.merchantlist$ = this.store.select(selectDataMerchant);
       this.merchantlist$.subscribe((data) => { this.merchantList = data});
       this.countrylist$ = this.store.select(selectDataCountry);
@@ -178,6 +181,13 @@ export class FormStoreComponent implements OnInit {
     }
    
   
+}
+private getNavigationState(){
+  /**Determining the context of the routing if it is from Approved State or Pending State */
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras.state) {
+      this.fromPendingContext = navigation.extras.state.fromPending ;
+    }
 }
   getMerchantName(MerchantId: any){
     const value = this.merchantList.find(merchant => merchant.id === MerchantId)?.merchantName ;
@@ -348,8 +358,13 @@ removeFile(event: any) {
     this.storeForm.reset();
     this.router.navigateByUrl('/private/stores');
   }
+ 
   toggleViewMode(){
-    this.router.navigateByUrl('/private/stores/approve');
-  }
+    
+    if(this.fromPendingContext)
+      this.router.navigateByUrl('/private/stores/approve');
+    else
+      this.router.navigateByUrl('/private/stores');
 
+  }
 }
