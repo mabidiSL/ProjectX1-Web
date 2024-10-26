@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
-import { selectData, selectDataTotalItems } from 'src/app/store/coupon/coupon-selector';
+import { selectData, selectDataLoading, selectDataTotalItems } from 'src/app/store/coupon/coupon-selector';
 import { deleteCouponlist, fetchCouponlistData, updateCouponlist } from 'src/app/store/coupon/coupon.action';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
 
@@ -20,6 +20,8 @@ export class CouponsComponent  implements OnInit {
 
   couponList$: Observable<any[]>;
   totalItems$: Observable<number>;
+  loading$: Observable<any>
+
 
   isDropdownOpen : boolean = false;
   filteredArray: any[] = [];
@@ -42,7 +44,7 @@ export class CouponsComponent  implements OnInit {
       
       this.couponList$ = this.store.pipe(select(selectData)); 
       this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
-
+      this.loading$ = this.store.pipe(select(selectDataLoading));
 
   }
 

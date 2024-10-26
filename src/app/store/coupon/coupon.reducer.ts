@@ -1,6 +1,6 @@
 // src/app/Couponlist.reducer.ts
 import { createReducer, on } from '@ngrx/store';
-import {  addCouponlistSuccess, deleteCouponlistFailure, deleteCouponlistSuccess, fetchCouponlistData, fetchCouponlistFail, fetchCouponlistSuccess, getCouponByIdSuccess, updateCouponlistSuccess, updateCouponStatusSuccess } from './coupon.action';
+import {  addCouponlist, addCouponlistFailure, addCouponlistSuccess, deleteCouponlist, deleteCouponlistFailure, deleteCouponlistSuccess, fetchCouponlistData, fetchCouponlistFail, fetchCouponlistSuccess, getCouponByIdSuccess, updateCouponlist, updateCouponlistFailure, updateCouponlistSuccess } from './coupon.action';
 import { CouponListModel } from './coupon.model';
 
 export interface CouponlistState {
@@ -33,53 +33,79 @@ export const CouponListReducer = createReducer(
     ...state,
     CouponListdata: CouponListdata.data,
     totalItems: CouponListdata.totalItems,
-    loading: false
+    loading: false,
+    error: null
+
   })),
   on(fetchCouponlistFail, (state, { error }) => ({
     ...state,
     error,
     loading: false
   })),
+    //Handle adding Coupon 
+
+  on(addCouponlist, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
+  })),
   //Handle adding Coupon success
   on(addCouponlistSuccess, (state, { newData }) => ({
     ...state,
     CouponListdata: [newData,...state.CouponListdata ],
-    loading: false
+    loading: false,
+    error: null
+  })),
+    //Handle adding Coupon success
+  on(addCouponlistFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false, 
   })),
   // Handle success of getting coupon by ID and store the coupon object in the state
    on(getCouponByIdSuccess, (state, { coupon }) => ({
     ...state,
-    selectedCoupon: coupon
+    selectedCoupon: coupon,
+    error: null
   })),
-
-
   // Handle updating Coupon list
-  on(updateCouponStatusSuccess, (state, { updatedData }) => {
-    return {
-      ...state,
-      CouponListdata: state.CouponListdata.map(item =>
-        item.id === updatedData.couponId ? { ...item, status: updatedData.status } : item
-      )
-    };
-  }),
-// Handle updating Coupon status
+  on(updateCouponlist, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
+  })),
+// Handle updating Coupon 
   on(updateCouponlistSuccess, (state, { updatedData }) => {
    const CouponListUpdated = state.CouponListdata.map(item => item.id === updatedData.id ? updatedData : item );
    console.log('CouponListdata after update:', CouponListUpdated);
    return {
       ...state,
-      CouponListdata: CouponListUpdated
+      CouponListdata: CouponListUpdated,
+      loading: false,
+      error: null
     };
   }),
+  // Handle updating Coupon failure
+  on(updateCouponlistFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false 
+  })),
+  // Handle deleting Coupon 
+  on(deleteCouponlist, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
+  })),
   // Handle the success of deleting a Coupon
   on(deleteCouponlistSuccess, (state, { couponId }) => {
-    console.log('Deleting Coupon with ID:', couponId);
-    console.log('CouponListdata before deletion:', state.CouponListdata);
     const updatedCouponList = state.CouponListdata.filter(Coupon => Coupon.id !== couponId);
-    console.log('CouponListdata after deletion:', updatedCouponList);
     return { 
     ...state,
-    CouponListdata: updatedCouponList};
+    CouponListdata: updatedCouponList,
+    loading: false,
+    error: null
+  };
   }),
   // Handle failure of deleting a Coupon
   on(deleteCouponlistFailure, (state, { error }) => ({

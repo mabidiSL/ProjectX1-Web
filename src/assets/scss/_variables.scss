@@ -1748,6 +1748,17 @@ $carousel-dark-control-icon-filter:  invert(1) grayscale(100);
 // scss-docs-end carousel-dark-variables
 
 // Spinners
+.loader {
+  position: fixed; /* Fixed position to cover the entire screen */
+  top: 0;          /* Align to the top */
+  left: 0;         /* Align to the left */
+  width: 100%;     /* Full width */
+  height: 100%;    /* Full height */
+  background-color: rgba(255, 255, 255, 0.7); /* Optional: dim background */
+  display: flex;   /* Flexbox for centering */
+  justify-content: center; /* Center horizontally */
+  align-items: center;     /* Center vertically */
+  z-index: 1000;  /* Ensure it appears above other content */
 
 // scss-docs-start spinner-variables
 $spinner-width:           2rem;
@@ -1760,7 +1771,7 @@ $spinner-width-sm:        1rem;
 $spinner-height-sm:       $spinner-width-sm;
 $spinner-border-width-sm: .2em;
 // scss-docs-end spinner-variables
-
+}
 
 // Close
 

@@ -16,11 +16,9 @@ import {
     deleteCouponlistFailure,
     deleteCouponlistSuccess,
     deleteCouponlist,
-    updateCouponStatus,
-    updateCouponStatusSuccess,
-    updateCouponStatusFailure,
     getCouponById,
-    getCouponByIdSuccess
+    getCouponByIdSuccess,
+    getCouponByIdFailure
 } from './coupon.action';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
@@ -29,7 +27,6 @@ import { Store } from '@ngrx/store';
 
 @Injectable()
 export class CouponslistEffects {
-   // path : string = '/assets/data/coupon.json';
 
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
@@ -39,13 +36,15 @@ export class CouponslistEffects {
                 this.CrudService.fetchData('/coupons',{ limit: itemsPerPage, page: page, status: status}).pipe(
                     tap((response : any) => console.log('Fetched data:', response.result)), 
                     map((response) => fetchCouponlistSuccess({ CouponListdata : response.result })),
-                    catchError((error) =>
-                        of(fetchCouponlistFail({ error }))
-                    )
+                    catchError((error) =>{
+                      this.toastr.error('An error occurred while fetching the Coupon list. Please try again later.'); 
+                      console.error('Fetch error:', error); 
+                      return of(fetchCouponlistFail({ error: 'Error fetching data' })); 
+                    })
                 )
             ),
         ),
-    );
+    );  
     
     addData$ = createEffect(() =>
         this.actions$.pipe(
@@ -53,7 +52,6 @@ export class CouponslistEffects {
             mergeMap(({ newData }) =>
                 this.CrudService.addData('/coupons', newData).pipe(
                     map((newData) => {
-                        
                       const userRole = this.getCurrentUserRole(); 
                       console.log(userRole);// Replace with your logic to get the role
                           if (userRole === 'Admin') {
@@ -61,43 +59,36 @@ export class CouponslistEffects {
                               this.router.navigate(['/private/coupons']);
                           } else {
                               this.toastr.success('The new Coupon Request has been sent to Admin.');
-                              this.router.navigate(['/private/coupons/approve']); // Redirect to pending coupons for non-admins
+                              this.router.navigate(['/private/coupons/approve']); 
                           }
                         // Dispatch the action to fetch the updated Coupon list after adding a new Coupon
                         return addCouponlistSuccess({newData});
                       }),
-                    catchError((error) => of(addCouponlistFailure({ error })))
-                )
+                    catchError((error) => {
+                      const errorMessage = this.getErrorMessage(error); 
+                      this.toastr.error(errorMessage);
+                      return of(addCouponlistFailure({ error: error.message })); // Dispatch failure action
+                    }))
+                
             )
         )
     );
-    updateStatus$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(updateCouponStatus),
-            mergeMap(({ couponId, status }) =>
-                this.CrudService.addData('/api/update-status', { couponId, status }).pipe(
-                    map((updatedData) => {
-                        this.toastr.success('The Coupon has been updated successfully.');
-                        return updateCouponStatusSuccess({ updatedData })}),
-                    catchError((error) => of(updateCouponStatusFailure({ error })))
-                )
-            )
-        )
-    );
-
     updateData$ = createEffect(() =>
         this.actions$.pipe(
           ofType(updateCouponlist),
           mergeMap(({ updatedData }) =>
             this.CrudService.updateData(`/coupons/${updatedData.id}`, updatedData).pipe(
               map(() => {
-
-                
+              
                 this.toastr.success('The Coupon has been updated successfully.');
                 this.router.navigate(['/private/coupons']);
                 return updateCouponlistSuccess({ updatedData }); // Make sure to return the action
               }),
-              catchError((error) => of(updateCouponlistFailure({ error }))) // Catch errors and return the failure action
+              catchError((error) =>{
+                const errorMessage = this.getErrorMessage(error); 
+                this.toastr.error(errorMessage);
+                return of(updateCouponlistFailure({ error }));
+              }) 
             )
           )
         )
@@ -118,9 +109,8 @@ export class CouponslistEffects {
               return getCouponByIdSuccess({ coupon });
             } else {
               console.log('COUPON NULL');
-              // Handle the case where the coupon is not found, if needed
-              // For example, you might want to dispatch a failure action or return an empty coupon
-              return getCouponByIdSuccess({ coupon: null }); // or handle it differently
+              this.toastr.error('Coupon not found.'); // Show error notification
+              return getCouponByIdFailure({ error: 'Coupon not found' });
             }
           })
         );
@@ -128,18 +118,18 @@ export class CouponslistEffects {
     )
   );
    deleteData$ = createEffect(() =>
-    
-        this.actions$.pipe(
+            this.actions$.pipe(
             ofType(deleteCouponlist),
             tap(action => console.log('Delete action received:', action)),
             mergeMap(({ couponId }) =>
                     this.CrudService.deleteData(`/coupons/${couponId}`).pipe(
                         map((response: string) => {
-                            // If response contains a success message or status, you might want to check it here
-                            console.log('API response:', response);
+                            this.toastr.success('Coupon deleted successfully.');
                             return deleteCouponlistSuccess({ couponId });
                           }),
-                    catchError((error) => {return  of(deleteCouponlistFailure({ error }))})
+                    catchError((error) => {
+                      this.toastr.error('Failed to delete the coupon. Please try again.');
+                      return  of(deleteCouponlistFailure({ error: error.message }))})
                 )
             )
         )
@@ -153,7 +143,16 @@ export class CouponslistEffects {
         private store: Store,
         public toastr:ToastrService
     ) { }
-
+    private getErrorMessage(error: any): string {
+      // Implement logic to convert backend error to user-friendly message
+      if (error.status === 400) {
+        return 'Invalid coupon data. Please check your inputs and try again.';
+      } else if (error.status === 409) {
+        return 'A coupon with this code already exists.';
+      } else {
+        return 'An unexpected error occurred. Please try again later.';
+      }
+    }
     private getCurrentUserRole(): string {
       // Replace with your actual logic to retrieve the user role
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));

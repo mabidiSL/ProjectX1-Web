@@ -255,9 +255,14 @@
                     </ng-container>
                     <ng-template #editModeButtons>
                       <button type="button" id="cancel-btn" class="btn btn-outline-secondary me-2" (click)="onCancel()">{{'Cancel'|translate}}</button>
-                      <button type="submit" class="btn btn-success" [disabled]="formCoupon.invalid"> {{ (type == 'create' ? 'Add coupon' : 'update_coupon') | translate }}
+                      <button type="submit" class="btn btn-success" [disabled]="formCoupon.invalid || (loading$ | async) "> {{ (type == 'create' ? 'Add coupon' : 'update_coupon') | translate }}
                       </button>
-                      </ng-template>
+                      <div id="elmLoader" class="loader" *ngIf="loading$ | async">
+                        <div class="spinner-border text-primary avatar-sm" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                      </div>                     
+                     </ng-template>
                   </div>
                 </div>
                 </div>

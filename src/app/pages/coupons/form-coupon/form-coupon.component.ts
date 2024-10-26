@@ -7,7 +7,7 @@ import {  Observable,  Subject, takeUntil } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { _User } from 'src/app/store/Authentication/auth.models';
 
-import { selectCouponById } from 'src/app/store/coupon/coupon-selector';
+import { selectCouponById, selectDataLoading } from 'src/app/store/coupon/coupon-selector';
 import { addCouponlist, getCouponById, updateCouponlist } from 'src/app/store/coupon/coupon.action';
 import { selectDataMerchant } from 'src/app/store/merchantsList/merchantlist1-selector';
 import { fetchMerchantlistData } from 'src/app/store/merchantsList/merchantlist1.action';
@@ -22,8 +22,11 @@ import { fetchStorelistData } from 'src/app/store/store/store.action';
 export class FormCouponComponent implements OnInit{
 
   @Input() type: string;
+
   merchantList$: Observable<any[]>;
+  loading$: Observable<any>
   storeList$: Observable<any[]> | undefined ;
+
   selectedStores: any[];
   merchantList: any[]= [];
   existantcouponLogo: string = null;
@@ -36,14 +39,12 @@ export class FormCouponComponent implements OnInit{
 
 
 
-  private currentUserSubject: BehaviorSubject<_User>;
   public currentUser: Observable<_User>;
 
   dropdownSettings : any;
   formCoupon: UntypedFormGroup;
   private destroy$ = new Subject<void>();
   couponLogoBase64: string = null;
-  stores : string[] = ['Store Riadh', 'Store Al Madina'];
   isEditing = false;
   isLoading = false;
 
@@ -55,19 +56,38 @@ export class FormCouponComponent implements OnInit{
     private route: ActivatedRoute){
       
       this.getNavigationState();
+      this.loading$ = this.store.pipe(select(selectDataLoading)); // Selector for loading state
 
-      this.currentUserSubject = new BehaviorSubject<_User>(JSON.parse(localStorage.getItem('currentUser')));
-      this.currentUser = this.currentUserSubject.asObservable();
-      this.currentUser.subscribe(user => {
-        if (user) {
-        this.currentRole = user.role.name;
-        this.merchantId =  user.merchantId;
-        if(this.currentRole !== 'Admin')
+      this.currentRole = this.getCurrentUser()?.role.name;
+      this.merchantId =  this.getCurrentUser()?.merchantId;
+      console.log(this.merchantId);
+
+      if(this.currentRole !== 'Admin')
           this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 10 ,status:'', merchant_id: this.merchantId}));
-        console.log(this.merchantId);
-      }});
+      
+      this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 10 , status: 'active'})); 
+      
+      this.initForm();
+         
+  }
 
-    this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 10 , status: 'active'})); 
+  dateValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    const startDate = new Date(control.get('startDateCoupon')?.value);
+    const endDate = new Date(control.get('endDateCoupon')?.value);
+    const currentDate = new Date();
+  
+    if (startDate && endDate) {
+      // Check if both dates are valid
+      if (startDate < currentDate || endDate < currentDate) {
+        return { invalidDate: true }; // Both dates must be >= current date
+      }
+      if (startDate >= endDate) {
+        return { dateMismatch: true }; // Start date must be before end date
+      }
+    }
+    return null; // Valid
+  }
+  private initForm() {
     this.formCoupon = this.formBuilder.group({
       id: [''],
       name: ['', Validators.required],
@@ -94,27 +114,13 @@ export class FormCouponComponent implements OnInit{
       paymentDiscountRate: ['']
 
     }, { validators: this.dateValidator });
-
-   
   }
-  dateValidator(control: AbstractControl): { [key: string]: boolean } | null {
-    const startDate = new Date(control.get('startDateCoupon')?.value);
-    const endDate = new Date(control.get('endDateCoupon')?.value);
-    const currentDate = new Date();
-  
-    if (startDate && endDate) {
-      // Check if both dates are valid
-      if (startDate < currentDate || endDate < currentDate) {
-        return { invalidDate: true }; // Both dates must be >= current date
-      }
-      if (startDate >= endDate) {
-        return { dateMismatch: true }; // Start date must be before end date
-      }
-    }
-    return null; // Valid
-  }
-
-  
+  private getCurrentUser(): _User {
+    // Replace with your actual logic to retrieve the user role
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    console.log(currentUser);
+    return currentUser;
+} 
   ngOnInit() {
 
     this.dropdownSettings = {
@@ -181,10 +187,8 @@ private formatDate(dateString: string): string {
   return date.toISOString().split('T')[0]; // Converts to YYYY-MM-DD format
 }
 getMerchantName(MerchantId: any){
-  
-  return this.merchantList.find(merchant => merchant.id === MerchantId)?.merchantName ;
-  
-}
+    return this.merchantList.find(merchant => merchant.id === MerchantId)?.merchantName ;
+  }
 getFileNameFromUrl(url: string): string {
   if (!url) return '';
   const parts = url.split('/');
@@ -300,4 +304,5 @@ onPhoneNumberChanged(phoneNumber: string) {
     }
 
   }
+ 
 }
