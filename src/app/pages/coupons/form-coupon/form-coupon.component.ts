@@ -1,10 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker/bs-datepicker.config';
 import {  Observable,  Subject, takeUntil } from 'rxjs';
 
 import { BehaviorSubject } from 'rxjs';
+import { DatepickerConfigService } from 'src/app/core/services/date.service';
 import { _User } from 'src/app/store/Authentication/auth.models';
 
 import { selectCouponById, selectDataLoading } from 'src/app/store/coupon/coupon-selector';
@@ -36,23 +38,28 @@ export class FormCouponComponent implements OnInit{
 
   merchantId: number =  null;
   currentRole: string = '';
-
+  bsConfig: Partial<BsDatepickerConfig>;
 
 
   public currentUser: Observable<_User>;
 
   dropdownSettings : any;
   formCoupon: UntypedFormGroup;
+  formError: string | null = null;
+  formSubmitted = false;
+
   private destroy$ = new Subject<void>();
   couponLogoBase64: string = null;
   isEditing = false;
   isLoading = false;
 
+  @ViewChild('formElement') formElement: ElementRef;
 
   constructor(
     private store: Store, 
     private formBuilder: UntypedFormBuilder, 
     private router: Router,
+    private datepickerConfigService: DatepickerConfigService,
     private route: ActivatedRoute){
       
       this.getNavigationState();
@@ -68,6 +75,7 @@ export class FormCouponComponent implements OnInit{
       this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 10 , status: 'active'})); 
       
       this.initForm();
+      this.bsConfig = this.datepickerConfigService.getConfig();
          
   }
 
@@ -87,6 +95,7 @@ export class FormCouponComponent implements OnInit{
     }
     return null; // Valid
   }
+
   private initForm() {
     this.formCoupon = this.formBuilder.group({
       id: [''],
@@ -207,17 +216,19 @@ onChangeMerchantSelection(event: any){
 }
   onSubmit(){
 
-    console.log('Submitting form...');
-    console.log('Form status:', this.formCoupon.status);
-    console.log('Form errors:', this.formCoupon.errors);
+    this.formSubmitted = true;
 
-    if (this.formCoupon.valid) {
-      console.log('i am on onSubmit');
-      console.log(this.formCoupon.value);
-      console.log('Form status:', this.formCoupon.status);
-      console.log('Form errors:', this.formCoupon.errors);
-      
-      
+    if (this.formCoupon.invalid) {
+      this.formError = 'Please complete all required fields.';
+      Object.keys(this.formCoupon.controls).forEach(control => {
+        this.formCoupon.get(control).markAsTouched();
+      });
+      this.focusOnFirstInvalid();
+      return;
+    }
+    this.formError = null;
+    
+        
       const newData = this.formCoupon.value;
       if(this.couponLogoBase64){
         newData.couponLogo = this.couponLogoBase64;
@@ -244,7 +255,25 @@ onChangeMerchantSelection(event: any){
    
     }
       
-  }
+    private focusOnFirstInvalid() {
+      const firstInvalidControl = this.getFirstInvalidControl();
+      if (firstInvalidControl) {
+        firstInvalidControl.focus();
+      }
+    }
+  
+    private getFirstInvalidControl(): HTMLInputElement | null {
+      const controls = this.formCoupon.controls;
+      for (const key in controls) {
+        if (controls[key].invalid) {
+          const inputElement = document.getElementById(key) as HTMLInputElement;
+          if (inputElement) {
+            return inputElement;
+          }
+        }
+      }
+      return null;
+    }
  /**
    * File Upload Image
    */

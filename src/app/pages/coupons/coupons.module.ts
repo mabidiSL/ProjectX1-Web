@@ -24,6 +24,7 @@ import { CouponApprovalComponent } from './coupon-approval/coupon-approval.compo
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ViewCouponComponent } from './view-coupon/view-coupon.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { ViewCouponComponent } from './view-coupon/view-coupon.component';
     CommonModule,
     UiSwitchModule,
     WidgetModule,
+    BsDatepickerModule,
     UIModule,
     NgSelectModule,
     NgApexchartsModule,

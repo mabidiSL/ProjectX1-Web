@@ -11,7 +11,7 @@ import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 
 import { ToastrService } from 'ngx-toastr';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
-import { selectApprovalData, selectData, selectDataTotalItems } from 'src/app/store/coupon/coupon-selector';
+import { selectApprovalData, selectData, selectDataLoading, selectDataTotalItems } from 'src/app/store/coupon/coupon-selector';
 import { fetchCouponlistData, updateCouponlist } from 'src/app/store/coupon/coupon.action';
 
 
@@ -28,6 +28,7 @@ public Permission = Permission;
 
 couponApprovalList$: Observable<any[]>;
 totalItems$: Observable<number>;
+loading$: Observable<any>
 
 isDropdownOpen : boolean = false;
 filteredArray: any[] = [];
@@ -46,6 +47,8 @@ columns : any[]= [
 ];
   constructor(public toastr:ToastrService,  public store: Store) {
     this.store.dispatch(fetchCouponlistData({ page: 1, itemsPerPage: 10, status:'pending' }));
+    this.loading$ = this.store.pipe(select(selectDataLoading));
+
       
   }
 
