@@ -81,10 +81,10 @@ export class GiftCardComponent implements OnInit {
 
  
   onChangeEvent( event: any) {
-    const newStatus = event.checked ? 'active' : 'expired'; 
+        const newStatus = event.event.checked ? 'active' : 'inactive'; 
     console.log('giftCard ID:', event.data.id, 'New Status:', newStatus);
-    event.data.status = newStatus;
-    this.store.dispatch(updateGiftCardlist({ updatedData: event.data }));
+    const newData = {id: event.data.id, status: newStatus }
+    this.store.dispatch(updateGiftCardlist({ updatedData: newData }));
   }
 
  }

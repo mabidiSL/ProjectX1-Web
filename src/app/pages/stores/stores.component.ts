@@ -86,8 +86,7 @@ export class StoresComponent implements OnInit {
    // console.log(event);
     const newStatus = event.event.checked ? 'active' : 'inactive'; 
     console.log('Store ID:', event.data.id, 'New Status:', newStatus);
-    event.data.status = newStatus;
-    const updatedData = {id:event.data.id, status: event.data.status}
+    const updatedData = {id:event.data.id, status: newStatus}
     this.store.dispatch(updateStorelist({ updatedData: updatedData }));
   }
 

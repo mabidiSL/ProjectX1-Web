@@ -85,9 +85,9 @@ export class MerchantListComponent implements OnInit {
 
  
   onChangeEvent( event: any) {
-    const newStatus = event.checked ? 'active' : 'inactive'; 
+    const newStatus = event.event.checked ? 'active' : 'inactive'; 
     console.log('Merchant ID:', event.data.id, 'New Status:', newStatus);
-    event.data.status = newStatus;
-    this.store.dispatch(updateMerchantlist({ updatedData: event.data }));
+    const newData = {id: event.data.id, status: newStatus }
+    this.store.dispatch(updateMerchantlist({ updatedData: newData }));
   }
 }

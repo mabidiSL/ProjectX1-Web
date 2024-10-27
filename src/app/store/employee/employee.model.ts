@@ -15,6 +15,6 @@ export interface EmployeeListModel {
         bankName?: string;
         role?: RoleListModel;
         createdBy?: string;
-        approvedBy: string;
+        approvedBy?: string;
         status?: string;//pending,approved,active, inactive, disabled
         }

@@ -79,7 +79,8 @@ export class RolesComponent  implements OnInit{
     const newStatus = event.event.checked ? 'active' : 'inactive'; 
     console.log('Role ID:', event.data.id, 'New Status:', newStatus);
     event.data.status = newStatus;
-    this.store.dispatch(updateRolelist({ updatedData: event.data }));
+    const newData = {id: event.data.id, status: event.data.status }
+    this.store.dispatch(updateRolelist({ updatedData: newData }));
   }
 
 

@@ -74,10 +74,10 @@ export class NotificationsComponent implements OnInit{
 
  
   onChangeEvent( event: any) {
-    const newStatus = event.checked ? 'undelivered' : 'delivered'; 
+    const newStatus = event.event.checked ? 'active' : 'inactive'; 
     console.log('Notification ID:', event.data.id, 'New Status:', newStatus);
-    event.data.status = newStatus;
-    this.store.dispatch(updateNotificationlist({ updatedData: event.data }));
+    const newData = {id: event.data.id, status: newStatus }
+    this.store.dispatch(updateNotificationlist({ updatedData: newData }));
   }
 
 

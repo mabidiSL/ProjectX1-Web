@@ -79,10 +79,10 @@ export class CouponsComponent  implements OnInit {
 
  
   onChangeEvent( event: any) {
-    const newStatus = event.checked ? 'active' : 'expired'; 
+    const newStatus = event.event.checked ? 'active' : 'inactive'; 
     console.log('Coupon ID:', event.data.id, 'New Status:', newStatus);
-    event.data.status = newStatus;
-    this.store.dispatch(updateCouponlist({ updatedData: event.data }));
+    const newData = {id: event.data.id, status: newStatus }
+    this.store.dispatch(updateCouponlist({ updatedData: newData }));
   }
 
  }
