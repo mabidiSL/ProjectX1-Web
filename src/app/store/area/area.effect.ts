@@ -16,11 +16,9 @@ import {
     deleteArealistFailure,
     deleteArealistSuccess,
     deleteArealist,
-    updateAreaStatus,
-    updateAreaStatusSuccess,
-    updateAreaStatusFailure,
     getAreaById,
-    getAreaByIdSuccess
+    getAreaByIdSuccess,
+    getAreaByIdFailure
 } from './area.action';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
@@ -37,9 +35,11 @@ export class AreaEffects {
                 this.CrudService.fetchData('/areas',{ limit: itemsPerPage, page: page}).pipe(
                     tap((response : any) => console.log('Fetched data:', response.result)), 
                     map((response) => fetchArealistSuccess({ AreaListdata: response.result })),
-                    catchError((error) =>
-                        of(fetchArealistFail({ error }))
-                    )
+                    catchError((error) =>{
+                        this.toastr.error('An error occurred while fetching the Area list. Please try again later.'); 
+                        console.error('Fetch error:', error); 
+                        return of(fetchArealistFail({ error: 'Error fetching data' })); 
+                      })
                 )
             ),
         ),
@@ -56,8 +56,11 @@ export class AreaEffects {
                         // Dispatch the action to fetch the updated Area list after adding a new Area
                         return addArealistSuccess({newData: response});
                       }),
-                    catchError((error) => of(addArealistFailure({ error })))
-                )
+                      catchError((error) => {
+                        const errorMessage = this.getErrorMessage(error); 
+                        this.toastr.error(errorMessage);
+                        return of(addArealistFailure({ error: error.message })); // Dispatch failure action
+                      })                )
             )
         )
     );
@@ -75,29 +78,15 @@ export class AreaEffects {
                   return getAreaByIdSuccess({ Area: Area });
                 } else {
                   console.log('Area NULL');
-                  // Handle the case where the Area is not found, if needed
-                  // For example, you might want to dispatch a failure action or return an empty Area
-                  return getAreaByIdSuccess({ Area: null }); // or handle it differently
+                  this.toastr.error('Area not found.'); // Show error notification
+              return getAreaByIdFailure({ error: 'Area not found' });
                 }
               })
             );
           })
         )
       );
-    updateStatus$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(updateAreaStatus),
-            mergeMap(({ userId, status }) =>
-                this.CrudService.addData('/api/update-status', { userId, status }).pipe(
-                    map((updatedData) => {
-                        this.toastr.success('The Area has been updated successfully.');
-                        return updateAreaStatusSuccess({ updatedData })}),
-                    catchError((error) => of(updateAreaStatusFailure({ error })))
-                )
-            )
-        )
-    );
-
+    
     updateData$ = createEffect(() => 
         this.actions$.pipe(
             ofType(updateArealist),
@@ -107,8 +96,11 @@ export class AreaEffects {
                 this.router.navigate(['/private/areas']);
                 return this.CrudService.updateData(`/areas/${updatedData.id}`, updatedData).pipe(
                     map((response : any) => updateArealistSuccess({ updatedData : response.result})),
-                    catchError((error) => of(updateArealistFailure({ error })))
-                );
+                    catchError((error) =>{
+                        const errorMessage = this.getErrorMessage(error); 
+                        this.toastr.error(errorMessage);
+                        return of(updateArealistFailure({ error }));
+                      })                 );
             })
         )
     );
@@ -126,8 +118,9 @@ export class AreaEffects {
                             console.log('API response:', response);
                             return deleteArealistSuccess({ AreaId });
                           }),
-                    catchError((error) => {return  of(deleteArealistFailure({ error }))})
-                )
+                          catchError((error) => {
+                            this.toastr.error('Failed to delete the Area. Please try again.');
+                            return  of(deleteArealistFailure({ error: error.message }))})                )
             )
         )
     );
@@ -140,7 +133,15 @@ export class AreaEffects {
         private router: Router,
         private store: Store
     ) { 
-        console.log('i am in area effect');
     }
-
+    private getErrorMessage(error: any): string {
+        // Implement logic to convert backend error to user-friendly message
+        if (error.status === 400) {
+          return 'Invalid Area data. Please check your inputs and try again.';
+        } else if (error.status === 409) {
+          return 'A Area with this code already exists.';
+        } else {
+          return 'An unexpected error occurred. Please try again later.';
+        }
+      }
 }

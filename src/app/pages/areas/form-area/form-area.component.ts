@@ -6,7 +6,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { addArealist,  getAreaById, updateArealist } from 'src/app/store/area/area.action';
-import { selectAreaById } from 'src/app/store/area/area-selector';
+import { selectAreaById, selectDataLoading } from 'src/app/store/area/area-selector';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
 import { selectDataCountry } from 'src/app/store/country/country-selector';
 
@@ -22,6 +22,10 @@ export class FormAreaComponent implements OnInit {
   
   @Input() type: string;
   areaForm: UntypedFormGroup;
+  formError: string | null = null;
+  formSubmitted = false;
+  loading$: Observable<any>;
+
   private destroy$ = new Subject<void>();
   areaFlagBase64 : string;
   submitted: any = false;
@@ -43,8 +47,10 @@ export class FormAreaComponent implements OnInit {
     private route: ActivatedRoute, 
     private router: Router,
     public store: Store) {
-      
+     
+      this.loading$ = this.store.pipe(select(selectDataLoading)); 
       this.store.dispatch(fetchCountrylistData({ page: 1, itemsPerPage: 10, status:'active' }));
+
       this.store.select(selectDataCountry).subscribe(
         countries => {
           this.countries = countries
@@ -58,12 +64,8 @@ export class FormAreaComponent implements OnInit {
                    
       });
      }
-  // set the currenr year
-  year: number = new Date().getFullYear();
-    
+     
   ngOnInit() {
-
-   
 
     const AreaId = this.route.snapshot.params['id'];
     console.log('Area ID from snapshot:', AreaId);
@@ -100,13 +102,17 @@ export class FormAreaComponent implements OnInit {
    * On submit form
    */
   onSubmit() {
-    console.log('Form status:', this.areaForm.status);
-    console.log('Form errors:', this.areaForm.errors);
-    if (this.areaForm.valid) {
-      console.log('i am on onSubmit');
-      console.log(this.areaForm.value);
-      console.log('Form status:', this.areaForm.status);
-      console.log('Form errors:', this.areaForm.errors);
+    this.formSubmitted = true;
+
+    if (this.areaForm.invalid) {
+      this.formError = 'Please complete all required fields.';
+      Object.keys(this.areaForm.controls).forEach(control => {
+        this.areaForm.get(control).markAsTouched();
+      });
+      this.focusOnFirstInvalid();
+      return;
+    }
+    this.formError = null;
             
       const newData = this.areaForm.value;
     
@@ -121,11 +127,26 @@ export class FormAreaComponent implements OnInit {
           this.store.dispatch(updateArealist({ updatedData: newData }));
         }
       
-    } else {
-      // Form is invalid, display error messages
-      console.log('Form is invalid');
-      this.areaForm.markAllAsTouched();
+    
+  }
+  private focusOnFirstInvalid() {
+    const firstInvalidControl = this.getFirstInvalidControl();
+    if (firstInvalidControl) {
+      firstInvalidControl.focus();
     }
+  }
+
+  private getFirstInvalidControl(): HTMLInputElement | null {
+    const controls = this.areaForm.controls;
+    for (const key in controls) {
+      if (controls[key].invalid) {
+        const inputElement = document.getElementById(key) as HTMLInputElement;
+        if (inputElement) {
+          return inputElement;
+        }
+      }
+    }
+    return null;
   }
   ngOnDestroy() {
     this.destroy$.next();

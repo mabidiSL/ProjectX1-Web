@@ -1,6 +1,6 @@
 // src/app/Arealist.reducer.ts
 import { createReducer, on } from '@ngrx/store';
-import {  addArealistSuccess, deleteArealistFailure, deleteArealistSuccess, fetchArealistData, fetchArealistFail, fetchArealistSuccess, getAreaByIdSuccess, updateArealistSuccess, updateAreaStatusSuccess } from './area.action';
+import {  addArealist, addArealistFailure, addArealistSuccess, deleteArealist, deleteArealistFailure, deleteArealistSuccess, fetchArealistData, fetchArealistFail, fetchArealistSuccess, getAreaById, getAreaByIdFailure, getAreaByIdSuccess, updateArealist, updateArealistFailure, updateArealistSuccess } from './area.action';
 
 export interface ArealistState {
   AreaListdata: any[];
@@ -31,12 +31,21 @@ export const AreaListReducer = createReducer(
     ...state,
     AreaListdata: AreaListdata.data,
     totalItems: AreaListdata.totalItems,
-    loading: false
+    loading: false,
+    error: null
+
   })),
   on(fetchArealistFail, (state, { error }) => ({
     ...state,
     error,
     loading: false
+  })),
+  
+  //Handle adding Area 
+  on(addArealist, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
   })),
   //Handle adding Area success
   on(addArealistSuccess, (state, { newData }) => ({
@@ -44,20 +53,37 @@ export const AreaListReducer = createReducer(
     AreaListdata: [...state.AreaListdata, newData],
     loading: false
   })),
+   //Handle adding Area failure
+   on(addArealistFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false 
+  })),
+  //Handle getting Area by id
+  on(getAreaById, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
+  })),
   // Handle success of getting Area by ID and Area the Area object in the state
   on(getAreaByIdSuccess, (state, { Area }) => ({
     ...state,
     selectedArea: Area
   })),
-  // Handle updating status  Area list
-  on(updateAreaStatusSuccess, (state, { updatedData }) => {
-    return {
-      ...state,
-      AreaListdata: state.AreaListdata.map(item =>
-        item.id === updatedData.id ? { ...item, status: updatedData.status } : item
-      )
-    };
-  }),
+   // Handle success of getting Area by ID and store the Area object in the state
+   on(getAreaByIdFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false, 
+  })),
+  // Handle updating Area list
+  on(updateArealist, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
+  })),
+  
+
 // Handle updating Area 
   on(updateArealistSuccess, (state, { updatedData }) => {
    const AreaListUpdated = state.AreaListdata.map(item => item.id === updatedData.id ? updatedData : item );
@@ -67,15 +93,26 @@ export const AreaListReducer = createReducer(
       AreaListdata: AreaListUpdated
     };
   }),
+   // Handle updating Area failure
+   on(updateArealistFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false 
+  })),
+  // Handle deleting Area 
+  on(deleteArealist, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
+  })),
   // Handle the success of deleting a Area
   on(deleteArealistSuccess, (state, { AreaId }) => {
-    console.log('Deleting Area with ID:', AreaId);
-    console.log('AreaListdata before deletion:', state.AreaListdata);
     const updatedAreaList = state.AreaListdata.filter(Area => Area.id !== AreaId);
-    console.log('AreaListdata after deletion:', updatedAreaList);
     return { 
     ...state,
-    AreaListdata: updatedAreaList};
+    AreaListdata: updatedAreaList,
+    loading: false,
+    error: null};
   }),
   // Handle failure of deleting a Area
   on(deleteArealistFailure, (state, { error }) => ({

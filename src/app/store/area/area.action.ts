@@ -7,21 +7,6 @@ export const fetchArealistSuccess = createAction('[Data] fetch Arealist success'
 export const fetchArealistFail = createAction('[Data fetch Arealist failed]', props<{ error: string }>())
 
 
-// Update Data
-export const updateAreaStatus = createAction(
-    '[Data] Update Area status',
-    props<{ userId: string, status: string }>()
-    //props<{ updatedData: AreaApprovalListModel }>()
-);
-export const updateAreaStatusSuccess = createAction(
-    '[Data] Update Area Status Success',
-    props<{ updatedData: any }>()
-);
-export const updateAreaStatusFailure = createAction(
-    '[Data] Update Area Status Failure',
-    props<{ error: string }>()
-);
-
 // Add Data
 export const addArealist = createAction('[Data] Add Arealist',  props<{ newData: AreaListModel }>());
 export const addArealistSuccess = createAction('[Data] Add Arealist Success', props<{ newData: any }>());
@@ -29,6 +14,7 @@ export const addArealistFailure = createAction('[Data] Add Arealist Failure', pr
 //get Area by ID
 export const getAreaById = createAction('[Data] get Area', props<{ AreaId: string }>());
 export const getAreaByIdSuccess = createAction('[Data] get Area success', props<{ Area: any }>());
+export const getAreaByIdFailure = createAction('[Data] get Area Failure', props<{ error: string }>());
 
 // Update Data
 export const updateArealist = createAction(
