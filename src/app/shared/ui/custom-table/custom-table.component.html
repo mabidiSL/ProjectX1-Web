@@ -118,7 +118,7 @@
                       [checkedLabel]="checkedStatus?.label | translate"
                       size="small"
                       class="me-1"
-                      (changeEvent)="onChangeEventEmit(data, $event)">
+                      (changeEvent)="$event.stopPropagation();onChangeEventEmit(data, $event)">
                     </ui-switch>
                     
                   </ng-template>

@@ -117,7 +117,6 @@ export class FormRoleComponent implements OnInit {
             this.isEditing = true;
             this.patchClaimsToCheckboxes(role.claims);
 
-
           }
         });
     }
