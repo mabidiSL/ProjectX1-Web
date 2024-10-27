@@ -6,10 +6,10 @@
   import { ActivatedRoute, Router } from '@angular/router';
   
   import { select, Store } from '@ngrx/store';
-  import { Subject, takeUntil } from 'rxjs';
+  import { Observable, Subject, takeUntil } from 'rxjs';
   import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
   import { addCountrylist, getCountryById, updateCountrylist } from 'src/app/store/country/country.action';
-  import { selectCountryById } from 'src/app/store/country/country-selector';
+  import { selectCountryById, selectDataLoading } from 'src/app/store/country/country-selector';
   
   
   @Component({
@@ -21,6 +21,11 @@
     
     @Input() type: string;
     countryForm: UntypedFormGroup;
+    formError: string | null = null;
+    formSubmitted = false;
+    loading$: Observable<any>;
+
+
     private destroy$ = new Subject<void>();
     CountryFlagBase64 : string = null ;
     submitted: any = false;
@@ -42,7 +47,8 @@
       private route: ActivatedRoute, 
       private router: Router,
       public store: Store) {
-  
+        
+        this.loading$ = this.store.pipe(select(selectDataLoading)); 
         this.countryForm = this.formBuilder.group({
           id:[''],
           name: ['', Validators.required],
@@ -52,8 +58,7 @@
                      
         });
        }
-    // set the currenr year
-    year: number = new Date().getFullYear();
+
       
     ngOnInit() {
   
@@ -105,13 +110,18 @@
      * On submit form
      */
     onSubmit() {
-      console.log('Form status:', this.countryForm.status);
-      console.log('Form errors:', this.countryForm.errors);
-      if (this.countryForm.valid) {
-        console.log('i am on onSubmit');
-        console.log(this.countryForm.value);
-        console.log('Form status:', this.countryForm.status);
-        console.log('Form errors:', this.countryForm.errors);
+      this.formSubmitted = true;
+
+    if (this.countryForm.invalid) {
+      this.formError = 'Please complete all required fields.';
+      Object.keys(this.countryForm.controls).forEach(control => {
+        this.countryForm.get(control).markAsTouched();
+      });
+      this.focusOnFirstInvalid();
+      return;
+    }
+    this.formError = null;
+    
               
         const newData = this.countryForm.value;
         if(this.CountryFlagBase64){
@@ -132,14 +142,28 @@
             this.store.dispatch(updateCountrylist({ updatedData: newData }));
           }
         
-      } else {
-        // Form is invalid, display error messages
-        console.log('Form is invalid');
-        this.countryForm.markAllAsTouched();
-      }
+     
     }
     
+    private focusOnFirstInvalid() {
+      const firstInvalidControl = this.getFirstInvalidControl();
+      if (firstInvalidControl) {
+        firstInvalidControl.focus();
+      }
+    }
   
+    private getFirstInvalidControl(): HTMLInputElement | null {
+      const controls = this.countryForm.controls;
+      for (const key in controls) {
+        if (controls[key].invalid) {
+          const inputElement = document.getElementById(key) as HTMLInputElement;
+          if (inputElement) {
+            return inputElement;
+          }
+        }
+      }
+      return null;
+    }
   async fileChange(event: any): Promise<string> {
     let fileList: any = (event.target as HTMLInputElement);
     let file: File = fileList.files[0];

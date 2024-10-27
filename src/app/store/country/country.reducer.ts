@@ -1,6 +1,6 @@
 // src/app/Countrylist.reducer.ts
 import { createReducer, on } from '@ngrx/store';
-import {  addCountrylistSuccess, deleteCountrylistFailure, deleteCountrylistSuccess, fetchCountrylistData, fetchCountrylistFail, fetchCountrylistSuccess, getCountryByIdSuccess, updateCountrylistSuccess, updateCountryStatusSuccess } from './country.action';
+import {  addCountrylist, addCountrylistFailure, addCountrylistSuccess, deleteCountrylist, deleteCountrylistFailure, deleteCountrylistSuccess, fetchCountrylistData, fetchCountrylistFail, fetchCountrylistSuccess, getCountryById, getCountryByIdFailure, getCountryByIdSuccess, updateCountrylist, updateCountrylistFailure, updateCountrylistSuccess } from './country.action';
 
 export interface CountrylistState {
   CountryListdata: any[];
@@ -39,44 +39,78 @@ export const CountryListReducer = createReducer(
     error,
     loading: false
   })),
+  //Handle adding Country 
+  on(addCountrylist, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
+  })),
   //Handle adding Country success
   on(addCountrylistSuccess, (state, { newData }) => ({
     ...state,
-    CountryListdata: [...state.CountryListdata, newData],
+    CountryListdata: [newData,...state.CountryListdata],
     loading: false
+  })),
+    //Handle adding Country failure
+    on(addCountrylistFailure, (state, { error }) => ({
+      ...state,
+      error,
+      loading: false 
+    })),
+    //Handle getting Country by id
+  on(getCountryById, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
   })),
   // Handle success of getting Employee by ID and Country the Employee object in the state
   on(getCountryByIdSuccess, (state, { Country }) => ({
     ...state,
     selectedCountry: Country
   })),
-  // Handle updating status  Country list
-  on(updateCountryStatusSuccess, (state, { updatedData }) => {
-    return {
-      ...state,
-      CountryListdata: state.CountryListdata.map(item =>
-        item.id === updatedData.id ? { ...item, status: updatedData.status } : item
-      )
-    };
-  }),
+  // Handle success of getting Country by ID and store the Country object in the state
+  on(getCountryByIdFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false, 
+  })),
+  // Handle updating Country list
+  on(updateCountrylist, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
+  })),
+  
 // Handle updating Country 
   on(updateCountrylistSuccess, (state, { updatedData }) => {
    const CountryListUpdated = state.CountryListdata.map(item => item.id === updatedData.id ? updatedData : item );
-   console.log('CountryListdata after update:', CountryListUpdated);
    return {
       ...state,
-      CountryListdata: CountryListUpdated
+      CountryListdata: CountryListUpdated,
+      loading: false,
+      error: null
     };
   }),
+  // Handle updating Country failure
+  on(updateCountrylistFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false 
+  })),
+  // Handle deleting Country 
+  on(deleteCountrylist, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
+  })),
   // Handle the success of deleting a Country
   on(deleteCountrylistSuccess, (state, { CountryId }) => {
-    console.log('Deleting Country with ID:', CountryId);
-    console.log('CountryListdata before deletion:', state.CountryListdata);
     const updatedCountryList = state.CountryListdata.filter(Country => Country.id !== CountryId);
-    console.log('CountryListdata after deletion:', updatedCountryList);
     return { 
     ...state,
-    CountryListdata: updatedCountryList};
+    CountryListdata: updatedCountryList,
+    loading: false,
+    error: null};
   }),
   // Handle failure of deleting a Country
   on(deleteCountrylistFailure, (state, { error }) => ({

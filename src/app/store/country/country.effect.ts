@@ -16,11 +16,9 @@ import {
     deleteCountrylistFailure,
     deleteCountrylistSuccess,
     deleteCountrylist,
-    updateCountryStatus,
-    updateCountryStatusSuccess,
-    updateCountryStatusFailure,
     getCountryById,
-    getCountryByIdSuccess
+    getCountryByIdSuccess,
+    getCountryByIdFailure
 } from './country.action';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
@@ -56,8 +54,11 @@ export class countrieslistEffects {
                         // Dispatch the action to fetch the updated Country list after adding a new Country
                         return addCountrylistSuccess({newData: response});
                       }),
-                    catchError((error) => of(addCountrylistFailure({ error })))
-                )
+                      catchError((error) => {
+                        const errorMessage = this.getErrorMessage(error); 
+                        this.toastr.error(errorMessage);
+                        return of(addCountrylistFailure({ error: error.message })); // Dispatch failure action
+                      })                )
             )
         )
     );
@@ -75,29 +76,14 @@ export class countrieslistEffects {
                   return getCountryByIdSuccess({ Country: Country });
                 } else {
                   console.log('Country NULL');
-                  // Handle the case where the Country is not found, if needed
-                  // For example, you might want to dispatch a failure action or return an empty Country
-                  return getCountryByIdSuccess({ Country: null }); // or handle it differently
+                  this.toastr.error('Country not found.'); // Show error notification
+              return getCountryByIdFailure({ error: 'Country not found' });
                 }
               })
             );
           })
         )
       );
-    updateStatus$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(updateCountryStatus),
-            mergeMap(({ userId, status }) =>
-                this.CrudService.addData('/api/update-status', { userId, status }).pipe(
-                    map((updatedData) => {
-                        this.toastr.success('The Country has been updated successfully.');
-                        return updateCountryStatusSuccess({ updatedData })}),
-                    catchError((error) => of(updateCountryStatusFailure({ error })))
-                )
-            )
-        )
-    );
-
     updateData$ = createEffect(() => 
         this.actions$.pipe(
             ofType(updateCountrylist),
@@ -109,8 +95,11 @@ export class countrieslistEffects {
                         this.toastr.success('The Country has been updated successfully.');
                         this.router.navigate(['/private/countries']);
                         return updateCountrylistSuccess({ updatedData : response.result})}),
-                    catchError((error) => of(updateCountrylistFailure({ error })))
-                );
+                        catchError((error) =>{
+                            const errorMessage = this.getErrorMessage(error); 
+                            this.toastr.error(errorMessage);
+                            return of(updateCountrylistFailure({ error }));
+                          })                );
             })
         )
     );
@@ -128,8 +117,9 @@ export class countrieslistEffects {
                             console.log('API response:', response);
                             return deleteCountrylistSuccess({ CountryId });
                           }),
-                    catchError((error) => {return  of(deleteCountrylistFailure({ error }))})
-                )
+                          catchError((error) => {
+                            this.toastr.error('Failed to delete the Country. Please try again.');
+                            return  of(deleteCountrylistFailure({ error: error.message }))})                )
             )
         )
     );
@@ -142,5 +132,14 @@ export class countrieslistEffects {
         private router: Router,
         private store: Store
     ) { }
-
+    private getErrorMessage(error: any): string {
+        // Implement logic to convert backend error to user-friendly message
+        if (error.status === 400) {
+          return 'Invalid Country data. Please check your inputs and try again.';
+        } else if (error.status === 409) {
+          return 'A Country with this code already exists.';
+        } else {
+          return 'An unexpected error occurred. Please try again later.';
+        }
+      }
 }

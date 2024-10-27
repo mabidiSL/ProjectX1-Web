@@ -6,22 +6,6 @@ export const fetchCountrylistData = createAction('[Data] fetch Countrylist',prop
 export const fetchCountrylistSuccess = createAction('[Data] fetch Countrylist success', props<{ CountryListdata: any}>())
 export const fetchCountrylistFail = createAction('[Data fetch Countrylist failed]', props<{ error: string }>())
 
-
-// Update Data
-export const updateCountryStatus = createAction(
-    '[Data] Update Country status',
-    props<{ userId: string, status: string }>()
-    //props<{ updatedData: CountryApprovalListModel }>()
-);
-export const updateCountryStatusSuccess = createAction(
-    '[Data] Update Country Status Success',
-    props<{ updatedData: any }>()
-);
-export const updateCountryStatusFailure = createAction(
-    '[Data] Update Country Status Failure',
-    props<{ error: string }>()
-);
-
 // Add Data
 export const addCountrylist = createAction('[Data] Add Countrylist',  props<{ newData: CountryListModel }>());
 export const addCountrylistSuccess = createAction('[Data] Add Countrylist Success', props<{ newData: any }>());
@@ -29,6 +13,7 @@ export const addCountrylistFailure = createAction('[Data] Add Countrylist Failur
 //get Country by ID
 export const getCountryById = createAction('[Data] get Country', props<{ CountryId: string }>());
 export const getCountryByIdSuccess = createAction('[Data] get Country success', props<{ Country: any }>());
+export const getCountryByIdFailure = createAction('[Data] get Country Failure', props<{ error: string }>());
 
 // Update Data
 export const updateCountrylist = createAction(

@@ -5,7 +5,7 @@
   import {  select, Store } from '@ngrx/store';
   import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { deleteCountrylist, fetchCountrylistData, updateCountrylist } from 'src/app/store/country/country.action';
-import { selectDataCountry, selectDataTotalItems } from 'src/app/store/country/country-selector';
+import { selectDataCountry, selectDataLoading, selectDataTotalItems } from 'src/app/store/country/country-selector';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
   
  
@@ -23,6 +23,7 @@ export class CountryComponent implements OnInit {
   
   countriesList$: Observable<any[]>;
   totalItems$: Observable<number>;
+  loading$: Observable<any>
 
   isDropdownOpen : boolean = false;
   filteredArray: any[] = [];
@@ -42,6 +43,7 @@ export class CountryComponent implements OnInit {
       
       this.countriesList$ = this.store.pipe(select(selectDataCountry)); 
       this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
+      this.loading$ = this.store.pipe(select(selectDataLoading));
 
 
   }
