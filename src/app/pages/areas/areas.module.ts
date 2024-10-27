@@ -24,13 +24,15 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { ViewAreaComponent } from './view-area/view-area.component';
 
 @NgModule({
   declarations: [
     AreasComponent,
     CreateAreaComponent,
     EditAreaComponent,
-    FormAreaComponent
+    FormAreaComponent,
+    ViewAreaComponent
   ],
   imports: [
     CommonModule,

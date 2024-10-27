@@ -21,10 +21,18 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { ViewCityComponent } from './view-city/view-city.component';
+import { CreateCityComponent } from './create-city/create-city.component';
+import { EditCityComponent } from './edit-city/edit-city.component';
+import { FormCityComponent } from './form-city/form-city.component';
 
 @NgModule({
   declarations: [
-    CityComponent
+    CityComponent,
+    CreateCityComponent,
+    EditCityComponent,
+    FormCityComponent,
+    ViewCityComponent
   ],
   imports: [
     CommonModule,

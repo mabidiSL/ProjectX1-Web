@@ -6,8 +6,8 @@
                     <div *ngIf="formError" class="alert alert-danger">{{ formError }}</div>                <div class="row">
                     <div class="col-md-6 mb-3">
                         <div class="form-group ">
-                           <label for="name" >{{'Country_Name' | translate}} <span class="text-danger">*</span></label>
-                            <input type="text" id="name" class="form-control" formControlName="name"  >
+                           <label for="name" >{{'Country_Name' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                            <input type="text" id="name" class="form-control" formControlName="name" [readonly]="type==='view'" >
                             <div *ngIf="countryForm.get('name').touched && countryForm.get('name').invalid" class="invalid-feedback d-block">
                                 <span *ngIf="countryForm.get('name').errors?.['required']">{{'Name is required'| translate}}.</span>
                             </div>
@@ -22,8 +22,8 @@
                       </div> -->
                  <div class="col-md-6 mb-3">
                         <div class="form-group">
-                          <label for="phoneCode" >{{'Phone_Code' | translate}}<span class="text-danger">*</span></label>
-                          <input type="text" id="phoneCode" class="form-control" formControlName="phoneCode" >
+                          <label for="phoneCode" >{{'Phone_Code' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                          <input type="text" id="phoneCode" class="form-control" formControlName="phoneCode" [readonly]="type==='view'" >
                           <div *ngIf="countryForm.get('phoneCode').touched && countryForm.get('phoneCode').invalid" class="invalid-feedback d-block">
                             <span *ngIf="countryForm.get('phoneCode').errors?.['required']">{{'Name is required'| translate}}.</span>
                         </div>                        
@@ -42,7 +42,7 @@
                                         </div>
                                     </div>
                                 </label>
-                                <input class="form-control d-none" value="" id="project-image-input" type="file" accept="image/png, image/gif, image/jpeg" (change)="uploadCountryFlag($event)">
+                                <input [disabled]="type==='view'" class="form-control d-none" value="" id="project-image-input" type="file" accept="image/png, image/gif, image/jpeg" (change)="uploadCountryFlag($event)">
                             </div>
                             <div class="avatar-lg">
                                 <div class="avatar-title bg-light rounded-circle">
@@ -59,14 +59,19 @@
               </div>
                 <div class="col-12  mt-4">
                     <div class="d-flex justify-content-end">
-                        <button type="button" id="cancel-btn" class="btn btn-outline-secondary me-2" (click)="onCancel()">{{'Cancel'|translate}}</button>
-                        <button type="submit" class="btn btn-success" (click)="onSubmit()"> {{ (type == 'create' ? 'Add_country' : 'update_country') | translate }}
-                        </button>
-                        <div id="elmLoader" class="loader" *ngIf="loading$ | async">
-                            <div class="spinner-border text-primary avatar-sm" role="status">
-                              <span class="visually-hidden">Loading...</span>
-                            </div>
-                          </div>    
+                        <ng-container *ngIf="type =='view'; else editModeButtons">
+                            <button type="button" class="btn btn-success" (click)="toggleViewMode()">{{ 'Go_Back' | translate }}</button>
+                          </ng-container>
+                        <ng-template #editModeButtons>
+                            <button type="button" id="cancel-btn" class="btn btn-outline-secondary me-2" (click)="onCancel()">{{'Cancel'|translate}}</button>
+                            <button type="submit" class="btn btn-success" (click)="onSubmit()"> {{ (type == 'create' ? 'Add_country' : 'update_country') | translate }}
+                            </button>
+                            <div id="elmLoader" class="loader" *ngIf="loading$ | async">
+                                <div class="spinner-border text-primary avatar-sm" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div> 
+                        </ng-template>   
                     </div>
                 </div>
               </form>

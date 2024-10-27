@@ -70,8 +70,6 @@ export class FormCityComponent  implements OnInit {
       
     ngOnInit() {
   
-     
-  
       const CityId = this.route.snapshot.params['id'];
       console.log('city ID from snapshot:', CityId);
       if (CityId) {
@@ -93,8 +91,13 @@ export class FormCityComponent  implements OnInit {
       }
      
     }
-     
-   
+    getCountryName(id: any){
+      this.filteredAreas = this.areas.filter(area => area.country_id == id);
+      return this.countries.find(country => country.id === id)?.name ;
+    }
+    getAreaName(id: any){
+      return this.filteredAreas.find(area => area.id === id)?.name ;
+    }
     /**
      * On submit form
      */
@@ -172,6 +175,9 @@ export class FormCityComponent  implements OnInit {
       this.cityForm.reset();
       this.router.navigateByUrl('/private/cities');
     }
+    toggleViewMode(){
+      this.router.navigateByUrl('/private/cities');
+}
   
   }
   

@@ -25,13 +25,15 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { ViewCountryComponent } from './view-country/view-country.component';
 
 @NgModule({
   declarations: [
     CountryComponent,
     CreateCountryComponent,
     EditCountryComponent,
-    FormCountryComponent
+    FormCountryComponent,
+    ViewCountryComponent
   ],
   imports: [
     CommonModule,

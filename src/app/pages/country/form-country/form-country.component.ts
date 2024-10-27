@@ -208,6 +208,10 @@
       this.countryForm.reset();
       this.router.navigateByUrl('/private/countries');
     }
+    toggleViewMode(){
+          this.router.navigateByUrl('/private/countries');
+
+    }
   
   }
 

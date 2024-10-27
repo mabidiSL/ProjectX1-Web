@@ -5,6 +5,7 @@ import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { AreasComponent } from './areas.component';
 import { CreateAreaComponent } from './create-area/create-area.component';
 import { EditAreaComponent } from './edit-area/edit-area.component';
+import { ViewAreaComponent } from './view-area/view-area.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,15 @@ const routes: Routes = [
   claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.System_Administration, claimValue:[Permission.ViewAll,Permission.Update]}]
 
    }
+  },
+  {
+    path: "view/:id",
+    component: ViewAreaComponent,
+    canActivate: [RoleGuard],
+    data: {
+    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.System_Administration, claimValue:[Permission.ViewAll,Permission.View]}]
+  
+     }
   }
 ];
 

@@ -35,13 +35,10 @@ import { ChatComponent } from './chat/chat.component';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageService } from '../core/services/language.service';
-import { CreateCityComponent } from './city/create-city/create-city.component';
-import { EditCityComponent } from './city/edit-city/edit-city.component';
-import { FormCityComponent } from './city/form-city/form-city.component';
-import { CityModule } from './city/city.module';
+
 
 @NgModule({
-  declarations: [CalendarComponent, ChatComponent, CreateCityComponent, EditCityComponent, FormCityComponent],
+  declarations: [CalendarComponent, ChatComponent],
   imports: [
     CommonModule,
     TranslateModule,
@@ -65,7 +62,6 @@ import { CityModule } from './city/city.module';
     ChartModule,
     WidgetModule,
     MapsModule,
-    CityModule,
     FullCalendarModule,
     TabsModule.forRoot(),
     TooltipModule.forRoot(),

@@ -7,8 +7,8 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <div class="form-group ">
-                           <label for="name" >{{'Area_Name' | translate}} <span class="text-danger">*</span></label>
-                            <input type="text" id="name" class="form-control" formControlName="name" placeholder= "{{'Enter_the_Name_Of_the_area'| translate}}" >
+                           <label for="name" >{{'Area_Name' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                            <input type="text" id="name" class="form-control" formControlName="name" [readonly]="type==='view'"placeholder= "{{'Enter_the_Name_Of_the_area'| translate}}" >
                             <div *ngIf="areaForm.get('name').touched && areaForm.get('name').invalid" class="invalid-feedback d-block">
                                 <span *ngIf="areaForm.get('name').errors?.['required']">{{'Name is required'| translate}}.</span>
                             </div>
@@ -23,8 +23,14 @@
                       </div> -->
                   <div class="col-md-6 mb-3">
                     <div class="form-group ">
-                          <label for="country_id" >{{'Country' | translate}}<span class="text-danger">*</span></label>
-                          <select  id="country_id"class="form-control"  formControlName="country_id" >
+                          <label for="country_id" >{{'Country' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                          <input *ngIf="type === 'view'"
+                              type="text" 
+                              class="form-control" 
+                              [value]="getCountryName(areaForm.get('country_id').value)" 
+                              readonly 
+                            />
+                           <select [hidden]="type === 'view'" id="country_id"class="form-control"  formControlName="country_id" >
                                 <option value="" disabled selected>{{'Select_the_Country' | translate}}</option>
                                 <option *ngFor="let country of countries" [value]="country.id">
                                  {{ country.name }}
@@ -38,6 +44,10 @@
               
                 <div class="col-12  mt-4">
                     <div class="d-flex justify-content-end">
+                      <ng-container *ngIf="type =='view'; else editModeButtons">
+                        <button type="button" class="btn btn-success" (click)="toggleViewMode()">{{ 'Go_Back' | translate }}</button>
+                      </ng-container>
+                    <ng-template #editModeButtons>
                         <button type="button" id="cancel-btn" class="btn btn-outline-secondary me-2" (click)="onCancel()">{{'Cancel'|translate}}</button>
                         <button type="submit" class="btn btn-success" (click)="onSubmit()" > {{ (type == 'create' ? 'Add_area' : 'update_area') | translate }}
                         </button>
@@ -45,7 +55,8 @@
                           <div class="spinner-border text-primary avatar-sm" role="status">
                             <span class="visually-hidden">Loading...</span>
                           </div>
-                        </div>  
+                        </div>
+                     </ng-template>    
                     </div>
                 </div>
                 </div>

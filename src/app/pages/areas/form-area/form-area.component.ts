@@ -158,6 +158,12 @@ export class FormAreaComponent implements OnInit {
     this.areaForm.reset();
     this.router.navigateByUrl('/private/areas');
   }
+  getCountryName(id: any){
+    return this.countries.find(country => country.id === id)?.name ;
+  }
+  toggleViewMode(){
+    this.router.navigateByUrl('/private/areas');
 
+}
 }
 
