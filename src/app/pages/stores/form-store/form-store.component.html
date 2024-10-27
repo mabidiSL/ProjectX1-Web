@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <div class="form-group ">
-                           <label for="name" >{{'Store_Name' | translate}} <span class="text-danger">*</span></label>
+                           <label for="name" >{{'Store_Name' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                             <input type="text" id="name" class="form-control" formControlName="name" [readonly]="type==='view'" >
                             <div *ngIf="storeForm.get('name').touched && storeForm.get('name').invalid" class="invalid-feedback d-block">
                                 <span *ngIf="storeForm.get('name').errors?.['required']">{{'Name is required'| translate}}.</span>
@@ -16,7 +16,7 @@
                       </div>
                       <div class="col-md-6 mb-3">
                         <div class="form-group ">
-                           <label for="description" >{{'Description' | translate}} <span class="text-danger">*</span></label>
+                           <label for="description" >{{'Description' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                            <textarea class="form-control" id="description" formControlName="description" rows="3"[readonly]="type === 'view'" ></textarea>
                            <div *ngIf="storeForm.get('description').touched && storeForm.get('description').invalid" class="invalid-feedback d-block">
                                 <span *ngIf="storeForm.get('description').errors?.['required']">{{'Name is required'| translate}}.</span>
@@ -26,7 +26,7 @@
                  
                 <div *ngIf="currentRole === 'Admin'" class="col-md-6 mb-3">
                   <div class="form-group ">
-                        <label for="merchant_id" >{{'Merchant_Name' | translate}}<span class="text-danger">*</span></label>
+                        <label for="merchant_id" >{{'Merchant_Name' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                        <input *ngIf="type === 'view'"
                           type="text" 
                           class="form-control" 
@@ -91,7 +91,7 @@
                   
                   <div *ngIf="storeForm" class="col-md-6 mb-3">
                     <div class="form-group">
-                      <label for="phone" >{{'Phone Number' | translate}} <span class="text-danger">*</span></label><br>
+                      <label for="phone" >{{'Phone Number' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label><br>
                      <app-phone-number
                      [disabled]="type === 'view'"
                      [initialPhoneNumber]="storeForm.get('phone').value"

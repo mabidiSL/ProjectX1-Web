@@ -8,7 +8,7 @@
 
                   <div class="col-md-6 mb-3">
                     <div class="form-group ">
-                    <label for="merchantName" >Merchant Name <span class="text-danger">*</span></label>
+                    <label for="merchantName" >Merchant Name <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                     <input type="text" id="merchantName" class="form-control" formControlName="merchantName" required [readonly]="type==='view'">
                     <div *ngIf="merchantForm.get('merchantName').touched && merchantForm.get('merchantName').invalid" class="invalid-feedback d-block">
                       <span *ngIf="merchantForm.get('merchantName').errors?.['required']">{{'Merchant Name is required'| translate}}.</span>
@@ -19,7 +19,7 @@
                   <div class="col-md-6 mb-3">
                     <div class="form-group ">
                        
-                        <label for="username" >{{'Username' | translate}} <span class="text-danger">*</span></label>
+                        <label for="username" >{{'Username' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                         <input type="text" id="username" class="form-control" formControlName="username" required [readonly]="type==='view'">
                         <div *ngIf="merchantForm.get('username').touched && merchantForm.get('username').invalid" class="invalid-feedback d-block">
                             <span *ngIf="merchantForm.get('username').errors?.['required']">{{'Username is required'| translate}}.</span>
@@ -29,7 +29,7 @@
 
                   <div class="col-md-6 mb-3">
                     <div class="form-group ">
-                      <label for="email">Email <span class="text-danger">*</span></label>
+                      <label for="email">Email <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                       <input  type="email" id="email" class="form-control" formControlName="email"  required [readonly]="type==='view'">
                       <div *ngIf="merchantForm.get('email').touched && merchantForm.get('email').invalid" class="invalid-feedback d-block">
                         <span *ngIf="merchantForm.get('email').errors?.['required']">{{'Email is required'| translate}}.</span>
@@ -39,7 +39,7 @@
                
                   <div class="col-md-6 mb-3">
                       <div class="form-group ">
-                        <label for="id_number" >{{'ID Number' | translate}} <span class="text-danger">*</span></label>
+                        <label for="id_number" >{{'ID Number' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                         <input type="text" id="id_number" class="form-control" formControlName="id_number" required [readonly]="type==='view'">
                         <div *ngIf="merchantForm.get('id_number').touched && merchantForm.get('id_number').invalid" class="invalid-feedback d-block">
                             <span *ngIf="merchantForm.get('id_number').errors?.['required']">{{'id_number is required'| translate}}.</span>
@@ -50,7 +50,7 @@
                   <div *ngIf="type == 'create'" class="col-md-6 mb-3">
                     <div class="form-group ">
                         <div class="form-group ">
-                          <label for="password" >Password <span class="text-danger">*</span></label>
+                          <label for="password" >Password <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                           <input type="password" id="password" class="form-control" formControlName="password" required>
                           <!-- <button class="btn btn-light " type="button" id="password-addon2">
                             <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()"></i>
@@ -65,7 +65,7 @@
                   <div *ngIf="type == 'create'" class="col-md-6 mb-3">
                       <div class="form-group ">
                         <div class="form-group ">
-                          <label for="confpassword" >Confirm password <span class="text-danger">*</span></label>
+                          <label for="confpassword" >Confirm password <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                           <input type="password" id="confpassword" class="form-control" formControlName="confpassword" required>
                           <button class="btn btn-light" type="button" id="password-addon2">
                             <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()"></i>
@@ -81,7 +81,7 @@
                     
                     <div class="col-md-6 mb-3">
                       <div class="form-group">
-                        <label for="phone" >Phone Number <span class="text-danger">*</span></label><br>
+                        <label for="phone" >Phone Number <span *ngIf="type !== 'view'" class="text-danger">*</span></label><br>
                        <app-phone-number
                        [disabled]="type === 'view'"
                        [initialPhoneNumber]="merchantForm.get('phone').value"
