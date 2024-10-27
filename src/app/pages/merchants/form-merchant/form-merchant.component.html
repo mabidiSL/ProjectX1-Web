@@ -2,7 +2,8 @@
     <div class="col-19">
         <div class="card">
             <div class="card-body ">
-              <form (ngSubmit)="onSubmit()" [formGroup]="merchantForm"  class="m-4">
+              <form  [formGroup]="merchantForm"  class="m-4">
+                <div *ngIf="formError" class="alert alert-danger">{{ formError }}</div>
                 <div class="row">
 
                   <div class="col-md-6 mb-3">
@@ -291,7 +292,12 @@
                         </ng-container>
                         <ng-template #editModeButtons>
                           <button type="button" id="cancel-btn" class="btn btn-outline-secondary me-2" (click)="onCancel()">{{ 'Cancel' | translate }}</button>
-                          <button type="submit" class="btn btn-success" [disabled]="merchantForm.invalid">{{ (type === 'create' ? 'Add_merchant' : 'update_merchant') | translate }}</button>
+                          <button type="submit" class="btn btn-success" (click)="onSubmit()">{{ (type === 'create' ? 'Add_merchant' : 'update_merchant') | translate }}</button>
+                          <div id="elmLoader" class="loader" *ngIf="loading$ | async">
+                            <div class="spinner-border text-primary avatar-sm" role="status">
+                              <span class="visually-hidden">Loading...</span>
+                            </div>
+                          </div>   
                         </ng-template>
                       </div>
                     </div>

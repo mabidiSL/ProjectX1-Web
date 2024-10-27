@@ -16,11 +16,9 @@ import {
     deleteMerchantlistFailure,
     deleteMerchantlistSuccess,
     deleteMerchantlist,
-    updateMerchantStatus,
-    updateMerchantStatusSuccess,
-    updateMerchantStatusFailure,
     getMerchantById,
-    getMerchantByIdSuccess
+    getMerchantByIdSuccess,
+    getMerchantByIdFailure
 } from './merchantlist1.action';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
@@ -37,9 +35,11 @@ export class MerchantslistEffects1 {
                 this.CrudService.fetchData('/merchants',{ limit: itemsPerPage, page: page, status: status}).pipe(
                     tap((response : any) => console.log('Fetched data:', response.result)), 
                     map((response) => {return fetchMerchantlistSuccess({ MerchantListdata: response.result })}),
-                    catchError((error) =>
-                        of(fetchMerchantlistFail({ error }))
-                    )
+                    catchError((error) =>{
+                        this.toastr.error('An error occurred while fetching the Merchant list. Please try again later.'); 
+                        console.error('Fetch error:', error); 
+                        return of(fetchMerchantlistFail({ error: 'Error fetching data' })); 
+                      })
                 )
                 ),
         ),
@@ -56,8 +56,11 @@ export class MerchantslistEffects1 {
                         // Dispatch the action to fetch the updated merchant list after adding a new merchant
                         return addMerchantlistSuccess({newData});
                       }),
-                    catchError((error) => of(addMerchantlistFailure({ error })))
-                )
+                      catchError((error) => {
+                        const errorMessage = this.getErrorMessage(error); 
+                        this.toastr.error(errorMessage);
+                        return of(addMerchantlistFailure({ error: error.message })); // Dispatch failure action
+                      })                )
             )
         )
     );
@@ -75,29 +78,15 @@ export class MerchantslistEffects1 {
                   return getMerchantByIdSuccess({ merchant: Merchant });
                 } else {
                   console.log('Merchant NULL');
-                  // Handle the case where the Merchant is not found, if needed
-                  // For example, you might want to dispatch a failure action or return an empty Merchant
-                  return getMerchantByIdSuccess({ merchant: null }); // or handle it differently
+                  this.toastr.error('Merchant not found.'); // Show error notification
+                  return getMerchantByIdFailure({ error: 'Merchant not found' });
                 }
               })
             );
           })
         )
       );
-    updateStatus$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(updateMerchantStatus),
-            mergeMap(({ userId, status }) =>
-                this.CrudService.addData('/api/update-status', { userId, status }).pipe(
-                    map((updatedData) => {
-                        this.toastr.success('The merchant has been updated successfully.');
-                        return updateMerchantStatusSuccess({ updatedData })}),
-                    catchError((error) => of(updateMerchantStatusFailure({ error })))
-                )
-            )
-        )
-    );
-
+  
     updateData$ = createEffect(() => 
         this.actions$.pipe(
             ofType(updateMerchantlist),
@@ -110,8 +99,11 @@ export class MerchantslistEffects1 {
                     this.toastr.success('The merchant has been updated successfully.');
                     this.router.navigate(['/private/merchants/list']);
                     return  updateMerchantlistSuccess({ updatedData })}),
-                    catchError((error) => of(updateMerchantlistFailure({ error })))
-                );
+                    catchError((error) =>{
+                        const errorMessage = this.getErrorMessage(error); 
+                        this.toastr.error(errorMessage);
+                        return of(updateMerchantlistFailure({ error }));
+                      })                 );
             })
         )
     );
@@ -125,12 +117,12 @@ export class MerchantslistEffects1 {
             mergeMap(({ userId }) =>
                     this.CrudService.deleteData(`/merchants/${userId}`).pipe(
                         map((response: string) => {
-                            // If response contains a success message or status, you might want to check it here
-                            console.log('API response:', response);
+                            this.toastr.success('Merchant deleted successfully.');
                             return deleteMerchantlistSuccess({ userId });
                           }),
-                    catchError((error) => {return  of(deleteMerchantlistFailure({ error }))})
-                )
+                          catchError((error) => {
+                            this.toastr.error('Failed to delete the Merchant. Please try again.');
+                            return  of(deleteMerchantlistFailure({ error: error.message }))})                )
             )
         )
     );
@@ -143,5 +135,14 @@ export class MerchantslistEffects1 {
         private router: Router,
         private store: Store
     ) { }
-
+    private getErrorMessage(error: any): string {
+        // Implement logic to convert backend error to user-friendly message
+        if (error.status === 400) {
+          return 'Invalid Merchant data. Please check your inputs and try again.';
+        } else if (error.status === 409) {
+          return 'A Merchant with this code already exists.';
+        } else {
+          return 'An unexpected error occurred. Please try again later.';
+        }
+      }
 }

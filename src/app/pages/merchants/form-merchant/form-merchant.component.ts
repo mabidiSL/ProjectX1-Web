@@ -2,13 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { AuthenticationService } from '../../../core/services/auth.service';
-
-import { UserProfileService } from '../../../core/services/user.service';
 import { select, Store } from '@ngrx/store';
 import { addMerchantlist, getMerchantById, updateMerchantlist } from 'src/app/store/merchantsList/merchantlist1.action';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { selectMerchantById } from 'src/app/store/merchantsList/merchantlist1-selector';
+import { selectDataLoading, selectMerchantById } from 'src/app/store/merchantsList/merchantlist1-selector';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
 import { fetchArealistData } from 'src/app/store/area/area.action';
 import { fetchCitylistData } from 'src/app/store/City/city.action';
@@ -28,6 +25,8 @@ export class FormMerchantComponent implements OnInit {
   
   @Input() type: string;
   merchantForm: UntypedFormGroup;
+  formError: string | null = null;
+  formSubmitted = false;
   private destroy$ = new Subject<void>();
 
   submitted: any = false;
@@ -45,6 +44,8 @@ export class FormMerchantComponent implements OnInit {
   countrylist: any[] = [];
   arealist$:  Observable<any[]>  ;
   citylist$:  Observable<any[]> ;
+  loading$: Observable<any>
+
   sectionlist:  any[] = [];
   
   filteredCountries: any[] = [];
@@ -60,43 +61,17 @@ export class FormMerchantComponent implements OnInit {
     public store: Store) {
 
       this.getNavigationState();
-      
+      this.loading$ = this.store.pipe(select(selectDataLoading)); 
+
       this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 10, status: 'active' }));
       this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 10, status: 'active' }));
       this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 10, status: 'active' }));
       this.store.dispatch(fetchSectionlistData({page: 1, itemsPerPage: 10, status: 'active' }));
-
-      this.merchantForm = this.formBuilder.group({
-        id: [''],
-        username: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
-        password: ['', this.type === 'create' ? Validators.required : null],
-        confpassword: ['', this.type === 'create' ? Validators.required : null],
-        id_number: ['', Validators.required],
-        phone:['',Validators.required], //Validators.pattern(/^\d{3}-\d{3}-\d{4}$/)*/],
-        country_id:[''],
-        city_id:[''],
-        area_id:[''], 
-        serviceType: [''],
-        supervisorName: [''],
-        supervisorPhone: [''],
-        bankAccountNumber: [''],
-        registerCode:[''],
-        merchantName:['', Validators.required],
-        merchantPicture: [''],
-        merchantLogo: [''],
-        section_id:[''],
-        website: [''],
-        whatsup:[''],
-        facebook: [''],
-        twitter: [''],
-        instagram: ['']
-        
-  
-      }, {
-        validators: this.type === 'create' ? this.passwordMatchValidator : null 
-      });
+     
+      this.initForm();
+      
      }
+
      get passwordMatchError() {
       return (
         this.merchantForm.getError('passwordMismatch') &&
@@ -119,7 +94,37 @@ export class FormMerchantComponent implements OnInit {
     
       return null; // Return null if valid
     }
+   private initForm() {
+    this.merchantForm = this.formBuilder.group({
+    id: [''],
+    username: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', this.type === 'create' ? Validators.required : null],
+    confpassword: ['', this.type === 'create' ? Validators.required : null],
+    id_number: ['', Validators.required],
+    phone:['',Validators.required], //Validators.pattern(/^\d{3}-\d{3}-\d{4}$/)*/],
+    country_id:[''],
+    city_id:[''],
+    area_id:[''], 
+    serviceType: [''],
+    supervisorName: [''],
+    supervisorPhone: [''],
+    bankAccountNumber: [''],
+    registerCode:[''],
+    merchantName:['', Validators.required],
+    merchantPicture: [''],
+    merchantLogo: [''],
+    section_id:[''],
+    website: [''],
+    whatsup:[''],
+    facebook: [''],
+    twitter: [''],
+    instagram: ['']
     
+
+  }, {
+    validators: this.type === 'create' ? this.passwordMatchValidator : null 
+  });} 
   // set the currenr year
   year: number = new Date().getFullYear();
   fileName1: string = ''; 
@@ -243,15 +248,17 @@ export class FormMerchantComponent implements OnInit {
    * On submit form
    */
   onSubmit() {
-    console.log('Form status:', this.merchantForm.status);
-    console.log('Form errors:', this.merchantForm.errors);
-    if (this.merchantForm.valid) {
-      console.log('i am on onSubmit');
-      console.log(this.merchantForm.value);
-      console.log('Form status:', this.merchantForm.status);
-      console.log('Form errors:', this.merchantForm.errors);
-      
-      
+    this.formSubmitted = true;
+
+    if (this.merchantForm.invalid) {
+      this.formError = 'Please complete all required fields.';
+      Object.keys(this.merchantForm.controls).forEach(control => {
+        this.merchantForm.get(control).markAsTouched();
+      });
+      this.focusOnFirstInvalid();
+      return;
+    }
+    this.formError = null;
       const newData = this.merchantForm.value;
       if(this.storeLogoBase64){
         newData.merchantLogo = this.storeLogoBase64;
@@ -280,13 +287,27 @@ export class FormMerchantComponent implements OnInit {
           this.store.dispatch(updateMerchantlist({ updatedData: newData }));
         }
       
-    } else {
-      // Form is invalid, display error messages
-      console.log('Form is invalid');
-      this.merchantForm.markAllAsTouched();
+    
+  }
+  private focusOnFirstInvalid() {
+    const firstInvalidControl = this.getFirstInvalidControl();
+    if (firstInvalidControl) {
+      firstInvalidControl.focus();
     }
   }
-  
+
+  private getFirstInvalidControl(): HTMLInputElement | null {
+    const controls = this.merchantForm.controls;
+    for (const key in controls) {
+      if (controls[key].invalid) {
+        const inputElement = document.getElementById(key) as HTMLInputElement;
+        if (inputElement) {
+          return inputElement;
+        }
+      }
+    }
+    return null;
+  }
     /**
  * Password Hide/Show
  */

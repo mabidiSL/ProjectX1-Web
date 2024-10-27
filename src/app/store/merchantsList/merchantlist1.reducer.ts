@@ -1,6 +1,6 @@
 // src/app/merchantlist.reducer.ts
 import { createReducer, on } from '@ngrx/store';
-import {  addMerchantlistSuccess, deleteMerchantlistFailure, deleteMerchantlistSuccess, fetchMerchantlistData, fetchMerchantlistFail, fetchMerchantlistSuccess, getMerchantByIdSuccess, updateMerchantlistSuccess, updateMerchantStatusSuccess } from './merchantlist1.action';
+import {  addMerchantlist, addMerchantlistFailure, addMerchantlistSuccess, deleteMerchantlist, deleteMerchantlistFailure, deleteMerchantlistSuccess, fetchMerchantlistData, fetchMerchantlistFail, fetchMerchantlistSuccess, getMerchantById, getMerchantByIdFailure, getMerchantByIdSuccess, updateMerchantlist, updateMerchantlistFailure, updateMerchantlistSuccess } from './merchantlist1.action';
 
 export interface MerchantlistState {
   MerchantListdata: any[];
@@ -32,12 +32,20 @@ export const MerchantListReducer = createReducer(
     ...state,
     MerchantListdata: MerchantListdata.data,
     totalItems:MerchantListdata.totalItems,
-    loading: false
+    loading: false,
+    error: null
+
   })),
   on(fetchMerchantlistFail, (state, { error }) => ({
     ...state,
     error,
     loading: false
+  })),
+   //Handle adding Merchant 
+   on(addMerchantlist, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
   })),
   //Handle adding merchant success
   on(addMerchantlistSuccess, (state, { newData }) => ({
@@ -45,20 +53,36 @@ export const MerchantListReducer = createReducer(
     MerchantListdata: [newData, ...state.MerchantListdata],
     loading: false
   })),
+    //Handle adding Merchant failure
+    on(addMerchantlistFailure, (state, { error }) => ({
+      ...state,
+      error,
+      loading: false, 
+    })),
+    //Handle getting Merchant by id
+  on(getMerchantById, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
+  })),
   // Handle success of getting Employee by ID and store the Employee object in the state
   on(getMerchantByIdSuccess, (state, { merchant }) => ({
     ...state,
     selectedMerchant: merchant
   })),
-  // Handle updating merchant list
-  on(updateMerchantStatusSuccess, (state, { updatedData }) => {
-    return {
-      ...state,
-      MerchantListdata: state.MerchantListdata.map(item =>
-        item._id === updatedData.userId ? { ...item, status: updatedData.status } : item
-      )
-    };
-  }),
+  // Handle success of getting Merchant by ID and store the Merchant object in the state
+  on(getMerchantByIdFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false, 
+  })),
+   // Handle updating Merchant list
+   on(updateMerchantlist, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
+  })),
+ 
 // Handle updating merchant status
   on(updateMerchantlistSuccess, (state, { updatedData }) => {
    const merchantListUpdated = state.MerchantListdata.map(item => item.id === updatedData.id ? updatedData : item );
@@ -68,6 +92,18 @@ export const MerchantListReducer = createReducer(
       MerchantListdata: merchantListUpdated
     };
   }),
+   // Handle updating Merchant failure
+   on(updateMerchantlistFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false 
+  })),
+  // Handle deleting Merchant 
+  on(deleteMerchantlist, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
+  })),
   // Handle the success of deleting a merchant
   on(deleteMerchantlistSuccess, (state, { userId }) => {
     console.log('Deleting merchant with ID:', userId);

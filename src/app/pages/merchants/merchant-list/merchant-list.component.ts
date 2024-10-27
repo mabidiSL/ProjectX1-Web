@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { Observable } from 'rxjs';
-import { selectDataMerchant, selectDataTotalItems } from 'src/app/store/merchantsList/merchantlist1-selector';
+import { selectDataLoading, selectDataMerchant, selectDataTotalItems } from 'src/app/store/merchantsList/merchantlist1-selector';
 import { deleteMerchantlist, fetchMerchantlistData, updateMerchantlist } from 'src/app/store/merchantsList/merchantlist1.action';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
 
@@ -27,6 +27,7 @@ export class MerchantListComponent implements OnInit {
 
   MerchantList$: Observable<any[]>;
   totalItems$: Observable<number>;
+  loading$: Observable<any>
 
   isDropdownOpen : boolean = false;
   filteredArray: any[] = [];
@@ -49,6 +50,7 @@ export class MerchantListComponent implements OnInit {
       
       this.MerchantList$ = this.store.pipe(select(selectDataMerchant)); // Observing the Merchant list from Merchant
       this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
+      this.loading$ = this.store.pipe(select(selectDataLoading));
 
   }
 

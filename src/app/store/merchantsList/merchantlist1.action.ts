@@ -7,28 +7,15 @@ export const fetchMerchantlistSuccess = createAction('[Data] fetch Merchantlist 
 export const fetchMerchantlistFail = createAction('[Data fetch Merchantlist failed]', props<{ error: string }>())
 
 
-// Update Data
-export const updateMerchantStatus = createAction(
-    '[Data] Update Merchant status',
-    props<{ userId: string, status: string }>()
-    //props<{ updatedData: MerchantApprovalListModel }>()
-);
-export const updateMerchantStatusSuccess = createAction(
-    '[Data] Update Merchant Status Success',
-    props<{ updatedData: any }>()
-);
-export const updateMerchantStatusFailure = createAction(
-    '[Data] Update Merchant Status Failure',
-    props<{ error: string }>()
-);
-
 // Add Data
 export const addMerchantlist = createAction('[Data] Add Merchantlist',  props<{ newData: MerchantListModel }>());
 export const addMerchantlistSuccess = createAction('[Data] Add Merchantlist Success', props<{ newData: any }>());
 export const addMerchantlistFailure = createAction('[Data] Add Merchantlist Failure', props<{ error: string }>());
+
 //get Merchant by ID
 export const getMerchantById = createAction('[Data] get Merchant', props<{ merchantId: string }>());
 export const getMerchantByIdSuccess = createAction('[Data] get Merchant success', props<{ merchant: any }>());
+export const getMerchantByIdFailure = createAction('[Data] get Merchant Failure', props<{ error: string }>());
 
 // Update Data
 export const updateMerchantlist = createAction(

@@ -10,7 +10,7 @@ import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { fetchMerchantlistData, updateMerchantlist } from 'src/app/store/merchantsList/merchantlist1.action';
-import { selectDataMerchant, selectDataTotalItems } from 'src/app/store/merchantsList/merchantlist1-selector';
+import { selectDataLoading, selectDataMerchant, selectDataTotalItems } from 'src/app/store/merchantsList/merchantlist1-selector';
 
 @Component({
   selector: 'app-approve-merchant',
@@ -27,6 +27,7 @@ public Permission = Permission;
 
 merchantApprovalList$: Observable<any[]>;
 totalItems$: Observable<number>;
+loading$: Observable<any>
 
 isDropdownOpen : boolean = false;
 filteredArray: any[] = [];
@@ -43,7 +44,9 @@ columns : any[]= [
 ];
   constructor(public toastr:ToastrService,  public store: Store) {
     this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage , status: 'pending'}));
- }
+    this.loading$ = this.store.pipe(select(selectDataLoading));
+
+  }
  
 
   ngOnInit() {
