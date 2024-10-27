@@ -3,13 +3,13 @@ import { Component, Input, OnInit } from '@angular/core';
   import { ActivatedRoute, Router } from '@angular/router';
   
   import { select, Store } from '@ngrx/store';
-  import {  Subject, takeUntil } from 'rxjs';
+  import {  Observable, Subject, takeUntil } from 'rxjs';
   import { fetchCountrylistData } from 'src/app/store/country/country.action';
   import { selectDataCountry } from 'src/app/store/country/country-selector';
   import { selectDataArea } from 'src/app/store/area/area-selector';
 
 import { fetchArealistData } from 'src/app/store/area/area.action';
-import { selectCityById } from 'src/app/store/City/city-selector';
+import { selectCityById, selectDataLoading } from 'src/app/store/City/city-selector';
 import { addCitylist, getCityById, updateCitylist } from 'src/app/store/City/city.action';
   
 @Component({
@@ -21,6 +21,10 @@ export class FormCityComponent  implements OnInit {
     
     @Input() type: string;
     cityForm: UntypedFormGroup;
+    formError: string | null = null;
+    formSubmitted = false;
+    loading$: Observable<any>;
+
     private destroy$ = new Subject<void>();
     submitted: any = false;
     error: any = '';
@@ -39,6 +43,7 @@ export class FormCityComponent  implements OnInit {
       private router: Router,
       public store: Store) {
         
+        this.loading$ = this.store.pipe(select(selectDataLoading)); 
         this.store.dispatch(fetchCountrylistData({ page: 1, itemsPerPage: 10, status:'active' }));
         this.store.select(selectDataCountry).subscribe(
           countries => {
@@ -61,8 +66,7 @@ export class FormCityComponent  implements OnInit {
                      
         });
        }
-    // set the currenr year
-    year: number = new Date().getFullYear();
+    
       
     ngOnInit() {
   
@@ -95,13 +99,18 @@ export class FormCityComponent  implements OnInit {
      * On submit form
      */
     onSubmit() {
-      console.log('Form status:', this.cityForm.status);
-      console.log('Form errors:', this.cityForm.errors);
-      if (this.cityForm.valid) {
-        console.log('i am on onSubmit');
-        console.log(this.cityForm.value);
-        console.log('Form status:', this.cityForm.status);
-        console.log('Form errors:', this.cityForm.errors);
+      this.formSubmitted = true;
+
+    if (this.cityForm.invalid) {
+      this.formError = 'Please complete all required fields.';
+      Object.keys(this.cityForm.controls).forEach(control => {
+        this.cityForm.get(control).markAsTouched();
+      });
+      this.focusOnFirstInvalid();
+      return;
+    }
+    this.formError = null;
+    
               
         const newData = this.cityForm.value;
       
@@ -117,12 +126,26 @@ export class FormCityComponent  implements OnInit {
             console.log('updating city');
             this.store.dispatch(updateCitylist({ updatedData: newData }));
           }
-        
-      } else {
-        // Form is invalid, display error messages
-        console.log('Form is invalid');
-        this.cityForm.markAllAsTouched();
+    
+    }
+    private focusOnFirstInvalid() {
+      const firstInvalidControl = this.getFirstInvalidControl();
+      if (firstInvalidControl) {
+        firstInvalidControl.focus();
       }
+    }
+  
+    private getFirstInvalidControl(): HTMLInputElement | null {
+      const controls = this.cityForm.controls;
+      for (const key in controls) {
+        if (controls[key].invalid) {
+          const inputElement = document.getElementById(key) as HTMLInputElement;
+          if (inputElement) {
+            return inputElement;
+          }
+        }
+      }
+      return null;
     }
     onChangeCountrySelection(event : any){
       const country = event.target.value;

@@ -16,11 +16,9 @@ import {
     deleteCitylistFailure,
     deleteCitylistSuccess,
     deleteCitylist,
-    updateCityStatus,
-    updateCityStatusSuccess,
-    updateCityStatusFailure,
     getCityById,
-    getCityByIdSuccess
+    getCityByIdSuccess,
+    getCityByIdFailure
 } from './city.action';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
@@ -37,9 +35,11 @@ export class CityEffects {
                 this.CrudService.fetchData('/cities',{ limit: itemsPerPage, page: page}).pipe(
                     tap((response : any) => console.log('Fetched data:', response.result)), 
                     map((response) => fetchCitylistSuccess({ CityListdata: response.result })),
-                    catchError((error) =>
-                        of(fetchCitylistFail({ error }))
-                    )
+                    catchError((error) =>{
+                        this.toastr.error('An error occurred while fetching the City list. Please try again later.'); 
+                        console.error('Fetch error:', error); 
+                        return of(fetchCitylistFail({ error: 'Error fetching data' })); 
+                      })
                 )
             ),
         ),
@@ -56,8 +56,11 @@ export class CityEffects {
                         // Dispatch the action to fetch the updated City list after adding a new City
                         return addCitylistSuccess({newData: response});
                       }),
-                    catchError((error) => of(addCitylistFailure({ error })))
-                )
+                      catchError((error) => {
+                        const errorMessage = this.getErrorMessage(error); 
+                        this.toastr.error(errorMessage);
+                        return of(addCitylistFailure({ error: error.message })); // Dispatch failure action
+                      })                )
             )
         )
     );
@@ -75,28 +78,15 @@ export class CityEffects {
                   return getCityByIdSuccess({ City: City });
                 } else {
                   console.log('City NULL');
-                  // Handle the case where the City is not found, if needed
-                  // For example, you might want to dispatch a failure action or return an empty City
-                  return getCityByIdSuccess({ City: null }); // or handle it differently
+                  this.toastr.error('City not found.'); // Show error notification
+              return getCityByIdFailure({ error: 'City not found' });
                 }
               })
             );
           })
         )
       );
-    updateStatus$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(updateCityStatus),
-            mergeMap(({ userId, status }) =>
-                this.CrudService.addData('/api/update-status', { userId, status }).pipe(
-                    map((updatedData) => {
-                        this.toastr.success('The City has been updated successfully.');
-                        return updateCityStatusSuccess({ updatedData })}),
-                    catchError((error) => of(updateCityStatusFailure({ error })))
-                )
-            )
-        )
-    );
+  
 
     updateData$ = createEffect(() => 
         this.actions$.pipe(
@@ -111,8 +101,11 @@ export class CityEffects {
                         this.router.navigate(['/private/cities']); 
                         return updateCitylistSuccess({ updatedData : response.result})
                     }),
-                    catchError((error) => of(updateCitylistFailure({ error })))
-                );
+                    catchError((error) =>{
+                        const errorMessage = this.getErrorMessage(error); 
+                        this.toastr.error(errorMessage);
+                        return of(updateCitylistFailure({ error }));
+                      })                );
             })
         )
     );
@@ -130,8 +123,9 @@ export class CityEffects {
                             console.log('API response:', response);
                             return deleteCitylistSuccess({ CityId });
                           }),
-                    catchError((error) => {return  of(deleteCitylistFailure({ error }))})
-                )
+                          catchError((error) => {
+                            this.toastr.error('Failed to delete the City. Please try again.');
+                            return  of(deleteCitylistFailure({ error: error.message }))})                )
             )
         )
     );
@@ -144,7 +138,15 @@ export class CityEffects {
         private router: Router,
         private store: Store
     ) { 
-        console.log('i am in City effect');
     }
-
+    private getErrorMessage(error: any): string {
+        // Implement logic to convert backend error to user-friendly message
+        if (error.status === 400) {
+          return 'Invalid City data. Please check your inputs and try again.';
+        } else if (error.status === 409) {
+          return 'A City with this code already exists.';
+        } else {
+          return 'An unexpected error occurred. Please try again later.';
+        }
+      }
 }

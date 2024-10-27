@@ -6,22 +6,6 @@ export const fetchCitylistData = createAction('[Data] fetch Citylist',props<{ pa
 export const fetchCitylistSuccess = createAction('[Data] fetch Citylist success', props<{ CityListdata: any}>())
 export const fetchCitylistFail = createAction('[Data fetch Citylist failed]', props<{ error: string }>())
 
-
-// Update Data
-export const updateCityStatus = createAction(
-    '[Data] Update City status',
-    props<{ userId: string, status: string }>()
-    //props<{ updatedData: CityApprovalListModel }>()
-);
-export const updateCityStatusSuccess = createAction(
-    '[Data] Update City Status Success',
-    props<{ updatedData: any }>()
-);
-export const updateCityStatusFailure = createAction(
-    '[Data] Update City Status Failure',
-    props<{ error: string }>()
-);
-
 // Add Data
 export const addCitylist = createAction('[Data] Add Citylist',  props<{ newData: CityListModel }>());
 export const addCitylistSuccess = createAction('[Data] Add Citylist Success', props<{ newData: any }>());
@@ -29,6 +13,7 @@ export const addCitylistFailure = createAction('[Data] Add Citylist Failure', pr
 //get City by ID
 export const getCityById = createAction('[Data] get City', props<{ CityId: string }>());
 export const getCityByIdSuccess = createAction('[Data] get City success', props<{ City: any }>());
+export const getCityByIdFailure = createAction('[Data] get City Failure', props<{ error: string }>());
 
 // Update Data
 export const updateCitylist = createAction(

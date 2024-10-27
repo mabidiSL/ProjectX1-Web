@@ -6,7 +6,7 @@ import {  select, Store } from '@ngrx/store';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 
 import { deleteCitylist, fetchCitylistData, updateCitylist } from 'src/app/store/City/city.action';
-import { selectDataCity, selectDataTotalItems } from 'src/app/store/City/city-selector';
+import { selectDataCity, selectDataLoading, selectDataTotalItems } from 'src/app/store/City/city-selector';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
 
 
@@ -24,6 +24,7 @@ export class CityComponent  implements OnInit {
 
   citiesList$: Observable<any[]>;
   totalItems$: Observable<number>;
+  loading$: Observable<any>
 
   isDropdownOpen : boolean = false;
   filteredArray: any[] = [];
@@ -42,6 +43,7 @@ export class CityComponent  implements OnInit {
       
       this.citiesList$ = this.store.pipe(select(selectDataCity)); 
       this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
+      this.loading$ = this.store.pipe(select(selectDataLoading));
 
 
   }
