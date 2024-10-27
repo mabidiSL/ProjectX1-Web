@@ -9,7 +9,7 @@ import { selectDataCity } from 'src/app/store/City/city-selector';
 import { fetchCitylistData } from 'src/app/store/City/city.action';
 import { selectDataCountry } from 'src/app/store/country/country-selector';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
-import { selectEmployeeById } from 'src/app/store/employee/employee-selector';
+import { selectDataLoading, selectEmployeeById } from 'src/app/store/employee/employee-selector';
 import { addEmployeelist, getEmployeeById, updateEmployeelist } from 'src/app/store/employee/employee.action';
 import { selectDataRole } from 'src/app/store/Role/role-selector';
 import { fetchRolelistData } from 'src/app/store/Role/role.actions';
@@ -24,6 +24,9 @@ export class FormEmployeeComponent implements OnInit{
   
   @Input() type: string;
   employeeForm: UntypedFormGroup;
+  formError: string | null = null;
+  formSubmitted = false;
+
   isEditing: boolean = false;
   isCollapsed: boolean;
   private destroy$ = new Subject<void>();
@@ -38,6 +41,8 @@ export class FormEmployeeComponent implements OnInit{
   countrylist: any[] = [];
   arealist$:  Observable<any[]>  ;
   citylist$:  Observable<any[]> ;
+  loading$: Observable<any>
+
   rolelist:  any[] = [] ;
   selectedRole : any = null;
 
@@ -58,13 +63,19 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
     private route: ActivatedRoute,
     private router: Router,
     private store: Store){
+      
+      this.loading$ = this.store.pipe(select(selectDataLoading)); 
 
       this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 10, status: 'active' }));
       this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 10, status: 'active' }));
       this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 10, status: 'active' }));
       this.store.dispatch(fetchRolelistData({page: 1, itemsPerPage: 10, status: 'active' }));
 
-      
+      this.initForm();
+
+    }
+  
+    private initForm() {
       this.employeeForm = this.formBuilder.group({
         id: [''],
         username: ['', Validators.required],
@@ -80,8 +91,6 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
   
       });
     }
-  
-  
   ngOnInit() {
    
     this.store.select(selectDataCountry).subscribe(
@@ -170,19 +179,18 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
 
     }
   
-
-
-
   onSubmit() {
-    console.log('Form status:', this.employeeForm.status);
-    console.log('Form errors:', this.employeeForm.errors);
-    if (this.employeeForm.valid) {
-      console.log('i am on onSubmit');
-      console.log(this.employeeForm.value);
-      console.log('Form status:', this.employeeForm.status);
-      console.log('Form errors:', this.employeeForm.errors);
-      
-      
+    this.formSubmitted = true;
+
+    if (this.employeeForm.invalid) {
+      this.formError = 'Please complete all required fields.';
+      Object.keys(this.employeeForm.controls).forEach(control => {
+        this.employeeForm.get(control).markAsTouched();
+      });
+      this.focusOnFirstInvalid();
+      return;
+    }
+    this.formError = null;
       const newData = this.employeeForm.value;
       console.log(newData);
       if(!this.isEditing)
@@ -196,22 +204,30 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
           this.store.dispatch(updateEmployeelist({ updatedData: newData }));
   
         }
-      //Dispatch Action
-      
-    } 
-    else 
-    {
-      // Form is invalid, display error messages
-      console.log('Form is invalid');
-      this.employeeForm.markAllAsTouched();
+    
+  }
+  private focusOnFirstInvalid() {
+    const firstInvalidControl = this.getFirstInvalidControl();
+    if (firstInvalidControl) {
+      firstInvalidControl.focus();
     }
+  }
+
+  private getFirstInvalidControl(): HTMLInputElement | null {
+    const controls = this.employeeForm.controls;
+    for (const key in controls) {
+      if (controls[key].invalid) {
+        const inputElement = document.getElementById(key) as HTMLInputElement;
+        if (inputElement) {
+          return inputElement;
+        }
+      }
+    }
+    return null;
   }
   onPhoneNumberChanged(phoneNumber: string) {
     this.employeeForm.get('phone').setValue(phoneNumber);
   }
-
-
-
 
 hasPermission(module: string, permission: string): boolean {
   const moduleEnum = Modules[module as keyof typeof Modules];

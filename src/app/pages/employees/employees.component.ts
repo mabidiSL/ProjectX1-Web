@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { Observable } from 'rxjs';
-import { selectData, selectDataTotalItems } from 'src/app/store/employee/employee-selector';
+import { selectData, selectDataLoading, selectDataTotalItems } from 'src/app/store/employee/employee-selector';
 import { deleteEmployeelist, fetchEmployeelistData, updateEmployeelist } from 'src/app/store/employee/employee.action';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
 
@@ -20,6 +20,8 @@ export class EmployeesComponent implements OnInit {
 
   EmployeeList$: Observable<any[]>;
   totalItems$: Observable<number>;
+  loading$: Observable<any>
+
 
   isDropdownOpen : boolean = false;
   filteredArray: any[] = [];
@@ -39,6 +41,7 @@ export class EmployeesComponent implements OnInit {
       
       this.EmployeeList$ = this.store.pipe(select(selectData)); // Observing the Employee list from Employee
       this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
+      this.loading$ = this.store.pipe(select(selectDataLoading));
 
   }
 

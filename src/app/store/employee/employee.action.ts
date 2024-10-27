@@ -6,22 +6,6 @@ export const fetchEmployeelistData = createAction('[Data] fetch Employeelist', p
 export const fetchEmployeelistSuccess = createAction('[Data] fetch Employeelist success', props<{ EmployeeListdata: any}>())
 export const fetchEmployeelistFail = createAction('[Data fetch Employeelist failed]', props<{ error: string }>())
 
-
-// Update Data
-export const updateEmployeeStatus = createAction(
-    '[Data] Update Employee status',
-    props<{ employeeId: string, status: string }>()
-    //props<{ updatedData: EmployeeApprovalListModel }>()
-);
-export const updateEmployeeStatusSuccess = createAction(
-    '[Data] Update Employee Status Success',
-    props<{ updatedData: any }>()
-);
-export const updateEmployeeStatusFailure = createAction(
-    '[Data] Update Employee Status Failure',
-    props<{ error: string }>()
-);
-
 // Add Data
 export const addEmployeelist = createAction('[Data] Add Employeelist',  props<{ newData: EmployeeListModel }>());
 export const addEmployeelistSuccess = createAction('[Data] Add Employeelist Success', props<{ newData: any }>());
@@ -29,6 +13,7 @@ export const addEmployeelistFailure = createAction('[Data] Add Employeelist Fail
 //get Employee by ID
 export const getEmployeeById = createAction('[Data] get Employee', props<{ employeeId: string }>());
 export const getEmployeeByIdSuccess = createAction('[Data] get Employee success', props<{ employee: any }>());
+export const getEmployeeByIdFailure = createAction('[Data] get Employee Failure', props<{ error: string }>());
 
 // Update Data
 export const updateEmployeelist = createAction(
