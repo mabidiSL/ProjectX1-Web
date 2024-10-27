@@ -3,9 +3,11 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { selectNotificationById } from 'src/app/store/notification/notification-selector';
+import { selectDataLoading, selectNotificationById } from 'src/app/store/notification/notification-selector';
 import { addNotificationlist, getNotificationById, updateNotificationlist } from 'src/app/store/notification/notification.action';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { DatepickerConfigService } from 'src/app/core/services/date.service';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker/bs-datepicker.config';
 //import { Bold, Essentials, Italic, Mention, Paragraph, Undo } from '@ckeditor';
 
 
@@ -18,8 +20,15 @@ export class FormNotificationComponent implements OnInit {
   
   @Input() type: string;
   notifForm: UntypedFormGroup;
+  formError: string | null = null;
+  formSubmitted = false;
   private destroy$ = new Subject<void>();
+
   notificationlist$: Observable<any[]>;
+  loading$: Observable<any>;
+  bsConfig: Partial<BsDatepickerConfig>;
+
+
   messageDesc: string = '';
   public Editor = ClassicEditor;
   // public config = {
@@ -38,8 +47,10 @@ export class FormNotificationComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute, 
     private router: Router,
+    private datepickerConfigService: DatepickerConfigService,
     public store: Store) {
-      
+      this.loading$ = this.store.pipe(select(selectDataLoading)); 
+
       this.notifForm = this.formBuilder.group({
         id: [''],
         cronExpression:[''],
@@ -48,12 +59,10 @@ export class FormNotificationComponent implements OnInit {
         userId: [9]
         
       });
+      this.bsConfig = this.datepickerConfigService.getConfig();
      }
   // set the currenr year
   year: number = new Date().getFullYear();
-   
-
-
   ngOnInit() {
     
 
@@ -93,14 +102,17 @@ parseToCronExpression(date : any): any{
    * On submit form
    */
   onSubmit() {
-    console.log('Form status:', this.notifForm.status);
-    console.log('Form errors:', this.notifForm.errors);
-    if (this.notifForm.valid) {
-      console.log('i am on onSubmit');
-      console.log(this.notifForm.value);
-      console.log('Form status:', this.notifForm.status);
-      console.log('Form errors:', this.notifForm.errors);
-          
+    this.formSubmitted = true;
+
+    if (this.notifForm.invalid) {
+      this.formError = 'Please complete all required fields.';
+      Object.keys(this.notifForm.controls).forEach(control => {
+        this.notifForm.get(control).markAsTouched();
+      });
+      this.focusOnFirstInvalid();
+      return;
+    }
+    this.formError = null;
       const newData = this.notifForm.value;
       
           if(!this.isEditing)
@@ -126,13 +138,27 @@ parseToCronExpression(date : any): any{
           console.log('updating notif');
           this.store.dispatch(updateNotificationlist({ updatedData: newData }));
         }
-    } else {
-      // Form is invalid, display error messages
-      console.log('Form is invalid');
-      this.notifForm.markAllAsTouched();
+   
+  }
+  private focusOnFirstInvalid() {
+    const firstInvalidControl = this.getFirstInvalidControl();
+    if (firstInvalidControl) {
+      firstInvalidControl.focus();
     }
   }
-  
+
+  private getFirstInvalidControl(): HTMLInputElement | null {
+    const controls = this.notifForm.controls;
+    for (const key in controls) {
+      if (controls[key].invalid) {
+        const inputElement = document.getElementById(key) as HTMLInputElement;
+        if (inputElement) {
+          return inputElement;
+        }
+      }
+    }
+    return null;
+  }
   onEditorChange(event: any){
     this.messageDesc = event.editor.getData(); // Get the updated content
     console.log(this.messageDesc); // Check the updated content

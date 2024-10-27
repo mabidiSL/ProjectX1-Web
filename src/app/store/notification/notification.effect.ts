@@ -16,13 +16,12 @@ import {
     deleteNotificationlistFailure,
     deleteNotificationlistSuccess,
     deleteNotificationlist,
-    updateNotificationStatus,
-    updateNotificationStatusSuccess,
-    updateNotificationStatusFailure,
     getNotificationById,
     getNotificationByIdSuccess,
     fetchMyNotificationlistData,
-    fetchMyNotificationlistSuccess
+    fetchMyNotificationlistSuccess,
+    fetchMyNotificationlistFail,
+    getNotificationByIdFailure
 } from './notification.action';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
@@ -41,9 +40,11 @@ export class NotificationsEffects {
                 this.CrudService.fetchData('/notifications/',{ limit: itemsPerPage, page: page}).pipe(
                     tap((response : any) => console.log('Fetched data:', response.result)), 
                     map((response) => fetchNotificationlistSuccess({ NotificationListdata : response.result })),
-                    catchError((error) =>
-                        of(fetchNotificationlistFail({ error }))
-                    )
+                    catchError((error) =>{
+                      this.toastr.error('An error occurred while fetching the Notification list. Please try again later.'); 
+                      console.error('Fetch error:', error); 
+                      return of(fetchNotificationlistFail({ error: 'Error fetching data' })); 
+                    })
                 )
             ),
         ),
@@ -56,9 +57,11 @@ export class NotificationsEffects {
               this.CrudService.fetchData('/notifications/my-notifications ').pipe(
                   tap((response : any) => console.log('Fetched data:', response.result)), 
                   map((response) => fetchMyNotificationlistSuccess({ NotificationListdata : response.result })),
-                  catchError((error) =>
-                      of(fetchNotificationlistFail({ error }))
-                  )
+                  catchError((error) =>{
+                    this.toastr.error('An error occurred while fetching the My Notification list. Please try again later.'); 
+                    console.error('Fetch error:', error); 
+                    return of(fetchMyNotificationlistFail({ error: 'Error fetching data' })); 
+                  })
               )
           ),
       ),
@@ -76,25 +79,15 @@ export class NotificationsEffects {
                         // Dispatch the action to fetch the updated Notification list after adding a new Notification
                         return addNotificationlistSuccess({newData});
                       }),
-                    catchError((error) => of(addNotificationlistFailure({ error })))
-                )
+                      catchError((error) => {
+                        const errorMessage = this.getErrorMessage(error); 
+                        this.toastr.error(errorMessage);
+                        return of(addNotificationlistFailure({ error: error.message })); // Dispatch failure action
+                      })                )
             )
         )
     );
-    updateStatus$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(updateNotificationStatus),
-            mergeMap(({ NotificationId, status }) =>
-                this.CrudService.addData('/api/update-status', { NotificationId, status }).pipe(
-                    map((updatedData) => {
-                        this.toastr.success('The Notification has been updated successfully.');
-                        return updateNotificationStatusSuccess({ updatedData })}),
-                    catchError((error) => of(updateNotificationStatusFailure({ error })))
-                )
-            )
-        )
-    );
-
+   
     updateData$ = createEffect(() =>
         this.actions$.pipe(
           ofType(updateNotificationlist),
@@ -105,8 +98,11 @@ export class NotificationsEffects {
                 //this.toastr.success('The Notification has been updated successfully.');
                 return updateNotificationlistSuccess({ updatedData }); // Make sure to return the action
               }),
-              catchError((error) => of(updateNotificationlistFailure({ error }))) // Catch errors and return the failure action
-            )
+              catchError((error) =>{
+                const errorMessage = this.getErrorMessage(error); 
+                this.toastr.error(errorMessage);
+                return of(updateNotificationlistFailure({ error }));
+              })             )
           )
         )
       );
@@ -126,9 +122,8 @@ export class NotificationsEffects {
               return getNotificationByIdSuccess({ Notification });
             } else {
               console.log('Notification NULL');
-              // Handle the case where the Notification is not found, if needed
-              // For example, you might want to dispatch a failure action or return an empty Notification
-              return getNotificationByIdSuccess({ Notification: null }); // or handle it differently
+              this.toastr.error('Notification not found.'); // Show error notification
+              return getNotificationByIdFailure({ error: 'Notification not found' });
             }
           })
         );
@@ -148,7 +143,9 @@ export class NotificationsEffects {
                             this.toastr.success('The Notification has been deleted successfully.');
                             return deleteNotificationlistSuccess({ notificationId });
                           }),
-                    catchError((error) => {return  of(deleteNotificationlistFailure({ error }))})
+                          catchError((error) => {
+                            this.toastr.error('Failed to delete the Notification. Please try again.');
+                            return  of(deleteNotificationlistFailure({ error: error.message }))})
                 )
             )
         )
@@ -162,5 +159,14 @@ export class NotificationsEffects {
         private store: Store,
         public toastr:ToastrService
     ) { }
-
+    private getErrorMessage(error: any): string {
+      // Implement logic to convert backend error to user-friendly message
+      if (error.status === 400) {
+        return 'Invalid Notification data. Please check your inputs and try again.';
+      } else if (error.status === 409) {
+        return 'A Notification with this code already exists.';
+      } else {
+        return 'An unexpected error occurred. Please try again later.';
+      }
+    }
 }

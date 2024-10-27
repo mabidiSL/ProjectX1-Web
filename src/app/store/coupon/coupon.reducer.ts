@@ -73,6 +73,7 @@ export const CouponListReducer = createReducer(
    on(getCouponByIdSuccess, (state, { coupon }) => ({
     ...state,
     selectedCoupon: coupon,
+    loading: false,
     error: null
   })),
   // Handle success of getting coupon by ID and store the coupon object in the state

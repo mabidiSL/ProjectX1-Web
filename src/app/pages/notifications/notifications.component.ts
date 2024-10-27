@@ -4,7 +4,7 @@ import { select, Store } from '@ngrx/store';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { deleteNotificationlist, fetchNotificationlistData, updateNotificationlist } from 'src/app/store/notification/notification.action';
-import { selectDataNotification, selectDataTotalItems } from 'src/app/store/notification/notification-selector';
+import { selectDataLoading, selectDataNotification, selectDataTotalItems } from 'src/app/store/notification/notification-selector';
 
 @Component({
   selector: 'app-notifications',
@@ -20,6 +20,8 @@ export class NotificationsComponent implements OnInit{
 
   notificationList$: Observable<any[]>;
   totalItems$: Observable<number>;
+  loading$: Observable<any>
+
 
   isDropdownOpen : boolean = false;
   filteredArray: any[] = [];
@@ -38,6 +40,7 @@ export class NotificationsComponent implements OnInit{
       
       this.notificationList$ = this.store.pipe(select(selectDataNotification)); // Observing the Notification list from Notification
       this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
+      this.loading$ = this.store.pipe(select(selectDataLoading));
 
     }
 

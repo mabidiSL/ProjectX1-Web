@@ -26,7 +26,7 @@ export class FormCouponComponent implements OnInit{
   @Input() type: string;
 
   merchantList$: Observable<any[]>;
-  loading$: Observable<any>
+  loading$: Observable<any>;
   storeList$: Observable<any[]> | undefined ;
 
   selectedStores: any[];
