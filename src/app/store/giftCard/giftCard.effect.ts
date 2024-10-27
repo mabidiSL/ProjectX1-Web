@@ -16,9 +16,6 @@ import {
     deleteGiftCardlistFailure,
     deleteGiftCardlistSuccess,
     deleteGiftCardlist,
-    updateGiftCardStatus,
-    updateGiftCardStatusSuccess,
-    updateGiftCardStatusFailure,
     getGiftCardById,
     getGiftCardByIdSuccess
 } from './giftCard.action';
@@ -26,6 +23,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { selectGiftCardById } from './giftCard-selector';
 import { Store } from '@ngrx/store';
+import { getCouponByIdFailure } from '../coupon/coupon.action';
 
 @Injectable()
 export class GiftCardsEffects {
@@ -38,12 +36,15 @@ export class GiftCardsEffects {
                 this.CrudService.fetchData('/gift-cards',{ limit: itemsPerPage, page: page, status: status}).pipe(
                     tap((response : any) => console.log('Fetched data:', response.result)), 
                     map((response) => fetchGiftCardlistSuccess({ GiftCardListdata : response.result })),
-                    catchError((error) =>
-                        of(fetchGiftCardlistFail({ error }))
+                    catchError((error) =>{
+                      this.toastr.error('An error occurred while fetching the Gift Cards list. Please try again later.'); 
+                      console.error('Fetch error:', error); 
+                      return of(fetchGiftCardlistFail({ error: 'Error fetching data' })); 
+                    })
                     )
-                )
+                ),
             ),
-        ),
+        
     );
     
     addData$ = createEffect(() =>
@@ -65,7 +66,10 @@ export class GiftCardsEffects {
                         // Dispatch the action to fetch the updated GiftCard list after adding a new GiftCard
                         return addGiftCardlistSuccess({newData});
                       }),
-                    catchError((error) => of(addGiftCardlistFailure({ error })))
+                    catchError((error) => {
+                      const errorMessage = this.getErrorMessage(error); 
+                      this.toastr.error(errorMessage);
+                      return of(addGiftCardlistFailure({ error }));})
                 )
             )
         )
@@ -83,7 +87,10 @@ export class GiftCardsEffects {
                 this.router.navigate(['/private/giftCards']);
                 return updateGiftCardlistSuccess({ updatedData }); // Make sure to return the action
               }),
-              catchError((error) => of(updateGiftCardlistFailure({ error }))) // Catch errors and return the failure action
+              catchError((error) => {
+                const errorMessage = this.getErrorMessage(error); 
+                this.toastr.error(errorMessage);
+                return of(updateGiftCardlistFailure({ error }));}) // Catch errors and return the failure action
             )
           )
         )
@@ -104,9 +111,8 @@ export class GiftCardsEffects {
               return getGiftCardByIdSuccess({ GiftCard });
             } else {
               console.log('GiftCard NULL');
-              // Handle the case where the GiftCard is not found, if needed
-              // For example, you might want to dispatch a failure action or return an empty GiftCard
-              return getGiftCardByIdSuccess({ GiftCard: null }); // or handle it differently
+              this.toastr.error('GiftCard not found.')
+              return getCouponByIdFailure({ error: 'GiftCard not found' }); // or handle it differently
             }
           })
         );
@@ -121,11 +127,12 @@ export class GiftCardsEffects {
             mergeMap(({ GiftCardId }) =>
                     this.CrudService.deleteData(`/gift-cards/${GiftCardId}`).pipe(
                         map((response: string) => {
-                            // If response contains a success message or status, you might want to check it here
-                            console.log('API response:', response);
-                            return deleteGiftCardlistSuccess({ GiftCardId });
+                          this.toastr.success('GiftCard deleted successfully.');
+                          return deleteGiftCardlistSuccess({ GiftCardId });
                           }),
-                    catchError((error) => {return  of(deleteGiftCardlistFailure({ error }))})
+                    catchError((error) => {
+                      this.toastr.error('Failed to delete the GiftCard. Please try again.');
+                      return  of(deleteGiftCardlistFailure({ error }))})
                 )
             )
         )
@@ -139,6 +146,16 @@ export class GiftCardsEffects {
         private store: Store,
         public toastr:ToastrService
     ) { }
+    private getErrorMessage(error: any): string {
+      // Implement logic to convert backend error to user-friendly message
+      if (error.status === 400) {
+        return 'Invalid Gift Card data. Please check your inputs and try again.';
+      } else if (error.status === 409) {
+        return 'A Gift Card with this code already exists.';
+      } else {
+        return 'An unexpected error occurred. Please try again later.';
+      }
+    }
     private getCurrentUserRole(): string {
       // Replace with your actual logic to retrieve the user role
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));

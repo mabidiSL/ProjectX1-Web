@@ -2,9 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker/bs-datepicker.config';
 import {  BehaviorSubject, Observable,  Subject, takeUntil } from 'rxjs';
+import { DatepickerConfigService } from 'src/app/core/services/date.service';
 import { _User } from 'src/app/store/Authentication/auth.models';
-import { selectGiftCardById } from 'src/app/store/giftCard/giftCard-selector';
+import { selectDataLoading, selectGiftCardById } from 'src/app/store/giftCard/giftCard-selector';
 import { addGiftCardlist, getGiftCardById, updateGiftCardlist } from 'src/app/store/giftCard/giftCard.action';
 import { selectDataMerchant } from 'src/app/store/merchantsList/merchantlist1-selector';
 import { fetchMerchantlistData } from 'src/app/store/merchantsList/merchantlist1.action';
@@ -19,8 +21,14 @@ import { fetchStorelistData } from 'src/app/store/store/store.action';
 export class FormGiftCardComponent implements OnInit{
 
   @Input() type: string;
+
   merchantList$: Observable<any[]>;
+  loading$: Observable<any>
   storeList$: Observable<any[]> | undefined ;
+
+  formError: string | null = null;
+  formSubmitted = false;
+
   selectedStores: any[]= [];
   merchantList: any[] = [];
   existantGiftCardLogo: string = null;
@@ -30,6 +38,7 @@ export class FormGiftCardComponent implements OnInit{
   currentRole: string = '';
 
   fromPendingContext: boolean = false;
+  bsConfig: Partial<BsDatepickerConfig>;
 
 
 
@@ -48,44 +57,22 @@ export class FormGiftCardComponent implements OnInit{
     private store: Store, 
     private formBuilder: UntypedFormBuilder, 
     private router: Router,
+    private datepickerConfigService: DatepickerConfigService,
     private route: ActivatedRoute){
       
       this.getNavigationState();
-      this.currentUserSubject = new BehaviorSubject<_User>(JSON.parse(localStorage.getItem('currentUser')));
-      this.currentUser = this.currentUserSubject.asObservable();
-      this.currentUser.subscribe(user => {
-        if (user) {
-        this.currentRole = user.role.name;
-        this.merchantId =  user.merchantId;
-        if(this.currentRole !== 'Admin')
+      this.loading$ = this.store.pipe(select(selectDataLoading));
+
+      this.currentRole = this.getCurrentUser()?.role.name;
+      this.merchantId =  this.getCurrentUser()?.merchantId;
+      console.log(this.merchantId);
+
+      if(this.currentRole !== 'Admin')
           this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 10 ,status:'', merchant_id: this.merchantId}));
-        console.log(this.merchantId);
-      }});
-
     this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 10 , status: 'active'})); 
-    this.formGiftCard = this.formBuilder.group({
-      id: [''],
-      name_ar: ['', Validators.required],
-      name: ['', Validators.required],
-      description_ar: ['', Validators.required],
-      description: ['', Validators.required],
-      termsAndConditions_ar: [''],
-      termsAndConditions: [''],
-      quantity: ['', Validators.required],
-      merchant_id: ['', Validators.required],
-      stores: [null, Validators.required],
-      managerName: [''],
-      managerPhone: [''],
-      startDateGiftCard: ['', Validators.required],
-      endDateGiftCard: ['', Validators.required],
-      sectionOrderAppearance: [''],
-      categoryOrderAppearance: [''],
-      giftCardImage: ['',Validators.required],
-      giftCardValue: ['',Validators.required],
-      discount:['']
-      
-
-    }, { validators: this.dateValidator });
+    
+    this.initForm();
+    this.bsConfig = this.datepickerConfigService.getConfig();
 
    
   }
@@ -105,12 +92,41 @@ export class FormGiftCardComponent implements OnInit{
     }
     return null; // Valid
   }
+  private getCurrentUser(): _User {
+    // Replace with your actual logic to retrieve the user role
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    console.log(currentUser);
+    return currentUser;
+} 
+  private initForm() {
+    this.formGiftCard = this.formBuilder.group({
+      id: [''],
+      name_ar: ['', Validators.required],
+      name: ['', Validators.required],
+      description_ar: ['', Validators.required],
+      description: ['', Validators.required],
+      termsAndConditions_ar: [''],
+      termsAndConditions: [''],
+      quantity: ['', Validators.required],
+      merchant_id: ['', Validators.required],
+      stores: [[], Validators.required],
+      managerName: [''],
+      managerPhone: [''],
+      startDateGiftCard: ['', Validators.required],
+      endDateGiftCard: ['', Validators.required],
+      sectionOrderAppearance: [''],
+      categoryOrderAppearance: [''],
+      giftCardImage: ['',Validators.required],
+      giftCardValue: ['',Validators.required],
+      discount:['']
+      
 
-  
+    }, { validators: this.dateValidator });
+  }
   ngOnInit() {
     
 
-    this.merchantList$ = this.store.pipe(select(selectDataMerchant)); // Observing the merchant list from store
+    this.merchantList$ = this.store.pipe(select(selectDataMerchant)); 
     this.merchantList$.subscribe(data => this.merchantList = data);
 
     this.storeList$ = this.store.pipe(select(selectData));
@@ -201,17 +217,18 @@ onPhoneNumberChanged(phoneNumber: string) {
 }
   onSubmit(){
 
-    console.log('Submitting form...');
-    console.log('Form status:', this.formGiftCard.status);
-    console.log('Form errors:', this.formGiftCard.errors);
+      this.formSubmitted = true;
 
-    if (this.formGiftCard.valid) {
-      console.log('i am on onSubmit');
-      console.log(this.formGiftCard.value);
-      console.log('Form status:', this.formGiftCard.status);
-      console.log('Form errors:', this.formGiftCard.errors);
-      
-      
+      if (this.formGiftCard.invalid) {
+        this.formError = 'Please complete all required fields.';
+        Object.keys(this.formGiftCard.controls).forEach(control => {
+          this.formGiftCard.get(control).markAsTouched();
+        });
+        this.focusOnFirstInvalid();
+        return;
+      }
+      this.formError = null;
+          
       const newData = this.formGiftCard.value;
            
       console.log(newData);
@@ -233,7 +250,25 @@ onPhoneNumberChanged(phoneNumber: string) {
    
     }
       
-  }
+    private focusOnFirstInvalid() {
+      const firstInvalidControl = this.getFirstInvalidControl();
+      if (firstInvalidControl) {
+        firstInvalidControl.focus();
+      }
+    }
+  
+    private getFirstInvalidControl(): HTMLInputElement | null {
+      const controls = this.formGiftCard.controls;
+      for (const key in controls) {
+        if (controls[key].invalid) {
+          const inputElement = document.getElementById(key) as HTMLInputElement;
+          if (inputElement) {
+            return inputElement;
+          }
+        }
+      }
+      return null;
+    }
  /**
    * File Upload Image
    */

@@ -11,7 +11,7 @@ import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { fetchGiftCardlistData, updateGiftCardlist } from 'src/app/store/giftCard/giftCard.action';
-import { selectDataGiftCard, selectDataTotalItems } from 'src/app/store/giftCard/giftCard-selector';
+import { selectDataGiftCard, selectDataLoading, selectDataTotalItems } from 'src/app/store/giftCard/giftCard-selector';
 
 @Component({
   selector: 'app-approve-gift-card',
@@ -26,6 +26,7 @@ export class ApproveGiftCardComponent implements OnInit {
     
     giftCardApprovalList$: Observable<any[]>;
     totalItems$: Observable<number>;
+    loading$: Observable<any>
 
     isDropdownOpen : boolean = false;
     filteredArray: any[] = [];
@@ -44,7 +45,8 @@ export class ApproveGiftCardComponent implements OnInit {
     ];
       constructor(public toastr:ToastrService,  public store: Store) {
         this.store.dispatch(fetchGiftCardlistData({ page: 1, itemsPerPage: 10, status:'pending' }));
-        
+        this.loading$ = this.store.pipe(select(selectDataLoading));
+
       }
     
       ngOnInit() {

@@ -1,6 +1,6 @@
 // src/app/GiftCardlist.reducer.ts
 import { createReducer, on } from '@ngrx/store';
-import {  addGiftCardlistSuccess, deleteGiftCardlistFailure, deleteGiftCardlistSuccess, fetchGiftCardlistData, fetchGiftCardlistFail, fetchGiftCardlistSuccess, getGiftCardByIdSuccess, updateGiftCardlistSuccess, updateGiftCardStatusSuccess } from './giftCard.action';
+import {  addGiftCardlist, addGiftCardlistFailure, addGiftCardlistSuccess, deleteGiftCardlist, deleteGiftCardlistFailure, deleteGiftCardlistSuccess, fetchGiftCardlistData, fetchGiftCardlistFail, fetchGiftCardlistSuccess, getGiftCardById, getGiftCardByIdFailure, getGiftCardByIdSuccess, updateGiftCardlist, updateGiftCardlistFailure, updateGiftCardlistSuccess } from './giftCard.action';
 import { GiftCardListModel } from './giftCard.model';
 
 export interface GiftCardlistState {
@@ -40,29 +40,52 @@ export const GiftCardListReducer = createReducer(
     error,
     loading: false
   })),
+   //Handle adding GiftCard 
+   on(addGiftCardlist, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
+  })),
   //Handle adding GiftCard success
   on(addGiftCardlistSuccess, (state, { newData }) => ({
     ...state,
     GiftCardListdata: [newData,...state.GiftCardListdata ],
-    loading: false
+    loading: false,
+    error: null
+
   })),
+  //Handle adding GiftCard failure
+  on(addGiftCardlistFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false, 
+  })),
+    //Handle getting GiftCard by id
+    on(getGiftCardById, (state) => ({
+      ...state,
+      loading: true,
+      error: null 
+    })),
   // Handle success of getting GiftCard by ID and store the GiftCard object in the state
    on(getGiftCardByIdSuccess, (state, { GiftCard }) => ({
     ...state,
-    selectedGiftCard: GiftCard
+    selectedGiftCard: GiftCard,
+    error: null
+
   })),
-
-
-  // Handle updating GiftCard list
-  on(updateGiftCardStatusSuccess, (state, { updatedData }) => {
-    return {
-      ...state,
-      GiftCardListdata: state.GiftCardListdata.map(item =>
-        item.id === updatedData.GiftCardId ? { ...item, status: updatedData.status } : item
-      )
-    };
-  }),
-// Handle updating GiftCard status
+// Handle failure of getting GiftCard by ID and store the GiftCard object in the state
+on(getGiftCardByIdFailure, (state, { error }) => ({
+  ...state,
+  error,
+  loading: false, 
+})),
+// Handle updating Coupon list
+on(updateGiftCardlist, (state) => ({
+  ...state,
+  loading: true,
+  error: null 
+})),
+ // Handle updating GiftCard status
   on(updateGiftCardlistSuccess, (state, { updatedData }) => {
    const GiftCardListUpdated = state.GiftCardListdata.map(item => item.id === updatedData.id ? updatedData : item );
    console.log('GiftCardListdata after update:', GiftCardListUpdated);
@@ -71,15 +94,26 @@ export const GiftCardListReducer = createReducer(
       GiftCardListdata: GiftCardListUpdated
     };
   }),
+   // Handle updating GiftCard failure
+   on(updateGiftCardlistFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false 
+  })),
+  // Handle deleting GiftCard 
+  on(deleteGiftCardlist, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
+  })),
   // Handle the success of deleting a GiftCard
   on(deleteGiftCardlistSuccess, (state, { GiftCardId }) => {
-    console.log('Deleting GiftCard with ID:', GiftCardId);
-    console.log('GiftCardListdata before deletion:', state.GiftCardListdata);
     const updatedGiftCardList = state.GiftCardListdata.filter(GiftCard => GiftCard.id !== GiftCardId);
-    console.log('GiftCardListdata after deletion:', updatedGiftCardList);
     return { 
     ...state,
-    GiftCardListdata: updatedGiftCardList};
+    GiftCardListdata: updatedGiftCardList,
+    loading: false,
+    error: null};
   }),
   // Handle failure of deleting a GiftCard
   on(deleteGiftCardlistFailure, (state, { error }) => ({

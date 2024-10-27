@@ -3,7 +3,8 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <form [formGroup]="formGiftCard" (ngSubmit)="onSubmit()" >
+                <form #formElement [formGroup]="formGiftCard" >
+                  <div *ngIf="formError" class="alert alert-danger">{{ formError }}</div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="name">{{'Name'|translate}}</label>
@@ -94,7 +95,7 @@
                        
                         <div class="col-md-6 mb-3">
                           <label for="startDateGiftCard">{{'Start Date'|translate}}</label>
-                          <input class="form-control" id="startDateGiftCard" formControlName="startDateGiftCard" type="date" [readonly]="type==='view'"/>
+                          <input bsDatepicker class="form-control" id="startDateGiftCard" placeholder="yyyy-mm-dd" formControlName="startDateGiftCard" type="date" [readonly]="type==='view'"/>
                           <div *ngIf="formGiftCard.get('startDateGiftCard').invalid && formGiftCard.get('startDateGiftCard').touched">
                             {{'Start Date is required'|translate}}
                           </div>
@@ -102,7 +103,7 @@
                       
                         <div class="col-md-6 mb-3">
                           <label for="endDateGiftCard">{{'End Date'|translate}}</label>
-                          <input  class="form-control" id="endDateGiftCard" formControlName="endDateGiftCard" type="date" [readonly]="type==='view'"/>
+                          <input bsDatepicker class="form-control" id="endDateGiftCard" placeholder="yyyy-mm-dd" formControlName="endDateGiftCard" type="date" [readonly]="type==='view'"/>
                           <div *ngIf="formGiftCard.get('endDateGiftCard').invalid && formGiftCard.get('endDateGiftCard').touched">
                             {{'End Date is required'|translate}}
                           </div>
@@ -126,7 +127,7 @@
                   </div>
                 
                   <div class="col-md-6 mb-3">
-                    <label for="managerPhone">{{'Manager Phone'|translate}}</label>
+                    <label for="managerPhone">{{'Manager Phone'|translate}}</label><br>
                     <app-phone-number
                      [disabled]="type === 'view'"
                      [initialPhoneNumber]="formGiftCard.get('managerPhone').value"
@@ -209,7 +210,12 @@
                       </ng-container>
                       <ng-template #editModeButtons>
                         <button type="button" id="cancel-btn" class="btn btn-outline-secondary me-2" (click)="onCancel()">{{ 'Cancel' | translate }}</button>
-                        <button type="submit" class="btn btn-success" [disabled]="formGiftCard.invalid">{{ (type === 'create' ? 'Add_gift_card' : 'Update_gift_card') | translate }}</button>
+                        <button type="submit" class="btn btn-success" (click)="onSubmit()">{{ (type === 'create' ? 'Add_gift_card' : 'Update_gift_card') | translate }}</button>
+                        <div id="elmLoader" class="loader" *ngIf="loading$ | async">
+                          <div class="spinner-border text-primary avatar-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                        </div>   
                       </ng-template>
                     </div>
                   </div>

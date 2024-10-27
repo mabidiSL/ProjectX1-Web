@@ -1,6 +1,6 @@
 // src/app/Couponlist.reducer.ts
 import { createReducer, on } from '@ngrx/store';
-import {  addCouponlist, addCouponlistFailure, addCouponlistSuccess, deleteCouponlist, deleteCouponlistFailure, deleteCouponlistSuccess, fetchCouponlistData, fetchCouponlistFail, fetchCouponlistSuccess, getCouponByIdSuccess, updateCouponlist, updateCouponlistFailure, updateCouponlistSuccess } from './coupon.action';
+import {  addCouponlist, addCouponlistFailure, addCouponlistSuccess, deleteCouponlist, deleteCouponlistFailure, deleteCouponlistSuccess, fetchCouponlistData, fetchCouponlistFail, fetchCouponlistSuccess, getCouponById, getCouponByIdFailure, getCouponByIdSuccess, updateCouponlist, updateCouponlistFailure, updateCouponlistSuccess } from './coupon.action';
 import { CouponListModel } from './coupon.model';
 
 export interface CouponlistState {
@@ -42,13 +42,14 @@ export const CouponListReducer = createReducer(
     error,
     loading: false
   })),
-    //Handle adding Coupon 
 
+  //Handle adding Coupon 
   on(addCouponlist, (state) => ({
     ...state,
     loading: true,
     error: null 
   })),
+
   //Handle adding Coupon success
   on(addCouponlistSuccess, (state, { newData }) => ({
     ...state,
@@ -56,17 +57,29 @@ export const CouponListReducer = createReducer(
     loading: false,
     error: null
   })),
-    //Handle adding Coupon success
+    //Handle adding Coupon failure
   on(addCouponlistFailure, (state, { error }) => ({
     ...state,
     error,
     loading: false, 
+  })),
+  //Handle getting Coupon by id
+  on(getCouponById, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
   })),
   // Handle success of getting coupon by ID and store the coupon object in the state
    on(getCouponByIdSuccess, (state, { coupon }) => ({
     ...state,
     selectedCoupon: coupon,
     error: null
+  })),
+  // Handle success of getting coupon by ID and store the coupon object in the state
+  on(getCouponByIdFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false, 
   })),
   // Handle updating Coupon list
   on(updateCouponlist, (state) => ({

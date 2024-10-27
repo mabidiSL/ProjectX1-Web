@@ -63,7 +63,7 @@ export class FormCouponComponent implements OnInit{
     private route: ActivatedRoute){
       
       this.getNavigationState();
-      this.loading$ = this.store.pipe(select(selectDataLoading)); // Selector for loading state
+      this.loading$ = this.store.pipe(select(selectDataLoading)); 
 
       this.currentRole = this.getCurrentUser()?.role.name;
       this.merchantId =  this.getCurrentUser()?.merchantId;
@@ -108,7 +108,7 @@ export class FormCouponComponent implements OnInit{
       quantity: ['', Validators.required],
       nbr_of_use:['', Validators.required],
       merchant_id: ['', Validators.required],
-      stores: [null, Validators.required],
+      stores: [[], Validators.required],
       managerName: [''],
       managerPhone: [''],
       startDateCoupon: ['', Validators.required],

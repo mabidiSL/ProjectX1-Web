@@ -19,10 +19,9 @@ export class PhoneNumberComponent {
   }
   ngAfterViewInit() {
 
-
-    const input = document.querySelector('#phoneInput') as HTMLInputElement;
+   const input = document.querySelector('#phoneInput') as HTMLInputElement;
    const iti = intlTelInput(input, {
-      initialCountry: 'sa', // you can change the initial country
+      initialCountry: 'sa', 
       //preferredCountries: ['us', 'gb', 'fr'] as any, // add preferred countries
       utilsScript: 'node_modules/intl-tel-input/build/js/utils.js' // for validation and formatting
     });
