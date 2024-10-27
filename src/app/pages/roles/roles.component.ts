@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
-import { selectDataRole, selectDataTotalItems } from 'src/app/store/Role/role-selector';
+import { selectDataLoading, selectDataRole, selectDataTotalItems } from 'src/app/store/Role/role-selector';
 import { deleteRolelist, fetchRolelistData, updateRolelist } from 'src/app/store/Role/role.actions';
 
 @Component({
@@ -20,6 +20,7 @@ export class RolesComponent  implements OnInit{
 
   roleList$: Observable<any[]>;
   totalItems$: Observable<number>;
+  loading$: Observable<any>
 
   isDropdownOpen : boolean = false;
   filteredArray: any[] = [];
@@ -38,6 +39,7 @@ export class RolesComponent  implements OnInit{
       
       this.roleList$ = this.store.pipe(select(selectDataRole)); // Observing the Role list from Role
       this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
+      this.loading$ = this.store.pipe(select(selectDataLoading));
 
     }
 

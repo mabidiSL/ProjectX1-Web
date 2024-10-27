@@ -3,7 +3,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { selectRoleById } from 'src/app/store/Role/role-selector';
+import { selectDataLoading, selectRoleById } from 'src/app/store/Role/role-selector';
 import { addRolelist, getRoleById, updateRolelist } from 'src/app/store/Role/role.actions';
 import { Modules, Permission, RoleListModel } from 'src/app/store/Role/role.models';
 
@@ -16,8 +16,13 @@ export class FormRoleComponent implements OnInit {
   
   @Input() type: string;
   roleForm: UntypedFormGroup;
+  formError: string | null = null;
+  formSubmitted = false;
+
   private destroy$ = new Subject<void>();
   Rolelist$: Observable<any[]>;
+  loading$: Observable<any>;
+
   role: RoleListModel;
   claims: { claimType: Modules; claimValue: Permission[] }[] = [];
 
@@ -37,7 +42,8 @@ export class FormRoleComponent implements OnInit {
     private route: ActivatedRoute, 
     private router: Router,
     public store: Store) {
-      
+     
+      this.loading$ = this.store.pipe(select(selectDataLoading)); 
       this.roleForm = this.formBuilder.group({
         id:[''],
         name: ['', Validators.required],
@@ -107,14 +113,17 @@ export class FormRoleComponent implements OnInit {
    * On submit form
    */
   onSubmit() {
-    console.log('Form status:', this.roleForm.status);
-    console.log('Form errors:', this.roleForm.errors);
-    if (this.roleForm.valid) {
-      console.log('i am on onSubmit');
-      console.log(this.roleForm.value);
-      console.log('Form status:', this.roleForm.status);
-      console.log('Form errors:', this.roleForm.errors);
-          
+    this.formSubmitted = true;
+
+    if (this.roleForm.invalid) {
+      this.formError = 'Please complete all required fields.';
+      Object.keys(this.roleForm.controls).forEach(control => {
+        this.roleForm.get(control).markAsTouched();
+      });
+      this.focusOnFirstInvalid();
+      return;
+    }
+    this.formError = null;
       const newData = this.roleForm.value;
       
        if(!this.isEditing)
@@ -128,13 +137,27 @@ export class FormRoleComponent implements OnInit {
           console.log('updating role');
           this.store.dispatch(updateRolelist({ updatedData: newData }));
         }
-    } else {
-      // Form is invalid, display error messages
-      console.log('Form is invalid');
-      this.roleForm.markAllAsTouched();
+   
+  }
+  private focusOnFirstInvalid() {
+    const firstInvalidControl = this.getFirstInvalidControl();
+    if (firstInvalidControl) {
+      firstInvalidControl.focus();
     }
   }
-  
+
+  private getFirstInvalidControl(): HTMLInputElement | null {
+    const controls = this.roleForm.controls;
+    for (const key in controls) {
+      if (controls[key].invalid) {
+        const inputElement = document.getElementById(key) as HTMLInputElement;
+        if (inputElement) {
+          return inputElement;
+        }
+      }
+    }
+    return null;
+  }
   hasPermission(module: string, permission: string): boolean {
     const moduleEnum = Modules[module as keyof typeof Modules];
     const permissionEnum = Permission[permission as keyof typeof Permission];

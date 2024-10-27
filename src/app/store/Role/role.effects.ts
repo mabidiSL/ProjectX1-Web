@@ -16,11 +16,9 @@ import {
     deleteRolelistFailure,
     deleteRolelistSuccess,
     deleteRolelist,
-    updateRoleStatus,
-    updateRoleStatusSuccess,
-    updateRoleStatusFailure,
     getRoleById,
-    getRoleByIdSuccess
+    getRoleByIdSuccess,
+    getRoleByIdFailure
 } from './role.actions';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
@@ -38,9 +36,11 @@ export class RolesEffects {
                 this.CrudService.fetchData('/roles/me',{ limit: itemsPerPage, page: page,status: status}).pipe(
                     tap((response : any) => console.log('Fetched data:', response.result)), 
                     map((response) => fetchRolelistSuccess({ RoleListdata : response.result })),
-                    catchError((error) =>
-                        of(fetchRolelistFail({ error }))
-                    )
+                    catchError((error) =>{
+                      this.toastr.error('An error occurred while fetching the Role list. Please try again later.'); 
+                      console.error('Fetch error:', error); 
+                      return of(fetchRolelistFail({ error: 'Error fetching data' })); 
+                    })
                 )
             ),
         ),
@@ -58,26 +58,15 @@ export class RolesEffects {
                         // Dispatch the action to fetch the updated Role list after adding a new Role
                         return addRolelistSuccess({newData});
                       }),
-                    catchError((error) => of(addRolelistFailure({ error })))
-                )
+                      catchError((error) => {
+                        const errorMessage = this.getErrorMessage(error); 
+                        this.toastr.error(errorMessage);
+                        return of(addRolelistFailure({ error: error.message })); // Dispatch failure action
+                      })                )
             )
         )
     );
-    updateStatus$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(updateRoleStatus),
-            mergeMap(({ RoleId, status }) =>
-                this.CrudService.addData('/api/update-status', { RoleId, status }).pipe(
-                    map((updatedData) => {
-                        this.toastr.success('The Role has been updated successfully.');
-                        return updateRoleStatusSuccess({ updatedData })}),
-                    catchError((error) => of(updateRoleStatusFailure({ error })))
-                )
-            )
-        )
-    );
-
-    updateData$ = createEffect(() =>
+   updateData$ = createEffect(() =>
         this.actions$.pipe(
           ofType(updateRolelist),
           mergeMap(({ updatedData }) =>
@@ -87,8 +76,11 @@ export class RolesEffects {
                 this.toastr.success('The Role has been updated successfully.');
                 return updateRolelistSuccess({ updatedData }); // Make sure to return the action
               }),
-              catchError((error) => of(updateRolelistFailure({ error }))) // Catch errors and return the failure action
-            )
+              catchError((error) =>{
+                const errorMessage = this.getErrorMessage(error); 
+                this.toastr.error(errorMessage);
+                return of(updateRolelistFailure({ error }));
+              })             )
           )
         )
       );
@@ -108,9 +100,8 @@ export class RolesEffects {
               return getRoleByIdSuccess({ Role });
             } else {
               console.log('Role NULL');
-              // Handle the case where the Role is not found, if needed
-              // For example, you might want to dispatch a failure action or return an empty Role
-              return getRoleByIdSuccess({ Role: null }); // or handle it differently
+              this.toastr.error('Role not found.'); // Show error notification
+              return getRoleByIdFailure({ error: 'Role not found' });
             }
           })
         );
@@ -130,8 +121,9 @@ export class RolesEffects {
                             this.toastr.success('The Role has been deleted successfully.');
                             return deleteRolelistSuccess({ RoleId });
                           }),
-                    catchError((error) => {return  of(deleteRolelistFailure({ error }))})
-                )
+                          catchError((error) => {
+                            this.toastr.error('Failed to delete the Role. Please try again.');
+                            return  of(deleteRolelistFailure({ error: error.message }))})                )
             )
         )
     );
@@ -144,5 +136,14 @@ export class RolesEffects {
         private store: Store,
         public toastr:ToastrService
     ) { }
-
+    private getErrorMessage(error: any): string {
+      // Implement logic to convert backend error to user-friendly message
+      if (error.status === 400) {
+        return 'Invalid Role data. Please check your inputs and try again.';
+      } else if (error.status === 409) {
+        return 'A Role with this code already exists.';
+      } else {
+        return 'An unexpected error occurred. Please try again later.';
+      }
+    }
 }
