@@ -1,6 +1,6 @@
 // src/app/Storelist.reducer.ts
 import { createReducer, on } from '@ngrx/store';
-import {  addStorelistSuccess, deleteStorelistFailure, deleteStorelistSuccess, fetchStorelistData, fetchStorelistFail, fetchStorelistSuccess, getStoreByIdSuccess, updateStorelistSuccess, updateStoreStatusSuccess } from './store.action';
+import {  addStorelist, addStorelistFailure, addStorelistSuccess, deleteStorelist, deleteStorelistFailure, deleteStorelistSuccess, fetchStorelistData, fetchStorelistFail, fetchStorelistSuccess, getStoreById, getStoreByIdFailure, getStoreByIdSuccess, updateStorelist, updateStorelistFailure, updateStorelistSuccess } from './store.action';
 
 export interface StorelistState {
   StoreListdata: any[];
@@ -39,27 +39,49 @@ export const StoreListReducer = createReducer(
     error,
     loading: false
   })),
+
+
+  //Handle adding Store 
+  on(addStorelist, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
+  })),
   //Handle adding Store success
   on(addStorelistSuccess, (state, { newData }) => ({
     ...state,
     StoreListdata: [newData,...state.StoreListdata ],
     loading: false
   })),
-  // Handle success of getting Employee by ID and store the Employee object in the state
+   //Handle adding Store failure
+   on(addStorelistFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false, 
+  })),
+//Handle getting Store by id
+on(getStoreById, (state) => ({
+  ...state,
+  loading: true,
+  error: null 
+})),
   on(getStoreByIdSuccess, (state, { Store }) => ({
     ...state,
     selectedStore: Store
   })),
-  // Handle updating Store list
-  on(updateStoreStatusSuccess, (state, { updatedData }) => {
-    return {
-      ...state,
-      StoreListdata: state.StoreListdata.map(item =>
-        item.id === updatedData.id ? { ...item, status: updatedData.status } : item
-      )
-    };
-  }),
-// Handle updating Store status
+   // Handle success of getting Store by ID and store the Store object in the state
+   on(getStoreByIdFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false, 
+  })),
+ // Handle updating Store list
+ on(updateStorelist, (state) => ({
+  ...state,
+  loading: true,
+  error: null 
+})),
+// Handle updating Store Success
   on(updateStorelistSuccess, (state, { updatedData }) => {
    const StoreListUpdated = state.StoreListdata.map(item => item.id === updatedData.id ? updatedData : item );
    console.log('StoreListdata after update:', StoreListUpdated);
@@ -68,6 +90,18 @@ export const StoreListReducer = createReducer(
       StoreListdata: StoreListUpdated
     };
   }),
+  // Handle updating Store failure
+  on(updateStorelistFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false 
+  })),
+  // Handle deleting Store 
+  on(deleteStorelist, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
+  })),
   // Handle the success of deleting a Store
   on(deleteStorelistSuccess, (state, { storeId }) => {
     console.log('Deleting Store with ID:', storeId);

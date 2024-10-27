@@ -6,29 +6,15 @@ export const fetchStorelistData = createAction('[Data] fetch Storelist', props<{
 export const fetchStorelistSuccess = createAction('[Data] fetch Storelist success', props<{ StoreListdata: any /*StoreListModel[]*/ }>())
 export const fetchStorelistFail = createAction('[Data fetch Storelist failed]', props<{ error: string }>())
 
-
-// Update Data
-export const updateStoreStatus = createAction(
-    '[Data] Update Store status',
-    props<{ userId: string, status: string }>()
-    //props<{ updatedData: StoreApprovalListModel }>()
-);
-export const updateStoreStatusSuccess = createAction(
-    '[Data] Update Store Status Success',
-    props<{ updatedData: any }>()
-);
-export const updateStoreStatusFailure = createAction(
-    '[Data] Update Store Status Failure',
-    props<{ error: string }>()
-);
-
 // Add Data
 export const addStorelist = createAction('[Data] Add Storelist',  props<{ newData: StoreListModel }>());
 export const addStorelistSuccess = createAction('[Data] Add Storelist Success', props<{ newData: any }>());
 export const addStorelistFailure = createAction('[Data] Add Storelist Failure', props<{ error: string }>());
+
 //get Store by ID
 export const getStoreById = createAction('[Data] get Store', props<{ StoreId: string }>());
 export const getStoreByIdSuccess = createAction('[Data] get Store success', props<{ Store: any }>());
+export const getStoreByIdFailure = createAction('[Data] get Store Failure', props<{ error: string }>());
 
 // Update Data
 export const updateStorelist = createAction(

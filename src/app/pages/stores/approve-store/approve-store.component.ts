@@ -4,7 +4,7 @@ import { select, Store } from '@ngrx/store';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
-import { selectData, selectDataTotalItems } from 'src/app/store/store/store-selector';
+import { selectData, selectDataLoading, selectDataTotalItems } from 'src/app/store/store/store-selector';
 import { fetchStorelistData, updateStorelist } from 'src/app/store/store/store.action';
 
 
@@ -22,6 +22,7 @@ public Permission = Permission;
 
 storeApprovalList$: Observable<any[]>;
 totalItems$: Observable<number>;
+loading$: Observable<any>
 
 isDropdownOpen : boolean = false;
 filteredArray: any[] = [];
@@ -38,7 +39,8 @@ columns : any[]= [
 ];
   constructor(public toastr:ToastrService,  public store: Store) {
     this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 10, status: 'pending', merchant_id:'' }));
-    
+    this.loading$ = this.store.pipe(select(selectDataLoading));
+
   }
 
   ngOnInit() {

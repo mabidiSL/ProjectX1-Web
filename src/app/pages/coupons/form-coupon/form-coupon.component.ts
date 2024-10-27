@@ -53,7 +53,6 @@ export class FormCouponComponent implements OnInit{
   isEditing = false;
   isLoading = false;
 
-  @ViewChild('formElement') formElement: ElementRef;
 
   constructor(
     private store: Store, 
@@ -242,11 +241,7 @@ onChangeMerchantSelection(event: any){
       {
          delete newData.codeCoupon;
          delete newData.id;
-         
-          //Dispatch Action
-         // console.log(newData);
-          //console.log(newData.stores);
-          this.store.dispatch(addCouponlist({ newData }));
+         this.store.dispatch(addCouponlist({ newData }));
       }
       else{
         this.store.dispatch(updateCouponlist({ updatedData: newData }));

@@ -4,7 +4,7 @@ import { select, Store } from '@ngrx/store';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { deleteStorelist, fetchStorelistData, updateStorelist } from 'src/app/store/store/store.action';
-import { selectData, selectDataTotalItems } from 'src/app/store/store/store-selector';
+import { selectData, selectDataLoading, selectDataTotalItems } from 'src/app/store/store/store-selector';
 
 /**
  * Stores component
@@ -24,6 +24,8 @@ export class StoresComponent implements OnInit {
 
   storeList$: Observable<any[]>;
   totalItems$: Observable<number>;
+  loading$: Observable<any>
+
   isDropdownOpen : boolean = false;
   filteredArray: any[] = [];
   originalArray: any[] = [];
@@ -42,9 +44,10 @@ export class StoresComponent implements OnInit {
   constructor(public store: Store) {
       
       this.storeList$ = this.store.pipe(select(selectData)); // Observing the Store list from store
-      //Observing total Pages
       this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
-  }
+      this.loading$ = this.store.pipe(select(selectDataLoading));
+
+    }
 
   ngOnInit() {
           

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, EMPTY, filter, map, switchMap } from 'rxjs';
@@ -6,7 +6,7 @@ import { _User } from 'src/app/store/Authentication/auth.models';
 
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { selectStoreById } from 'src/app/store/store/store-selector';
+import { selectDataLoading, selectStoreById } from 'src/app/store/store/store-selector';
 import { addStorelist, getStoreById, updateStorelist } from 'src/app/store/store/store.action';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { fetchMerchantlistData } from 'src/app/store/merchantsList/merchantlist1.action';
@@ -28,15 +28,19 @@ export class FormStoreComponent implements OnInit {
   
   @Input() type: string;
   storeForm: UntypedFormGroup;
+  formError: string | null = null;
+  formSubmitted = false;
+  
   private destroy$ = new Subject<void>();
   
-  private currentUserSubject: BehaviorSubject<_User>;
   public currentUser: Observable<_User>;
 
   merchantlist$: Observable<any[]>;
   countrylist$: Observable<any[]>;
   arealist$: Observable<any[]>;
   citylist$: Observable<any[]>;
+  loading$: Observable<any>
+
   merchantList: any[] = [];
 
   merchantId: number =  null;
@@ -70,42 +74,45 @@ export class FormStoreComponent implements OnInit {
     public store: Store) {
 
       this.getNavigationState();
+      this.loading$ = this.store.pipe(select(selectDataLoading));
+
+      this.currentRole = this.getCurrentUser()?.role.name;
+      this.merchantId =  this.getCurrentUser()?.merchantId;
+      console.log(this.merchantId);
+
       this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 10 , status: 'active'}));
       this.store.dispatch(fetchCountrylistData({ page: 1, itemsPerPage: 10 , status: 'active'}));
       this.store.dispatch(fetchArealistData({ page: 1, itemsPerPage: 10 , status: 'active'}));
       this.store.dispatch(fetchCitylistData({ page: 1, itemsPerPage: 10 , status: 'active'}));
       
-      this.currentUserSubject = new BehaviorSubject<_User>(JSON.parse(localStorage.getItem('currentUser')));
-      this.currentUser = this.currentUserSubject.asObservable();
-      this.currentUser.subscribe(user => {
-        if (user) {
-        this.currentRole = user.role.name;
-        this.merchantId =  user.merchantId;
-        console.log('ID MERCHANT',this.merchantId);
-      }});
-       
-      
-     
-      
-      this.storeForm = this.formBuilder.group({
-      
-        id: [''],
-        name: ['', Validators.required],
-        description: [''],
-        phone: ['', Validators.required ],
-        merchant_id: ['', Validators.required],
-        city_id:['', Validators.required],
-        area_id:['',  Validators.required], 
-        images:[null],
+      this.initForm();
 
-          
-      });
+      
      }
   // set the currenr year
   year: number = new Date().getFullYear();
    
+  private initForm() {
+    this.storeForm = this.formBuilder.group({
+      
+      id: [''],
+      name: ['', Validators.required],
+      description: [''],
+      phone: ['', Validators.required ],
+      merchant_id: ['', Validators.required],
+      city_id:['', Validators.required],
+      area_id:['',  Validators.required], 
+      images:[null],
 
-
+        
+    });
+  }
+  private getCurrentUser(): _User {
+    // Replace with your actual logic to retrieve the user role
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    console.log(currentUser);
+    return currentUser;
+}
   ngOnInit() {
     
       this.merchantlist$ = this.store.select(selectDataMerchant);
@@ -267,13 +274,17 @@ private getNavigationState(){
    * On submit form
    */
   onSubmit() {
-    console.log('Form status:', this.storeForm.status);
-    console.log('Form errors:', this.storeForm.errors);
-    if (this.storeForm.valid) {
-      console.log('i am on onSubmit');
-      console.log(this.storeForm.value);
-      console.log('Form status:', this.storeForm.status);
-      console.log('Form errors:', this.storeForm.errors);
+    this.formSubmitted = true;
+
+    if (this.storeForm.invalid) {
+      this.formError = 'Please complete all required fields.';
+      Object.keys(this.storeForm.controls).forEach(control => {
+        this.storeForm.get(control).markAsTouched();
+      });
+      this.focusOnFirstInvalid();
+      return;
+    }
+    this.formError = null;
           
       const newData = this.storeForm.value;
       delete newData.area_id;
@@ -304,13 +315,27 @@ private getNavigationState(){
           delete newData.area_id;
           this.store.dispatch(updateStorelist({ updatedData: newData }));
         }
-    } else {
-      // Form is invalid, display error messages
-      console.log('Form is invalid');
-      this.storeForm.markAllAsTouched();
+    
+  }
+  private focusOnFirstInvalid() {
+    const firstInvalidControl = this.getFirstInvalidControl();
+    if (firstInvalidControl) {
+      firstInvalidControl.focus();
     }
   }
-  
+
+  private getFirstInvalidControl(): HTMLInputElement | null {
+    const controls = this.storeForm.controls;
+    for (const key in controls) {
+      if (controls[key].invalid) {
+        const inputElement = document.getElementById(key) as HTMLInputElement;
+        if (inputElement) {
+          return inputElement;
+        }
+      }
+    }
+    return null;
+  }
   
   /**
    * File Upload Image
