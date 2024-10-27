@@ -3,6 +3,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
+import { _User } from 'src/app/store/Authentication/auth.models';
 import { selectDataLoading, selectRoleById } from 'src/app/store/Role/role-selector';
 import { addRolelist, getRoleById, updateRolelist } from 'src/app/store/Role/role.actions';
 import { Modules, Permission, RoleListModel } from 'src/app/store/Role/role.models';
@@ -34,6 +35,11 @@ export class FormRoleComponent implements OnInit {
 
   public Permission: Permission;
   public Module: Modules;
+  currentRole: string = '';
+  merchantClaims: any = null;
+  moduleKeys: any[] = [];
+  permissionKeys: any[] = [];
+
 
 
 
@@ -44,6 +50,18 @@ export class FormRoleComponent implements OnInit {
     public store: Store) {
      
       this.loading$ = this.store.pipe(select(selectDataLoading)); 
+      this.currentRole = this.getCurrentUser()?.role.name;
+      if(this.currentRole !== 'Admin'){
+        //Modify moduleskeys and permissions key when a merchant or an employee is logged in
+         this.merchantClaims = this.getCurrentUser()?.role.claims;
+         this.mapClaimsToEnums(this.merchantClaims);
+        }
+      else
+      {
+        // Extract the keys from Modules and Permissions enums when its an admin logged
+        this.moduleKeys = Object.keys(Modules).filter(key => isNaN(Number(key))); // Get the module names
+        this.permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // Get the permission names
+      }
       this.roleForm = this.formBuilder.group({
         id:[''],
         name: ['', Validators.required],
@@ -51,12 +69,31 @@ export class FormRoleComponent implements OnInit {
         
       });
      }
-  // set the currenr year
-  year: number = new Date().getFullYear();
-   
- // Extract the keys from Modules and Permissions enums
- moduleKeys = Object.keys(Modules).filter(key => isNaN(Number(key))); // Get the module names
- permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // Get the permission names
+     mapClaimsToEnums(claims: any[]) {
+      
+      claims.forEach(claim => {
+          if (claim.claimType in Modules) {
+              this.moduleKeys.push(Modules[claim.claimType]); // Get module name
+              claim.claimValue.forEach(value => {
+                  if (value in Permission) {
+                      console.log(value);
+                      if(!this.permissionKeys.includes(Permission[value]))
+                        this.permissionKeys.push(Permission[value]); // Get permission name
+                  }
+              });
+          }
+      });
+      console.log(this.moduleKeys);
+      console.log(this.permissionKeys);
+  
+  }
+     private getCurrentUser(): _User {
+      // Replace with your actual logic to retrieve the user role
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      console.log(currentUser);
+      return currentUser;
+  } 
+ 
 
   ngOnInit() {
         
