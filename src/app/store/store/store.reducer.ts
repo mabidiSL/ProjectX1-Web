@@ -67,7 +67,9 @@ on(getStoreById, (state) => ({
 })),
   on(getStoreByIdSuccess, (state, { Store }) => ({
     ...state,
-    selectedStore: Store
+    selectedStore: Store,
+    loading: false,
+    error: null 
   })),
    // Handle success of getting Store by ID and store the Store object in the state
    on(getStoreByIdFailure, (state, { error }) => ({
@@ -87,7 +89,9 @@ on(getStoreById, (state) => ({
    console.log('StoreListdata after update:', StoreListUpdated);
    return {
       ...state,
-      StoreListdata: StoreListUpdated
+      StoreListdata: StoreListUpdated,
+      loading: false,
+      error: null 
     };
   }),
   // Handle updating Store failure
@@ -104,13 +108,13 @@ on(getStoreById, (state) => ({
   })),
   // Handle the success of deleting a Store
   on(deleteStorelistSuccess, (state, { storeId }) => {
-    console.log('Deleting Store with ID:', storeId);
-    console.log('StoreListdata before deletion:', state.StoreListdata);
+    
     const updatedStoreList = state.StoreListdata.filter(Store => Store.id !== storeId);
-    console.log('StoreListdata after deletion:', updatedStoreList);
     return { 
     ...state,
-    StoreListdata: updatedStoreList};
+    StoreListdata: updatedStoreList,
+    loading: false,
+    error: null };
   }),
   // Handle failure of deleting a Store
   on(deleteStorelistFailure, (state, { error }) => ({
