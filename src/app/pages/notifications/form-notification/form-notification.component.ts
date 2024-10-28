@@ -174,5 +174,8 @@ parseToCronExpression(date : any): any{
     this.notifForm.reset();
     this.router.navigateByUrl('/private/notifications');
   }
+  toggleViewMode(){
+    this.router.navigateByUrl('/private/notifications');
+}
 
 }

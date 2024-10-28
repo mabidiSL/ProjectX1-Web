@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrl: './view-notification.component.css'
 })
 export class ViewNotificationComponent {
+  breadCrumbItems: Array<{}>;
 
+  ngOnInit() {
+    console.log('i am in view notification');
+    this.breadCrumbItems = [{ label: 'Notifications' }, { label: 'View Notification', active: true }];
+  }
 }
