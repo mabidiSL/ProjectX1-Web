@@ -12,6 +12,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { ViewNotificationComponent } from './view-notification/view-notification.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     CreateNotificationComponent,
     EditNotificationComponent,
     FormNotificationComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    ViewNotificationComponent
   ],
   imports: [
     CommonModule,

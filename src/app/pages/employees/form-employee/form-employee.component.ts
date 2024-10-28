@@ -141,6 +141,26 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
    
     
   }
+  getCountryName(id: any){
+    this.arealist$.subscribe(
+      areas => 
+        this.filteredAreas = areas.filter(c =>c.country_id == id )
+    );
+    return this.countrylist.find(country => country.id === id)?.name ;
+  }
+  getAreaName(id: any){
+    this.citylist$.subscribe(
+      cities => 
+        this.filteredCities = cities.filter(c =>c.area_id == id )
+    );
+    return this.filteredAreas.find(area => area.id === id)?.name ;
+  }
+  getCityName(id: any){
+    return this.filteredCities.find(city => city.id === id)?.name ;
+  }
+  getRoleName(id: any){
+    return this.rolelist.find(role => role.id === id)?.name ;
+  }
   onChangeCountrySelection(event: any){
     const country = event.target.value;
     console.log(country);
@@ -273,5 +293,8 @@ togglePermission(module: string, permission: string, event: any): void {
     this.employeeForm.reset();
     this.router.navigateByUrl('/private/employees');
   }
+  toggleViewMode(){
+    this.router.navigateByUrl('/private/employees');
+}
 
 }

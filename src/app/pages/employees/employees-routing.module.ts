@@ -5,6 +5,7 @@ import { RoleGuard } from 'src/app/core/guards/role.guard';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { CreateEmployeeComponent } from './create-employee/create-employee.component';
 import { EditEmployeeComponent } from './edit-employee/edit-employee.component';
+import { ViewNotificationComponent } from '../notifications/view-notification/view-notification.component';
 
 const routes: Routes = [
   {
@@ -34,14 +35,14 @@ const routes: Routes = [
    }
 },
 {
-  path: "approve",
-  component: CreateEmployeeComponent,
+  path: "view/:id",
+  component: ViewNotificationComponent,
   canActivate: [RoleGuard],
   data: {
-    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Employees, claimValue:[Permission.ViewAll,Permission.Approve,Permission.Decline]}]
+  claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Employees, claimValue:[Permission.ViewAll,Permission.View]}]
 
-  }
-},];
+   }
+}];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

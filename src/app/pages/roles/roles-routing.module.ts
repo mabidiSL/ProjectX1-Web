@@ -5,6 +5,7 @@ import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { RolesComponent } from './roles.component';
 import { CreateRoleComponent } from './create-role/create-role.component';
 import { EditRoleComponent } from './edit-role/edit-role.component';
+import { ViewRoleComponent } from './view-role/view-role.component';
 
 const routes: Routes = [
   {
@@ -33,7 +34,16 @@ const routes: Routes = [
     claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Role, claimValue:[Permission.ViewAll,Permission.Update]}]
   
      }
-  }
+  },
+  {
+    path: "view/:id",
+    component: ViewRoleComponent,
+    canActivate: [RoleGuard],
+    data: {
+    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Role, claimValue:[Permission.ViewAll,Permission.View]}]
+  
+     }
+  },
   
 ];
 @NgModule({

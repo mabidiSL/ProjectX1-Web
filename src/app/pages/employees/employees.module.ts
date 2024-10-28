@@ -21,6 +21,7 @@ import { CreateEmployeeComponent } from './create-employee/create-employee.compo
 import { EditEmployeeComponent } from './edit-employee/edit-employee.component';
 import { FormEmployeeComponent } from './form-employee/form-employee.component';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { ViewEmployeeComponent } from './view-employee/view-employee.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
     EmployeesComponent,
     CreateEmployeeComponent,
     EditEmployeeComponent,
-    FormEmployeeComponent
+    FormEmployeeComponent,
+    ViewEmployeeComponent
   ],
   imports: [
     CommonModule,

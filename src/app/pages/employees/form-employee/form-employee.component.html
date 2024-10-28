@@ -12,8 +12,8 @@
                       <div class="row">
                           <div class="col-md-6 mb-3">
                             <div class="form-group ">
-                               <label for="username" >{{'Username' | translate}} <span class="text-danger">*</span></label>
-                                <input type="text" id="username" class="form-control" formControlName="username" required>
+                               <label for="username" >{{'Username' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                                <input type="text" id="username" [readonly]="type==='view'"class="form-control" formControlName="username" required>
                                 <div *ngIf="employeeForm.get('username').touched && employeeForm.get('username').invalid" class="invalid-feedback d-block">
                                     <span *ngIf="employeeForm.get('username').errors?.['required']">{{'Username is required'| translate}}.</span>
                                   </div>
@@ -21,8 +21,8 @@
                           </div>
                           <div class="col-md-6 mb-3">
                             <div class="form-group ">
-                              <label for="email">{{'Email'| translate}} <span class="text-danger">*</span></label>
-                              <input type="email" id="email" class="form-control" formControlName="email" required>
+                              <label for="email">{{'Email'| translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                              <input type="email" id="email" class="form-control" [readonly]="type==='view'" formControlName="email" required>
                               <div *ngIf="employeeForm.get('email').touched && employeeForm.get('email').invalid" class="invalid-feedback d-block">
                                 <span *ngIf="employeeForm.get('email').errors?.['required']">{{'Email is required'| translate}}.</span>
                               </div>
@@ -43,7 +43,7 @@
                             </div>
                             <!-- <div class="col-md-6 mb-3">
                                 <div class="form-group ">
-                                <label for="confpassword" >Confirm password <span class="text-danger">*</span></label>
+                                <label for="confpassword" >Confirm password <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                                 <input type="password" id="confpassword" class="form-control" formControlName="confpassword" required>
                                  <button class="btn btn-light" type="button" id="password-addon2">
                                   <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()"></i>
@@ -64,8 +64,9 @@
                          
                             <div class="col-md-6 mb-3">
                               <div class="form-group">
-                                <label for="phone" >{{'Phone Number'| translate}} <span class="text-danger">*</span></label><br>
+                                <label for="phone" >{{'Phone Number'| translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label><br>
                                <app-phone-number
+                               [disabled]="type==='view'"
                                [initialPhoneNumber]="employeeForm.get('phone').value"
                                 *ngIf="employeeForm" 
                                 (phoneNumberChanged)="onPhoneNumberChanged($event)" >
@@ -78,7 +79,13 @@
                             <div class="col-md-6 mb-3">
                               <div class="form-group">
                                 <label for="country_id" >Country</label>
-                                <select  id="country_id"class="form-control"  formControlName="country_id" (change)="onChangeCountrySelection($event)" >
+                                <input *ngIf="type === 'view'"
+                              type="text" 
+                              class="form-control" 
+                              [value]="getCountryName(employeeForm.get('country_id').value)" 
+                              readonly 
+                            />
+                           <select [hidden]="type === 'view'" id="country_id"class="form-control"  formControlName="country_id" (change)="onChangeCountrySelection($event)" >
                                   <option value="" disabled selected>{{'Select_the_Country' | translate}}</option>
                                   <option *ngFor="let country of countrylist" [value]="country.id">
                                    {{ country.name }}
@@ -90,7 +97,13 @@
                               <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                   <label for="area_id">Area</label>
-                                  <select  id="area_id"class="form-control"  formControlName="area_id" (change)="onChangeAreaSelection($event)" >
+                                  <input *ngIf="type === 'view'"
+                                  type="text" 
+                                  class="form-control" 
+                                  [value]="getAreaName(employeeForm.get('area_id').value)" 
+                                  readonly 
+                                />
+                               <select [hidden]="type === 'view'" id="area_id"class="form-control"  formControlName="area_id" (change)="onChangeAreaSelection($event)" >
                                     <option value="" disabled selected>{{'Select_the_Area' | translate}}</option>
                                     <option *ngFor="let area of filteredAreas" [value]="area.id">
                                      {{ area.name }}
@@ -102,7 +115,13 @@
                             <div class="col-md-6 mb-3">
                               <div class="form-group ">
                                 <label for="city_id" >City</label>
-                                <select  id="city_id"class="form-control"  formControlName="city_id"  >
+                                <input *ngIf="type === 'view'"
+                                type="text" 
+                                class="form-control" 
+                                [value]="getCityName(employeeForm.get('city_id').value)" 
+                                readonly 
+                              />
+                             <select [hidden]="type === 'view'" id="city_id"class="form-control"  formControlName="city_id"  >
                                   <option value="" disabled selected>{{'Select_the_City' | translate}}</option>
                                   <option *ngFor="let city of filteredCities" [value]="city.id">
                                    {{ city.name }}
@@ -113,21 +132,23 @@
                         
                               <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                  <label for="bankAccountNumber">{{'Bank_Account_Number' | translate}}<span class="text-danger">*</span></label>
-                                  <input type="text" id="bankAccountNumber" class="form-control" formControlName="bankAccountNumber">
-                                  <div *ngIf="employeeForm.get('bankAccountNumber').touched && employeeForm.get('bankAccountNumber').invalid" class="invalid-feedback d-block">
+                                  <label for="bankAccountNumber">{{'Bank_Account_Number' | translate}}</label>
+                                  <input type="text" id="bankAccountNumber" class="form-control" formControlName="bankAccountNumber" [readonly]="type==='view'">
+                                  <!-- <div *ngIf="employeeForm.get('bankAccountNumber').touched && employeeForm.get('bankAccountNumber').invalid" class="invalid-feedback d-block">
                                     <span *ngIf="employeeForm.get('bankAccountNumber').errors?.['required']">{{'Bank_Account_is_required'| translate}}.</span>
-                                  </div> 
+                                  </div>  -->
                                 </div>
                               </div>
                               <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                   <label for="bankName">{{'Bank_Name' | translate}}</label>
-                                  <select class="form-control" id="bankName" formControlName="bankName">
+                                  <input type="text" id="bankName" class="form-control" formControlName="bankName" [readonly]="type==='view'">
+
+                                  <!-- <select class="form-control" id="bankName" formControlName="bankName">
                                     <option *ngFor="let bank of banks" [value]="bank.id">
                                       {{ bank.name }}
                                     </option>
-                               </select>        
+                               </select>         -->
                                   <!-- <div *ngIf="employeeForm.get('bankName').touched && employeeForm.get('bankName').invalid" class="invalid-feedback d-block">
                                     <span *ngIf="employeeForm.get('bankName').errors?.['required']">{{'Bank_Name_is_required'| translate}}.</span>
                                   </div>  -->
@@ -135,8 +156,14 @@
                               </div>
                               <div class="col-md-6 mb-3">
                                 <div class="form-group ">
-                                  <label for="role_id" >{{'Role'| translate}}<span class="text-danger">*</span></label>
-                                  <select class="form-control" id="role_id" formControlName="role_id">
+                                  <label for="role_id" >{{'Role'| translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                                  <input *ngIf="type === 'view'"
+                                  type="text" 
+                                  class="form-control" 
+                                  [value]="getRoleName(employeeForm.get('role_id').value)" 
+                                  readonly 
+                                />
+                               <select [hidden]="type === 'view'"class="form-control" id="role_id" formControlName="role_id">
                                     <option value="" disabled selected>{{'Select_the_Role' | translate}}</option>
                                     <option *ngFor="let role of rolelist" [value]="role.id">
                                      {{ role.name }}
@@ -153,6 +180,10 @@
                        </div>
                         <div class="col-12  mt-4">
                         <div class="d-flex justify-content-end ">
+                          <ng-container *ngIf="type =='view'; else editModeButtons">
+                            <button type="button" class="btn btn-success" (click)="toggleViewMode()">{{ 'Go_Back' | translate }}</button>
+                          </ng-container>
+                        <ng-template #editModeButtons>
                         <button type="button" class="btn btn-secondary me-2" (click)="onCancel()">{{'Cancel' | translate}}</button>
                         <button type="submit" class="btn btn-primary" (click)="onSubmit()">{{ (type == 'create' ? 'Add_employee' : 'Update_employee') | translate }}</button>
                         <div id="elmLoader" class="loader" *ngIf="loading$ | async">
@@ -160,7 +191,9 @@
                             <span class="visually-hidden">Loading...</span>
                           </div>
                         </div>    
+                      </ng-template> 
                       </div>
+                      
                         </div>
                       </form>
                 </div>

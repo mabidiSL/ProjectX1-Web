@@ -5,6 +5,7 @@ import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { CreateNotificationComponent } from './create-notification/create-notification.component';
 import { EditNotificationComponent } from './edit-notification/edit-notification.component';
 import { NotificationsComponent } from './notifications.component';
+import { ViewNotificationComponent } from './view-notification/view-notification.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,15 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: {
     claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Notification_Management, claimValue:[Permission.ViewAll,Permission.Update]}]
+  
+     }
+  },
+  {
+    path: "view/:id",
+    component: ViewNotificationComponent,
+    canActivate: [RoleGuard],
+    data: {
+    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Notification_Management, claimValue:[Permission.ViewAll,Permission.View]}]
   
      }
   }

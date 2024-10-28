@@ -12,13 +12,15 @@ import { TranslateModule } from '@ngx-translate/core';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { ViewRoleComponent } from './view-role/view-role.component';
 
 @NgModule({
   declarations: [
     RolesComponent,
     CreateRoleComponent,
     EditRoleComponent,
-    FormRoleComponent
+    FormRoleComponent,
+    ViewRoleComponent
   ],
   imports: [
     CommonModule,
