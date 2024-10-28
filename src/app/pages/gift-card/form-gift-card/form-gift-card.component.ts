@@ -118,7 +118,7 @@ export class FormGiftCardComponent implements OnInit{
       categoryOrderAppearance: [''],
       giftCardImage: ['',Validators.required],
       giftCardValue: ['',Validators.required],
-      discount:['']
+      discount:[]
       
 
     }, { validators: this.dateValidator });

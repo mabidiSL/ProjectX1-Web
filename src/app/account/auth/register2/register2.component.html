@@ -40,7 +40,7 @@
                     <div class="col-md-6 mb-3">
                       <div class="form-group ">
                         <label for="email">Email <span class="text-danger">*</span></label>
-                        <input type="email" id="email" class="form-control" formControlName="email"placeholder="{{ 'Enter email address' | translate }}" required>
+                        <input type="email" id="email" class="form-control" formControlName="email" placeholder="{{ 'Enter email address' | translate }}" required>
                         <div *ngIf="signupForm.get('email').touched && signupForm.get('email').invalid" class="invalid-feedback d-block">
                           <span *ngIf="signupForm.get('email').errors?.['required']">{{'Email is required'| translate}}.</span>
                         </div>
@@ -62,25 +62,29 @@
                       <div class="col-md-6 mb-3">
                           <div class="form-group ">
                           <label for="password" >Password <span class="text-danger">*</span></label>
-                          <input type="password" id="password" class="form-control" placeholder="{{ 'Enter password' | translate }}" formControlName="password" required>
-                          <!-- <button class="btn btn-light " type="button" id="password-addon2">
+                          <div class="input-group auth-pass-inputgroup">
+                          <input [type]="fieldTextType ? 'text' : 'password'" id="password" class="form-control" placeholder="{{ 'Enter password' | translate }}" formControlName="password" required>
+                          <button class="btn btn-light ms-0" type="button" id="password-addon">
                             <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()"></i>
-                          </button> -->
+                          </button>
                           <div *ngIf="signupForm.get('password').touched && signupForm.get('password').invalid" class="invalid-feedback d-block">
                             <span *ngIf="signupForm.get('password').errors?.['required']">{{'Password is required'| translate}}.</span>
+                          </div>
                           </div>
                           </div>
                       </div>
                       <div class="col-md-6 mb-3">
                           <div class="form-group ">
                           <label for="confpassword" >Confirm password <span class="text-danger">*</span></label>
-                          <input type="password" id="confpassword" class="form-control" placeholder="{{ 'Re-enter password' | translate }}" formControlName="confpassword" required>
-                          <!-- <button class="btn btn-light" type="button" id="password-addon2">
+                          <div class="input-group auth-pass-inputgroup">
+                          <input [type]="fieldTextType ? 'text' : 'password'" id="confpassword" class="form-control" placeholder="{{ 'Re-enter password' | translate }}" formControlName="confpassword" required>
+                          <button class="btn btn-light ms-0" type="button" id="password-addon">
                             <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()"></i>
-                          </button> -->
+                          </button>
                           <div *ngIf="signupForm.get('confpassword').touched && signupForm.get('confpassword').invalid" class="invalid-feedback d-block">
                             <span *ngIf="signupForm.get('confpassword').errors?.['required']">{{'Confirm password is required' | translate}}.</span>
                             <div *ngIf="passwordMatchError">{{ 'confirm_password_does_not_matched' | translate }}</div>
+                          </div>
                           </div>
                         </div>
                       </div>

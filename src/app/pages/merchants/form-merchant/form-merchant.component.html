@@ -9,7 +9,7 @@
                   <div class="col-md-6 mb-3">
                     <div class="form-group ">
                     <label for="merchantName" >Merchant Name <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                    <input type="text" id="merchantName" class="form-control" formControlName="merchantName" required [readonly]="type==='view'">
+                    <input type="text" id="merchantName" class="form-control" formControlName="merchantName" placeholder="{{ 'Enter merchant name' | translate }}" required [readonly]="type==='view'">
                     <div *ngIf="merchantForm.get('merchantName').touched && merchantForm.get('merchantName').invalid" class="invalid-feedback d-block">
                       <span *ngIf="merchantForm.get('merchantName').errors?.['required']">{{'Merchant Name is required'| translate}}.</span>
                     </div>  
@@ -20,7 +20,7 @@
                     <div class="form-group ">
                        
                         <label for="username" >{{'Username' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                        <input type="text" id="username" class="form-control" formControlName="username" required [readonly]="type==='view'">
+                        <input type="text" id="username" class="form-control" formControlName="username" placeholder="{{ 'Enter username' | translate }}" required [readonly]="type==='view'">
                         <div *ngIf="merchantForm.get('username').touched && merchantForm.get('username').invalid" class="invalid-feedback d-block">
                             <span *ngIf="merchantForm.get('username').errors?.['required']">{{'Username is required'| translate}}.</span>
                           </div>
@@ -30,7 +30,7 @@
                   <div class="col-md-6 mb-3">
                     <div class="form-group ">
                       <label for="email">Email <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                      <input  type="email" id="email" class="form-control" formControlName="email"  required [readonly]="type==='view'">
+                      <input  type="email" id="email" class="form-control" formControlName="email" placeholder="{{ 'Enter email address' | translate }}" required [readonly]="type==='view'">
                       <div *ngIf="merchantForm.get('email').touched && merchantForm.get('email').invalid" class="invalid-feedback d-block">
                         <span *ngIf="merchantForm.get('email').errors?.['required']">{{'Email is required'| translate}}.</span>
                       </div>
@@ -40,7 +40,7 @@
                   <div class="col-md-6 mb-3">
                       <div class="form-group ">
                         <label for="id_number" >{{'ID Number' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                        <input type="text" id="id_number" class="form-control" formControlName="id_number" required [readonly]="type==='view'">
+                        <input type="text" id="id_number" class="form-control" formControlName="id_number" placeholder="{{ 'Enter ID number' | translate }}" required [readonly]="type==='view'">
                         <div *ngIf="merchantForm.get('id_number').touched && merchantForm.get('id_number').invalid" class="invalid-feedback d-block">
                             <span *ngIf="merchantForm.get('id_number').errors?.['required']">{{'id_number is required'| translate}}.</span>
                           </div>
@@ -51,12 +51,14 @@
                     <div class="form-group ">
                         <div class="form-group ">
                           <label for="password" >Password <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <input type="password" id="password" class="form-control" formControlName="password" required>
-                          <!-- <button class="btn btn-light " type="button" id="password-addon2">
+                          <div class="input-group auth-pass-inputgroup">
+                          <input [type]="fieldTextType ? 'text' : 'password'" id="password" class="form-control" placeholder="{{ 'Enter password' | translate }}" formControlName="password" required>
+                          <button class="btn btn-light ms-0" type="button" id="password-addon">
                             <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()"></i>
-                          </button> -->
+                          </button>
                           <div *ngIf="merchantForm.get('password').touched && merchantForm.get('password').invalid" class="invalid-feedback d-block">
                             <span *ngIf="merchantForm.get('password').errors?.['required']">{{'Password is required'| translate}}.</span>
+                          </div>
                           </div>
                         </div>
                     </div>
@@ -66,13 +68,15 @@
                       <div class="form-group ">
                         <div class="form-group ">
                           <label for="confpassword" >Confirm password <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <input type="password" id="confpassword" class="form-control" formControlName="confpassword" required>
-                          <button class="btn btn-light" type="button" id="password-addon2">
+                          <div class="input-group auth-pass-inputgroup">
+                          <input [type]="fieldTextType ? 'text' : 'password'" id="confpassword" class="form-control" placeholder="{{ 'Re-enter password' | translate }}" formControlName="confpassword" required>
+                          <button class="btn btn-light ms-0" type="button" id="password-addon">
                             <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()"></i>
                           </button>
                           <div *ngIf="merchantForm.get('confpassword').touched && merchantForm.get('confpassword').invalid" class="invalid-feedback d-block">
                             <span *ngIf="merchantForm.get('confpassword').errors?.['required']">{{'Confirm password is required' | translate}}.</span>
                             <div *ngIf="passwordMatchError">{{ 'confirm_password_does_not_matched' | translate }}</div>
+                          </div>
                           </div>
                       </div>
                     </div>
@@ -85,6 +89,7 @@
                        <app-phone-number
                        [disabled]="type === 'view'"
                        [initialPhoneNumber]="merchantForm.get('phone').value"
+                       [inputId]="'phone'"
                        *ngIf="merchantForm"
                         (phoneNumberChanged)="onPhoneNumberChanged($event)" >
                       </app-phone-number>
@@ -220,27 +225,32 @@
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
                       <label for="serviceType">Service Type</label>
-                      <input type="text" id="serviceType" class="form-control" formControlName="serviceType" [readonly]="type==='view'">
+                      <input type="text" id="serviceType" class="form-control" formControlName="serviceType" placeholder="{{ 'Enter service type' | translate }}" [readonly]="type==='view'">
                     </div>
                   </div>
                
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
                       <label for="supervisorName">Supervisor Name</label>
-                      <input type="text" id="supervisorName" class="form-control" formControlName="supervisorName" [readonly]="type==='view'">
+                      <input type="text" id="supervisorName" class="form-control" placeholder="{{ 'Enter supervisor name' | translate }}" formControlName="supervisorName" [readonly]="type==='view'">
                     </div>
                   </div>
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
-                      <label for="supervisorPhone">Supervisor Phone</label>
-                      <input type="text" id="supervisorPhone" class="form-control" formControlName="supervisorPhone" [readonly]="type==='view'">
+                      <label for="supervisorPhone">Supervisor Phone</label><br>
+                      <app-phone-number
+                      [initialPhoneNumber]="merchantForm.get('supervisorPhone').value"
+                      *ngIf="merchantForm"
+                      [inputId]="'supervisorPhone'"
+                      (phoneNumberChanged)="onSupervisorPhoneChanged($event)" >
+                     </app-phone-number>                       
                     </div>
                   </div>
                 
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
                       <label for="bankAccountNumber">Bank Account Number</label>
-                      <input type="text" id="bankAccountNumber" class="form-control" formControlName="bankAccountNumber" [readonly]="type==='view'">
+                      <input type="text" id="bankAccountNumber" class="form-control" placeholder="{{ 'Enter Bank Account Number' | translate }}" formControlName="bankAccountNumber" [readonly]="type==='view'">
                     </div>
                   </div>
 
@@ -248,7 +258,7 @@
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
                       <label for="website">Merchant Website</label>
-                      <input type="text" id="website" class="form-control" formControlName="website"[readonly]="type==='view'">
+                      <input type="text" id="website" class="form-control" formControlName="website" placeholder="https://example.com" [readonly]="type==='view'">
                     </div>
                   </div>
                
@@ -257,7 +267,7 @@
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
                     <label for="whatsup">WhatsApp</label>
-                    <input type="text" id="whatsup" class="form-control" formControlName="whatsup"[readonly]="type==='view'">
+                    <input type="text" id="whatsup" class="form-control" formControlName="whatsup" placeholder="+1234567890" [readonly]="type==='view'">
                   </div>
                 </div>
                
@@ -265,21 +275,21 @@
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
                     <label for="facebook">Facebook</label>
-                    <input type="text" id="facebook" class="form-control" formControlName="facebook"[readonly]="type==='view'">
+                    <input type="text" id="facebook" class="form-control" formControlName="facebook" placeholder="facebook.com/yourpage" [readonly]="type==='view'">
                   </div>
                 </div>
               
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
                     <label for="twitter">Twitter</label>
-                    <input type="text" id="twitter" class="form-control" formControlName="twitter"[readonly]="type==='view'">
+                    <input type="text" id="twitter" class="form-control" formControlName="twitter" placeholder="twitter.com/yourhandle" [readonly]="type==='view'">
                   </div>
                 </div>
                 
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
                     <label for="instagram">Instagram</label>
-                    <input type="text" id="instagram" class="form-control" formControlName="instagram" [readonly]="type==='view'">
+                    <input type="text" id="instagram" class="form-control" formControlName="instagram" placeholder="instagram.com/yourprofile" [readonly]="type==='view'">
                   </div>
                 </div>
                     

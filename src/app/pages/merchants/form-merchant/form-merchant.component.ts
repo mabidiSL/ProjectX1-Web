@@ -143,8 +143,10 @@ export class FormMerchantComponent implements OnInit {
     this.citylist$ = this.store.select(selectDataCity);
     this.citylist$.subscribe((cities) => { this.filteredCities = cities});
   
-    this.store.select(selectDataSection).subscribe((data) =>{
-      this.sectionlist = data;
+    this.store.select(selectDataSection).subscribe((data) => {
+      this.sectionlist = [...data].sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      });
     });
 
 

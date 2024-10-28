@@ -38,7 +38,8 @@
                     <input [type]="fieldTextType ? 'text' : 'password'" class="form-control" formControlName="password" placeholder="{{'Enter password'|translate}}" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
 
                     <button class="btn btn-light ms-0" type="button" id="password-addon">
-                      <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()"></i></button>
+                      <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()"></i>
+                    </button>
                     @if(submitted && f.password.errors){
                     <div class="invalid-feedback">
                       @if(f.password.errors.required){
