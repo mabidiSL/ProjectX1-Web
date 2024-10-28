@@ -54,7 +54,9 @@ export const NotificationListReducer = createReducer(
     ...state,
     NotificationListdata: NotificationListdata.notifications,
     unseen: NotificationListdata.unseen,
-    loading: false
+    loading: false,
+    error: null 
+
   })),
   on(fetchMyNotificationlistFail, (state, { error }) => ({
     ...state,

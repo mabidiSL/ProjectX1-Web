@@ -51,7 +51,9 @@ export const RoleListReducer = createReducer(
   on(addRolelistSuccess, (state, { newData }) => ({
     ...state,
     RoleListdata: [newData,...state.RoleListdata],
-    loading: false
+    loading: false,
+    error: null 
+
   })),
     //Handle adding Role failure
     on(addRolelistFailure, (state, { error }) => ({

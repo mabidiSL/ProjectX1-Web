@@ -48,7 +48,9 @@ export const EmployeeListReducer = createReducer(
   on(addEmployeelistSuccess, (state, { newData }) => ({
     ...state,
     EmployeeListdata: [...state.EmployeeListdata, newData],
-    loading: false
+    loading: false,
+    error: null 
+
   })),
    //Handle adding Employee failure
    on(addEmployeelistFailure, (state, { error }) => ({
@@ -88,7 +90,9 @@ on(updateEmployeelist, (state) => ({
    console.log('EmployeeListdata after update:', EmployeeListUpdated);
    return {
       ...state,
-      EmployeeListdata: EmployeeListUpdated
+      EmployeeListdata: EmployeeListUpdated,
+      loading: false,
+      error: null 
     };
   }),
   // Handle updating Employee failure

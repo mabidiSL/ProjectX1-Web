@@ -32,7 +32,9 @@ export const CountryListReducer = createReducer(
     ...state,
     CountryListdata: CountryListdata.data,
     totalItems: CountryListdata.totalItems,
-    loading: false
+    loading: false,
+    error: null
+
   })),
   on(fetchCountrylistFail, (state, { error }) => ({
     ...state,
@@ -49,7 +51,9 @@ export const CountryListReducer = createReducer(
   on(addCountrylistSuccess, (state, { newData }) => ({
     ...state,
     CountryListdata: [newData,...state.CountryListdata],
-    loading: false
+    loading: false,
+    error: null
+
   })),
     //Handle adding Country failure
     on(addCountrylistFailure, (state, { error }) => ({
@@ -66,7 +70,9 @@ export const CountryListReducer = createReducer(
   // Handle success of getting Employee by ID and Country the Employee object in the state
   on(getCountryByIdSuccess, (state, { Country }) => ({
     ...state,
-    selectedCountry: Country
+    selectedCountry: Country,
+    loading: false,
+    error: null 
   })),
   // Handle success of getting Country by ID and store the Country object in the state
   on(getCountryByIdFailure, (state, { error }) => ({

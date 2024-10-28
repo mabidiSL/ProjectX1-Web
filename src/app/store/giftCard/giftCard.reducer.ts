@@ -33,7 +33,9 @@ export const GiftCardListReducer = createReducer(
     ...state,
     GiftCardListdata: GiftCardListdata.data,
     totalItems: GiftCardListdata.totalItems,
-    loading: false
+    loading: false,
+    error: null 
+
   })),
   on(fetchGiftCardlistFail, (state, { error }) => ({
     ...state,
@@ -70,6 +72,7 @@ export const GiftCardListReducer = createReducer(
    on(getGiftCardByIdSuccess, (state, { GiftCard }) => ({
     ...state,
     selectedGiftCard: GiftCard,
+    loading: false,
     error: null
 
   })),
@@ -91,7 +94,9 @@ on(updateGiftCardlist, (state) => ({
    console.log('GiftCardListdata after update:', GiftCardListUpdated);
    return {
       ...state,
-      GiftCardListdata: GiftCardListUpdated
+      GiftCardListdata: GiftCardListUpdated,
+      loading: false,
+      error: null 
     };
   }),
    // Handle updating GiftCard failure

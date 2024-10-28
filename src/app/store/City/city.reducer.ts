@@ -69,7 +69,9 @@ export const CityListReducer = createReducer(
   // Handle success of getting City by ID and City the City object in the state
   on(getCityByIdSuccess, (state, { City }) => ({
     ...state,
-    selectedCity: City
+    selectedCity: City,
+    loading: false,
+      error: null 
   })),
   on(getCityByIdFailure, (state, { error }) => ({
     ...state,

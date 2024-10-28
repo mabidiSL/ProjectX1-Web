@@ -32,7 +32,8 @@ export const StoreListReducer = createReducer(
     ...state,
     StoreListdata: StoreListdata.data,
     totalItems: StoreListdata.totalItems,
-    loading: false
+    loading: false,
+    error: null
   })),
   on(fetchStorelistFail, (state, { error }) => ({
     ...state,
@@ -51,7 +52,8 @@ export const StoreListReducer = createReducer(
   on(addStorelistSuccess, (state, { newData }) => ({
     ...state,
     StoreListdata: [newData,...state.StoreListdata ],
-    loading: false
+    loading: false,
+    error: null
   })),
    //Handle adding Store failure
    on(addStorelistFailure, (state, { error }) => ({
@@ -98,7 +100,8 @@ on(getStoreById, (state) => ({
   on(updateStorelistFailure, (state, { error }) => ({
     ...state,
     error,
-    loading: false 
+    loading: false
+    
   })),
   // Handle deleting Store 
   on(deleteStorelist, (state) => ({

@@ -51,7 +51,9 @@ export const MerchantListReducer = createReducer(
   on(addMerchantlistSuccess, (state, { newData }) => ({
     ...state,
     MerchantListdata: [newData, ...state.MerchantListdata],
-    loading: false
+    loading: false,
+    error: null 
+
   })),
     //Handle adding Merchant failure
     on(addMerchantlistFailure, (state, { error }) => ({

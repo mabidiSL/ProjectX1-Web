@@ -51,7 +51,8 @@ export const AreaListReducer = createReducer(
   on(addArealistSuccess, (state, { newData }) => ({
     ...state,
     AreaListdata: [...state.AreaListdata, newData],
-    loading: false
+    loading: false,
+    error: null
   })),
    //Handle adding Area failure
    on(addArealistFailure, (state, { error }) => ({
@@ -68,7 +69,9 @@ export const AreaListReducer = createReducer(
   // Handle success of getting Area by ID and Area the Area object in the state
   on(getAreaByIdSuccess, (state, { Area }) => ({
     ...state,
-    selectedArea: Area
+    selectedArea: Area,
+    loading: false,
+    error: null 
   })),
    // Handle success of getting Area by ID and store the Area object in the state
    on(getAreaByIdFailure, (state, { error }) => ({
@@ -90,7 +93,9 @@ export const AreaListReducer = createReducer(
    console.log('AreaListdata after update:', AreaListUpdated);
    return {
       ...state,
-      AreaListdata: AreaListUpdated
+      AreaListdata: AreaListUpdated,
+      loading: false,
+      error: null 
     };
   }),
    // Handle updating Area failure
