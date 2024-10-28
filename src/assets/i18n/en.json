@@ -58,7 +58,8 @@
       "FAQ": "FAQs"
     },
     "LOGIN": {
-      "PROFILE": "Profile",
+      "PROFILE": "My Profile",
+      "COMPANY_PROFILE": "Company Profile",
       "MY_WALLET": "My Wallet",
       "SETTINGS": "Settings",
       "LOCK_SCREEN": "Lock screen",
