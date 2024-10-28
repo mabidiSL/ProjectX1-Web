@@ -5,7 +5,7 @@ import { RoleGuard } from 'src/app/core/guards/role.guard';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { CreateEmployeeComponent } from './create-employee/create-employee.component';
 import { EditEmployeeComponent } from './edit-employee/edit-employee.component';
-import { ViewNotificationComponent } from '../notifications/view-notification/view-notification.component';
+import { ViewEmployeeComponent } from './view-employee/view-employee.component';
 
 const routes: Routes = [
   {
@@ -36,7 +36,7 @@ const routes: Routes = [
 },
 {
   path: "view/:id",
-  component: ViewNotificationComponent,
+  component: ViewEmployeeComponent,
   canActivate: [RoleGuard],
   data: {
   claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Employees, claimValue:[Permission.ViewAll,Permission.View]}]

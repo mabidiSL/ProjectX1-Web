@@ -68,7 +68,9 @@ export const MerchantListReducer = createReducer(
   // Handle success of getting Employee by ID and store the Employee object in the state
   on(getMerchantByIdSuccess, (state, { merchant }) => ({
     ...state,
-    selectedMerchant: merchant
+    selectedMerchant: merchant,
+    loading: false,
+    error: null 
   })),
   // Handle success of getting Merchant by ID and store the Merchant object in the state
   on(getMerchantByIdFailure, (state, { error }) => ({
@@ -89,7 +91,9 @@ export const MerchantListReducer = createReducer(
    console.log('MerchantListdata after update:', merchantListUpdated);
    return {
       ...state,
-      MerchantListdata: merchantListUpdated
+      MerchantListdata: merchantListUpdated,
+      loading: false,
+      error: null
     };
   }),
    // Handle updating Merchant failure
@@ -106,13 +110,13 @@ export const MerchantListReducer = createReducer(
   })),
   // Handle the success of deleting a merchant
   on(deleteMerchantlistSuccess, (state, { userId }) => {
-    console.log('Deleting merchant with ID:', userId);
-    console.log('MerchantListdata before deletion:', state.MerchantListdata);
+    
     const updatedMerchantList = state.MerchantListdata.filter(merchant => merchant._id !== userId);
-    console.log('MerchantListdata after deletion:', updatedMerchantList);
     return { 
     ...state,
-    MerchantListdata: updatedMerchantList};
+    MerchantListdata: updatedMerchantList,
+    loading: false,
+    error: null};
   }),
   // Handle failure of deleting a merchant
   on(deleteMerchantlistFailure, (state, { error }) => ({

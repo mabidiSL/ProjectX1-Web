@@ -65,7 +65,9 @@ export const EmployeeListReducer = createReducer(
   // Handle success of getting Employee by ID and store the Employee object in the state
    on(getEmployeeByIdSuccess, (state, { employee }) => ({
     ...state,
-    selectedEmployee: employee
+    selectedEmployee: employee,
+    loading: false,
+    error: null
   })),
 // Handle success of getting Employee by ID and store the Employee object in the state
 on(getEmployeeByIdFailure, (state, { error }) => ({
