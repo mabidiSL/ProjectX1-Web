@@ -370,7 +370,9 @@ toggleModule(moduleKey: string, event: any): void {
     this.roleForm.reset();
     this.router.navigateByUrl('/private/roles');
   }
-
+  toggleViewMode(){
+    this.router.navigateByUrl('/private/roles');
+}
 }
 
    

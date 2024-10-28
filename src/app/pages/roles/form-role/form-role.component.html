@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <div class="form-group ">
-                           <label for="name" >{{'role_name' | translate}} <span class="text-danger">*</span></label>
+                           <label for="name" >{{'role_name' | translate}} <span  *ngIf="type !== 'view'" class="text-danger">*</span></label>
                             <input type="text" id="name" class="form-control" formControlName="name"  >
                             <div *ngIf="roleForm.get('name').touched && roleForm.get('name').invalid" class="invalid-feedback d-block">
                                 <span *ngIf="roleForm.get('name').errors?.['required']">{{'role name is required'| translate}}.</span>
@@ -41,7 +41,7 @@
                                             type="checkbox" 
                                             [checked]=" hasPermission(module, permission) || ALLModulesChecked "
                                             (change)="togglePermission(module, permission, $event)" 
-                                            [disabled]="shouldDisableCheckbox(module, permission)" 
+                                            [disabled]="type === 'view' || shouldDisableCheckbox(module, permission)" 
                                             title="{{ permission }}"
                                         />
                                     </td>
@@ -54,6 +54,10 @@
               </div>
                 <div class="col-12  mt-4">
                     <div class="d-flex justify-content-end">
+                        <ng-container *ngIf="type =='view'; else editModeButtons">
+                              <button type="button" class="btn btn-success" (click)="toggleViewMode()">{{ 'Go_Back' | translate }}</button>
+                         </ng-container>
+                        <ng-template #editModeButtons>
                         <button type="button" id="cancel-btn" class="btn btn-outline-secondary me-2" (click)="onCancel()">{{'Cancel'|translate}}</button>
                         <button type="submit" class="btn btn-success" (click)="onSubmit()"> {{ (type == 'create' ? 'Add_role' : 'update_role') | translate }}
                         </button>
@@ -61,7 +65,8 @@
                             <div class="spinner-border text-primary avatar-sm" role="status">
                               <span class="visually-hidden">Loading...</span>
                             </div>
-                          </div>    
+                          </div> 
+                        </ng-template>    
                     </div>
                 </div>
               </form>
