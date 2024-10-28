@@ -46,7 +46,11 @@ export class AuthenticationEffects {
               return RegisterSuccess({ user })
               }
             }),
-            catchError((error) => of(RegisterFailure({ error })))
+            catchError((error) => {
+              const errorMessage = this.getErrorMessage(error); 
+              this.toastr.error(errorMessage);
+              return of(RegisterFailure({ error: error.message }))
+            })
           );
        
       })
@@ -59,30 +63,25 @@ export class AuthenticationEffects {
     this.actions$.pipe(
       ofType(login),
       exhaustMap(({ email, password }) => {
-        console.log('before zero looping');
-
+        
           return this.AuthfakeService.login(email, password).pipe(
             map((response) => {
-              if (response) {
-                const currentTime = new Date().getTime();
-           
+                      
                 console.log(JSON.stringify(response.result.accessToken));
                 localStorage.setItem('token', response.result.accessToken);
                 localStorage.setItem('refreshToken', response.result.refreshToken);
                 localStorage.setItem('currentUser', JSON.stringify(response.result.user));
-                localStorage.setItem('timeLifeToken',currentTime.toString());
 
                 this.currentUserSubject.next(response.result.user);
                 this.router.navigate(['/private']);
                 //this.toastr.success('Login successfully!!!');
                 return loginSuccess({ user: response.result.user, token: response.result.accessToken });
 
-              }
-              return loginFailure({ error:'Login failed' });
             }),
             catchError((error) => {
-              this.toastr.error(`Login failed: Check your credentials`);
-              return of(loginFailure({ error }))})); 
+              const errorMessage = this.getErrorMessage(error); 
+              this.toastr.error(error.message);
+              return of(loginFailure({ error: error.message }))})); 
             
         
       })
@@ -191,6 +190,15 @@ export class AuthenticationEffects {
     )
   );
 
-
+  private getErrorMessage(error: any): string {
+    // Implement logic to convert backend error to user-friendly message
+    if (error.status === 400) {
+      return 'Please check your inputs and try again.';
+    } else if (error.status === 409) {
+      return 'A Merchant with these data already exists.';
+    } else {
+      return 'An unexpected error occurred. Please try again later.';
+    }
+  }
 
 }

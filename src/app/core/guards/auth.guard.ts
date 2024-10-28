@@ -15,7 +15,9 @@ export class AuthGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
-       
+            if (state.url === '/' || state.url === '/home') {
+                return true; // Allow access to home
+            }
             const currentUser = this.authFackservice.currentUserValue;
             if (currentUser) {
                 // logged in so return true
@@ -27,7 +29,8 @@ export class AuthGuard implements CanActivate {
             }
         
         // not logged in so redirect to login page with the return url
-        this.router.navigate(['/auth/login'], { queryParams: { returnUrl: state.url } });
+       // this.router.navigate(['/auth/login'], { queryParams: { returnUrl: state.url } });
+        this.router.navigate(['/home']);
         return false;
     }
 }

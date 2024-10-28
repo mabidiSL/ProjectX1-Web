@@ -9,18 +9,14 @@ import { Router } from '@angular/router';
 export class HomeComponent {
   constructor(private router: Router) { }
 
-  navigateTo(role: string) {
     
-    if (role === 'operator') {
-      if (localStorage.getItem('currentUser')) {
-        this.router.navigate(['/private']);
-      } 
-      else
-      {
-      this.router.navigate(['/auth/login']);
-      }
-    } else if (role === 'merchant') {
-      this.router.navigate(['/auth/login']);
+    loginAsOperator() {
+      this.router.navigate(['/auth/login'], { queryParams: { userType: 'operator' } });
     }
-  }
+  
+    loginAsMerchant() {
+      this.router.navigate(['/auth/login'], { queryParams: { userType: 'merchant' } });
+    }
+    
+  
 }

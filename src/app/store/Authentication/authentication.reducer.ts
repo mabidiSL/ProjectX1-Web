@@ -1,9 +1,10 @@
 import { createReducer, on } from '@ngrx/store';
-import { Register, RegisterFailure, RegisterSuccess, login, loginFailure, loginSuccess, logout, logoutSuccess, updateProfile, updateProfileFailure, updateProfileSuccess } from './authentication.actions';
+import { Register, RegisterFailure, RegisterSuccess, forgetPassword, forgetPasswordFailure, forgetPasswordSuccess, login, loginFailure, loginSuccess, logout, logoutSuccess, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfileFailure, updateProfilePassword, updateProfilePasswordFailure, updateProfilePasswordSuccess, updateProfileSuccess } from './authentication.actions';
 import { _User } from './auth.models';
 
 export interface AuthenticationState {
     isLoggedIn: boolean;
+    loading: boolean,
     user: _User | null;
     token: string |null;
     error: string | null;
@@ -11,6 +12,7 @@ export interface AuthenticationState {
 
 const initialState: AuthenticationState = {
     isLoggedIn: false,
+    loading: false,
     user: null,
     token: null,
     error: null,
@@ -18,18 +20,31 @@ const initialState: AuthenticationState = {
 
 export const authenticationReducer = createReducer(
     initialState,
-    on(Register, (state) => ({ ...state, error: null })),
-    on(RegisterSuccess, (state, { user }) => ({ ...state, isLoggedIn: true, user, error: null, })),
-    on(RegisterFailure, (state, { error }) => ({ ...state, error })),
+    on(Register, (state) => ({ ...state, loading: true, error: null })),
+    on(RegisterSuccess, (state, { user }) => ({ ...state, loading: false, isLoggedIn: false, user, error: null, })),
+    on(RegisterFailure, (state, { error }) => ({ ...state, loading: false, error })),
 
-    on(login, (state) => ({ ...state, error: null })),
-    on(loginSuccess, (state, { user, token }) => ({ ...state, isLoggedIn: true, user,token, error: null, })),
-    on(loginFailure, (state, { error }) => ({ ...state, error })),
-    on(logout, (state) => ({ ...state, user: null, token: null, error: null })),
-    on(logoutSuccess, (state, { user, token }) => ({ ...state, user, token, isLoggedIn: false, error: null })),
+    on(login, (state) => ({ ...state, loading: true, error: null })),
+    on(loginSuccess, (state, { user, token }) => ({ ...state, loading: false, isLoggedIn: true, user,token, error: null, })),
+    on(loginFailure, (state, { error }) => ({ ...state, loading: false, isLoggedIn: false, error })),
+   
+    on(logout, (state) => ({ ...state, user: null, loading: true, isLoggedIn: false, token: null, error: null })),
+    on(logoutSuccess, (state, { user, token }) => ({ ...state, loading: false, user, token, isLoggedIn: false, error: null })),
     
-    on(updateProfile, (state) => ({ ...state, error: null })),
-    on(updateProfileSuccess, (state, { user }) => ({ ...state, user, error: null })),
-    on(updateProfileFailure, (state, { error }) => ({ ...state, error }))
+    on(forgetPassword, state => ({ ...state, loading: true, error: null, })),
+    on(forgetPasswordSuccess, (state, { user }) => ({ ...state, loading: false,  user,  error: null,    })),
+    on(forgetPasswordFailure, (state, { error }) => ({ ...state,  loading: false,  error,  })) ,
+    
+    on(updatePassword, state => ({   ...state,  loading: true, error: null, })),
+    on(updatePasswordSuccess, (state, { message }) => ({  ...state,   loading: false,  error: null,   })),
+    on(updatePasswordFailure, (state, { error }) => ({ ...state, loading: false, error,  })),
+    
+    on(updateProfile, (state) => ({ ...state, loading: true, error: null })),
+    on(updateProfileSuccess, (state, { user }) => ({ ...state, loading: false, user, error: null })),
+    on(updateProfileFailure, (state, { error }) => ({ ...state, loading: false, error })),
+
+    on(updateProfilePassword, state => ({ ...state,  loading: true,  error: null, })),
+    on(updateProfilePasswordSuccess, (state, { message }) => ({ ...state, loading: false, error: null,  })),
+    on(updateProfilePasswordFailure, (state, { error }) => ({ ...state, loading: false,  error, }))
 
 );

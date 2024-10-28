@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../../core/services/auth.service';
 
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { login } from 'src/app/store/Authentication/authentication.actions';
+import { Observable } from 'rxjs';
+import { selectDataLoading } from 'src/app/store/Authentication/authentication-selector';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +21,9 @@ export class LoginComponent implements OnInit {
 
   loginForm: UntypedFormGroup;
   submitted: any = false;
+  loading$: Observable<any>;
+
+  userType: string ='';
   error: any = '';
   returnUrl: string;
   fieldTextType!: boolean;
@@ -27,8 +32,16 @@ export class LoginComponent implements OnInit {
   year: number = new Date().getFullYear();
 
   // tslint:disable-next-line: max-line-length
-  constructor(private formBuilder: UntypedFormBuilder, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService, private store: Store,
-    ) { }
+  constructor(private formBuilder: UntypedFormBuilder,
+     private route: ActivatedRoute, 
+     private router: Router, 
+     private store: Store,
+    ) { 
+      this.loading$ = this.store.pipe(select(selectDataLoading));
+      this.route.queryParams.subscribe(params => {
+        this.userType = params['userType'];
+    });
+  }
 
   ngOnInit() {
     
@@ -39,8 +52,6 @@ export class LoginComponent implements OnInit {
     {
     // form validation
       this.loginForm = this.formBuilder.group({
-        // email: ['admin@themesbrand.com', [Validators.required, Validators.email]],
-        // password: ['123456', [Validators.required]],
           email: ['', [Validators.required]],
           password: ['', [Validators.required]],
       });

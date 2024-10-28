@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Register } from 'src/app/store/Authentication/authentication.actions';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
 import { fetchArealistData } from 'src/app/store/area/area.action';
@@ -13,6 +13,7 @@ import { selectDataArea } from 'src/app/store/area/area-selector';
 import { selectDataCity } from 'src/app/store/City/city-selector';
 import { fetchSectionlistData } from 'src/app/store/section/section.action';
 import { selectDataSection } from 'src/app/store/section/section-selector';
+import { selectDataLoading } from 'src/app/store/Authentication/authentication-selector';
 
 @Component({
   selector: 'app-register2',
@@ -22,6 +23,9 @@ import { selectDataSection } from 'src/app/store/section/section-selector';
 export class Register2Component implements OnInit {
 
   signupForm: UntypedFormGroup;
+  formError: string | null = null;
+  formSubmitted = false;
+
   submitted: any = false;
   error: any = '';
   successmsg: any = false;
@@ -33,17 +37,21 @@ export class Register2Component implements OnInit {
   countrylist: any[] = [];
   arealist$:  Observable<any[]>  ;
   citylist$:  Observable<any[]> ;
+  loading$: Observable<any>;
+
+
   sectionlist:  any[] = [];
 
   filteredAreas :  any[] = [];
   filteredCities:  any[] = [];
 
-  categories: string[] = ['discount','coupon', 'card'];
-  sections: string[] = ['Restaurant', 'Fashion and style','Daily services', 'Entertainment', 'Tourism and travel','Cafes and sweets', 'Health and beauty', 'Gifts and occasions', 'Online stores', 'Electronics'];
+ 
   constructor  (
     private formBuilder: UntypedFormBuilder, 
     private router: Router, 
     public store: Store) { 
+
+      this.loading$ = this.store.pipe(select(selectDataLoading));
       this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 10, status: 'active' }));
       this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 10, status: 'active' }));
       this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 10, status: 'active' }));
@@ -63,8 +71,10 @@ export class Register2Component implements OnInit {
     this.arealist$ = this.store.select(selectDataArea);
     this.citylist$ = this.store.select(selectDataCity);
    
-    this.store.select(selectDataSection).subscribe((data) =>{
-      this.sectionlist = data;
+    this.store.select(selectDataSection).subscribe((data) => {
+      this.sectionlist = [...data].sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      });
     });
 
 
@@ -83,7 +93,6 @@ export class Register2Component implements OnInit {
       supervisorName: [''],
       supervisorPhone: [''],
       bankAccountNumber: [''],
-      registerCode:[''],
       merchantName:['', Validators.required],
       merchantPicture: [''],
       merchantLogo: [''],
@@ -170,13 +179,17 @@ export class Register2Component implements OnInit {
    * On submit form
    */
   onSubmit() {
-    console.log('Form status:', this.signupForm.status);
-    console.log('Form errors:', this.signupForm.errors);
-    if (this.signupForm.valid) {
-      console.log('i am on onSubmit');
-      console.log(this.signupForm.value);
-      console.log('Form status:', this.signupForm.status);
-      console.log('Form errors:', this.signupForm.errors);
+    this.formSubmitted = true;
+
+    if (this.signupForm.invalid) {
+      this.formError = 'Please complete all required fields.';
+      Object.keys(this.signupForm.controls).forEach(control => {
+        this.signupForm.get(control).markAsTouched();
+      });
+      this.focusOnFirstInvalid();
+      return;
+    }
+    this.formError = null;
       
       
       const newData = this.signupForm.value;
@@ -191,11 +204,27 @@ export class Register2Component implements OnInit {
       console.log(newData);
       //Dispatch Action
       this.store.dispatch(Register({ newData }));
-    } else {
-      // Form is invalid, display error messages
-      console.log('Form is invalid');
-      this.signupForm.markAllAsTouched();
+
+   
+  }
+  private focusOnFirstInvalid() {
+    const firstInvalidControl = this.getFirstInvalidControl();
+    if (firstInvalidControl) {
+      firstInvalidControl.focus();
     }
+  }
+
+  private getFirstInvalidControl(): HTMLInputElement | null {
+    const controls = this.signupForm.controls;
+    for (const key in controls) {
+      if (controls[key].invalid) {
+        const inputElement = document.getElementById(key) as HTMLInputElement;
+        if (inputElement) {
+          return inputElement;
+        }
+      }
+    }
+    return null;
   }
   onCancel(){
     console.log('Form status:', this.signupForm.status);

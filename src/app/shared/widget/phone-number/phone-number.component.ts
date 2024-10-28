@@ -12,6 +12,8 @@ export class PhoneNumberComponent {
   @Output() phoneNumberChanged = new EventEmitter<string>();
   @Input() initialPhoneNumber: string;
   @Input() disabled: boolean = false;
+  @Input() inputId: string ;
+
   phone: FormControl; // Define the phone property as a FormControl
 
   constructor(private formBuilder: FormBuilder) {
@@ -19,8 +21,8 @@ export class PhoneNumberComponent {
   }
   ngAfterViewInit() {
 
-   const input = document.querySelector('#phoneInput') as HTMLInputElement;
-   const iti = intlTelInput(input, {
+    const input = document.querySelector(`#${this.inputId}`) as HTMLInputElement; // Use the dynamic ID
+    const iti = intlTelInput(input, {
       initialCountry: 'sa', 
       //preferredCountries: ['us', 'gb', 'fr'] as any, // add preferred countries
       utilsScript: 'node_modules/intl-tel-input/build/js/utils.js' // for validation and formatting
