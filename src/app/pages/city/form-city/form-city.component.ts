@@ -58,7 +58,7 @@ export class FormCityComponent  implements OnInit {
         this.cityForm = this.formBuilder.group({
           id:[''],
           name: ['', Validators.required],
-          //nameTrans: [''],
+          name_ar: ['', Validators.required],
           country_id:['', Validators.required],
           area_id:['', Validators.required],
           longitude: ['long'],
@@ -121,7 +121,7 @@ export class FormCityComponent  implements OnInit {
         if(!this.isEditing)
           { delete newData.id;
             delete newData.country_id;
-            delete newData.nameTrans;
+            
             console.log('Adding city');
             this.store.dispatch(addCitylist({ newData }));          }
           else

@@ -13,6 +13,8 @@ import { UIModule } from 'src/app/shared/ui/ui.module';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ViewGiftCardComponent } from './view-gift-card/view-gift-card.component';
 import { WidgetModule } from 'src/app/shared/widget/widget.module';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+
 
 
 @NgModule({
@@ -26,6 +28,7 @@ import { WidgetModule } from 'src/app/shared/widget/widget.module';
   ],
   imports: [
     CommonModule,
+    BsDatepickerModule,
     FormsModule, 
     UIModule,
     WidgetModule,

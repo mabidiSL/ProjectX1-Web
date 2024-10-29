@@ -14,13 +14,15 @@
                             </div>
                           </div> 
                       </div>
-                      <!-- <div class="col-md-6 mb-3">
+                      <div class="col-md-6 mb-3">
                         <div class="form-group ">
-                           <label for="nameTrans" >{{'city_Name_Trans' | translate}} </label>
-                            <input type="text" id="nameTrans" class="form-control" formControlName="nameTrans" placeholder= "{{'Enter_the_Name_Of_the_city'| translate}}" >
-                               
+                           <label for="name_ar" >{{'city_Name_Trans' | translate}} </label>
+                            <input type="text" id="name_ar" class="form-control" formControlName="name_ar" [readonly]="type==='view'"placeholder= "{{'Enter_the_Name_Of_the_city_in_arabic'| translate}}" >
+                            <div *ngIf="cityForm.get('name_ar').touched && cityForm.get('name_ar').invalid" class="invalid-feedback d-block">
+                              <span *ngIf="cityForm.get('name_ar').errors?.['required']">{{'Name is required'| translate}}.</span>
+                          </div>
                           </div> 
-                      </div> -->
+                      </div>
                       <div class="col-md-6 mb-3">
                         <div class="form-group ">
                               <label for="country_id" >{{'Country' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
