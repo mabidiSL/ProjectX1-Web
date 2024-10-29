@@ -122,7 +122,7 @@ export class NotificationsEffects {
               return getNotificationByIdSuccess({ Notification });
             } else {
               console.log('Notification NULL');
-              this.toastr.error('Notification not found.'); // Show error notification
+              //this.toastr.error('Notification not found.'); // Show error notification
               return getNotificationByIdFailure({ error: 'Notification not found' });
             }
           })

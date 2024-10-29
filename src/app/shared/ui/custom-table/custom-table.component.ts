@@ -182,8 +182,13 @@ export class CustomTableComponent  {
   //   this.downloadData.emit();
   // }
 
-  onChangeEventEmit(data: any, event: any) {
-    console.log(event);
+  onChangeEventEmit(data: any, event1:any) {
+    const target = event1.target as HTMLElement; // Ensure you have the correct type
+    const isChecked = target.classList.contains('checked');
+    console.log(isChecked);
+    //const checked = event.target
+   // console.log('Switch is:', isChecked ? 'ON' : 'OFF');
+    const event = {checked: !isChecked};
     this.onChangeEvent.emit({ data, event } );
   }
   approveItem(item: any, action: any) {

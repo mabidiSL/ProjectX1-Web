@@ -100,7 +100,7 @@ export class RolesEffects {
               return getRoleByIdSuccess({ Role });
             } else {
               console.log('Role NULL');
-              this.toastr.error('Role not found.'); // Show error notification
+              //this.toastr.error('Role not found.'); // Show error notification
               return getRoleByIdFailure({ error: 'Role not found' });
             }
           })

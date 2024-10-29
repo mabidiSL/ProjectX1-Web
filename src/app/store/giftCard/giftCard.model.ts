@@ -31,5 +31,5 @@ export interface GiftCardListModel {
         GiftCardValueBeforeDiscount?:number;
         GiftCardValueAfterDiscount?:number;
         PaymentDiscountRate?: number;
-        status?: string;//pending,approved,active, expired, closed
+        status?: any;//pending,approved,active, expired, closed
         }

@@ -109,7 +109,7 @@ export class CouponslistEffects {
               return getCouponByIdSuccess({ coupon });
             } else {
               console.log('COUPON NULL');
-              this.toastr.error('Coupon not found.'); // Show error notification
+             // this.toastr.error('Coupon not found.'); // Show error notification
               return getCouponByIdFailure({ error: 'Coupon not found' });
             }
           })

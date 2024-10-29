@@ -16,6 +16,10 @@ export const selectMerchantById = (MerchantId: string) =>createSelector(
   selectDataState,
   (state: MerchantlistState) =>  state?.MerchantListdata.find(Merchant => Merchant.id === +MerchantId)
   );
+export const selectedMerchant = createSelector(
+    selectDataState,
+    (state: MerchantlistState) =>  state?.selectedMerchant || null
+);
 export const selectDataLoading = createSelector(
   selectDataState,
   (state: MerchantlistState) => state?.loading || false

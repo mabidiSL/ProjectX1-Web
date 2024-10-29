@@ -3,10 +3,12 @@ import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@an
 import { AuthenticationService } from '../../../core/services/auth.service';
 import { AuthfakeauthenticationService } from '../../../core/services/authfake.service';
 
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { updatePassword } from 'src/app/store/Authentication/authentication.actions';
 import { ToastrService } from 'ngx-toastr';
+import { selectDataLoading } from 'src/app/store/Authentication/authentication-selector';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-updatepassword',
@@ -18,6 +20,8 @@ export class UpdatepasswordComponent {
   public token: string;
   updatePassForm: UntypedFormGroup;
   submitted: any = false;
+  loading$: Observable<any>
+
   error: any = '';
   returnUrl: string;
   fieldTextType!: boolean;
@@ -32,7 +36,10 @@ export class UpdatepasswordComponent {
     private authenticationService: AuthenticationService,
     private store: Store,
     public toastr:ToastrService
-) { }
+) {
+  this.loading$ = this.store.pipe(select(selectDataLoading));
+
+ }
 
   ngOnInit() {
    

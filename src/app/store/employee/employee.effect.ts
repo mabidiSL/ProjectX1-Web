@@ -45,7 +45,7 @@ export class EmployeeslistEffects {
                       }),
                       catchError((error) => {
                         const errorMessage = this.getErrorMessage(error); 
-                        this.toastr.error(errorMessage);
+                        this.toastr.error(error.message);
                         return of(addEmployeelistFailure({ error: error.message })); // Dispatch failure action
                       })                )
             )
@@ -85,7 +85,7 @@ export class EmployeeslistEffects {
                   return getEmployeeByIdSuccess({ employee: Employee });
                 } else {
                   console.log('Employee NULL');
-                  this.toastr.error('Employee not found.'); // Show error notification
+                  //this.toastr.error('Employee not found.'); // Show error notification
                   return getEmployeeByIdFailure({ error: 'Employee not found' });
                 }
               })

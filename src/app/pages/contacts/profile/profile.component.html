@@ -16,7 +16,7 @@
                 <div class="col-lg-4">
                 </div>
                 <div class="col-lg-8">
-                  <form class="form-horizontal" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+                  <form class="form-horizontal" [formGroup]="profileForm" >
                     <!-- <div class="row mb-4">
                       <label for="name" class="col-sm-3 col-form-label">Name</label>
                       <div class="col-sm-9">
@@ -25,7 +25,7 @@
                   </div> -->
                   <div class="row mb-4">
                     <label for="username" class="col-sm-3 col-form-label">{{'User Name'| translate}}</label>
-                    <div class="col-sm-9">
+                    <div class="col-sm-6">
                         <input type="text" class="form-control"formControlName="username" id="username" placeholder="Enter Your UserName">
                         <div class="invalid-feedback">{{'Please enter your username'  | translate}}.</div>
                     </div>
@@ -33,7 +33,7 @@
                
                   <div class="row mb-4">
                       <label for="horizontal-email-input" class="col-sm-3 col-form-label">{{'Email'| translate}}</label>
-                      <div class="col-sm-9">
+                      <div class="col-sm-6">
                           <input type="email" class="form-control" formControlName="email" id="horizontal-email-input" placeholder="{{'Enter Your Email'| translate}}">
                           <div class="invalid-feedback">{{'Please enter your email'  | translate}}.</div>
 
@@ -41,7 +41,7 @@
                   </div>
                   <div class="row mb-4">
                     <label for="phone" class="col-sm-3 col-form-label">{{'Phone'| translate}}</label>
-                    <div class="col-sm-9">
+                    <div class="col-sm-6">
                         <input class="form-control" formControlName="phone" type="tel" value="1-(555)-555-5555" id="phone" placeholder="{{'Enter Your Phone'| translate}}">
                         <div class="invalid-feedback">{{'Please enter your  phone number'  | translate}}.</div>
 
@@ -51,7 +51,12 @@
                   <div class="row justify-content-end">
                       <div class="col-sm-9">
                           <div>
-                              <button type="submit" class="btn btn-primary w-md">{{'Submit'|translate}}</button>
+                              <button type="submit" class="btn btn-primary w-md" (click)="onSubmit()">{{'Submit'|translate}}</button>
+                              <div id="elmLoader" class="loader" *ngIf="loading$ | async">
+                                <div class="spinner-border text-primary avatar-sm" role="status">
+                                  <span class="visually-hidden">Loading...</span>
+                                </div>
+                              </div>   
                           </div>
                       </div>
                   </div>
@@ -66,39 +71,59 @@
               </ng-template>
               <div class="tab-page-content  mt-3">
                 <div class="col-lg-8">
-                <form class="form-horizontal" [formGroup]="passwordForm" (ngSubmit)="passwordFormSubmit()">
+                <form class="form-horizontal" [formGroup]="passwordForm" >
                   <div class="row mb-4">
                   <label for="currentPassword" class="col-sm-3 col-form-label">{{'Current Password'|translate}}</label>
-                  <div class="col-sm-9">
-                      <input type="password" formControlName="currentPassword"  class="form-control" id="currentPassword" placeholder="{{'Enter Your Current Password'|translate}}">
-                      <div class="invalid-feedback">{{'Please enter your current password.'|translate}}</div>
-
+                  <div class="col-sm-6">
+                    <div class="input-group auth-pass-inputgroup">
+                      <input [type]="fieldTextType ? 'text' : 'password'" id="currentPassword" class="form-control" placeholder="{{ 'Enter Your Current Password' | translate }}" formControlName="currentPassword" required>
+                      <button class="btn btn-light ms-0" type="button" id="password-addon">
+                        <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()"></i>
+                      </button>
+                      <div *ngIf="passwordForm.get('currentPassword').touched && passwordForm.get('currentPassword').invalid" class="invalid-feedback d-block">
+                        <span *ngIf="passwordForm.get('currentPassword').errors?.['required']">{{'Please enter your current password.'| translate}}.</span>
+                      </div>
                     </div>
+                  </div>
                 </div>
                 <div class="row mb-4">
                   <label for="newPassword" class="col-sm-3 col-form-label">{{'New Password'|translate}}</label>
-                  <div class="col-sm-9">
-                      <input type="password" formControlName="newPassword" class="form-control" id="newPassword" placeholder="{{'Enter Your New Password'|translate}}">
-                      <div class="invalid-feedback">{{'Please enter your new password'|translate}}.</div>
-
+                  <div class="col-sm-6">
+                    <div class="input-group auth-pass-inputgroup">
+                      <input [type]="fieldTextType ? 'text' : 'password'" id="newPassword" class="form-control" placeholder="{{ 'Enter Your New Password' | translate }}" formControlName="newPassword" required>
+                      <button class="btn btn-light ms-0" type="button" id="password-addon">
+                        <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()"></i>
+                      </button>
+                      <div *ngIf="passwordForm.get('newPassword').touched && passwordForm.get('newPassword').invalid" class="invalid-feedback d-block">
+                        <span *ngIf="passwordForm.get('newPassword').errors?.['required']">{{'Please enter your current password.'| translate}}.</span>
+                      </div>
                     </div>
+                  </div>
                 </div>
                 <div class="row mb-4">
                   <label for="confirmpwd" class="col-sm-3 col-form-label">{{'Confirm Password'|translate}}</label>
-                  <div class="col-sm-9">
-                      <input type="password"   formControlName="confirmpwd"  class="form-control" id="confirmpwd" placeholder="{{'Confirm Your New Password'|translate}}">
-                      <div class="invalid-feedback">{{'Please confirm your new password'|translate}}.</div>
-                      <ng-template #error>
-                        <div class="invalid-feedback" *ngIf="passwordMismatch">
-                            {{ 'confirm_password_does_not_matched' | translate }}
-                        </div>
-                    </ng-template>
+                  <div class="col-sm-6">
+                    <div class="input-group auth-pass-inputgroup">
+                      <input [type]="fieldTextType ? 'text' : 'password'" id="confirmpwd" class="form-control" placeholder="{{ 'Confirm Your New Password' | translate }}" formControlName="confirmpwd" (keyup)="checkPasswordMatch()" required>
+                      <button class="btn btn-light ms-0" type="button" id="password-addon">
+                        <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()"></i>
+                      </button>
+                      <div *ngIf="passwordForm.get('confirmpwd').touched && passwordForm.get('confirmpwd').invalid" class="invalid-feedback d-block">
+                        <span *ngIf="passwordForm.get('confirmpwd').errors?.['required']">{{'Please confirm your new password'| translate}}.</span>
+                        <div *ngIf="passwordMatchError">{{ 'confirm_password_does_not_matched' | translate }}</div>
+                      </div>
                     </div>
+                  </div>
                 </div>
                 <div class="row justify-content-end">
                   <div class="col-sm-9">
                       <div>
-                          <button type="submit" class="btn btn-primary w-md">{{'Submit'|translate}}</button>
+                          <button type="submit" class="btn btn-primary w-md" (click)="passwordFormSubmit()">{{'Submit'|translate}}</button>
+                          <div id="elmLoader" class="loader" *ngIf="loading$ | async">
+                            <div class="spinner-border text-primary avatar-sm" role="status">
+                              <span class="visually-hidden">Loading...</span>
+                            </div>
+                          </div>   
                       </div>
                   </div>
               </div>

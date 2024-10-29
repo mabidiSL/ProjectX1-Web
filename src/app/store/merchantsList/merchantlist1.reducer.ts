@@ -1,6 +1,6 @@
 // src/app/merchantlist.reducer.ts
 import { createReducer, on } from '@ngrx/store';
-import {  addMerchantlist, addMerchantlistFailure, addMerchantlistSuccess, deleteMerchantlist, deleteMerchantlistFailure, deleteMerchantlistSuccess, fetchMerchantlistData, fetchMerchantlistFail, fetchMerchantlistSuccess, getMerchantById, getMerchantByIdFailure, getMerchantByIdSuccess, updateMerchantlist, updateMerchantlistFailure, updateMerchantlistSuccess } from './merchantlist1.action';
+import {  addMerchantlist, addMerchantlistFailure, addMerchantlistSuccess, deleteMerchantlist, deleteMerchantlistFailure, deleteMerchantlistSuccess, fetchMerchantlistData, fetchMerchantlistFail, fetchMerchantlistSuccess, getLoggedMerchantById, getLoggedMerchantByIdFailure, getLoggedMerchantByIdSuccess, getMerchantById, getMerchantByIdFailure, getMerchantByIdSuccess, updateMerchantlist, updateMerchantlistFailure, updateMerchantlistSuccess } from './merchantlist1.action';
 
 export interface MerchantlistState {
   MerchantListdata: any[];
@@ -61,12 +61,32 @@ export const MerchantListReducer = createReducer(
       error,
       loading: false, 
     })),
+      //Handle logged getting Merchant by id
+  on(getLoggedMerchantById, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
+  })),
+  // Handle success of getting Employee by ID and store the Employee object in the state
+  on(getLoggedMerchantByIdSuccess, (state, { merchant }) => ({
+    ...state,
+    selectedMerchant: merchant,
+    loading: false,
+    error: null 
+  })),
+  // Handle success of getting Merchant by ID and store the Merchant object in the state
+  on(getLoggedMerchantByIdFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false, 
+  })),
     //Handle getting Merchant by id
   on(getMerchantById, (state) => ({
     ...state,
     loading: true,
     error: null 
   })),
+  
   // Handle success of getting Employee by ID and store the Employee object in the state
   on(getMerchantByIdSuccess, (state, { merchant }) => ({
     ...state,

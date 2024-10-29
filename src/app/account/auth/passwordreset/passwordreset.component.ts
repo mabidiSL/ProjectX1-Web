@@ -5,9 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../../../core/services/auth.service';
 import { environment } from '../../../../environments/environment';
 import { AuthfakeauthenticationService } from 'src/app/core/services/authfake.service';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { forgetPassword } from 'src/app/store/Authentication/authentication.actions';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { selectDataLoading } from 'src/app/store/Authentication/authentication-selector';
 
 @Component({
   selector: 'app-passwordreset',
@@ -21,6 +23,8 @@ import { ToastrService } from 'ngx-toastr';
 export class PasswordresetComponent implements OnInit, AfterViewInit {
 
   resetForm: FormGroup;
+  loading$: Observable<any>
+
   submitted: any = false;
   error: any = '';
   success: any = '';
@@ -34,7 +38,9 @@ export class PasswordresetComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute, private router: Router, 
     private authFakeService: AuthfakeauthenticationService,
     private store: Store,
-    public toastr:ToastrService) { }
+    public toastr:ToastrService) {   
+          this.loading$ = this.store.pipe(select(selectDataLoading));
+    }
 
   ngOnInit() {
 

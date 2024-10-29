@@ -10,7 +10,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { _User } from 'src/app/store/Authentication/auth.models';
 import { updateProfile, updateProfilePassword } from 'src/app/store/Authentication/authentication.actions';
 import { TranslateService } from '@ngx-translate/core';
-import { getUser } from 'src/app/store/Authentication/authentication-selector';
+import { getUser, selectDataLoading } from 'src/app/store/Authentication/authentication-selector';
 
 @Component({
   selector: 'app-profile',
@@ -24,11 +24,20 @@ import { getUser } from 'src/app/store/Authentication/authentication-selector';
 export class ProfileComponent  {
   // bread crumb items
   breadCrumbItems: Array<{}>;
+  loading$: Observable<any>
+
   profileForm: UntypedFormGroup;
+  formError: string | null = null;
+  formSubmitted = false;
+  fieldTextType!: boolean;
+  passwordMatchError: boolean = false;
+
+
   passwordForm: UntypedFormGroup;
   revenueBarChart: ChartType;
   statData:any;
   submitted: any = false;
+
   private currentUserSubject: BehaviorSubject<_User>;
   public currentUser: Observable<_User>;
 
@@ -37,6 +46,8 @@ export class ProfileComponent  {
     private store: Store, 
     public translate: TranslateService) {
       
+      this.loading$ = this.store.pipe(select(selectDataLoading));
+
       this.currentUserSubject = new BehaviorSubject<_User>(JSON.parse(localStorage.getItem('currentUser')));
       this.currentUser = this.currentUserSubject.asObservable();
       
@@ -65,35 +76,80 @@ export class ProfileComponent  {
   public get currentUserValue(): _User {
     return this.currentUserSubject.value;
 }
-  passwordMatchValidator(formGroup: FormGroup) {
-    const newPassword = formGroup?.get('newPassword').value;
-    const confirmPassword = formGroup?.get('confirmpwd').value;
-    
-    
-    if (confirmPassword && newPassword !== confirmPassword) {
-        console.log("password mismatch");
-        formGroup.get('confirmpwd').setErrors({ passwordMismatch: true });
-        return { passwordMismatch: true };
-      }
-    
-      formGroup.get('confirmpwd').setErrors(null);
-   
-    return null;
+// get passwordMatchError() {
+//   return (
+//     this.passwordForm.getError('passwordMismatch') &&
+//     this.passwordForm.get('confirmpwd')?.touched
+//   );
+// }
+checkPasswordMatch() {
+  const password = this.passwordForm.get('newPassword').value;
+  const confirmPassword = this.passwordForm.get('confirmpwd').value;
+
+  this.passwordMatchError = password !== confirmPassword;
+}
+passwordMatchValidator(formGroup: FormGroup) {
+  const newPassword = formGroup.get('newPassword')?.value;
+  const confirmPassword = formGroup.get('confirmpwd')?.value;
+
+  if (newPassword && confirmPassword) {
+    if (newPassword !== confirmPassword) {
+      formGroup.get('confirmpwd')?.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true }; // Return an error object
+    } else {
+      formGroup.get('confirmpwd')?.setErrors(null); // Clear errors if they match
+    }
   }
+
+  return null; // Return null if valid
+}
   
+     /**
+ * Password Hide/Show
+ */
+     toggleFieldTextType() {
+      this.fieldTextType = !this.fieldTextType;
+    }
   onSubmit() {
-    this.submitted = true;
-    if(this.profileForm.valid){
+    this.formSubmitted = true;
+
+      if (this.profileForm.invalid) {
+        this.formError = 'Please complete all required fields.';
+        Object.keys(this.profileForm.controls).forEach(control => {
+          this.profileForm.get(control).markAsTouched();
+        });
+        this.focusOnFirstInvalid();
+        return;
+      }
+
+      this.formError = null;
+
       console.log("Submitting update profile form");
       const updatedUser =  this.profileForm.value;
       console.log(updatedUser);
       this.store.dispatch(updateProfile({ user: updatedUser }));
 
-    }
-   // UpdateProfile Api
-   // this.store.dispatch(updateProfile({ email: email, password: password }));
+   
   }
-
+private focusOnFirstInvalid() {
+      const firstInvalidControl = this.getFirstInvalidControl();
+      if (firstInvalidControl) {
+        firstInvalidControl.focus();
+      }
+    }
+  
+    private getFirstInvalidControl(): HTMLInputElement | null {
+      const controls = this.profileForm.controls;
+      for (const key in controls) {
+        if (controls[key].invalid) {
+          const inputElement = document.getElementById(key) as HTMLInputElement;
+          if (inputElement) {
+            return inputElement;
+          }
+        }
+      }
+      return null;
+    }
 
   
     // convenience getter for easy access to form fields
@@ -103,21 +159,25 @@ export class ProfileComponent  {
    * Submit the password
    */
   passwordFormSubmit() {
+
     this.submitted = true;
-    console.log('form password submit');
-   // this.passwordForm.markAllAsTouched();
-    if(this.passwordForm.valid) {
-      console.log('Valid Submitting  Password Form ...');
-     // this.passwordForm.removeControl('confirmpwd');
+    if (this.profileForm.invalid) {
+      this.formError = 'Please complete all required fields.';
+      Object.keys(this.profileForm.controls).forEach(control => {
+        this.profileForm.get(control).markAsTouched();
+      });
+      this.focusOnFirstInvalid();
+      return;
+    }
+
+    this.formError = null;
+
       const id = this.f['id'].value;
       const currentPassword = this.f['currentPassword'].value;
       const newPassword = this.f['newPassword'].value;
 
       this.store.dispatch(updateProfilePassword({ oldPassword:currentPassword ,newPassword:newPassword}))  
 
-    }
-    else {
-      console.log('Form is invalid');
-    }
+    
   }
 }

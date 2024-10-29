@@ -28,7 +28,10 @@ export class CrudService {
         delete updatedData.id;
         return this.http.patch<any[]>(` ${environment.baseURL}${url}`, updatedData);
     }
+    getDataById(url, id: any): Observable<any> {
+        return this.http.get<any>(` ${environment.baseURL}${url}/${id}`);
 
+    }
     deleteData(url: any): Observable<string> {
         return this.http.delete<string>(` ${environment.baseURL}${url}`);
     }

@@ -240,6 +240,7 @@
                       <label for="supervisorPhone">Supervisor Phone</label><br>
                       <app-phone-number
                       [initialPhoneNumber]="merchantForm.get('supervisorPhone').value"
+                      [disabled]="type === 'view'"
                       *ngIf="merchantForm"
                       [inputId]="'supervisorPhone'"
                       (phoneNumberChanged)="onSupervisorPhoneChanged($event)" >

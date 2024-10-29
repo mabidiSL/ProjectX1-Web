@@ -78,7 +78,7 @@ export class AreaEffects {
                   return getAreaByIdSuccess({ Area: Area });
                 } else {
                   console.log('Area NULL');
-                  this.toastr.error('Area not found.'); // Show error notification
+                 // this.toastr.error('Area not found.'); // Show error notification
               return getAreaByIdFailure({ error: 'Area not found' });
                 }
               })

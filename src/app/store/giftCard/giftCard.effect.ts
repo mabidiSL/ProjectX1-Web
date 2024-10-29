@@ -111,7 +111,7 @@ export class GiftCardsEffects {
               return getGiftCardByIdSuccess({ GiftCard });
             } else {
               console.log('GiftCard NULL');
-              this.toastr.error('GiftCard not found.')
+              //this.toastr.error('GiftCard not found.')
               return getCouponByIdFailure({ error: 'GiftCard not found' }); // or handle it differently
             }
           })

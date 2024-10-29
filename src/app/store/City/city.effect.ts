@@ -78,7 +78,7 @@ export class CityEffects {
                   return getCityByIdSuccess({ City: City });
                 } else {
                   console.log('City NULL');
-                  this.toastr.error('City not found.'); // Show error notification
+                 // this.toastr.error('City not found.'); // Show error notification
                   return getCityByIdFailure({ error: 'City not found' });
                 }
               })

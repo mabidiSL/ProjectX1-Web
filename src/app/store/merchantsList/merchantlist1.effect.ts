@@ -18,7 +18,10 @@ import {
     deleteMerchantlist,
     getMerchantById,
     getMerchantByIdSuccess,
-    getMerchantByIdFailure
+    getMerchantByIdFailure,
+    getLoggedMerchantById,
+    getLoggedMerchantByIdFailure,
+    getLoggedMerchantByIdSuccess
 } from './merchantlist1.action';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
@@ -63,6 +66,28 @@ export class MerchantslistEffects1 {
                       })                )
             )
         )
+    );
+    getLoggedMerchant$ =  createEffect(() =>
+      this.actions$.pipe(
+        ofType(getLoggedMerchantById),
+        tap(action => console.log('get Logged Merchant action received:', action)),
+        mergeMap(({ merchantId }) => {
+          // get merchant by id
+          return this.CrudService.getDataById('/merchants', merchantId).pipe(
+            map(Merchant => {
+              if (Merchant) {
+                console.log('Merchant',Merchant);
+                // Dispatch success action with the Merchant data
+                return getLoggedMerchantByIdSuccess({ merchant: Merchant.result });
+              } else {
+                console.log('Merchant NULL');
+                //this.toastr.error('Merchant not found.'); // Show error notification
+                return getLoggedMerchantByIdFailure({ error: 'Merchant not found' });
+              }
+            })
+          );
+        })
+      )
     );
     getMerchantById$ = createEffect(() =>
         this.actions$.pipe(

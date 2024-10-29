@@ -19,9 +19,10 @@ import { UserlistComponent } from './userlist/userlist.component';
 import { ProfileComponent } from './profile/profile.component';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TranslateModule } from '@ngx-translate/core';
+import { CompanyProfileComponent } from './company-profile/company-profile.component';
 
 @NgModule({
-  declarations: [UsergridComponent, UserlistComponent, ProfileComponent],
+  declarations: [UsergridComponent, UserlistComponent, ProfileComponent, CompanyProfileComponent],
   imports: [
     CommonModule,
     TranslateModule,
@@ -34,7 +35,6 @@ import { TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule ,
     TooltipModule.forRoot(),
     TabsModule.forRoot(),
-
     PaginationModule.forRoot(),
     BsDropdownModule,
     ModalModule
