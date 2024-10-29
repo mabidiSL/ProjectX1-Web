@@ -71,7 +71,6 @@ export class FormCityComponent  implements OnInit {
     ngOnInit() {
   
       const CityId = this.route.snapshot.params['id'];
-      console.log('city ID from snapshot:', CityId);
       if (CityId) {
         // Dispatch action to retrieve the city by ID
         this.store.dispatch(getCityById({ CityId }));
@@ -81,7 +80,6 @@ export class FormCityComponent  implements OnInit {
           .pipe(select(selectCityById(CityId)), takeUntil(this.destroy$))
           .subscribe(city => {
             if (city) {
-              console.log('Retrieved city:', city);
               this.filteredAreas = this.areas;
               this.cityForm.controls['country_id'].setValue(city.area.country_id);
               this.cityForm.patchValue(city);
@@ -117,16 +115,13 @@ export class FormCityComponent  implements OnInit {
               
         const newData = this.cityForm.value;
       
-        console.log(newData);
         if(!this.isEditing)
           { delete newData.id;
             delete newData.country_id;
             
-            console.log('Adding city');
             this.store.dispatch(addCitylist({ newData }));          }
           else
           { 
-            console.log('updating city');
             this.store.dispatch(updateCitylist({ updatedData: newData }));
           }
     
@@ -152,11 +147,8 @@ export class FormCityComponent  implements OnInit {
     }
     onChangeCountrySelection(event : any){
       const country = event.target.value;
-      console.log(country);
       if(country){
-        console.log(this.areas);
         this.filteredAreas = this.areas.filter(area => area.country_id == country);
-        console.log(this.filteredAreas);
       }
       else
       {
@@ -170,8 +162,7 @@ export class FormCityComponent  implements OnInit {
       this.destroy$.complete();
     }
     onCancel(){
-      console.log('Form status:', this.cityForm.status);
-      console.log('Form errors:', this.cityForm.errors);
+     
       this.cityForm.reset();
       this.router.navigateByUrl('/private/cities');
     }

@@ -87,7 +87,6 @@ on(updateEmployeelist, (state) => ({
 // Handle updating Employee success
   on(updateEmployeelistSuccess, (state, { updatedData }) => {
    const EmployeeListUpdated = state.EmployeeListdata.map(item => item.id === updatedData.id ? updatedData : item );
-   console.log('EmployeeListdata after update:', EmployeeListUpdated);
    return {
       ...state,
       EmployeeListdata: EmployeeListUpdated,
@@ -110,7 +109,6 @@ on(updateEmployeelist, (state) => ({
   // Handle the success of deleting a Employee
   on(deleteEmployeelistSuccess, (state, { employeeId }) => {
     const updatedEmployeeList = state.EmployeeListdata.filter(Employee => Employee.id !== employeeId);
-    console.log('EmployeeListdata after deletion:', updatedEmployeeList);
     return { 
     ...state,
     EmployeeListdata: updatedEmployeeList,

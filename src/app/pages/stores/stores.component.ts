@@ -56,12 +56,10 @@ export class StoresComponent implements OnInit {
         this.originalArray = data; // Store the full Store list
         this.filteredArray = [...this.originalArray];
         document.getElementById('elmLoader')?.classList.add('d-none');
-        console.log('Finish get Store list');
-        console.log(this.filteredArray);
+   
         });
    }
    onSearchEvent(event: any){
-    console.log(event);
     //this.store.dispatch(fetchStorelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: event.target.value }));
 
    }
@@ -84,7 +82,6 @@ export class StoresComponent implements OnInit {
  
   onChangeEvent( event: any) {
     const newStatus = event.event.checked ? 'active' : 'inactive'; 
-    console.log('Store ID:', event.data.id, 'New Status:', newStatus);
     const updatedData = {id:event.data.id, status: newStatus}
     this.store.dispatch(updateStorelist({ updatedData: updatedData }));
   }

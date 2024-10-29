@@ -33,7 +33,6 @@ export class MerchantslistEffects1 {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchMerchantlistData),
-            tap(() => console.log('Request to fetch merchant list has been launched')), // Add console log here
             mergeMap(({ page, itemsPerPage, status }) => 
                 this.CrudService.fetchData('/merchants',{ limit: itemsPerPage, page: page, status: status}).pipe(
                     tap((response : any) => console.log('Fetched data:', response.result)), 
@@ -70,17 +69,14 @@ export class MerchantslistEffects1 {
     getLoggedMerchant$ =  createEffect(() =>
       this.actions$.pipe(
         ofType(getLoggedMerchantById),
-        tap(action => console.log('get Logged Merchant action received:', action)),
         mergeMap(({ merchantId }) => {
           // get merchant by id
           return this.CrudService.getDataById('/merchants', merchantId).pipe(
             map(Merchant => {
               if (Merchant) {
-                console.log('Merchant',Merchant);
                 // Dispatch success action with the Merchant data
                 return getLoggedMerchantByIdSuccess({ merchant: Merchant.result });
               } else {
-                console.log('Merchant NULL');
                 //this.toastr.error('Merchant not found.'); // Show error notification
                 return getLoggedMerchantByIdFailure({ error: 'Merchant not found' });
               }
@@ -92,17 +88,14 @@ export class MerchantslistEffects1 {
     getMerchantById$ = createEffect(() =>
         this.actions$.pipe(
           ofType(getMerchantById),
-          tap(action => console.log('get Merchant action received:', action)),
           mergeMap(({ merchantId }) => {
             // Use the selector to get the Merchant from the store
             return this.store.select(selectMerchantById(merchantId)).pipe(
               map(Merchant => {
                 if (Merchant) {
-                  console.log('Merchant',Merchant);
                   // Dispatch success action with the Merchant data
                   return getMerchantByIdSuccess({ merchant: Merchant });
                 } else {
-                  console.log('Merchant NULL');
                   this.toastr.error('Merchant not found.'); // Show error notification
                   return getMerchantByIdFailure({ error: 'Merchant not found' });
                 }
@@ -120,7 +113,6 @@ export class MerchantslistEffects1 {
                 return this.CrudService.updateData(`/merchants/${updatedData.id}`, updatedData).pipe(
                 map(() => 
                 {
-                    console.log('Updated Data:', updatedData);
                     this.toastr.success('The merchant has been updated successfully.');
                     this.router.navigate(['/private/merchants/list']);
                     return  updateMerchantlistSuccess({ updatedData })}),
@@ -138,7 +130,6 @@ export class MerchantslistEffects1 {
     
         this.actions$.pipe(
             ofType(deleteMerchantlist),
-            tap(action => console.log('Delete action received:', action)),
             mergeMap(({ userId }) =>
                     this.CrudService.deleteData(`/merchants/${userId}`).pipe(
                         map((response: string) => {

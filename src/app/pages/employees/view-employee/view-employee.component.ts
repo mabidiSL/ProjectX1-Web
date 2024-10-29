@@ -9,7 +9,6 @@ export class ViewEmployeeComponent {
   breadCrumbItems: Array<{}>;
 
   ngOnInit() {
-    console.log('i am in view employee');
     this.breadCrumbItems = [{ label: 'Employee' }, { label: 'View Employee', active: true }];
   }
 }

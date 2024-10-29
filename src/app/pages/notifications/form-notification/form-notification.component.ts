@@ -67,7 +67,6 @@ export class FormNotificationComponent implements OnInit {
     
 
     const notifId = this.route.snapshot.params['id'];
-    console.log('Notif ID from snapshot:', notifId);
     if (notifId) {
       // Dispatch action to retrieve the notif by ID
       this.store.dispatch(getNotificationById({ notificationId: notifId }));
@@ -77,7 +76,6 @@ export class FormNotificationComponent implements OnInit {
         .pipe(select(selectNotificationById(notifId)), takeUntil(this.destroy$))
         .subscribe(Notif => {
           if (Notif) {
-            console.log('Retrieved Notif:', Notif);
            
             this.notifForm.patchValue(Notif);
             this.isEditing = true;
@@ -129,13 +127,11 @@ parseToCronExpression(date : any): any{
                 }
               };
              
-              console.log(notificationData);
               //Dispatch Action
               this.store.dispatch(addNotificationlist({ newData: notificationData}));
         }
         else
         {
-          console.log('updating notif');
           this.store.dispatch(updateNotificationlist({ updatedData: newData }));
         }
    
@@ -161,7 +157,6 @@ parseToCronExpression(date : any): any{
   }
   onEditorChange(event: any){
     this.messageDesc = event.editor.getData(); // Get the updated content
-    console.log(this.messageDesc); // Check the updated content
   }
 
   ngOnDestroy() {
@@ -169,8 +164,7 @@ parseToCronExpression(date : any): any{
     this.destroy$.complete();
   }
   onCancel(){
-    console.log('Form status:', this.notifForm.status);
-    console.log('Form errors:', this.notifForm.errors);
+   
     this.notifForm.reset();
     this.router.navigateByUrl('/private/notifications');
   }

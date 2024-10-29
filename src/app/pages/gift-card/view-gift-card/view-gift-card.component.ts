@@ -9,7 +9,6 @@ export class ViewGiftCardComponent {
   breadCrumbItems: Array<{}>;
 
   ngOnInit() {
-    console.log('i am in view gift cards');
     this.breadCrumbItems = [{ label: 'GiftCards' }, { label: 'View Gift Card', active: true }];
 }
 }

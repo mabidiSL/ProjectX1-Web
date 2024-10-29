@@ -9,7 +9,6 @@ export class CreateCityComponent {
   breadCrumbItems: Array<{}>;
 
   ngOnInit() {
-    console.log('i am in create City');
     this.breadCrumbItems = [{ label: 'Cities' }, { label: 'Add City', active: true }];
   }
 }

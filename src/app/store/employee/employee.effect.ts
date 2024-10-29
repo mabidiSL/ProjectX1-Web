@@ -17,7 +17,6 @@ export class EmployeeslistEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchEmployeelistData),
-            tap(() => console.log('Request to fetch Employee list has been launched')), // Add console log here
             mergeMap(({ page, itemsPerPage, role }) =>
                 this.CrudService.fetchData('/users', { limit:itemsPerPage , page: page, role: role}).pipe(
                     tap((response : any) => console.log('Fetched data:', response.result)), 
@@ -74,17 +73,14 @@ export class EmployeeslistEffects {
       getEmployeeById$ = createEffect(() =>
         this.actions$.pipe(
           ofType(getEmployeeById),
-          tap(action => console.log('get Employee action received:', action)),
           mergeMap(({ employeeId }) => {
             // Use the selector to get the Employee from the store
             return this.store.select(selectEmployeeById(employeeId)).pipe(
               map(Employee => {
                 if (Employee) {
-                  console.log('Employee',Employee);
                   // Dispatch success action with the Employee data
                   return getEmployeeByIdSuccess({ employee: Employee });
                 } else {
-                  console.log('Employee NULL');
                   //this.toastr.error('Employee not found.'); // Show error notification
                   return getEmployeeByIdFailure({ error: 'Employee not found' });
                 }
@@ -97,12 +93,10 @@ export class EmployeeslistEffects {
     
         this.actions$.pipe(
             ofType(deleteEmployeelist),
-            tap(action => console.log('Delete action received:', action)),
             mergeMap(({ employeeId }) =>
                     this.CrudService.deleteData(`/users/${employeeId}`).pipe(
                         map((response: string) => {
                             // If response contains a success message or status, you might want to check it here
-                            console.log('API response:', response);
                             return deleteEmployeelistSuccess({ employeeId });
                           }),
                           catchError((error) => {

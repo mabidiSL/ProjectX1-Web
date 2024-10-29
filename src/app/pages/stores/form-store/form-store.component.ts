@@ -78,7 +78,6 @@ export class FormStoreComponent implements OnInit {
 
       this.currentRole = this.getCurrentUser()?.role.name;
       this.merchantId =  this.getCurrentUser()?.merchantId;
-      console.log(this.merchantId);
 
       this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 10 , status: 'active'}));
       this.store.dispatch(fetchCountrylistData({ page: 1, itemsPerPage: 10 , status: 'active'}));
@@ -110,7 +109,6 @@ export class FormStoreComponent implements OnInit {
   private getCurrentUser(): _User {
     // Replace with your actual logic to retrieve the user role
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    console.log(currentUser);
     return currentUser;
 }
   ngOnInit() {
@@ -125,16 +123,13 @@ export class FormStoreComponent implements OnInit {
     if(this.currentRole !== 'Admin'){
      
       this.storeForm.get('merchant_id').setValue(this.merchantId);
-      console.log('searching for the merchantObject');
       
       this.merchantlist$.pipe(
         filter(merchant => !!merchant), // Only continue if merchant is not null
         switchMap(merchant => {
             const selectMerchant = merchant.find(m => m.id === this.merchantId);
-            console.log(selectMerchant);
     
             if (selectMerchant) {
-                console.log('I am in patching area');
                 const merchant_country_id = selectMerchant.user.city.area.country.id;
     
                 return this.arealist$.pipe(
@@ -293,24 +288,19 @@ private getNavigationState(){
             {           
               if(this.uploadedFiles){
                 let images: any[] = [];
-                console.log(this.uploadedFiles);
                 this.uploadedFiles.forEach(file => {
-                  console.log(file.dataURL);
                   images.push(file.dataURL); // Push each Base64 string into the images array
               });
               newData.images =  images;
               }
               delete newData.id;
-              console.log(newData);
               //Dispatch Action
               this.store.dispatch(addStorelist({ newData }));
         }
         else
         {
-          console.log('updating store');
-          console.log(this.uploadedFiles);
+          
           newData.images = this.parseImages(this.uploadedFiles);
-          console.log(newData.images);
          // delete newData.images;
           delete newData.area_id;
           this.store.dispatch(updateStorelist({ updatedData: newData }));
@@ -378,8 +368,7 @@ removeFile(event: any) {
     this.destroy$.complete();
   }
   onCancel(){
-    console.log('Form status:', this.storeForm.status);
-    console.log('Form errors:', this.storeForm.errors);
+
     this.storeForm.reset();
     this.router.navigateByUrl('/private/stores');
   }

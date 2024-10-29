@@ -67,7 +67,6 @@ export class AuthenticationEffects {
           return this.AuthfakeService.login(email, password).pipe(
             map((response) => {
                       
-                console.log(JSON.stringify(response.result.accessToken));
                 localStorage.setItem('token', response.result.accessToken);
                 localStorage.setItem('refreshToken', response.result.refreshToken);
                 localStorage.setItem('currentUser', JSON.stringify(response.result.user));

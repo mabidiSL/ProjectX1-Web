@@ -55,8 +55,7 @@ export class CountryComponent implements OnInit {
       this.originalArray = data; // Country the full Country list
       this.filteredArray = [...this.originalArray];
       document.getElementById('elmLoader')?.classList.add('d-none');
-      console.log('Finish get Country list');
-      console.log(this.filteredArray);
+   
 
     });
        
@@ -79,7 +78,6 @@ export class CountryComponent implements OnInit {
  
   onChangeEvent( event: any) {
     const newStatus = event.event.checked ? 'active' : 'inactive'; 
-    console.log('Country ID:', event.data.id, 'New Status:', newStatus);
     const newData = {id: event.data.id, status: newStatus }
     this.store.dispatch(updateCountrylist({ updatedData: newData }));
   }

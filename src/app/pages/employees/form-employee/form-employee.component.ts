@@ -106,7 +106,6 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
 
     
     const employeeId = this.route.snapshot.params['id'];
-    console.log('employee ID from snapshot:', employeeId);
     if (employeeId) {
       // Dispatch action to retrieve the employee by ID
       this.store.dispatch(getEmployeeById({ employeeId }));
@@ -116,7 +115,6 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
         .pipe(select(selectEmployeeById(employeeId)), takeUntil(this.destroy$))
         .subscribe(employee => {
           if (employee) {
-            console.log('Retrieved employee:', employee);
             // Patch the form with employee data
             this.arealist$.subscribe(
               areas => 
@@ -163,7 +161,6 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
   }
   onChangeCountrySelection(event: any){
     const country = event.target.value;
-    console.log(country);
     if(country){
       this.arealist$.subscribe(
         areas => 
@@ -177,7 +174,6 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
   }
   onChangeAreaSelection(event: any){
     const area = event.target.value;
-    console.log(area);
     if(area){
       this.citylist$.subscribe(
         cities => 
@@ -191,7 +187,6 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
   }
   onChangeRoleSelection(event: any){
     const role = event.target.value;
-    console.log(role);
     if(role){
       
           this.selectedRole = this.rolelist.find(r => r.id == role);
@@ -212,7 +207,6 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
     }
     this.formError = null;
       const newData = this.employeeForm.value;
-      console.log(newData);
       if(!this.isEditing)
         {
             delete newData.id;

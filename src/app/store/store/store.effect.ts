@@ -30,7 +30,6 @@ export class StoreslistEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchStorelistData),
-            tap(() => console.log('Request to fetch Store list has been launched')), // Add console log here
             mergeMap(({ page, itemsPerPage,status, merchant_id }) =>
                 this.CrudService.fetchData('/stores',{ limit: itemsPerPage, page: page,status: status, merchant_id: merchant_id}).pipe(
                     tap((response : any) => console.log('Fetched data:', response.result)), 
@@ -52,7 +51,6 @@ export class StoreslistEffects {
                 this.CrudService.addData('/stores', newData).pipe(
                     map((response: any) => {
                         const userRole = this.getCurrentUserRole(); 
-                        console.log(userRole);// Replace with your logic to get the role
                           if (userRole === 'Admin') {
                               this.toastr.success('The new Store has been added successfully.');
                               this.router.navigate(['/private/stores']);
@@ -75,17 +73,14 @@ export class StoreslistEffects {
     getStoreById$ = createEffect(() =>
         this.actions$.pipe(
           ofType(getStoreById),
-          tap(action => console.log('get Store action received:', action)),
           mergeMap(({ StoreId }) => {
             // Use the selector to get the Store from the store
             return this.store.select(selectStoreById(StoreId)).pipe(
               map(Store => {
                 if (Store) {
-                  console.log('Store',Store);
                   // Dispatch success action with the Store data
                   return getStoreByIdSuccess({ Store: Store });
                 } else {
-                  console.log('Store NULL');
                   this.toastr.error('Store not found.'); // Show error notification
               return getStoreByIdFailure({ error: 'Store not found' });
                 }
@@ -101,7 +96,6 @@ export class StoreslistEffects {
             mergeMap(({ updatedData }) => 
             this.CrudService.updateData(`/stores/${updatedData.id}`, updatedData).pipe(
                 map((response: any) =>{
-                console.log('Updated Data:', updatedData);
                 this.toastr.success('The Store has been updated successfully.');
                 this.router.navigate(['/private/stores']);
                 return  updateStorelistSuccess({ updatedData: response.result })}),
@@ -120,12 +114,10 @@ export class StoreslistEffects {
     
         this.actions$.pipe(
             ofType(deleteStorelist),
-            tap(action => console.log('Delete action received:', action)),
             mergeMap(({ storeId }) =>
                     this.CrudService.deleteData(`/stores/${storeId}`).pipe(
                         map((response: string) => {
                             // If response contains a success message or status, you might want to check it here
-                            console.log('API response:', response);
                             this.toastr.success('The Store has been deleted successfully.');
                             return deleteStorelistSuccess({ storeId });
                           }),
@@ -160,7 +152,6 @@ export class StoreslistEffects {
     private getCurrentUserRole(): string {
         // Replace with your actual logic to retrieve the user role
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        console.log(currentUser);
         return currentUser ? currentUser.role.name : '';
     }
 }

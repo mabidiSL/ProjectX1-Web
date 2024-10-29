@@ -52,8 +52,7 @@ export class EmployeesComponent implements OnInit {
         this.originalArray = data; // Employee the full Employee list
         this.filteredArray = [...this.originalArray];
         document.getElementById('elmLoader')?.classList.add('d-none');
-        console.log('Finish get Employee list');
-        console.log(this.filteredArray);
+       
     
         });
    }
@@ -77,7 +76,6 @@ export class EmployeesComponent implements OnInit {
  
   onChangeEvent( event: any) {
     const newStatus = event.event.checked ? 'active' : 'inactive'; 
-    console.log('Employee ID:', event.data.id, 'New Status:', newStatus);
     const newData = {id: event.data.id, status: newStatus }
     this.store.dispatch(updateEmployeelist({ updatedData: newData }));
   }

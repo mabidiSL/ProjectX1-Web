@@ -76,21 +76,18 @@ export class FormRoleComponent implements OnInit {
               this.moduleKeys.push(Modules[claim.claimType]); // Get module name
               claim.claimValue.forEach(value => {
                   if (value in Permission) {
-                      console.log(value);
                       if(!this.permissionKeys.includes(Permission[value]))
                         this.permissionKeys.push(Permission[value]); // Get permission name
                   }
               });
           }
       });
-      console.log(this.moduleKeys);
-      console.log(this.permissionKeys);
+
   
   }
      private getCurrentUser(): _User {
       // Replace with your actual logic to retrieve the user role
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      console.log(currentUser);
       return currentUser;
   } 
  
@@ -99,7 +96,6 @@ export class FormRoleComponent implements OnInit {
         
 
     const roleId = this.route.snapshot.params['id'];
-    console.log('role ID from snapshot:', roleId);
     if (roleId) {
       // Dispatch action to retrieve the role by ID
       this.store.dispatch(getRoleById({ RoleId: roleId }));
@@ -109,9 +105,7 @@ export class FormRoleComponent implements OnInit {
         .pipe(select(selectRoleById(roleId)), takeUntil(this.destroy$))
         .subscribe(role => {
           if (role) {
-            console.log('Retrieved role:', role);
             this.role = role;
-            console.log(this.role);
             this.roleForm.patchValue(role);
             this.claims = this.role.claims;
             this.isEditing = true;
@@ -170,7 +164,6 @@ export class FormRoleComponent implements OnInit {
         }
         else
         {
-          console.log('updating role');
           this.store.dispatch(updateRolelist({ updatedData: newData }));
         }
    
@@ -232,7 +225,6 @@ export class FormRoleComponent implements OnInit {
 
     // Update the form's claims value
     this.roleForm.patchValue({ claims: this.claims });
-    console.log(this.claims); // Log claims for debugging
 }
 
   toggleGlobalAll(checked: boolean): void {
@@ -251,7 +243,6 @@ export class FormRoleComponent implements OnInit {
           }
     // Update the form's claims value
     this.roleForm.patchValue({ claims: this.claims });
-    console.log(this.claims); // Log claims for debugging
 }
 
   togglePermission(moduleKey: string, permissionKey: string, event: any): void {
@@ -323,7 +314,6 @@ export class FormRoleComponent implements OnInit {
 
     // Update the form's claims value
     this.roleForm.patchValue({ claims: this.claims });
-    console.log(this.claims); // Log claims for debugging
 }
 checkExistance(moduleKey : string): boolean {
   const module = Modules[moduleKey as keyof typeof Modules];
@@ -356,7 +346,6 @@ toggleModule(moduleKey: string, event: any): void {
 
     // Update the form's claims value
     this.roleForm.patchValue({ claims: this.claims });
-    console.log(this.claims); // Log claims for debugging
 }
 
 
@@ -365,8 +354,7 @@ toggleModule(moduleKey: string, event: any): void {
     this.destroy$.complete();
   }
   onCancel(){
-    console.log('Form status:', this.roleForm.status);
-    console.log('Form errors:', this.roleForm.errors);
+    
     this.roleForm.reset();
     this.router.navigateByUrl('/private/roles');
   }

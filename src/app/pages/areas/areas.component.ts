@@ -54,8 +54,7 @@ export class AreasComponent  implements OnInit {
      this.originalArray = data; // Area the full Area list
      this.filteredArray = [...this.originalArray];
      document.getElementById('elmLoader')?.classList.add('d-none');
-     console.log('Finish get Area list');
-     console.log(this.filteredArray);
+     
 
    });
       
@@ -78,7 +77,6 @@ export class AreasComponent  implements OnInit {
 
  onChangeEvent( event: any) {
   const newStatus = event.event.checked ? 'active' : 'inactive'; 
-  console.log('Area ID:', event.data.id, 'New Status:', newStatus);
   const newData = {id: event.data.id, status: newStatus }
   this.store.dispatch(updateArealist({ updatedData: newData }));
  }

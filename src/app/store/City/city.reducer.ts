@@ -88,7 +88,6 @@ export const CityListReducer = createReducer(
 // Handle updating City 
   on(updateCitylistSuccess, (state, { updatedData }) => {
    const CityListUpdated = state.CityListdata.map(item => item.id === updatedData.id ? updatedData : item );
-   console.log('CityListdata after update:', CityListUpdated);
    return {
       ...state,
       CityListdata: CityListUpdated,

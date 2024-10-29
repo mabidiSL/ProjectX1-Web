@@ -31,7 +31,6 @@ export class GiftCardsEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchGiftCardlistData),
-            tap(() => console.log('Request to fetch GiftCard list has been launched')), // Add console log here
             mergeMap(({ page, itemsPerPage, status }) =>
                 this.CrudService.fetchData('/gift-cards',{ limit: itemsPerPage, page: page, status: status}).pipe(
                     tap((response : any) => console.log('Fetched data:', response.result)), 
@@ -54,7 +53,6 @@ export class GiftCardsEffects {
                 this.CrudService.addData('/gift-cards', newData).pipe(
                     map((newData) => {
                       const userRole = this.getCurrentUserRole(); 
-                      console.log(userRole);// Replace with your logic to get the role
                         if (userRole === 'Admin') {
                             this.toastr.success('The new GiftCard has been added successfully.');
                             this.router.navigate(['/private/giftCards']);
@@ -100,17 +98,14 @@ export class GiftCardsEffects {
    getGiftCardById$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getGiftCardById),
-      tap(action => console.log('get GiftCard action received:', action)),
       mergeMap(({ GiftCardId }) => {
         // Use the selector to get the GiftCard from the store
         return this.store.select(selectGiftCardById(GiftCardId)).pipe(
           map(GiftCard => {
             if (GiftCard) {
-              console.log('GiftCard',GiftCard);
               // Dispatch success action with the GiftCard data
               return getGiftCardByIdSuccess({ GiftCard });
             } else {
-              console.log('GiftCard NULL');
               //this.toastr.error('GiftCard not found.')
               return getCouponByIdFailure({ error: 'GiftCard not found' }); // or handle it differently
             }
@@ -123,7 +118,6 @@ export class GiftCardsEffects {
     
         this.actions$.pipe(
             ofType(deleteGiftCardlist),
-            tap(action => console.log('Delete action received:', action)),
             mergeMap(({ GiftCardId }) =>
                     this.CrudService.deleteData(`/gift-cards/${GiftCardId}`).pipe(
                         map((response: string) => {
@@ -159,7 +153,6 @@ export class GiftCardsEffects {
     private getCurrentUserRole(): string {
       // Replace with your actual logic to retrieve the user role
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      console.log(currentUser);
       return currentUser ? currentUser.role.name : '';
   }
 }

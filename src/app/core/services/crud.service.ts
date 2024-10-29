@@ -39,7 +39,6 @@ export class CrudService {
     disableData(url: string, userId: string): Observable<string> {
         return this.http.post<string>(url, { userId },{ responseType: 'text' as 'json' })
         .pipe(
-          tap(response => console.log('Service response:', response)), // Log service response
           catchError(error => {
             console.error('Service error:', error); // Log error details
             return of(''); // Return a default empty string or a specific error message

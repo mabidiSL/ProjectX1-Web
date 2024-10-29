@@ -63,7 +63,6 @@
     ngOnInit() {
   
       const CountryId = this.route.snapshot.params['id'];
-      console.log('Country ID from snapshot:', CountryId);
       if (CountryId) {
         // Dispatch action to retrieve the Country by ID
         this.store.dispatch(getCountryById({ CountryId }));
@@ -73,7 +72,6 @@
           .pipe(select(selectCountryById(CountryId)), takeUntil(this.destroy$))
           .subscribe(Country => {
             if (Country) {
-              console.log('Retrieved Country:', Country);
               this.flag = Country.flag;
               this.countryForm.patchValue(Country);
               this.isEditing = true;
@@ -88,7 +86,6 @@
       return date.toISOString().split('T')[0]; // Converts to YYYY-MM-DD format
     }
     onPhoneNumberChanged(phoneNumber: string) {
-      console.log('PHONE NUMBER', phoneNumber);
       this.countryForm.get('phone').setValue(phoneNumber);
     }
   
@@ -128,13 +125,11 @@
           newData.flag = this.CountryFlagBase64;
         }
         
-        console.log(newData);
         if(!this.isEditing)
           {
             this.store.dispatch(addCountrylist({ newData }));          }
           else
           { 
-            console.log('updating Country');
 
             if(!this.CountryFlagBase64){
               delete newData.flag;
@@ -182,13 +177,11 @@
      * Upload Country Logo
      */
     async uploadCountryFlag(event: any){
-      console.log('i am in Country Flag Upload');
       try {
         this.imageURL = await this.fileChange(event);
         document.querySelectorAll('#projectlogo-img').forEach((element: any) => {
           element.src = this.imageURL;
         });
-        console.log(this.imageURL);
         //this.CountryForm.controls['CountryLogo'].setValue(imageURL);
          this.CountryFlagBase64 = this.imageURL;
       } catch (error: any) {
@@ -203,8 +196,7 @@
       this.destroy$.complete();
     }
     onCancel(){
-      console.log('Form status:', this.countryForm.status);
-      console.log('Form errors:', this.countryForm.errors);
+     
       this.countryForm.reset();
       this.router.navigateByUrl('/private/countries');
     }

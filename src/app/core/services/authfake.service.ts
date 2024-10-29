@@ -44,12 +44,10 @@ export class AuthfakeauthenticationService {
 
         return this.http.post(`/reset-password/${token}`,{password})
        .pipe(map(message => {
-           console.log(message)
            return message;
        }));
    }
     updateProfile(user: any){
-        console.log(user);
         return this.http.patch(` ${environment.baseURL}/users/${user.id}`,user) ;
     }
 

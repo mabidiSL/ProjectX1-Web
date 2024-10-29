@@ -77,7 +77,6 @@ export class TopbarComponent implements OnInit {
     this.notifications$.subscribe( (data) => {
         if(data)  {
           this.notifications = data
-          console.log(this.notifications);
         }
               
     });
@@ -160,7 +159,6 @@ export class TopbarComponent implements OnInit {
         break;
       // Add other cases for different notification types
       default:
-        console.log('Unknown notification type');
     }
    }
 

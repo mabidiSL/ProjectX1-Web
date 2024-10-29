@@ -32,7 +32,6 @@ export class SectionEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchSectionlistData),
-            tap(() => console.log('Request to fetch Section list has been launched')), // Add console log here
             mergeMap(({ page, itemsPerPage }) =>
                 this.CrudService.fetchData('/sections',{ limit: itemsPerPage, page: page}).pipe(
                     tap((response : any) => console.log('Fetched data:', response.result.data)), 
@@ -64,17 +63,14 @@ export class SectionEffects {
     getSectionById$ = createEffect(() =>
         this.actions$.pipe(
           ofType(getSectionById),
-          tap(action => console.log('get Section action received:', action)),
           mergeMap(({ SectionId }) => {
             // Use the selector to get the Section from the Section
             return this.store.select(selectSectionById(SectionId)).pipe(
               map(Section => {
                 if (Section) {
-                  console.log('Section',Section);
                   // Dispatch success action with the Section data
                   return getSectionByIdSuccess({ Section: Section });
                 } else {
-                  console.log('Section NULL');
                   // Handle the case where the Section is not found, if needed
                   // For example, you might want to dispatch a failure action or return an empty Section
                   return getSectionByIdSuccess({ Section: null }); // or handle it differently
@@ -106,7 +102,6 @@ export class SectionEffects {
                 return this.CrudService.updateData(`/sections/${updatedData.id}`, updatedData).pipe(
                     map((response : any) => 
                     {
-                        console.log('Updated Data:', updatedData);
                         this.toastr.success('The Section has been updated successfully.');
                         this.router.navigate(['/private/sections']); 
                         return updateSectionlistSuccess({ updatedData : response.result})
@@ -122,12 +117,10 @@ export class SectionEffects {
     
         this.actions$.pipe(
             ofType(deleteSectionlist),
-            tap(action => console.log('Delete action received:', action)),
             mergeMap(({ SectionId }) =>
                     this.CrudService.deleteData(`/sections/${SectionId}`).pipe(
                         map((response: string) => {
                             // If response contains a success message or status, you might want to check it here
-                            console.log('API response:', response);
                             return deleteSectionlistSuccess({ SectionId });
                           }),
                     catchError((error) => {return  of(deleteSectionlistFailure({ error }))})
@@ -144,7 +137,6 @@ export class SectionEffects {
         private router: Router,
         private store: Store
     ) { 
-        console.log('i am in Section effect');
     }
 
 }

@@ -151,7 +151,6 @@ export class FormMerchantComponent implements OnInit {
 
 
     const merchantId = this.route.snapshot.params['id'];
-    console.log('merchant ID from snapshot:', merchantId);
     if (merchantId) {
       // Dispatch action to retrieve the merchant by ID
       this.store.dispatch(getMerchantById({ merchantId }));
@@ -161,7 +160,6 @@ export class FormMerchantComponent implements OnInit {
         .pipe(select(selectMerchantById(merchantId)), takeUntil(this.destroy$))
         .subscribe(merchant => {
           if (merchant) {
-            console.log('Retrieved merchant:', merchant);
 
            
             this.existantmerchantLogo = merchant.merchantLogo;
@@ -208,7 +206,6 @@ export class FormMerchantComponent implements OnInit {
 
   onChangeCountrySelection(event: any){
     const country = event.target.value;
-    console.log(country);
     if(country){
       this.arealist$.subscribe(
         areas => 
@@ -222,7 +219,6 @@ export class FormMerchantComponent implements OnInit {
   }
   onChangeAreaSelection(event: any){
     const area = event.target.value;
-    console.log(area);
     if(area){
       this.citylist$.subscribe(
         cities => 
@@ -236,7 +232,6 @@ export class FormMerchantComponent implements OnInit {
   }
 
   onPhoneNumberChanged(phoneNumber: string) {
-    console.log('PHONE NUMBER', phoneNumber);
     this.merchantForm.get('phone').setValue(phoneNumber);
   }
 
@@ -268,13 +263,11 @@ export class FormMerchantComponent implements OnInit {
       if(this.merchantPictureBase64){
         newData.merchantPicture = this.merchantPictureBase64;
       }
-      console.log(newData);
       delete newData.confpassword;
       delete newData.area_id;
       delete newData.country_id;
       if(!this.isEditing)
         {           
-          console.log(newData);
           delete newData.id;
 
           //Dispatch Action
@@ -282,10 +275,8 @@ export class FormMerchantComponent implements OnInit {
         }
         else
         { 
-          console.log('updating merchant');
           delete newData.password;
           newData.id = this.globalId;
-          console.log(newData);
           this.store.dispatch(updateMerchantlist({ updatedData: newData }));
         }
       
@@ -342,7 +333,6 @@ export class FormMerchantComponent implements OnInit {
   async uploadMerchantLogo(event: any){
     try {
       const imageURL = await this.fileChange(event);
-      console.log(imageURL);
       //this.merchantForm.controls['storeLogo'].setValue(imageURL);
       this.storeLogoBase64 = imageURL;
       this.fileName1 = ''; // Set the file name
@@ -360,7 +350,6 @@ export class FormMerchantComponent implements OnInit {
   async uploadMerchantPicture(event: any){
     try {
       const imageURL = await this.fileChange(event);
-      console.log(imageURL);
       //this.merchantForm.controls['merchantPicture'].setValue(imageURL);
       this.merchantPictureBase64 = imageURL;
       this.fileName2 = ''; // Set the file name
@@ -375,8 +364,7 @@ export class FormMerchantComponent implements OnInit {
     this.destroy$.complete();
   }
   onCancel(){
-    console.log('Form status:', this.merchantForm.status);
-    console.log('Form errors:', this.merchantForm.errors);
+   
     this.merchantForm.reset();
     this.router.navigateByUrl('/private/merchants/list');
   }

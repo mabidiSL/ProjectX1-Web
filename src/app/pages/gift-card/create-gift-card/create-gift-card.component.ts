@@ -10,7 +10,6 @@ export class CreateGiftCardComponent {
  breadCrumbItems: Array<{}>;
 
  ngOnInit() {
-   console.log('i am in create gift cards');
    this.breadCrumbItems = [{ label: 'Gift Cards' }, { label: 'Add Gift-Card', active: true }];
 }
 }

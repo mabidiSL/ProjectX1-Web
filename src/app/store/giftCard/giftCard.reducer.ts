@@ -91,7 +91,6 @@ on(updateGiftCardlist, (state) => ({
  // Handle updating GiftCard status
   on(updateGiftCardlistSuccess, (state, { updatedData }) => {
    const GiftCardListUpdated = state.GiftCardListdata.map(item => item.id === updatedData.id ? updatedData : item );
-   console.log('GiftCardListdata after update:', GiftCardListUpdated);
    return {
       ...state,
       GiftCardListdata: GiftCardListUpdated,

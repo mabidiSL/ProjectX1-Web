@@ -9,7 +9,6 @@ export class EditAreaComponent {
   breadCrumbItems: Array<{}>;
 
   ngOnInit() {
-    console.log('i am in edit area');
     this.breadCrumbItems = [{ label: 'Areas' }, { label: 'Edit Area', active: true }];
   }
 }

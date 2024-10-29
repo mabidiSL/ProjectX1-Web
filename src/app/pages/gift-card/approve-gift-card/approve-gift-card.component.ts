@@ -57,8 +57,7 @@ export class ApproveGiftCardComponent implements OnInit {
             this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
             this.giftCardApprovalList$.subscribe(
               data => {
-                this.originalArray = data;
-              console.log(this.originalArray);}
+                this.originalArray = data;}
           );
             document.getElementById('elmLoader')?.classList.add('d-none')
           }, 1200);
@@ -76,7 +75,6 @@ export class ApproveGiftCardComponent implements OnInit {
       }
     
       onApproveEvent( event: any) {
-        console.log('giftCard ID:', event.id, 'New Status:', event.status);
         this.store.dispatch(updateGiftCardlist({ updatedData: event }));
       }
     

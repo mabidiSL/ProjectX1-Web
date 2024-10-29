@@ -110,7 +110,6 @@ export const MerchantListReducer = createReducer(
 // Handle updating merchant status
   on(updateMerchantlistSuccess, (state, { updatedData }) => {
    const merchantListUpdated = state.MerchantListdata.map(item => item.id === updatedData.id ? updatedData : item );
-   console.log('MerchantListdata after update:', merchantListUpdated);
    return {
       ...state,
       MerchantListdata: merchantListUpdated,

@@ -50,8 +50,7 @@ export class RolesComponent  implements OnInit{
         this.originalArray = data; // Role the full Role list
         this.filteredArray = [...this.originalArray];
         document.getElementById('elmLoader')?.classList.add('d-none');
-        console.log('Finish get Role list');
-        console.log(this.filteredArray);
+       
         });
    }
 
@@ -63,7 +62,6 @@ export class RolesComponent  implements OnInit{
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    console.log(event.page);
     this.store.dispatch(fetchRolelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage }));
     
   }
@@ -75,9 +73,7 @@ export class RolesComponent  implements OnInit{
 
  
   onChangeEvent( event: any) {
-    console.log(event);
     const newStatus = event.event.checked ? 'active' : 'inactive'; 
-    console.log('Role ID:', event.data.id, 'New Status:', newStatus);
     event.data.status = newStatus;
     const newData = {id: event.data.id, status: event.data.status }
     this.store.dispatch(updateRolelist({ updatedData: newData }));

@@ -91,7 +91,6 @@ export const CouponListReducer = createReducer(
 // Handle updating Coupon success
   on(updateCouponlistSuccess, (state, { updatedData }) => {
    const CouponListUpdated = state.CouponListdata.map(item => item.id === updatedData.id ? updatedData : item );
-   console.log('CouponListdata after update:', CouponListUpdated);
    return {
       ...state,
       CouponListdata: CouponListUpdated,

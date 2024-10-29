@@ -44,7 +44,6 @@ export class UpdatepasswordComponent {
   ngOnInit() {
    
    this.token = this.route.snapshot.paramMap.get('id');
-   console.log(this.token);
    
     // form validation
     this.updatePassForm = this.formBuilder.group({
@@ -60,7 +59,6 @@ export class UpdatepasswordComponent {
     
     
     if (confirmPassword && newPassword !== confirmPassword) {
-        console.log("password mismatch");
         formGroup.get('confirmPassword').setErrors({ passwordMismatch: true });
         return { passwordMismatch: true };
       }

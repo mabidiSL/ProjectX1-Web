@@ -55,8 +55,7 @@ export class CityComponent  implements OnInit {
       this.originalArray = data; // City the full City list
       this.filteredArray = [...this.originalArray];
       document.getElementById('elmLoader')?.classList.add('d-none');
-      console.log('Finish get City list');
-      console.log(this.filteredArray);
+     
 
     });
        
@@ -79,7 +78,6 @@ export class CityComponent  implements OnInit {
  
   onChangeEvent( event: any) {
     const newStatus = event.event.checked ? 'active' : 'inactive'; 
-    console.log('City ID:', event.data.id, 'New Status:', newStatus);
     const newData = {id: event.data.id, status: newStatus }
     this.store.dispatch(updateCitylist({ updatedData: newData }));
   }

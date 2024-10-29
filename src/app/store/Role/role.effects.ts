@@ -31,7 +31,6 @@ export class RolesEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchRolelistData),
-            tap(() => console.log('Request to fetch Role list has been launched')), // Add console log here
             mergeMap(({ page, itemsPerPage, status }) =>
                 this.CrudService.fetchData('/roles/me',{ limit: itemsPerPage, page: page,status: status}).pipe(
                     tap((response : any) => console.log('Fetched data:', response.result)), 
@@ -89,17 +88,14 @@ export class RolesEffects {
    getRoleById$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getRoleById),
-      tap(action => console.log('get Role action received:', action)),
       mergeMap(({ RoleId }) => {
         // Use the selector to get the Role from the store
         return this.store.select(selectRoleById(RoleId)).pipe(
           map(Role => {
             if (Role) {
-              console.log('Role',Role);
               // Dispatch success action with the Role data
               return getRoleByIdSuccess({ Role });
             } else {
-              console.log('Role NULL');
               //this.toastr.error('Role not found.'); // Show error notification
               return getRoleByIdFailure({ error: 'Role not found' });
             }
@@ -112,12 +108,10 @@ export class RolesEffects {
     
         this.actions$.pipe(
             ofType(deleteRolelist),
-            tap(action => console.log('Delete action received:', action)),
             mergeMap(({ RoleId }) =>
                     this.CrudService.deleteData(`/roles/${RoleId}`).pipe(
                         map((response: string) => {
                             // If response contains a success message or status, you might want to check it here
-                            console.log('API response:', response);
                             this.toastr.success('The Role has been deleted successfully.');
                             return deleteRolelistSuccess({ RoleId });
                           }),

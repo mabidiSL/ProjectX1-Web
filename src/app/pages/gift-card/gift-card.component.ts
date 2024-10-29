@@ -57,8 +57,7 @@ export class GiftCardComponent implements OnInit {
       this.originalArray = data; // giftCard the full giftCard list
       this.filteredArray = [...this.originalArray];
       document.getElementById('elmLoader')?.classList.add('d-none');
-      console.log('Finish get giftCard list');
-      console.log(this.filteredArray);
+     
 
     });
        
@@ -82,7 +81,6 @@ export class GiftCardComponent implements OnInit {
  
   onChangeEvent( event: any) {
         const newStatus = event.event.checked ? 'active' : 'inactive'; 
-    console.log('giftCard ID:', event.data.id, 'New Status:', newStatus);
     const newData = {id: event.data.id, status: newStatus }
     this.store.dispatch(updateGiftCardlist({ updatedData: newData }));
   }

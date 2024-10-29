@@ -31,7 +31,6 @@ export class CouponslistEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchCouponlistData),
-            tap(() => console.log('Request to fetch Coupon list has been launched')), // Add console log here
             mergeMap(({ page, itemsPerPage, status }) =>
                 this.CrudService.fetchData('/coupons',{ limit: itemsPerPage, page: page, status: status}).pipe(
                     tap((response : any) => console.log('Fetched data:', response.result)), 
@@ -53,7 +52,6 @@ export class CouponslistEffects {
                 this.CrudService.addData('/coupons', newData).pipe(
                     map((newData) => {
                       const userRole = this.getCurrentUserRole(); 
-                      console.log(userRole);// Replace with your logic to get the role
                           if (userRole === 'Admin') {
                               this.toastr.success('The new Coupon has been added successfully.');
                               this.router.navigate(['/private/coupons']);
@@ -98,17 +96,14 @@ export class CouponslistEffects {
    getCouponById$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getCouponById),
-      tap(action => console.log('get coupon action received:', action)),
       mergeMap(({ couponId }) => {
         // Use the selector to get the coupon from the store
         return this.store.select(selectCouponById(couponId)).pipe(
           map(coupon => {
             if (coupon) {
-              console.log('COUPON',coupon);
               // Dispatch success action with the coupon data
               return getCouponByIdSuccess({ coupon });
             } else {
-              console.log('COUPON NULL');
              // this.toastr.error('Coupon not found.'); // Show error notification
               return getCouponByIdFailure({ error: 'Coupon not found' });
             }
@@ -120,7 +115,6 @@ export class CouponslistEffects {
    deleteData$ = createEffect(() =>
             this.actions$.pipe(
             ofType(deleteCouponlist),
-            tap(action => console.log('Delete action received:', action)),
             mergeMap(({ couponId }) =>
                     this.CrudService.deleteData(`/coupons/${couponId}`).pipe(
                         map((response: string) => {
@@ -156,7 +150,6 @@ export class CouponslistEffects {
     private getCurrentUserRole(): string {
       // Replace with your actual logic to retrieve the user role
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      console.log(currentUser);
       return currentUser ? currentUser.role.name : '';
   }
 }

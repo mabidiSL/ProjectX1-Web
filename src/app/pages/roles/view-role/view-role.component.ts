@@ -9,7 +9,6 @@ export class ViewRoleComponent {
   breadCrumbItems: Array<{}>;
 
   ngOnInit() {
-    console.log('i am in view role');
     this.breadCrumbItems = [{ label: 'Role' }, { label: 'View Role', active: true }];
   }
 }

@@ -9,7 +9,6 @@ export class ViewAreaComponent {
   breadCrumbItems: Array<{}>;
 
   ngOnInit() {
-    console.log('i am in view area');
     this.breadCrumbItems = [{ label: 'areas' }, { label: 'View area', active: true }];
   }
 }

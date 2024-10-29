@@ -37,13 +37,11 @@ export class SocketService {
     this.socket.on('connect', () => {
       const userId = this.userId; // Hard-coded user ID
       this.registerUser(userId);
-      console.log(`User registered: ${userId}`);
     });
     this.listenForMessages();
   }
   private listenForMessages() {
     this.socket.on('messageFromServer', (message: { userId: string; message: string }) => {
-      console.log({ message });
       this.messagesSubject.next([...this.messagesSubject.value, message]);
     });
   }

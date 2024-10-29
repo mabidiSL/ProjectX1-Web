@@ -10,7 +10,6 @@ export class EditGiftCardComponent {
  breadCrumbItems: Array<{}>;
 
  ngOnInit() {
-   console.log('i am in edit gift cards');
    this.breadCrumbItems = [{ label: 'Gift-cards' }, { label: 'Edit Gift-Card', active: true }];
 }
 }

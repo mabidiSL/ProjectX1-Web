@@ -22,9 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
             return next.handle(clonedRequest).pipe(
                 catchError((error: HttpErrorResponse) => {
                 // If the error is a 401 (Unauthorized), attempt to refresh the token
-                console.log('Error caught by interceptor:', error); // Log full error
                 if (error.status === 401) {
-                    console.log('catch 401');
                     return this.handle401Error(request, next);
                 }
                 return throwError(() => error);;
@@ -44,7 +42,6 @@ export class AuthInterceptor implements HttpInterceptor {
     
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
         const refreshToken = localStorage.getItem('refreshToken');;  // Retrieve the refresh token
-        console.log('i am in refresh token handler');
         if (refreshToken) {
           // Call refresh token API
           return this.authService.refreshToken(refreshToken).pipe(

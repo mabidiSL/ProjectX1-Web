@@ -9,7 +9,6 @@ export class CreateNotificationComponent {
   breadCrumbItems: Array<{}>;
 
   ngOnInit() {
-    console.log('i am in create notification');
     this.breadCrumbItems = [{ label: 'Notifications' }, { label: 'Add notification', active: true }];
   }
 }

@@ -58,7 +58,6 @@ export const SectionListReducer = createReducer(
 // Handle updating Section 
   on(updateSectionlistSuccess, (state, { updatedData }) => {
    const SectionListUpdated = state.SectionListdata.map(item => item.id === updatedData.id ? updatedData : item );
-   console.log('SectionListdata after update:', SectionListUpdated);
    return {
       ...state,
       SectionListdata: SectionListUpdated
@@ -66,10 +65,8 @@ export const SectionListReducer = createReducer(
   }),
   // Handle the success of deleting a Section
   on(deleteSectionlistSuccess, (state, { SectionId }) => {
-    console.log('Deleting Section with ID:', SectionId);
-    console.log('SectionListdata before deletion:', state.SectionListdata);
+    
     const updatedSectionList = state.SectionListdata.filter(Section => Section.id !== SectionId);
-    console.log('SectionListdata after deletion:', updatedSectionList);
     return { 
     ...state,
     SectionListdata: updatedSectionList};

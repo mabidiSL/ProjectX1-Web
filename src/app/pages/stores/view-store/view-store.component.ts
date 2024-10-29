@@ -9,7 +9,6 @@ export class ViewStoreComponent {
   breadCrumbItems: Array<{}>;
 
   ngOnInit() {
-    console.log('i am in view store');
     this.breadCrumbItems = [{ label: 'Stores' }, { label: 'View store', active: true }];
   }
 }

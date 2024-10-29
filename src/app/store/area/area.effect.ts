@@ -30,7 +30,6 @@ export class AreaEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchArealistData),
-            tap(() => console.log('Request to fetch Area list has been launched')), // Add console log here
             mergeMap(({ page, itemsPerPage }) =>
                 this.CrudService.fetchData('/areas',{ limit: itemsPerPage, page: page}).pipe(
                     tap((response : any) => console.log('Fetched data:', response.result)), 
@@ -67,17 +66,14 @@ export class AreaEffects {
     getAreaById$ = createEffect(() =>
         this.actions$.pipe(
           ofType(getAreaById),
-          tap(action => console.log('get Area action received:', action)),
           mergeMap(({ AreaId }) => {
             // Use the selector to get the Area from the Area
             return this.store.select(selectAreaById(AreaId)).pipe(
               map(Area => {
                 if (Area) {
-                  console.log('Area',Area);
                   // Dispatch success action with the Area data
                   return getAreaByIdSuccess({ Area: Area });
                 } else {
-                  console.log('Area NULL');
                  // this.toastr.error('Area not found.'); // Show error notification
               return getAreaByIdFailure({ error: 'Area not found' });
                 }
@@ -91,7 +87,6 @@ export class AreaEffects {
         this.actions$.pipe(
             ofType(updateArealist),
             mergeMap(({ updatedData }) => {
-                console.log('Updated Data:', updatedData);
                 this.toastr.success('The Area has been updated successfully.');
                 this.router.navigate(['/private/areas']);
                 return this.CrudService.updateData(`/areas/${updatedData.id}`, updatedData).pipe(
@@ -110,12 +105,10 @@ export class AreaEffects {
     
         this.actions$.pipe(
             ofType(deleteArealist),
-            tap(action => console.log('Delete action received:', action)),
             mergeMap(({ AreaId }) =>
                     this.CrudService.deleteData(`/areas/${AreaId}`).pipe(
                         map((response: string) => {
                             // If response contains a success message or status, you might want to check it here
-                            console.log('API response:', response);
                             return deleteArealistSuccess({ AreaId });
                           }),
                           catchError((error) => {

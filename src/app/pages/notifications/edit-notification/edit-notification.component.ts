@@ -9,7 +9,6 @@ export class EditNotificationComponent {
   breadCrumbItems: Array<{}>;
 
   ngOnInit() {
-    console.log('i am in edit notification');
     this.breadCrumbItems = [{ label: 'Notifications' }, { label: 'Edit Notification', active: true }];
   }
 }

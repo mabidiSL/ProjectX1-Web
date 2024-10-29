@@ -30,7 +30,6 @@ export class CityEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchCitylistData),
-            tap(() => console.log('Request to fetch City list has been launched')), // Add console log here
             mergeMap(({ page, itemsPerPage }) =>
                 this.CrudService.fetchData('/cities',{ limit: itemsPerPage, page: page}).pipe(
                     tap((response : any) => console.log('Fetched data:', response.result)), 
@@ -67,17 +66,14 @@ export class CityEffects {
     getCityById$ = createEffect(() =>
         this.actions$.pipe(
           ofType(getCityById),
-          tap(action => console.log('get City action received:', action)),
           mergeMap(({ CityId }) => {
             // Use the selector to get the City from the City
             return this.store.select(selectCityById(CityId)).pipe(
               map(City => {
                 if (City) {
-                  console.log('City',City);
                   // Dispatch success action with the City data
                   return getCityByIdSuccess({ City: City });
                 } else {
-                  console.log('City NULL');
                  // this.toastr.error('City not found.'); // Show error notification
                   return getCityByIdFailure({ error: 'City not found' });
                 }
@@ -96,7 +92,6 @@ export class CityEffects {
                 return this.CrudService.updateData(`/cities/${updatedData.id}`, updatedData).pipe(
                     map((response : any) => 
                     {
-                        console.log('Updated Data:', updatedData);
                         this.toastr.success('The City has been updated successfully.');
                         this.router.navigate(['/private/cities']); 
                         return updateCitylistSuccess({ updatedData : response.result})
@@ -115,12 +110,10 @@ export class CityEffects {
     
         this.actions$.pipe(
             ofType(deleteCitylist),
-            tap(action => console.log('Delete action received:', action)),
             mergeMap(({ CityId }) =>
                     this.CrudService.deleteData(`/cities/${CityId}`).pipe(
                         map((response: string) => {
                             // If response contains a success message or status, you might want to check it here
-                            console.log('API response:', response);
                             return deleteCitylistSuccess({ CityId });
                           }),
                           catchError((error) => {

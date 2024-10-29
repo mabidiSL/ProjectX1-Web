@@ -9,7 +9,6 @@ export class CreateCountryComponent {
   breadCrumbItems: Array<{}>;
 
   ngOnInit() {
-    console.log('i am in create country');
     this.breadCrumbItems = [{ label: 'Countries' }, { label: 'Add Country', active: true }];
   }
 }

@@ -9,7 +9,6 @@ export class EditCountryComponent {
   breadCrumbItems: Array<{}>;
 
   ngOnInit() {
-    console.log('i am in edit country');
     this.breadCrumbItems = [{ label: 'countries' }, { label: 'Edit country', active: true }];
   }
 }

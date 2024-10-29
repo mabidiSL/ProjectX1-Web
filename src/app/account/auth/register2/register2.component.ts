@@ -130,7 +130,6 @@ export class Register2Component implements OnInit {
   
   onChangeCountrySelection(event: any){
     const country = event.target.value;
-    console.log(country);
     if(country){
       this.arealist$.subscribe(
         areas => 
@@ -144,7 +143,6 @@ export class Register2Component implements OnInit {
   }
   onChangeAreaSelection(event: any){
     const area = event.target.value;
-    console.log(area);
     if(area){
       this.citylist$.subscribe(
         cities => 
@@ -201,7 +199,6 @@ export class Register2Component implements OnInit {
       }
       delete newData.confpassword;
   
-      console.log(newData);
       //Dispatch Action
       this.store.dispatch(Register({ newData }));
 
@@ -227,8 +224,7 @@ export class Register2Component implements OnInit {
     return null;
   }
   onCancel(){
-    console.log('Form status:', this.signupForm.status);
-    console.log('Form errors:', this.signupForm.errors);
+ 
     this.signupForm.reset();
     this.router.navigateByUrl('/auth/login');
   }
@@ -264,7 +260,6 @@ export class Register2Component implements OnInit {
   async uploadStoreLogo(event: any){
     try {
       const imageURL = await this.fileChange(event);
-      console.log(imageURL);
       //this.signupForm.controls['storeLogo'].setValue(imageURL);
       this.storeLogoBase64 = imageURL;
     } catch (error: any) {
@@ -277,7 +272,6 @@ export class Register2Component implements OnInit {
   async uploadMerchantPicture(event: any){
     try {
       const imageURL = await this.fileChange(event);
-      console.log(imageURL);
       //this.signupForm.controls['merchantPicture'].setValue(imageURL);
       this.merchantPictureBase64 = imageURL;
     } catch (error: any) {

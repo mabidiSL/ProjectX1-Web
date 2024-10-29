@@ -9,7 +9,6 @@ export class ViewCityComponent {
   breadCrumbItems: Array<{}>;
 
   ngOnInit() {
-    console.log('i am in view city');
     this.breadCrumbItems = [{ label: 'city' }, { label: 'View city', active: true }];
   }
 }

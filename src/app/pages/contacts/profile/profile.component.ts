@@ -124,9 +124,7 @@ passwordMatchValidator(formGroup: FormGroup) {
 
       this.formError = null;
 
-      console.log("Submitting update profile form");
       const updatedUser =  this.profileForm.value;
-      console.log(updatedUser);
       this.store.dispatch(updateProfile({ user: updatedUser }));
 
    

@@ -10,7 +10,6 @@ export class EditEmployeeComponent implements OnInit{
   breadCrumbItems: Array<{}>;
   
   ngOnInit() {
-    console.log('i am in edit employee');
     this.breadCrumbItems = [{ label: 'Employees' }, { label: 'Edit employee', active: true }];
   }
 }

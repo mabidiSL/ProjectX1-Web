@@ -90,7 +90,6 @@ on(updateRolelist, (state) => ({
 // Handle updating Role success
   on(updateRolelistSuccess, (state, { updatedData }) => {
    const RoleListUpdated = state.RoleListdata.map(item => item.id === updatedData.id ? updatedData : item );
-   console.log('RoleListdata after update:', RoleListUpdated);
    return {
       ...state,
       RoleListdata: RoleListUpdated,

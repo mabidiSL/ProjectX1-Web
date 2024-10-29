@@ -30,7 +30,6 @@ export class countrieslistEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchCountrylistData),
-            tap(() => console.log('Request to fetch Country list has been launched')), // Add console log here
             mergeMap(({ page, itemsPerPage }) =>
                 this.CrudService.fetchData('/countries',{ limit: itemsPerPage, page: page}).pipe(
                     tap((response : any) => console.log('Fetched data:', response.result)), 
@@ -65,17 +64,14 @@ export class countrieslistEffects {
     getCountryById$ = createEffect(() =>
         this.actions$.pipe(
           ofType(getCountryById),
-          tap(action => console.log('get Country action received:', action)),
           mergeMap(({ CountryId }) => {
             // Use the selector to get the Country from the Country
             return this.store.select(selectCountryById(CountryId)).pipe(
               map(Country => {
                 if (Country) {
-                  console.log('Country',Country);
                   // Dispatch success action with the Country data
                   return getCountryByIdSuccess({ Country: Country });
                 } else {
-                  console.log('Country NULL');
                  // this.toastr.error('Country not found.'); // Show error notification
               return getCountryByIdFailure({ error: 'Country not found' });
                 }
@@ -91,7 +87,6 @@ export class countrieslistEffects {
                 
                 return this.CrudService.updateData(`/countries/${updatedData.id}`, updatedData).pipe(
                     map((response : any) => {
-                        console.log('Updated Data:', updatedData);
                         this.toastr.success('The Country has been updated successfully.');
                         this.router.navigate(['/private/countries']);
                         return updateCountrylistSuccess({ updatedData : response.result})}),
@@ -109,12 +104,10 @@ export class countrieslistEffects {
     
         this.actions$.pipe(
             ofType(deleteCountrylist),
-            tap(action => console.log('Delete action received:', action)),
             mergeMap(({ CountryId }) =>
                     this.CrudService.deleteData(`/countries/${CountryId}`).pipe(
                         map((response: string) => {
                             // If response contains a success message or status, you might want to check it here
-                            console.log('API response:', response);
                             return deleteCountrylistSuccess({ CountryId });
                           }),
                           catchError((error) => {

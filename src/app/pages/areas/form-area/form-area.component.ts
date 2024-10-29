@@ -68,7 +68,6 @@ export class FormAreaComponent implements OnInit {
   ngOnInit() {
 
     const AreaId = this.route.snapshot.params['id'];
-    console.log('Area ID from snapshot:', AreaId);
     if (AreaId) {
       // Dispatch action to retrieve the Area by ID
       this.store.dispatch(getAreaById({ AreaId }));
@@ -78,7 +77,6 @@ export class FormAreaComponent implements OnInit {
         .pipe(select(selectAreaById(AreaId)), takeUntil(this.destroy$))
         .subscribe(Area => {
           if (Area) {
-            console.log('Retrieved Area:', Area);
             this.areaForm.patchValue(Area);
             this.isEditing = true;
             }
@@ -116,14 +114,11 @@ export class FormAreaComponent implements OnInit {
             
       const newData = this.areaForm.value;
     
-      console.log(newData);
       if(!this.isEditing)
         { delete newData.id;
-          console.log('Adding Area');
           this.store.dispatch(addArealist({ newData }));          }
         else
         { 
-          console.log('updating Area');
           this.store.dispatch(updateArealist({ updatedData: newData }));
         }
       
@@ -153,8 +148,7 @@ export class FormAreaComponent implements OnInit {
     this.destroy$.complete();
   }
   onCancel(){
-    console.log('Form status:', this.areaForm.status);
-    console.log('Form errors:', this.areaForm.errors);
+    
     this.areaForm.reset();
     this.router.navigateByUrl('/private/areas');
   }

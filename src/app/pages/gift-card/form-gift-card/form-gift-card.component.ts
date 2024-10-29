@@ -65,7 +65,6 @@ export class FormGiftCardComponent implements OnInit{
 
       this.currentRole = this.getCurrentUser()?.role.name;
       this.merchantId =  this.getCurrentUser()?.merchantId;
-      console.log(this.merchantId);
 
       if(this.currentRole !== 'Admin')
           this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 10 ,status:'', merchant_id: this.merchantId}));
@@ -95,8 +94,7 @@ export class FormGiftCardComponent implements OnInit{
   private getCurrentUser(): _User {
     // Replace with your actual logic to retrieve the user role
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    console.log(currentUser);
-    return currentUser;
+   return currentUser;
 } 
   private initForm() {
     this.formGiftCard = this.formBuilder.group({
@@ -147,7 +145,6 @@ export class FormGiftCardComponent implements OnInit{
       this.isLoading = true;
       }
     const GiftCardId = this.route.snapshot.params['id'];
-    console.log('GiftCard ID from snapshot:', GiftCardId);
     if (GiftCardId) {
       // Dispatch action to retrieve the GiftCard by ID
       this.store.dispatch(getGiftCardById({ GiftCardId }));
@@ -156,7 +153,6 @@ export class FormGiftCardComponent implements OnInit{
         .pipe(select(selectGiftCardById(GiftCardId)), takeUntil(this.destroy$))
         .subscribe(GiftCard => {
           if (GiftCard) {
-            console.log('Retrieved GiftCard:', GiftCard);
             
             if(this.currentRole == 'Admin'){
               this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 10, status:'', merchant_id: GiftCard.merchant_id}));
@@ -203,7 +199,6 @@ getFileNameFromUrl(url: string): string {
 
 onChangeMerchantSelection(event: any){
   const merchant = event.target.value;
-  console.log(merchant);
   if(merchant){
     this.isLoading = true;
     this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 10 ,status:'', merchant_id: merchant}));
@@ -212,7 +207,6 @@ onChangeMerchantSelection(event: any){
    
 }
 onPhoneNumberChanged(phoneNumber: string) {
-  console.log('PHONE NUMBER', phoneNumber);
   this.formGiftCard.get('managerPhone').setValue(phoneNumber);
 }
   onSubmit(){
@@ -231,14 +225,12 @@ onPhoneNumberChanged(phoneNumber: string) {
           
       const newData = this.formGiftCard.value;
            
-      console.log(newData);
       newData.stores = this.formGiftCard.get('stores').value.map((store) =>(store.id ) );
       if(!this.isEditing)
       {
          
           //Dispatch Action
           delete newData.id;
-          //console.log(newData.stores);
           this.store.dispatch(addGiftCardlist({ newData }));
       }
       else{
@@ -295,7 +287,6 @@ onPhoneNumberChanged(phoneNumber: string) {
 async uploadGiftCardLogo(event: any){
   try {
     const imageURL = await this.fileChange(event);
-    console.log(imageURL);
     //this.signupForm.controls['storeLogo'].setValue(imageURL);
     this.existantGiftCardLogo = imageURL;
     this.formGiftCard.controls['giftCardImage'].setValue(imageURL);

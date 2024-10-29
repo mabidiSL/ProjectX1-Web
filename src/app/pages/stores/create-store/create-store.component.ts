@@ -9,7 +9,6 @@ export class CreateStoreComponent {
   breadCrumbItems: Array<{}>;
 
   ngOnInit() {
-    console.log('i am in create store');
     this.breadCrumbItems = [{ label: 'Stores' }, { label: 'Add store', active: true }];
   }
 }

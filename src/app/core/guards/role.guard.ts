@@ -18,7 +18,6 @@ export class RoleGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot) {
  
-        console.log('in claim guard');
         this.currentUser.subscribe(user => {
           if (user) {
                
@@ -26,10 +25,7 @@ export class RoleGuard implements CanActivate {
               }
           });
           const requiredClaim = route.data?.['claim'];
-                console.log('***********************');
-                console.log(this.claims);
-                console.log(requiredClaim);
-                console.log('***********************');
+               
           if (!requiredClaim) {
                   return true; // no permission required, allow access
                 }

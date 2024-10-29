@@ -9,7 +9,6 @@ export class ViewMerchantComponent {
   breadCrumbItems: Array<{}>;
 
   ngOnInit() {
-    console.log('i am in view merchant');
     this.breadCrumbItems = [{ label: 'Merchants' }, { label: 'View Merchant', active: true }];
 }
 }

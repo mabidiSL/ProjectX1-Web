@@ -9,7 +9,6 @@ export class CreateAreaComponent {
   breadCrumbItems: Array<{}>;
 
   ngOnInit() {
-    console.log('i am in create area');
     this.breadCrumbItems = [{ label: 'Areas' }, { label: 'Add Area', active: true }];
   }
 }

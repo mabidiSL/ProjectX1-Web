@@ -63,7 +63,6 @@ export class CompanyProfileComponent implements OnInit {
 
       this.loading$ = this.store.pipe(select(selectDataLoading)); 
       const ID = this.getCurrentUserId();
-      console.log('MerchantID', ID);
 
       this.store.dispatch(getLoggedMerchantById({merchantId: ID }));
       this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 10, status: 'active' }));
@@ -77,7 +76,6 @@ export class CompanyProfileComponent implements OnInit {
      private getCurrentUserId(): any {
       // Replace with your actual logic to retrieve the user role
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      console.log(currentUser);
       if(currentUser.role.name !== 'Admin'){
          return currentUser.merchantId ;
       }
@@ -156,8 +154,7 @@ export class CompanyProfileComponent implements OnInit {
     this.store.select(selectedMerchant).subscribe(
       merchant => {
         if (merchant) {
-          console.log(this.filteredCountries);
-          console.log('Retrieved merchant:', merchant);
+          
           this.existantmerchantLogo = merchant.merchantLogo;
           this.existantmerchantPicture = merchant.merchantPicture;
           this.fileName1 = merchant.merchantLogo.split('/').pop();
@@ -184,7 +181,6 @@ export class CompanyProfileComponent implements OnInit {
 
   onChangeCountrySelection(event: any){
     const country = event.target.value;
-    console.log(country);
     if(country){
       this.arealist$.subscribe(
         areas => 
@@ -198,7 +194,6 @@ export class CompanyProfileComponent implements OnInit {
   }
   onChangeAreaSelection(event: any){
     const area = event.target.value;
-    console.log(area);
     if(area){
       this.citylist$.subscribe(
         cities => 
@@ -212,7 +207,6 @@ export class CompanyProfileComponent implements OnInit {
   }
 
   onPhoneNumberChanged(phoneNumber: string) {
-    console.log('PHONE NUMBER', phoneNumber);
     this.merchantForm.get('phone').setValue(phoneNumber);
   }
 
@@ -244,13 +238,10 @@ export class CompanyProfileComponent implements OnInit {
       if(this.merchantPictureBase64){
         newData.merchantPicture = this.merchantPictureBase64;
       }
-      console.log(newData);
       delete newData.area_id;
       delete newData.country_id;
      
-          console.log('updating merchant');
           newData.id = this.globalId;
-          console.log(newData);
           this.store.dispatch(updateMerchantlist({ updatedData: newData }));
         
       
@@ -302,7 +293,6 @@ export class CompanyProfileComponent implements OnInit {
   async uploadMerchantLogo(event: any){
     try {
       const imageURL = await this.fileChange(event);
-      console.log(imageURL);
       //this.merchantForm.controls['storeLogo'].setValue(imageURL);
       this.storeLogoBase64 = imageURL;
       this.fileName1 = ''; // Set the file name
@@ -320,7 +310,6 @@ export class CompanyProfileComponent implements OnInit {
   async uploadMerchantPicture(event: any){
     try {
       const imageURL = await this.fileChange(event);
-      console.log(imageURL);
       //this.merchantForm.controls['merchantPicture'].setValue(imageURL);
       this.merchantPictureBase64 = imageURL;
       this.fileName2 = ''; // Set the file name

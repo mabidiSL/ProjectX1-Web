@@ -9,7 +9,6 @@ export class EditRoleComponent {
   breadCrumbItems: Array<{}>;
 
   ngOnInit() {
-    console.log('i am in edit role');
     this.breadCrumbItems = [{ label: 'Roles' }, { label: 'Edit Role', active: true }];
   }
 }

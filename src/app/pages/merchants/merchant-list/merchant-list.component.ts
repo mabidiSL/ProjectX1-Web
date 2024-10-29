@@ -61,9 +61,7 @@ export class MerchantListComponent implements OnInit {
         this.originalArray = data; // Merchant the full Merchant list
         this.filteredArray = [...this.originalArray];
         document.getElementById('elmLoader')?.classList.add('d-none');
-        console.log('Finish get Merchant list');
-        console.log(this.filteredArray);
-    
+       
         });
    }
    onPageSizeChanged(event: any): void {
@@ -86,7 +84,6 @@ export class MerchantListComponent implements OnInit {
  
   onChangeEvent( event: any) {
     const newStatus = event.event.checked ? 'active' : 'inactive'; 
-    console.log('Merchant ID:', event.data.id, 'New Status:', newStatus);
     const newData = {id: event.data.id, status: newStatus }
     this.store.dispatch(updateMerchantlist({ updatedData: newData }));
   }

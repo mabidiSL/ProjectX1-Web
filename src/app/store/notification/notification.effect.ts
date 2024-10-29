@@ -35,7 +35,6 @@ export class NotificationsEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchNotificationlistData),
-            tap(() => console.log('Request to fetch Notification list has been launched')), // Add console log here
             mergeMap(({ page, itemsPerPage }) =>
                 this.CrudService.fetchData('/notifications/',{ limit: itemsPerPage, page: page}).pipe(
                     tap((response : any) => console.log('Fetched data:', response.result)), 
@@ -52,7 +51,6 @@ export class NotificationsEffects {
     fetchDataNotif$ = createEffect(() =>
       this.actions$.pipe(
           ofType(fetchMyNotificationlistData),
-          tap(() => console.log('Request to fetch My Notification list')), // Add console log here
           mergeMap(() =>
               this.CrudService.fetchData('/notifications/my-notifications ').pipe(
                   tap((response : any) => console.log('Fetched data:', response.result)), 
@@ -111,17 +109,14 @@ export class NotificationsEffects {
    getNotificationById$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getNotificationById),
-      tap(action => console.log('get Notification action received:', action)),
       mergeMap(({ notificationId }) => {
         // Use the selector to get the Notification from the store
         return this.store.select(selectNotificationById(notificationId)).pipe(
           map(Notification => {
             if (Notification) {
-              console.log('Notification',Notification);
               // Dispatch success action with the Notification data
               return getNotificationByIdSuccess({ Notification });
             } else {
-              console.log('Notification NULL');
               //this.toastr.error('Notification not found.'); // Show error notification
               return getNotificationByIdFailure({ error: 'Notification not found' });
             }
@@ -134,12 +129,11 @@ export class NotificationsEffects {
     
         this.actions$.pipe(
             ofType(deleteNotificationlist),
-            tap(action => console.log('Delete action received:', action)),
             mergeMap(({ notificationId }) =>
                     this.CrudService.deleteData(`/notifications/${notificationId}`).pipe(
                         map((response: string) => {
                             // If response contains a success message or status, you might want to check it here
-                            console.log('API response:', response);
+                            
                             this.toastr.success('The Notification has been deleted successfully.');
                             return deleteNotificationlistSuccess({ notificationId });
                           }),

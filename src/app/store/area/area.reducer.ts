@@ -90,7 +90,6 @@ export const AreaListReducer = createReducer(
 // Handle updating Area 
   on(updateArealistSuccess, (state, { updatedData }) => {
    const AreaListUpdated = state.AreaListdata.map(item => item.id === updatedData.id ? updatedData : item );
-   console.log('AreaListdata after update:', AreaListUpdated);
    return {
       ...state,
       AreaListdata: AreaListUpdated,

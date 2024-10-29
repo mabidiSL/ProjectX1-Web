@@ -66,7 +66,6 @@ export class FormCouponComponent implements OnInit{
 
       this.currentRole = this.getCurrentUser()?.role.name;
       this.merchantId =  this.getCurrentUser()?.merchantId;
-      console.log(this.merchantId);
 
       if(this.currentRole !== 'Admin')
           this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 10 ,status:'', merchant_id: this.merchantId}));
@@ -126,7 +125,6 @@ export class FormCouponComponent implements OnInit{
   private getCurrentUser(): _User {
     // Replace with your actual logic to retrieve the user role
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    console.log(currentUser);
     return currentUser;
 } 
   ngOnInit() {
@@ -152,7 +150,6 @@ export class FormCouponComponent implements OnInit{
     }
      
     const couponId = this.route.snapshot.params['id'];
-    console.log('Coupon ID from snapshot:', couponId);
     if (couponId) {
       // Dispatch action to retrieve the coupon by ID
       this.store.dispatch(getCouponById({ couponId }));
@@ -166,7 +163,6 @@ export class FormCouponComponent implements OnInit{
             }
            
             this.storeList$ = this.store.pipe(select(selectData));
-            console.log('Retrieved coupon:', coupon);
             // Patch the form with coupon data
             this.existantcouponLogo = coupon.couponLogo;
             if(coupon.couponLogo){
@@ -205,7 +201,6 @@ getFileNameFromUrl(url: string): string {
 
 onChangeMerchantSelection(event: any){
   const merchant = event.target.value;
-  console.log(merchant);
   if(merchant){
     this.isLoading = true;
     this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 10 ,status:'', merchant_id: merchant}));
@@ -234,7 +229,6 @@ onChangeMerchantSelection(event: any){
       }
       
        
-      console.log(newData);
       newData.stores = this.formCoupon.get('stores').value.map((store) =>(store.id ) );
 
       if(!this.isEditing)
@@ -295,7 +289,6 @@ onChangeMerchantSelection(event: any){
 async uploadCouponLogo(event: any){
   try {
     const imageURL = await this.fileChange(event);
-    console.log(imageURL);
     //
     this.existantcouponLogo = imageURL;
     this.formCoupon.controls['couponLogo'].setValue(imageURL);
@@ -306,7 +299,6 @@ async uploadCouponLogo(event: any){
 
 
 onPhoneNumberChanged(phoneNumber: string) {
-  console.log('PHONE NUMBER', phoneNumber);
   this.formCoupon.get('managerPhone').setValue(phoneNumber);
 }
   onCancel(){

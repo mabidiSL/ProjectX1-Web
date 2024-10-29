@@ -88,7 +88,6 @@ on(getStoreById, (state) => ({
 // Handle updating Store Success
   on(updateStorelistSuccess, (state, { updatedData }) => {
    const StoreListUpdated = state.StoreListdata.map(item => item.id === updatedData.id ? updatedData : item );
-   console.log('StoreListdata after update:', StoreListUpdated);
    return {
       ...state,
       StoreListdata: StoreListUpdated,

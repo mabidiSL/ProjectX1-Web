@@ -59,7 +59,7 @@ columns : any[]= [
         this.merchantApprovalList$.subscribe(
           data => {
             this.originalArray = data;
-          console.log(this.originalArray);}
+        }
       );
         document.getElementById('elmLoader')?.classList.add('d-none')
       }, 1200);
@@ -77,7 +77,6 @@ columns : any[]= [
   }
 
   onApproveEvent( event: any) {
-    console.log('Coupon ID:', event.id, 'New Status:', event.status);
     this.store.dispatch(updateMerchantlist({ updatedData: event }));
   }
 

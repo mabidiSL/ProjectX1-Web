@@ -76,7 +76,6 @@ columns : any[]= [
   }
 
   onApproveEvent( event: any) {
-    console.log('Coupon ID:', event.id, 'New Status:', event.status);
     const newData = { id: event.id , status: event.status};
     this.store.dispatch(updateCouponlist({ updatedData: newData }));
   }

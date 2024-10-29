@@ -50,7 +50,6 @@ columns : any[]= [
        this.storeApprovalList$.subscribe(
           data => {
             this.originalArray = data;
-          console.log(this.originalArray);
         });
         document.getElementById('elmLoader')?.classList.add('d-none')
       }, 1200);
@@ -68,7 +67,6 @@ columns : any[]= [
   }
 
   onApproveEvent( event: any) {
-    console.log('Store ID:', event.id, 'New Status:', event.status);
     const newData = { id: event.id , status: event.status};
     this.store.dispatch(updateStorelist({ updatedData: newData }));
   }

@@ -9,7 +9,6 @@ export class ViewCouponComponent {
   breadCrumbItems: Array<{}>;
 
   ngOnInit() {
-    console.log('i am in view coupon');
     this.breadCrumbItems = [{ label: 'Coupons' }, { label: 'View coupon', active: true }];
   }
 }
