@@ -37,9 +37,12 @@ export class MerchantListComponent implements OnInit {
   currentPage : number = 1;
   checked : any = {status: 'active', label: 'Active'};
   unChecked : any = {status: 'inactive', label: 'inActive'};
+  
   columns : any[]= [
+    { property: 'merchantLogo', label: 'Merchant Logo' },
+    { property: 'qrCode', label: 'Qr Merchant' },
+    { property: 'activationCode', label: 'Activation Code' },
     { property: 'merchantName', label: 'Merchant Name' },
-    { property: 'user.email', label: 'Email' },
     { property: 'user.city.name', label: 'City' },
     { property: 'totalOffres', label: 'Total Offers' },
     { property: 'totalStores', label: 'Total Stores' },

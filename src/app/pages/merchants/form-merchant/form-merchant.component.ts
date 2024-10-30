@@ -103,18 +103,21 @@ export class FormMerchantComponent implements OnInit {
     confpassword: ['', this.type === 'create' ? Validators.required : null],
     id_number: ['', Validators.required],
     phone:['',Validators.required], //Validators.pattern(/^\d{3}-\d{3}-\d{4}$/)*/],
-    country_id:[''],
-    city_id:[''],
-    area_id:[''], 
-    serviceType: [''],
-    supervisorName: [''],
-    supervisorPhone: [''],
+    country_id:['', Validators.required],
+    city_id:['', Validators.required],
+    area_id:['', Validators.required], 
+    serviceType: ['', Validators.required],
+    supervisorName: ['', Validators.required],
+    supervisorName_ar: ['', Validators.required],
+    supervisorPhone: ['', Validators.required],
     bankAccountNumber: [''],
-    registerCode:[''],
     merchantName:['', Validators.required],
-    merchantPicture: [''],
-    merchantLogo: [''],
-    section_id:[''],
+    merchantName_ar:['', Validators.required],
+    merchantPicture: ['', Validators.required],
+    merchantLogo: ['', Validators.required],
+    activationCode: [''],
+    qrCode: [''],
+    section_id:['', Validators.required],
     website: [''],
     whatsup:[''],
     facebook: [''],
@@ -203,6 +206,7 @@ export class FormMerchantComponent implements OnInit {
   getSectionName(id: any){
     return this.sectionlist.find(section => section.id === id)?.name ;
   }
+  
 
   onChangeCountrySelection(event: any){
     const country = event.target.value;
@@ -350,10 +354,11 @@ export class FormMerchantComponent implements OnInit {
   async uploadMerchantPicture(event: any){
     try {
       const imageURL = await this.fileChange(event);
-      //this.merchantForm.controls['merchantPicture'].setValue(imageURL);
       this.merchantPictureBase64 = imageURL;
       this.fileName2 = ''; // Set the file name
       this.existantmerchantPicture = imageURL;
+      this.merchantForm.controls['merchantPicture'].setValue(this.existantmerchantPicture);
+
     } catch (error: any) {
       console.error('Error reading file:', error);
     }

@@ -2,16 +2,23 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
 import { ThemeService } from './theme.service';
+import { changeLanguage } from 'src/app/store/layouts/layout.actions';
+import { Store } from '@ngrx/store';
 
 @Injectable({ providedIn: 'root' })
 export class LanguageService {
   public languages: string[] = ['en','ar', 'es', 'de', 'it', 'ru'];
 
-  constructor(public translate: TranslateService, private cookieService: CookieService) {
+  constructor(private store: Store,public translate: TranslateService, private cookieService: CookieService, private themeService: ThemeService) {
     let browserLang;
     this.translate.addLangs(this.languages);
     if (this.cookieService.check('lang')) {
+
       browserLang = this.cookieService.get('lang');
+      
+      if(browserLang === 'ar'){
+        this.themeService.loadRtlStyles();
+      }
     }
     else {
       this.setLanguage('en');
@@ -21,15 +28,23 @@ export class LanguageService {
   }
 
   public setLanguage(lang) {
-   
+    this.cookieService.delete('lang');
     this.translate.use(lang);
     this.cookieService.set('lang', lang);
+
+    this.store.dispatch(changeLanguage({ lang: lang }));
      //   // Apply RTL class when Arabic language is selected
     if (lang === 'ar') {
-      document.body.classList.add('rtl');
-    } else {
-      document.body.classList.remove('rtl');
+      this.themeService.loadRtlStyles();
     }
+    else 
+    {
+      this.themeService.loadLtrStyles();
+    }
+    //   document.body.classList.add('rtl');
+    // } else {
+    //   document.body.classList.remove('rtl');
+    // }
    
   }
 

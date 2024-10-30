@@ -27,6 +27,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectMerchantById } from './merchantlist1-selector';
+import { CookieService } from 'ngx-cookie-service';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable()
 export class MerchantslistEffects1 {
@@ -34,7 +36,7 @@ export class MerchantslistEffects1 {
         this.actions$.pipe(
             ofType(fetchMerchantlistData),
             mergeMap(({ page, itemsPerPage, status }) => 
-                this.CrudService.fetchData('/merchants',{ limit: itemsPerPage, page: page, status: status}).pipe(
+                  this.CrudService.fetchData('/merchants',this.setParams({ limit: itemsPerPage, page: page, status: status})).pipe(
                     tap((response : any) => console.log('Fetched data:', response.result)), 
                     map((response) => {return fetchMerchantlistSuccess({ MerchantListdata: response.result })}),
                     catchError((error) =>{
@@ -149,8 +151,14 @@ export class MerchantslistEffects1 {
         private CrudService: CrudService,
         public toastr:ToastrService,
         private router: Router,
+        private cookieService: CookieService,
         private store: Store
-    ) { }
+    ) {
+
+      this.currentLge = this.cookieService.get('lang');
+     }
+     currentLge: string = '';
+
     private getErrorMessage(error: any): string {
         // Implement logic to convert backend error to user-friendly message
         if (error.status === 400) {
@@ -160,5 +168,24 @@ export class MerchantslistEffects1 {
         } else {
           return 'An unexpected error occurred. Please try again later.';
         }
+      }
+      private setParams(payload: any): any{
+        let params = new HttpParams();
+
+        // Add language parameter if it's set
+        if (this.currentLge && this.currentLge == 'ar') {
+            params = params.set('lang', this.currentLge);
+        }
+
+        // Add any additional parameters from the payload
+        if (payload) {
+        for (const key in payload) {
+            if (payload.hasOwnProperty(key)) {
+            params = params.set(key, payload[key]);
+            }
+        }
+        }
+        console.log(params);
+        return params;
       }
 }

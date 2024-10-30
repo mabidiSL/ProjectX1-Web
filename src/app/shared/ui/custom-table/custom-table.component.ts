@@ -43,7 +43,6 @@ export class CustomTableComponent  {
   approveAction : boolean = false;
   loading : boolean = false;
   items : any[] = [];
-  currentLanguage: string = '';
 
   @Input() checkedStatus?: any;
   @Input() uncheckedStatus?: any;
@@ -86,10 +85,8 @@ export class CustomTableComponent  {
     private DatePipe: DatePipe, 
     private router: Router,
     private  translateService : TranslateService, 
-    private cookieService: CookieService,
   ) {
     
-    this.currentLanguage  = this.cookieService.get('lang');
     //The retreival of arabic attribute from backendside is done in this component according to the language stored in cookie service
 
     this.currentUserSubject = new BehaviorSubject<_User>(JSON.parse(localStorage.getItem('currentUser')));
@@ -127,18 +124,18 @@ export class CustomTableComponent  {
     const value = propertyPath.split('.').reduce((acc, key) => acc && acc[key], data);
 
       // Check if the value is 'pending' to set approveAction
-      if (value === 'pending') {
-        this.approveAction = true;
-      }
-      else{
-        this.approveAction = false;
+  this.approveAction = (value === 'pending');
 
-      }
+  // Check if the value is a valid date
+  if (value instanceof Date) {
+    return this.DatePipe.transform(value, 'short'); 
+  }
 
-      // Format date if the value is a valid date
-      if (value instanceof Date || !isNaN(Date.parse(value))) {
-        return this.DatePipe.transform(value, 'short'); 
-      }
+  // Check if the value is a valid date string (but not a number)
+  if (typeof value === 'string' && !isNaN(Date.parse(value))) {
+    return this.DatePipe.transform(value, 'short'); 
+  }
+
 
   return value;
     

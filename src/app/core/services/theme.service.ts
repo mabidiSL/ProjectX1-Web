@@ -10,13 +10,16 @@ export class ThemeService {
   // Load RTL stylesheet
   loadRtlStyles() {
     this.removeStylesheet(this.rtlStylesheetId); // Ensure no duplicate RTL stylesheets
+    document.body.classList.add('rtl');
     this.addStylesheet('assets/scss/rtl.scss', this.rtlStylesheetId); // Adjust the path as necessary
   }
 
   // Remove RTL stylesheet
   loadLtrStyles() {
     this.removeStylesheet(this.rtlStylesheetId);
-  }
+    document.body.classList.remove('rtl');
+    }
+
 
   private addStylesheet(href: string, id: string) {
     const head = document.head;

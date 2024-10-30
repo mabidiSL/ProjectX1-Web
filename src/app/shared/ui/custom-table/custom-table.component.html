@@ -68,17 +68,17 @@
       <ng-container *ngIf="filteredArray && filteredArray.length > 0; else noItems">
         <ng-container  *ngFor="let data of filteredArray; let i= index "> 
           <tr (click)="navigateToView(data)"  style="cursor: pointer;">
-            <td>
+            <td class="text-center">
               <div class="form-check font-size-16">
                 <input class="form-check-input" type="checkbox" id="transactionCheck{{data.index}}" value="{{data.id}}" [(ngModel)]="data.state">
                 <label class="form-check-label" for="transactionCheck{{data.index}}"></label>
               </div>
             </td>
             <ng-container *ngFor="let column of columns">
-                <td>
+                <td class="text-center">
                 <ng-container *ngIf="column.property !== 'status' && column.property !== 'user.status'; else  status">
                   <!-- Check if column.property is 'flag' -->
-                  <ng-container *ngIf="column.property === 'flag'; else showData">
+                  <ng-container *ngIf="column.property === 'flag' || column.property.includes('Logo')||column.property.includes('qr'); else showData">
                     <div>
                       <img class="rounded-circle avatar-xs" [src]="getProperty(data, column.property)" alt="">
                     </div>
@@ -127,7 +127,7 @@
               </td>
             </ng-container>
             <ng-container *ngIf="!approveAction; else pendingActions" >        
-            <td>
+            <td class="text-center">
               <ul class="list-unstyled hstack gap-1 mb-0">
                  <!-- <li data-bs-toggle="tooltip" data-bs-placement="top" title="{{'View'|translate}}">
                    <a href="javascript:void(0);" class="btn btn-sm btn-soft-primary" *hasClaim="viewButtonPermission" (click)="view(data.id)"><i class="mdi mdi-eye-outline"></i></a>
@@ -143,7 +143,7 @@
            </td>
            </ng-container>
             <ng-template #pendingActions>
-            <td *ngIf="!(approveAction && isMerchant)">
+            <td class="text-center" *ngIf="!(approveAction && isMerchant)">
               <!-- <button 
                   type="button"
                   class="btn btn-info me-2"

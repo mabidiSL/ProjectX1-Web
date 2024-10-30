@@ -5,9 +5,10 @@ import { environment } from 'src/environments/environment';
 
 
 @Injectable({ providedIn: 'root' })
-
 export class CrudService {
-    constructor(private http: HttpClient) { }
+
+    constructor(private http: HttpClient) {         
+    }
 
     
     
@@ -16,8 +17,7 @@ export class CrudService {
      */
    
     fetchData(url: any, payload?: Params ): Observable<any[]> {
-
-        return this.http.get<any[]>(` ${environment.baseURL}${url}`, {params: payload});
+         return this.http.get<any[]>(` ${environment.baseURL}${url}`, {params: payload});
     }
     
     addData(url: any, newData: any): Observable<any[]> {

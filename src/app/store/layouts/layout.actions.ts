@@ -5,3 +5,4 @@ export const changesLayout = createAction('[Layout] Set Horizontal layout', prop
 export const changeLayoutWidth = createAction('[Layout] Set LayoutWidth', props<{ layoutWidth: string }>());
 export const changeSidebarMode = createAction('[Layout] Set SidebarMode', props<{ sidebarMode: string }>());
 export const changeTopbarMode = createAction('[Layout] Set TopbarMode', props<{ topbarmode: string }>());
+export const changeLanguage = createAction('[Layout] Set Language', props<{ lang: string }>());
