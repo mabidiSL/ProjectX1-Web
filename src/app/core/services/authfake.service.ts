@@ -42,7 +42,7 @@ export class AuthfakeauthenticationService {
     }
     updatePassword(password: string, token: string){
 
-        return this.http.post(`${environment.baseURL}/auth/reset-password/${token}`,{password});
+        return this.http.post(`${environment.baseURL}/auth/reset-password`,{password, token});
       
    }
     updateProfile(user: any){

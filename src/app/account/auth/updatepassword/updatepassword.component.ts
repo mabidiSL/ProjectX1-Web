@@ -24,7 +24,8 @@ export class UpdatepasswordComponent {
 
   error: any = '';
   returnUrl: string;
-  fieldTextType!: boolean;
+  fieldTextType: boolean  = false;;
+  confirmFieldTextType: boolean = false;
 
   // set the currenr year
   year: number = new Date().getFullYear();
@@ -90,5 +91,8 @@ export class UpdatepasswordComponent {
  */
   toggleFieldTextType() {
     this.fieldTextType = !this.fieldTextType;
+  }
+  toggleConfirmFieldTextType() {
+    this.confirmFieldTextType = !this.confirmFieldTextType;
   }
 }

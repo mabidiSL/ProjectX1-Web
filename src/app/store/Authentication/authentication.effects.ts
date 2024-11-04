@@ -114,12 +114,13 @@ export class AuthenticationEffects {
         return this.AuthfakeService.updatePassword(password, token).pipe(
           map((response: any) => {
             this.toastr.success('Password has been updated successfully!!!');
-            return { type: '[Auth] Update Password Success', payload: response };
+            return updatePasswordSuccess({message: response});
+
           }),
           catchError((error: any) => {
-            this.toastr.error(`Update Password Failure: ${error.message}`);
-            return of({ type: '[Auth] Update Password Failure', payload: error });
-          }),
+            console.log(error);
+            this.toastr.error(`Update Password Failure: ${error.error.result.error}`);
+            return of(updatePasswordFailure({error: error.error.result.error}));}),
           tap(() => {
             // Navigate to another route after successful response
             this.router.navigate(['auth/login']); // or any other route you want
