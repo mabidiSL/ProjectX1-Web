@@ -28,11 +28,10 @@ export class LanguageService {
   }
 
   public setLanguage(lang) {
+
     this.cookieService.delete('lang');
     this.translate.use(lang);
     this.cookieService.set('lang', lang);
-
-    this.store.dispatch(changeLanguage({ lang: lang }));
      //   // Apply RTL class when Arabic language is selected
     if (lang === 'ar') {
       this.themeService.loadRtlStyles();
@@ -41,6 +40,7 @@ export class LanguageService {
     {
       this.themeService.loadLtrStyles();
     }
+    this.store.dispatch(changeLanguage({ lang: lang }));
     //   document.body.classList.add('rtl');
     // } else {
     //   document.body.classList.remove('rtl');

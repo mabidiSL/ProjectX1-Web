@@ -8,7 +8,7 @@
 
                   <div class="col-md-6 mb-3">
                     <div class="form-group ">
-                    <label for="merchantName" >{{'Merchant Name'| translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                    <label for="merchantName" >{{'Merchant_Name'| translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                     <input type="text" id="merchantName" class="form-control" formControlName="merchantName" placeholder="{{ 'Enter merchant name' | translate }}" required [readonly]="type==='view'">
                     <div *ngIf="merchantForm.get('merchantName').touched && merchantForm.get('merchantName').invalid" class="invalid-feedback d-block">
                       <span *ngIf="merchantForm.get('merchantName').errors?.['required']">{{'Merchant Name is required'| translate}}.</span>
@@ -20,7 +20,7 @@
                   <label for="merchantName_ar" >{{'Merchant Name in arabic' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                   <input type="text" id="merchantName_ar" class="form-control" formControlName="merchantName_ar" placeholder="{{ 'Enter merchant name in arabic' | translate }}" required [readonly]="type==='view'">
                   <div *ngIf="merchantForm.get('merchantName_ar').touched && merchantForm.get('merchantName_ar').invalid" class="invalid-feedback d-block">
-                    <span *ngIf="merchantForm.get('merchantName_ar').errors?.['required']">{{'Merchant Name is required'| translate}}.</span>
+                    <span *ngIf="merchantForm.get('merchantName_ar').errors?.['required']">{{'Arabic Merchant Name is required'| translate}}.</span>
                   </div>  
                 </div>
               </div>
@@ -30,17 +30,17 @@
                         <label for="username" >{{'Username' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                         <input type="text" id="username" class="form-control" formControlName="username" placeholder="{{ 'Enter username' | translate }}" required [readonly]="type==='view'">
                         <div *ngIf="merchantForm.get('username').touched && merchantForm.get('username').invalid" class="invalid-feedback d-block">
-                            <span *ngIf="merchantForm.get('username').errors?.['required']">{{'Username is required'| translate}}.</span>
+                            <span *ngIf="merchantForm.get('username').errors?.['required']">{{'Please enter the username'| translate}}.</span>
                           </div>
                       </div> 
                   </div>
 
                   <div class="col-md-6 mb-3">
                     <div class="form-group ">
-                      <label for="email">Email <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                      <input  type="email" id="email" class="form-control" formControlName="email" placeholder="{{ 'Enter email address' | translate }}" required [readonly]="type==='view'">
+                      <label for="email">{{'Email' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                      <input  type="email" id="email" class="form-control" formControlName="email" placeholder="{{ 'Enter the email' | translate }}" required [readonly]="type==='view'">
                       <div *ngIf="merchantForm.get('email').touched && merchantForm.get('email').invalid" class="invalid-feedback d-block">
-                        <span *ngIf="merchantForm.get('email').errors?.['required']">{{'Email is required'| translate}}.</span>
+                        <span *ngIf="merchantForm.get('email').errors?.['required']">{{'Please enter the email'| translate}}.</span>
                       </div>
                     </div>
                   </div>
@@ -49,14 +49,14 @@
                   <div *ngIf="type == 'create'" class="col-md-6 mb-3">
                     <div class="form-group ">
                         <div class="form-group ">
-                          <label for="password" >Password <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                          <label for="password" >{{'Password' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                           <div class="input-group auth-pass-inputgroup">
-                          <input [type]="fieldTextType ? 'text' : 'password'" id="password" class="form-control" placeholder="{{ 'Enter password' | translate }}" formControlName="password" required>
+                          <input [type]="fieldTextType ? 'text' : 'password'" id="password" class="form-control" placeholder="{{ 'Enter the Password' | translate }}" formControlName="password" required>
                           <button class="btn btn-light ms-0" type="button" id="password-addon">
                             <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()"></i>
                           </button>
                           <div *ngIf="merchantForm.get('password').touched && merchantForm.get('password').invalid" class="invalid-feedback d-block">
-                            <span *ngIf="merchantForm.get('password').errors?.['required']">{{'Password is required'| translate}}.</span>
+                            <span *ngIf="merchantForm.get('password').errors?.['required']">{{'Please enter the password'| translate}}.</span>
                           </div>
                           </div>
                         </div>
@@ -66,14 +66,14 @@
                   <div *ngIf="type == 'create'" class="col-md-6 mb-3">
                       <div class="form-group ">
                         <div class="form-group ">
-                          <label for="confpassword" >Confirm password <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                          <label for="confpassword" >{{'Confirm password' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                           <div class="input-group auth-pass-inputgroup">
-                          <input [type]="fieldTextType ? 'text' : 'password'" id="confpassword" class="form-control" placeholder="{{ 'Re-enter password' | translate }}" formControlName="confpassword" required>
+                          <input [type]="fieldTextType ? 'text' : 'password'" id="confpassword" class="form-control" placeholder="{{ 'Confirm Your New Password' | translate }}" formControlName="confpassword" required>
                           <button class="btn btn-light ms-0" type="button" id="password-addon">
                             <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()"></i>
                           </button>
                           <div *ngIf="merchantForm.get('confpassword').touched && merchantForm.get('confpassword').invalid" class="invalid-feedback d-block">
-                            <span *ngIf="merchantForm.get('confpassword').errors?.['required']">{{'Confirm password is required' | translate}}.</span>
+                            <span *ngIf="merchantForm.get('confpassword').errors?.['required']">{{'Please confirm your new password' | translate}}.</span>
                             <div *ngIf="passwordMatchError">{{ 'confirm_password_does_not_matched' | translate }}</div>
                           </div>
                           </div>
@@ -92,7 +92,7 @@
                     
                     <div class="col-md-6 mb-3">
                       <div class="form-group">
-                        <label for="phone" >Phone Number <span *ngIf="type !== 'view'" class="text-danger">*</span></label><br>
+                        <label for="phone" >{{'Phone Number' |  translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label><br>
                        <app-phone-number
                        [disabled]="type === 'view'"
                        [initialPhoneNumber]="merchantForm.get('phone').value"

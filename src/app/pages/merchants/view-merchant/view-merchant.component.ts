@@ -9,6 +9,6 @@ export class ViewMerchantComponent {
   breadCrumbItems: Array<{}>;
 
   ngOnInit() {
-    this.breadCrumbItems = [{ label: 'Merchants' }, { label: 'View Merchant', active: true }];
+    this.breadCrumbItems = [{ label: 'Merchants' }, { label: 'View_merchant', active: true }];
 }
 }

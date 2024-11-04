@@ -8,10 +8,10 @@
           @for(item of breadcrumbItems;track $index){
           <ng-container>
             @if(item.active){
-            <li class="breadcrumb-item active">{{ item.label }}
+            <li class="breadcrumb-item active">{{ item.label | translate }}
             </li>
             }@else{
-            <li class="breadcrumb-item"><a href="javascript: void(0);">{{ item.label }}</a>
+            <li class="breadcrumb-item"><a href="javascript: void(0);">{{ item.label| translate }}</a>
             </li>}
           </ng-container>
           }

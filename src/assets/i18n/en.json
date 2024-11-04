@@ -562,6 +562,7 @@
   "Select_the_Country": "Select the Country",
   "Country_is_required": "Country is required",
   "Merchants_List": "Merchant List",
+  "Merchants": "Merchants",
   "New_Merchant": "New Merchant", 
   "merchant_is_required": "Merchant is required",
   "Employee_List": "Employee List",
@@ -617,6 +618,7 @@
   "city_Name": "City Name",
   "city_Name_Trans": "Translated Name",
   "Area_is_required": "Area is required",
+  "Confirm Password": "Confirm password",
   "Enter_the_Name_Of_the_city": "Enter the name of the city",
   "Add_City": "Add City",
   "update_city": "Update City",
@@ -656,7 +658,10 @@
   "Go_Back": "Go Back",
   "View_giftcard": "View Gift Card",
   "edit_merchant": "Edit Merchant",
-  "View_merchant":"View Merchant"
+  "View_merchant":"View Merchant",
+  "Merchant Logo":"Merchant Logo",
+  "Qr Merchant": "Qr Merchant",
+  "id_number is required": "National ID is required"
 
  
 

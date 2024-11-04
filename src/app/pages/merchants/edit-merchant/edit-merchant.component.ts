@@ -10,6 +10,6 @@ export class EditMerchantComponent {
 breadCrumbItems: Array<{}>;
   
 ngOnInit() {
-  this.breadCrumbItems = [{ label: 'Merchants' }, { label: 'Edit Merchant', active: true }];
+  this.breadCrumbItems = [{ label: 'Merchants' }, { label: 'Edit_merchant', active: true }];
 }
 }

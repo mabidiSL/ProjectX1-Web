@@ -42,7 +42,7 @@ export class MerchantListComponent implements OnInit {
     { property: 'merchantLogo', label: 'Merchant Logo' },
     { property: 'qrCode', label: 'Qr Merchant' },
     { property: 'activationCode', label: 'Activation Code' },
-    { property: 'merchantName', label: 'Merchant Name' },
+    { property: 'merchantName', label: 'Merchant_Name' },
     { property: 'user.city.name', label: 'City' },
     { property: 'totalOffres', label: 'Total Offers' },
     { property: 'totalStores', label: 'Total Stores' },

@@ -159,8 +159,18 @@
         "DEALOFTHEDAY": "عرض اليوم"
       }
     },
+    "COUPONAPPROVAL": {
+      "TEXT": "الكوبونات المعلقة"
+     
+    },  
+    "PENDINGGIFTS":{
+      "TEXT": "بطاقات الهدايا المعلقة"
+    },
     "STORES":{
       "TEXT": "المتاجر"
+    },
+    "PENDINGSTORES":{
+      "TEXT": "الفروع المعلقة"
     },
     "GIFTS": {
       "TEXT": "الهدايا"
@@ -286,6 +296,9 @@
     },
     "OFFERS": {
       "TEXT": "العروض"
+    },
+    "AREAS": {
+      "TEXT": "المناطق"
     },
     "DEPARTMENTMANAGEMENT": {
       "TEXT": "إدارة الأقسام"
@@ -472,11 +485,11 @@
       }
     },
     "Email": "البريد الإلكتروني",
-    "UserName": "اسم المستخدم",
+    "Username": "اسم المستخدم",
     "Enter the email": "أدخل البريد الإلكتروني",
     "Please enter the email": "يرجى إدخال البريد الإلكتروني",
     "Enter Your UserName": "أدخل اسم المستخدم الخاص بك",
-    "Enter the username":"أدخل اسم المستخدم",
+    "Enter username":"أدخل اسم المستخدم",
     "Please enter the username": "يرجى إدخال اسم المستخدم",
     "Please enter your username": "يرجى إدخال اسم المستخدم الخاص بك",
     "Please enter your email": "يرجى إدخال بريدك الإلكتروني",
@@ -504,8 +517,10 @@
     "Basic Informations": "المعلومات الأساسية",
     "Password": "كلمة المرور",
     "Merchant Approval List": "قائمة موافقات التجار",
-    "Merchant List": "قائمة التجار",
+    "Merchants_List": "قائمة التجار",
     "Merchant_Name": "اسم التاجر",
+    "Enter merchant name": "أدخل اسم التاجر",
+    
     "Contact Email": "البريد الإلكتروني للتواصل",
     "Date Registration": "تاريخ التسجيل",
     "Actions": "الإجراءات",
@@ -544,6 +559,9 @@
     "Quantity":"الكمية",
     "Quantity is required": "الكمية مطلوبة",
     "Merchant Name is required": "اسم التاجر مطلوب",
+    "Merchant Name in arabic": "اسم التاجر باللغة العربية",
+    "Enter merchant name in arabic": "أدخل اسم التاجر باللغة العربية",
+    "Arabic Merchant Name is required": "مطلوب اسم التاجر باللغة العربية",
     "Store Name": "اسم المتجر",
     "Store Name is required":"اسم المتجر مطلوب",
     "Manager Name": "اسم المسؤول",
@@ -663,8 +681,8 @@
     "Add_notif": "إضافة إشعار",
     "update_notif": "تحديث الإشعار",
     "Edit_notification": "تحرير الإشعار",
-    "merchants_list": "قائمة التجار",
     "New_Merchant": "تاجر جديد",
+    "Merchants": "التجار",
     "Are_you_Sure_You_want_to_delete_it?": "هل أنت متأكد أنك تريد الحذف ؟",
     "Delete_Now": "احذف الآن",
     "New_GiftCard": "بطاقة هدايا جديدة",
@@ -686,8 +704,8 @@
     "End_Date": "تاريخ الانتهاء",
     "entries": "إدخالات",
     "Show": "إظهار",
-    "active": "مفعل",
-    "inactive": "معطل",
+    "Active": "مفعل",
+    "inActive": "معطل",
     "Previous": "السابق",
     "Next": "التالي",
     "update_role": "تحديث وظيفة",
@@ -696,7 +714,18 @@
     "Go_Back": "رجوع",
     "Edit_merchant": "تعديل التاجر",
     "View_giftcard": "عرض بطاقة الهدايا",
-    "View_merchant": "عرض التاجر"
+    "View_merchant": "عرض التاجر",
+    "Merchant Logo":"شعار التاجر",
+    "Qr Merchant": "QR التاجر",
+    "Activation Code": "رمز التفعيل",
+    "Total Offers":"إجمالي العروض",
+    "Total Stores": "إجمالي الفروع",
+    "National ID": "رقم الهوية الوطنية",
+    "Enter your National ID number": "أدخل رقم الهوية الوطنية الخاص بك",
+    "id_number is required": "مطلوب رقم الهوية",
+    "Phone Number": "رقم الهاتف"
+
+
     
 
 
