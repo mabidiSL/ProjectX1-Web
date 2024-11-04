@@ -56,3 +56,35 @@ interface User{
     registrationDate?: string;
     updatedAt?: string;
 }
+export interface Merchant{
+id?: number;
+username?: string;
+email?: string;
+password?: string;
+phone?: string;
+id_number?: number;
+merchantName ?:  string ;
+merchantName_ar?:  string ;
+serviceType? :  string ;
+supervisorName ?:  string ;
+supervisorName_ar?:  string ;
+supervisorPhone? :  string ;
+merchantLogo ?: string  ;
+merchantPicture? :  string ;
+bankAccountNumber ?:  string  
+website ?:  string;
+whatsup ?: number  ;
+facebook? :  string ;
+twitter ?: string  ;
+instagram? : string  ;
+walletId?: number ;
+qrCode?: string ;
+activationCode?: string ;
+section_id?: number;
+wallet?: number;
+loyaltyPoint?: number;
+bankName?: string ;
+city_id ?: number;
+updatedAt? :  string;
+createdAt?: string;
+}

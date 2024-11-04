@@ -13,7 +13,7 @@ export const loginFailure = createAction('[Authentication] Login Failure', props
 
 // forgotPassword action
 export const forgetPassword = createAction('[Authentication] forgetPassword', props<{ email: string }>());
-export const forgetPasswordSuccess = createAction('[Authentication] forgetPassword Success', props<{ user: any }>());
+export const forgetPasswordSuccess = createAction('[Authentication] forgetPassword Success', props<{ message: any }>());
 export const forgetPasswordFailure = createAction('[Authentication] forgetPassword Failure', props<{ error: any }>());
 
 // UpdatePassword action

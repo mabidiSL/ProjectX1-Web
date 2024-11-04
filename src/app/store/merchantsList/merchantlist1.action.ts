@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { MerchantListModel } from './merchantlist1.model';
+import { Merchant, MerchantListModel } from './merchantlist1.model';
 
 // fetch all list
 export const fetchMerchantlistData = createAction('[Data] fetch Merchantlist', props<{ page?: number; itemsPerPage?: number, status?: string }>());
@@ -8,7 +8,7 @@ export const fetchMerchantlistFail = createAction('[Data fetch Merchantlist fail
 
 
 // Add Data
-export const addMerchantlist = createAction('[Data] Add Merchantlist',  props<{ newData: MerchantListModel }>());
+export const addMerchantlist = createAction('[Data] Add Merchantlist',  props<{ newData: Merchant }>());
 export const addMerchantlistSuccess = createAction('[Data] Add Merchantlist Success', props<{ newData: any }>());
 export const addMerchantlistFailure = createAction('[Data] Add Merchantlist Failure', props<{ error: string }>());
 
@@ -30,7 +30,7 @@ export const updateMerchantlist = createAction(
 );
 export const updateMerchantlistSuccess = createAction(
     '[Data] Update Merchantlist Success',
-    props<{ updatedData: MerchantListModel }>()
+    props<{ updatedData: any }>()
 );
 export const updateMerchantlistFailure = createAction(
     '[Data] Update Merchantlist Failure',

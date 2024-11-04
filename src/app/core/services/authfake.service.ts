@@ -24,28 +24,26 @@ export class AuthfakeauthenticationService {
         return this.currentUserSubject.value;
     }
     register ( data: any){
-        return this.http.post<any>(` ${environment.baseURL}/auth/register-merchant`, data );
+        return this.http.post<any>(`${environment.baseURL}/auth/register-merchant`, data );
 
     }
     login(loginKey: string, password: string) {
        
-        return this.http.post<any>(` ${environment.baseURL}/auth/login`, { loginKey, password });
+        return this.http.post<any>(`${environment.baseURL}/auth/login`, { loginKey, password });
       
     }
     forgotPassword(email: string){
-        return this.http.post('/forgot-password',{email}) ;
+        return this.http.post(`${environment.baseURL}/auth/forgot-password`,{email}) ;
     }
     updateProfilePassword( oldPassword: string, newPassword: string){
        // const id = this.currentUserSubject.value.userId;
-         return this.http.post(` ${environment.baseURL}/auth/change-password`,{oldPassword,newPassword});
+         return this.http.post(`${environment.baseURL}/auth/change-password`,{oldPassword,newPassword});
         
     }
     updatePassword(password: string, token: string){
 
-        return this.http.post(`/reset-password/${token}`,{password})
-       .pipe(map(message => {
-           return message;
-       }));
+        return this.http.post(`${environment.baseURL}/auth/reset-password/${token}`,{password});
+      
    }
     updateProfile(user: any){
         return this.http.patch(` ${environment.baseURL}/users/${user.id}`,user) ;

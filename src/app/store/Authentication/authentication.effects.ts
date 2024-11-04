@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap, catchError, exhaustMap, tap, first } from 'rxjs/operators';
 import { BehaviorSubject, from, Observable, of } from 'rxjs';
 import { AuthenticationService } from '../../core/services/auth.service';
-import { login, loginSuccess, loginFailure,forgetPassword, logout, logoutSuccess, Register, RegisterSuccess, RegisterFailure, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfilePassword, updateProfileSuccess, updateProfileFailure, updateProfilePasswordSuccess, updateProfilePasswordFailure } from './authentication.actions';
+import { login, loginSuccess, loginFailure,forgetPassword, logout, logoutSuccess, Register, RegisterSuccess, RegisterFailure, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfilePassword, updateProfileSuccess, updateProfileFailure, updateProfilePasswordSuccess, updateProfilePasswordFailure, forgetPasswordSuccess, forgetPasswordFailure } from './authentication.actions';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { AuthfakeauthenticationService } from 'src/app/core/services/authfake.service';
@@ -93,12 +93,12 @@ export class AuthenticationEffects {
       exhaustMap((action) => {
         return this.AuthfakeService.forgotPassword(action.email).pipe(
           map((response: any) => {
-            this.toastr.success('An Email was sent check your inbox');
-            return { type: '[Auth] Forgot Password Success', payload: response };
+            this.toastr.success(response.result);
+            return forgetPasswordSuccess({message: response.result});
           }),
           catchError((error: any) => {
-            this.toastr.error(`Forgot Password Failure: ${error.message}`);
-            return of({ type: '[Auth] Forgot Password Failure', payload: error });
+            this.toastr.error(error.message);
+            return of(forgetPasswordFailure({error: error.message}));
           }),
           tap(() => {
             // Navigate to another route after successful response

@@ -32,7 +32,7 @@ export const authenticationReducer = createReducer(
     on(logoutSuccess, (state, { user, token }) => ({ ...state, loading: false, user, token, isLoggedIn: false, error: null })),
     
     on(forgetPassword, state => ({ ...state, loading: true, error: null, })),
-    on(forgetPasswordSuccess, (state, { user }) => ({ ...state, loading: false,  user,  error: null,    })),
+    on(forgetPasswordSuccess, (state, { message }) => ({ ...state, loading: false,  message,  error: null,    })),
     on(forgetPasswordFailure, (state, { error }) => ({ ...state,  loading: false,  error,  })) ,
     
     on(updatePassword, state => ({   ...state,  loading: true, error: null, })),

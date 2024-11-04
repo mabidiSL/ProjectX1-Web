@@ -14,6 +14,7 @@ import { selectDataCountry } from 'src/app/store/country/country-selector';
 import { selectDataArea } from 'src/app/store/area/area-selector';
 import { selectDataSection } from 'src/app/store/section/section-selector';
 import { selectDataCity } from 'src/app/store/City/city-selector';
+import { Merchant } from '../../../store/merchantsList/merchantlist1.model';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class FormMerchantComponent implements OnInit {
   submitted: any = false;
   error: any = '';
   successmsg: any = false;
+  merchant: Merchant = null;
   fieldTextType!: boolean;
   imageURL: string | undefined;
   existantmerchantLogo: string = null;
@@ -96,16 +98,16 @@ export class FormMerchantComponent implements OnInit {
     }
    private initForm() {
     this.merchantForm = this.formBuilder.group({
-    id: [''],
+    id: [null],
     username: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     password: ['', this.type === 'create' ? Validators.required : null],
     confpassword: ['', this.type === 'create' ? Validators.required : null],
-    id_number: ['', Validators.required],
+    id_number: [null, Validators.required],
     phone:['',Validators.required], //Validators.pattern(/^\d{3}-\d{3}-\d{4}$/)*/],
-    country_id:['', Validators.required],
-    city_id:['', Validators.required],
-    area_id:['', Validators.required], 
+    country_id:[null, Validators.required],
+    city_id:[null, Validators.required],
+    area_id:[null, Validators.required], 
     serviceType: ['', Validators.required],
     supervisorName: ['', Validators.required],
     supervisorName_ar: ['', Validators.required],
@@ -117,12 +119,12 @@ export class FormMerchantComponent implements OnInit {
     merchantLogo: ['', Validators.required],
     activationCode: [''],
     qrCode: [''],
-    section_id:['', Validators.required],
-    website: [''],
-    whatsup:[''],
-    facebook: [''],
-    twitter: [''],
-    instagram: ['']
+    section_id:[null, Validators.required],
+    website: [undefined],
+    whatsup:[null],
+    facebook: [undefined],
+    twitter: [undefined],
+    instagram: [undefined]
     
 
   }, {
@@ -132,7 +134,7 @@ export class FormMerchantComponent implements OnInit {
   year: number = new Date().getFullYear();
   fileName1: string = ''; 
   fileName2: string = ''; 
-  globalId : string = '';
+  globalId : number = null;
 
   ngOnInit() {
     
@@ -244,7 +246,48 @@ export class FormMerchantComponent implements OnInit {
   }
   // convenience getter for easy access to form fields
   get f() { return this.merchantForm.controls; }
-
+  
+  createMerchantFromForm(formValue): Merchant {
+      //const formValue = this.merchantForm.value;
+      const merchant: any = {
+      
+          id : Number(formValue.id),
+          username: formValue.username,
+          email: formValue.email,
+          password: formValue.password,
+          id_number: Number(formValue.id_number),
+          phone: formValue.phone,
+          merchantName: formValue.merchantName,
+          merchantName_ar: formValue.merchantName_ar,
+          serviceType: formValue.serviceType,
+          supervisorName: formValue.supervisorName,
+          supervisorName_ar: formValue.supervisorName_ar,
+          supervisorPhone: formValue.supervisorPhone,
+          merchantLogo : formValue.merchantLogo,
+          merchantPicture: formValue.merchantPicture,
+          bankAccountNumber : formValue.bankAccountNumber,
+          section_id: Number(formValue.section_id),
+          city_id : Number(formValue.city_id),
+          
+          }
+          if (formValue.website) {
+            merchant.website = formValue.website;
+          }
+          if (formValue.facebook) {
+            merchant.facebook = formValue.facebook;
+          }
+          if (formValue.twitter) {
+            merchant.twitter = formValue.twitter;
+          }
+          if (formValue.instagram) {
+            merchant.twitter = formValue.instagram;
+          }
+          if (formValue.whatsup) {
+            merchant.twitter = Number(formValue.whatsup);
+          }
+          return merchant;
+  }
+    
   /**
    * On submit form
    */
@@ -260,7 +303,9 @@ export class FormMerchantComponent implements OnInit {
       return;
     }
     this.formError = null;
+      //const newData = this.merchantForm.value;
       const newData = this.merchantForm.value;
+      console.log(newData);
       if(this.storeLogoBase64){
         newData.merchantLogo = this.storeLogoBase64;
       }
@@ -270,18 +315,24 @@ export class FormMerchantComponent implements OnInit {
       delete newData.confpassword;
       delete newData.area_id;
       delete newData.country_id;
+      delete newData.qrCode;
+      delete newData.activationCode;
+
+      this.merchant = this.createMerchantFromForm(newData);
       if(!this.isEditing)
         {           
-          delete newData.id;
-
+         
+          
+          delete this.merchant.id;
+          //this.merchant = newData;
+          console.log(this.merchant);
           //Dispatch Action
-          this.store.dispatch(addMerchantlist({ newData }));
+          this.store.dispatch(addMerchantlist({ newData: this.merchant }));
         }
         else
         { 
-          delete newData.password;
-          newData.id = this.globalId;
-          this.store.dispatch(updateMerchantlist({ updatedData: newData }));
+          delete this.merchant.password;
+          this.store.dispatch(updateMerchantlist({ updatedData: this.merchant }));
         }
       
     
