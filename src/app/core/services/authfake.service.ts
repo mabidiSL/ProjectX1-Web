@@ -58,6 +58,8 @@ export class AuthfakeauthenticationService {
         localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('timeLifeToken');
+        //clean up the cookies
+        document.cookie = 'lang=; Max-Age=-99999999; path=/';
         this.currentUserSubject.next(null);
     }
 }

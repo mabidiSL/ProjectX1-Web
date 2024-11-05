@@ -31,6 +31,7 @@ export class PhoneNumberComponent {
 
   checkLanguageAndApplyRtl(): void {
     this.language = this.cookieService.get('lang'); 
+    console.log(this.language)
     if (this.language === 'ar') {
       this.inputElement.setAttribute('dir', 'rtl'); 
       this.itiOptions.i18n = ar; 

@@ -25,14 +25,14 @@ export class LanguageService {
       browserLang = translate.getBrowserLang();
     }
     translate.use(browserLang.match(/en|ar|es|de|it|ru/) ? browserLang : 'en');
+
   }
 
   public setLanguage(lang) {
-
+    console.log('i am in the set language');
     this.cookieService.delete('lang');
     this.translate.use(lang);
-    this.cookieService.set('lang', lang);
-     //   // Apply RTL class when Arabic language is selected
+    this.cookieService.set('lang', lang, { expires: 365, path: '/' })     //   // Apply RTL class when Arabic language is selected
     if (lang === 'ar') {
       this.themeService.loadRtlStyles();
     }
@@ -41,6 +41,7 @@ export class LanguageService {
       this.themeService.loadLtrStyles();
     }
     this.store.dispatch(changeLanguage({ lang: lang }));
+    
     //   document.body.classList.add('rtl');
     // } else {
     //   document.body.classList.remove('rtl');
