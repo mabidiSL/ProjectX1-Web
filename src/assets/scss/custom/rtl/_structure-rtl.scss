@@ -47,10 +47,14 @@
 
   ul {
     li {
+      a {
+        font-size: 16px; 
+      }
       ul.sub-menu {
         li {
           a {
             padding: .4rem 3.5rem .4rem 1.5rem;
+            font-size: 14px; 
           }
 
           ul.sub-menu {

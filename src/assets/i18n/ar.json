@@ -723,7 +723,39 @@
     "National ID": "رقم الهوية الوطنية",
     "Enter your National ID number": "أدخل رقم الهوية الوطنية الخاص بك",
     "id_number is required": "مطلوب رقم الهوية",
-    "Phone Number": "رقم الهاتف"
+    "Phone Number": "رقم الهاتف",
+    "Service Type":"نوع الخدمة",
+    "Enter service type": "أدخل نوع الخدمة",
+    "Service Type is required": "نوع الخدمة مطلوب",
+    "Company":"شركة",
+    "Entreprise": "مؤسسة",
+    "Supervisor Name":"إسم المشرف",
+    "Enter supervisor name": "أدخل اسم المشرف",
+    "Supervisor Name is required":"اسم المشرف مطلوب",
+    "Supervisor Name in arabic":"اسم المشرف باللغة العربية",
+    "Enter supervisor name in arabic":"أدخل اسم المشرف باللغة العربية",
+    "Arabic Supervisor Name is required":"اسم المشرف باللغة العربية مطلوب",
+    "Supervisor Phone":"هاتف المشرف",
+    "Enter supervisor phone":"أدخل مشرف الهاتف",
+    "Supervisor Phone is required":"مطلوب هاتف المشرف",
+    "Merchant Section": "قسم التاجر",
+    "Select a section": "حدد قسمًا",
+    "Section is required": "القسم مطلوب",
+    "Select_the_service_type": "اختر نوع الخدمة",
+    "QR Code": "رمز",
+    "Merchant Picture":"صورة التاجر",
+    "Merchant Picture is required": "صورة التاجر مطلوبة",
+    "Bank Account Number": "رقم الحساب البنكي",
+    "Enter Bank Account Number": "أدخل رقم الحساب البنكي",
+    "Merchant Website": "موقع التاجر",
+    "WhatsApp": "واتساب",
+    "Facebook":"فيسبوك",
+    "Twitter": "تويتر",
+    "Instagram": "انستغرام",
+    "Please complete all required fields.": ".يرجى إكمال كافة الحقول المطلوبة"
+    
+
+
 
 
     

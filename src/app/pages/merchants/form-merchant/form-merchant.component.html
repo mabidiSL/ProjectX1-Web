@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-body ">
               <form  [formGroup]="merchantForm"  class="m-4">
-                <div *ngIf="formError" class="alert alert-danger">{{ formError }}</div>
+                <div *ngIf="formError" class="alert alert-danger">{{ formError | translate}}</div>
                 <div class="row">
 
                   <div class="col-md-6 mb-3">
@@ -66,7 +66,7 @@
                   <div *ngIf="type == 'create'" class="col-md-6 mb-3">
                       <div class="form-group ">
                         <div class="form-group ">
-                          <label for="confpassword" >{{'Confirm password' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                          <label for="confpassword" >{{'Confirm Password' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                           <div class="input-group auth-pass-inputgroup">
                           <input [type]="fieldTextType ? 'text' : 'password'" id="confpassword" class="form-control" placeholder="{{ 'Confirm Your New Password' | translate }}" formControlName="confpassword" required>
                           <button class="btn btn-light ms-0" type="button" id="password-addon">
@@ -146,6 +146,7 @@
                         [disabled]="type === 'view'"
                         *ngIf="merchantForm"
                         [inputId]="'supervisorPhone'"
+                        [placeholder]="'Enter supervisor phone' | translate"
                         (phoneNumberChanged)="onSupervisorPhoneChanged($event)" >
                        </app-phone-number> 
                        <div *ngIf="merchantForm.get('supervisorPhone').touched && merchantForm.get('supervisorPhone').invalid" class="invalid-feedback d-block">
@@ -317,7 +318,7 @@
                               
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
-                      <label for="bankAccountNumber">Bank Account Number</label>
+                      <label for="bankAccountNumber">{{'Bank Account Number' | translate}}</label>
                       <input type="text" id="bankAccountNumber" class="form-control" placeholder="{{ 'Enter Bank Account Number' | translate }}" formControlName="bankAccountNumber" [readonly]="type==='view'">
                     </div>
                   </div>
@@ -325,7 +326,7 @@
                   
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
-                      <label for="website">Merchant Website</label>
+                      <label for="website">{{'Merchant Website' | translate}}</label>
                       <input type="text" id="website" class="form-control" formControlName="website" placeholder="https://example.com" [readonly]="type==='view'">
                     </div>
                   </div>
@@ -334,7 +335,7 @@
               
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
-                    <label for="whatsup">WhatsApp</label>
+                    <label for="whatsup">{{'WhatsApp' | translate}}</label>
                     <input type="text" id="whatsup" class="form-control" formControlName="whatsup" placeholder="+1234567890" [readonly]="type==='view'">
                   </div>
                 </div>
@@ -342,21 +343,21 @@
             
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
-                    <label for="facebook">Facebook</label>
+                    <label for="facebook">{{'Facebook' | translate}}</label>
                     <input type="text" id="facebook" class="form-control" formControlName="facebook" placeholder="facebook.com/yourpage" [readonly]="type==='view'">
                   </div>
                 </div>
               
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
-                    <label for="twitter">Twitter</label>
+                    <label for="twitter">{{'Twitter' | translate}}</label>
                     <input type="text" id="twitter" class="form-control" formControlName="twitter" placeholder="twitter.com/yourhandle" [readonly]="type==='view'">
                   </div>
                 </div>
                 
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
-                    <label for="instagram">Instagram</label>
+                    <label for="instagram">{{'Instagram' | translate}}</label>
                     <input type="text" id="instagram" class="form-control" formControlName="instagram" placeholder="instagram.com/yourprofile" [readonly]="type==='view'">
                   </div>
                 </div>
@@ -373,7 +374,7 @@
                           <button type="submit" class="btn btn-success" (click)="onSubmit()">{{ (type === 'create' ? 'Add_merchant' : 'update_merchant') | translate }}</button>
                           <div id="elmLoader" class="loader" *ngIf="loading$ | async">
                             <div class="spinner-border text-primary avatar-sm" role="status">
-                              <span class="visually-hidden">Loading...</span>
+                              <span class="visually-hidden">{{'Loading...' | translate}}</span>
                             </div>
                           </div>   
                         </ng-template>

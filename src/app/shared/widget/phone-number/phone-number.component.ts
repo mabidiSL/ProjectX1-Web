@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import intlTelInput from 'intl-tel-input';
+ import ar from 'intl-tel-input/i18n/ar';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-phone-number',
@@ -13,27 +15,45 @@ export class PhoneNumberComponent {
   @Input() initialPhoneNumber: string;
   @Input() disabled: boolean = false;
   @Input() inputId: string ;
+  inputElement: HTMLInputElement;
+  language: string = '';
+  phone: FormControl; 
+  itiOptions: any = {};
 
-  phone: FormControl; // Define the phone property as a FormControl
-
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private cookieService: CookieService) {
     this.phone = this.formBuilder.control(''); // Initialize the phone control
+    this.itiOptions = {
+      initialCountry: 'sa', // set default country as Saudi Arabia
+      utilsScript: 'node_modules/intl-tel-input/build/js/utils.js', // for validation and formatting
+    };
+
   }
+
+  checkLanguageAndApplyRtl(): void {
+    this.language = this.cookieService.get('lang'); 
+    if (this.language === 'ar') {
+      this.inputElement.setAttribute('dir', 'rtl'); 
+      this.itiOptions.i18n = ar; 
+    } 
+    else {
+      this.inputElement.setAttribute('dir', 'ltr');
+      delete this.itiOptions.i18n;
+    }
+    console.log(this.itiOptions);
+  }
+
   ngAfterViewInit() {
 
-    const input = document.querySelector(`#${this.inputId}`) as HTMLInputElement; // Use the dynamic ID
-    const iti = intlTelInput(input, {
-      initialCountry: 'sa', 
-      //preferredCountries: ['us', 'gb', 'fr'] as any, // add preferred countries
-      utilsScript: 'node_modules/intl-tel-input/build/js/utils.js' // for validation and formatting
-    });
+    this.inputElement = document.querySelector(`#${this.inputId}`) as HTMLInputElement; 
+    this.checkLanguageAndApplyRtl();
+    const iti = intlTelInput(this.inputElement, this.itiOptions);
 
     if (this.initialPhoneNumber) {
-      input.value = this.initialPhoneNumber;
+      this.inputElement.value = this.initialPhoneNumber;
       iti.setNumber( this.initialPhoneNumber);
     }
-    input.addEventListener('input', () => {
-      const phoneNumber = input.value;
+    this.inputElement.addEventListener('input', () => {
+      const phoneNumber = this.inputElement.value;
       this.phoneNumberChanged.emit(phoneNumber);
     });
  

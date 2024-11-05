@@ -10,6 +10,6 @@ export class CreateMerchantComponent {
  breadCrumbItems: Array<{}>;
 
  ngOnInit() {
-   this.breadCrumbItems = [{ label: 'Merchants' }, { label: 'Add Merchant', active: true }];
+   this.breadCrumbItems = [{ label: 'Merchants' }, { label: 'Add_merchant', active: true }];
  }
 }

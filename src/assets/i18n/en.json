@@ -661,7 +661,8 @@
   "View_merchant":"View Merchant",
   "Merchant Logo":"Merchant Logo",
   "Qr Merchant": "Qr Merchant",
-  "id_number is required": "National ID is required"
+  "id_number is required": "National ID is required",
+  "Select_the_service_type": "Select the service type"
 
  
 
