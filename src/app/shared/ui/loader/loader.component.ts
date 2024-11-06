@@ -13,10 +13,16 @@ export class LoaderComponent implements OnInit {
   constructor(private loaderService: LoaderService) {
 
     this.loaderService.isLoading.subscribe((v) => {
+      this.loading = v;
+
+    // If loading is true, show the spinner and then reload after a brief delay
+    if (this.loading) {
+      // Delay for a brief moment to allow spinner to appear
       setTimeout(() => {
-        this.loading = v;
-      }, 1500);     
-    });
+        window.location.reload(); // Reload the page
+      }, 500); // 500ms delay is enough for the spinner to show
+    }
+  });
   }
   ngOnInit(): void {
   }

@@ -17,6 +17,7 @@ import { logout } from 'src/app/store/Authentication/authentication.actions';
 import { SocketService } from 'src/app/core/services/webSocket.service';
 import { fetchMyNotificationlistData, updateNotificationlist } from 'src/app/store/notification/notification.action';
 import { selectDataNotification, selectDataUnseenCount } from 'src/app/store/notification/notification-selector';
+import { LoaderService } from 'src/app/core/services/loader.service';
 
 @Component({
   selector: 'app-topbar',
@@ -57,7 +58,7 @@ export class TopbarComponent implements OnInit {
     public _cookiesService: CookieService, 
     public store: Store<RootReducerState>,
     private socketService: SocketService,
-    
+    private loaderService: LoaderService,
     public toastr:ToastrService) {
       
       this.currentUserSubject = new BehaviorSubject<_User>(JSON.parse(localStorage.getItem('currentUser')));
@@ -166,9 +167,14 @@ export class TopbarComponent implements OnInit {
     this.countryName = text;
     this.flagvalue = flag;
     this.cookieValue = lang;
+    this.loaderService.isLoading.next(true);
     this.languageService.setLanguage(lang);
-     
-    
+    setTimeout(() => {
+      // Hide loader once the language is applied or after some delay
+      this.loaderService.isLoading.next(false);  // Hide the spinner
+    }, 1000); // Adjust this delay according to how long it takes to load the data
+
+      
   }
   
   /**
@@ -198,9 +204,7 @@ export class TopbarComponent implements OnInit {
    */
   logout() {
       this.store.dispatch(logout());
-      
-
-      
+         
   }
 
   /**
