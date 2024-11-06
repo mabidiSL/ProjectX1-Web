@@ -1,3 +1,8 @@
+<div id="elmLoader" class="loader" *ngIf="loading$ | async">
+  <div class="spinner-border text-primary avatar-sm" role="status">
+    <span class="visually-hidden">{{'Loading...' | translate}}</span>
+  </div>
+</div>   
 <div class="row">
     <div class="col-19">
         <div class="card">
@@ -108,12 +113,9 @@
                     <div class="col-md-6 mb-3">
                       <div class="form-group">
                         <label for="serviceType">{{'Service Type' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                        <input *ngIf="type === 'view'" type="text" id="serviceType"  class="form-control" formControlName="serviceType" placeholder="{{ 'Enter service type' | translate }}" [readonly]="type==='view'">
-                        <select [hidden]="type === 'view'" id="serviceType"class="form-control"  formControlName="serviceType"  >
-                          <option value="" disabled selected>{{'Select_the_service_type' | translate}}</option>
-                          <option value="company">{{ 'Company' | translate }} </option>
-                          <option value="entreprise">{{ 'Entreprise' | translate }} </option>
-                        </select>
+                        <input *ngIf="type === 'view'" type="text" id="serviceType"  class="form-control" formControlName="serviceType"  [readonly]="type==='view'">
+                        <ng-select [hidden]="type === 'view'" placeholder="{{'Select service type' |translate}}" id="serviceType"  [items]="serviceTypes" formControlName="serviceType"  >
+                        </ng-select>
                         <div *ngIf="merchantForm.get('serviceType').touched && merchantForm.get('serviceType').invalid" class="invalid-feedback d-block">
                         <span *ngIf="merchantForm.get('serviceType').errors?.['required']">{{'Service Type is required'| translate}}.</span>
                       </div>
@@ -163,12 +165,9 @@
                           [value]="getSectionName(merchantForm.get('section_id').value)" 
                           readonly 
                         />
-                        <select [hidden]="type === 'view'" id="section_id" class="form-control" formControlName="section_id">
-                          <option value="">{{'Select a section' | translate}}</option>
-                          <option *ngFor="let section of sectionlist" [value]="section.id">
-                            {{ section.name }}
-                          </option>
-                        </select>
+                        <ng-select [hidden]="type === 'view'" placeholder="{{'Select a section' | translate}}" [items]="sectionlist" bindLabel="name" 
+                        bindValue="id" id="section_id"  formControlName="section_id">
+                        </ng-select>
                         <div *ngIf="merchantForm.get('section_id').touched && merchantForm.get('section_id').invalid" class="invalid-feedback d-block">
                           <span *ngIf="merchantForm.get('section_id').errors?.['required']">{{'Section is required'| translate}}.</span>
                         </div>   
@@ -262,12 +261,9 @@
                       [value]="getCountryName(merchantForm.get('country_id').value)" 
                       readonly 
                   />
-                      <select [hidden]="type === 'view'" id="country_id"class="form-control"  formControlName="country_id" (change)="onChangeCountrySelection($event)" >
-                        <option value="" disabled selected>{{'Select_the_Country' | translate}}</option>
-                        <option *ngFor="let country of filteredCountries" [value]="country.id">
-                         {{ country.name }}
-                       </option>
-                      </select>  
+                      <ng-select [hidden]="type === 'view'" id="country_id" placeholder="{{'Select_the_Country' | translate}}" [items]="filteredCountries" bindLabel="name" 
+                      bindValue="id" formControlName="country_id" (change)="onChangeCountrySelection($event)" >
+                     </ng-select>  
                       <div *ngIf="merchantForm.get('country_id').touched && merchantForm.get('country_id').invalid" class="invalid-feedback d-block">
                         <span *ngIf="merchantForm.get('country_id').errors?.['required']">{{'Country is required'| translate}}.</span>
                       </div>   
@@ -283,12 +279,9 @@
                           [value]="getAreaName(merchantForm.get('area_id').value)" 
                           readonly 
                       />
-                        <select  [hidden]="type === 'view'" id="area_id"class="form-control"  formControlName="area_id" (change)="onChangeAreaSelection($event)" >
-                          <option value="" disabled selected>{{'Select_the_Area' | translate}}</option>
-                          <option *ngFor="let area of filteredAreas" [value]="area.id">
-                           {{ area.name }}
-                         </option>
-                        </select> 
+                        <ng-select  [hidden]="type === 'view'" id="area_id" placeholder="{{'Select_the_Area' | translate}}" [items]="filteredAreas" bindLabel="name" 
+                        bindValue="id" formControlName="area_id" (change)="onChangeAreaSelection($event)" >
+                        </ng-select> 
                         <div *ngIf="merchantForm.get('area_id').touched && merchantForm.get('area_id').invalid" class="invalid-feedback d-block">
                           <span *ngIf="merchantForm.get('area_id').errors?.['required']">{{'Area is required'| translate}}.</span>
                         </div>                           
@@ -304,12 +297,9 @@
                       [value]="getCityName(merchantForm.get('city_id').value)" 
                       readonly 
                   />
-                      <select [hidden]="type === 'view'" id="city_id"class="form-control"  formControlName="city_id"  >
-                        <option value="" disabled selected>{{'Select_the_City' | translate}}</option>
-                        <option *ngFor="let city of filteredCities" [value]="city.id">
-                         {{ city.name }}
-                       </option>
-                      </select>  
+                      <ng-select [hidden]="type === 'view'" id="city_id" placeholder="{{'Select_the_City' | translate}}" [items]="filteredCities" bindLabel="name" 
+                      bindValue="id" formControlName="city_id"  >
+                      </ng-select>  
                       <div *ngIf="merchantForm.get('city_id').touched && merchantForm.get('city_id').invalid" class="invalid-feedback d-block">
                         <span *ngIf="merchantForm.get('city_id').errors?.['required']">{{'City is required'| translate}}.</span>
                       </div>                         

@@ -725,7 +725,7 @@
     "id_number is required": "مطلوب رقم الهوية",
     "Phone Number": "رقم الهاتف",
     "Service Type":"نوع الخدمة",
-    "Enter service type": "أدخل نوع الخدمة",
+    "Select service type": "أدخل نوع الخدمة",
     "Service Type is required": "نوع الخدمة مطلوب",
     "Company":"شركة",
     "Entreprise": "مؤسسة",

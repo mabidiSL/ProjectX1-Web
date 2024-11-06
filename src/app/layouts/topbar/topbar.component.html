@@ -69,11 +69,7 @@
           @for (item of listLang; track $index) {
           <a href="javascript:void(0);" class="dropdown-item notify-item" (click)="setLanguage(item.text, item.lang, item.flag)" [ngClass]="{'active': cookieValue === item.lang}">
             <img src="{{item.flag}}" alt="user-image" class="me-1" height="12"> <span class="align-middle">{{item.text}}</span>
-            <!-- <div id="elmLoader" class="loader" *ngIf="loading$ | async">
-              <div class="spinner-border text-primary avatar-sm" role="status">
-                <span class="visually-hidden">{{'Loading...' | translate}}</span>
-              </div>
-            </div>    -->
+          
           </a>
           }
           <!-- item-->

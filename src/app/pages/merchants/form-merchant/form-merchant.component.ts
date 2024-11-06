@@ -3,9 +3,9 @@ import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@an
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { select, Store } from '@ngrx/store';
-import { addMerchantlist, getMerchantById, updateMerchantlist } from 'src/app/store/merchantsList/merchantlist1.action';
+import { addMerchantlist, getLoggedMerchantById, getMerchantById, updateMerchantlist } from 'src/app/store/merchantsList/merchantlist1.action';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { selectDataLoading, selectMerchantById } from 'src/app/store/merchantsList/merchantlist1-selector';
+import { selectDataLoading, selectedMerchant, selectMerchantById } from 'src/app/store/merchantsList/merchantlist1-selector';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
 import { fetchArealistData } from 'src/app/store/area/area.action';
 import { fetchCitylistData } from 'src/app/store/City/city.action';
@@ -53,7 +53,7 @@ export class FormMerchantComponent implements OnInit {
   filteredCountries: any[] = [];
   filteredAreas :  any[] = [];
   filteredCities:  any[] = [];
-
+  serviceTypes: any[] = ['company', 'entreprise'];
   
  
   constructor(
@@ -108,7 +108,7 @@ export class FormMerchantComponent implements OnInit {
     country_id:[null, Validators.required],
     city_id:[null, Validators.required],
     area_id:[null, Validators.required], 
-    serviceType: ['', Validators.required],
+    serviceType: [null, Validators.required],
     supervisorName: ['', Validators.required],
     supervisorName_ar: ['', Validators.required],
     supervisorPhone: ['', Validators.required],
@@ -158,12 +158,12 @@ export class FormMerchantComponent implements OnInit {
     const merchantId = this.route.snapshot.params['id'];
     if (merchantId) {
       // Dispatch action to retrieve the merchant by ID
-      this.store.dispatch(getMerchantById({ merchantId }));
+      this.store.dispatch(getLoggedMerchantById({ merchantId }));
       
       // Subscribe to the selected merchant from the store
       this.store
-        .pipe(select(selectMerchantById(merchantId)), takeUntil(this.destroy$))
-        .subscribe(merchant => {
+        .pipe(select(selectedMerchant), takeUntil(this.destroy$))
+        .subscribe((merchant: any) => {
           if (merchant) {
 
            
