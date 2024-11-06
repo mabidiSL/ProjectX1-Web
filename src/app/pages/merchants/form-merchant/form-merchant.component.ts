@@ -387,36 +387,26 @@ export class FormMerchantComponent implements OnInit {
   }
   
   /**
-   * Upload Merchant Logo
+   * Store Merchant Logo
    */
-  async uploadMerchantLogo(event: any){
-    try {
-      const imageURL = await this.fileChange(event);
-      //this.merchantForm.controls['storeLogo'].setValue(imageURL);
-      this.storeLogoBase64 = imageURL;
+   onLogoUploaded(event: any){
+      
+      this.storeLogoBase64 = event;
       this.fileName1 = ''; // Set the file name
-      this.existantmerchantLogo = imageURL;
+      this.existantmerchantLogo = event;
       this.merchantForm.controls['merchantLogo'].setValue(this.existantmerchantLogo);
 
-      
-    } catch (error: any) {
-      console.error('Error reading file:', error);
-    }
   }
   /**
-   * Upload Merchant Picture
+   * Store Merchant Picture
    */
-  async uploadMerchantPicture(event: any){
-    try {
-      const imageURL = await this.fileChange(event);
-      this.merchantPictureBase64 = imageURL;
+  onPictureUploaded(event: any){
+     
+      this.merchantPictureBase64 = event;
       this.fileName2 = ''; // Set the file name
-      this.existantmerchantPicture = imageURL;
+      this.existantmerchantPicture = event;
       this.merchantForm.controls['merchantPicture'].setValue(this.existantmerchantPicture);
-
-    } catch (error: any) {
-      console.error('Error reading file:', error);
-    }
+  
     
   }
   ngOnDestroy() {

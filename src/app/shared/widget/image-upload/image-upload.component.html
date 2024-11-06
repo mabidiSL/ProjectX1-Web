@@ -1,0 +1,15 @@
+<div class="image-upload-container" >
+    <!-- Image preview section -->
+    <div *ngIf="existantImage" class="image-preview">
+      <img [src]="existantImage" [alt]="alt" class="img-fluid" width="200">
+    </div>
+    
+<input 
+    type="text"
+    class="form-control-plaintext mt-2"
+    [value]="filename"
+    readonly
+  >
+</div> 
+ <input   type="file" [disabled]="disabled" class="form-control" accept="image/png, image/gif, image/jpeg" (change)="fileChange($event)" >
+ 

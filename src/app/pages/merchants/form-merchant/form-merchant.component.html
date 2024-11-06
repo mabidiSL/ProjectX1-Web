@@ -199,26 +199,9 @@
                       <div class="form-group">
                         <label for="merchantLogo">{{ 'Merchant Logo' | translate }}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                     
-                        <!-- Display the merchant logo if it exists -->
-                        <div *ngIf="merchantForm.get('merchantLogo').value !== null && merchantForm.get('merchantLogo').value !== ''"
-                        class="mb-3">
-                          <img [src]="existantmerchantLogo" alt="Merchant Logo" class="img-fluid" width="200">
-                        </div>
-                        <input
-                        type="text"
-                        class="form-control-plaintext"
-                        [value]="fileName1" 
-                        readonly
-                      >
                         <!-- File input for selecting or uploading a new image -->
-                        <input
-                          type="file"
-                          [disabled]="type==='view'"
-                          id="merchantLogo"
-                          class="form-control"
-                          accept="image/png, image/gif, image/jpeg"
-                          (change)="uploadMerchantLogo($event)"
-                        >
+                        <app-image-upload [existantImage]="existantmerchantLogo" [filename]="fileName1" [alt]="'Merchant Logo'" [disabled]="type ==='view'" (imageUploaded)="onLogoUploaded($event)"></app-image-upload>
+                     
                         <div *ngIf="merchantForm.get('merchantLogo').touched && merchantForm.get('merchantLogo').invalid" class="invalid-feedback d-block">
                           <span *ngIf="merchantForm.get('merchantLogo').errors?.['required']">{{'Merchant Logo is required'| translate}}.</span>
                         </div>   
@@ -228,24 +211,8 @@
                     <div class="col-md-6 mb-3">
                       <div class="form-group">
                         <label for="merchantPicture">{{'Merchant Picture' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                         <!-- Display the merchant pictures if it exists -->
-                         <div *ngIf="merchantForm.get('merchantPicture').value !== null && merchantForm.get('merchantPicture').value !== ''"
-                         class="mb-3">
-                           <img [src]="existantmerchantPicture" alt="Merchant Pictutre" class="img-fluid" width="200">
-                         </div>
-                         <input
-                         type="text"
-                         class="form-control-plaintext"
-                         [value]="fileName2" 
-                         readonly
-                       >
-                      <input 
-                        type="file" 
-                        [disabled]="type==='view'"
-                        id="merchantPicture" 
-                        class="form-control"  
-                        accept="image/png, image/gif, image/jpeg" 
-                        (change)="uploadMerchantPicture($event)">
+                         
+                        <app-image-upload  [existantImage]="existantmerchantPicture" [filename]="fileName2" [alt]="'Merchant Pictutre'" [disabled]="type ==='view'" (imageUploaded)="onPictureUploaded($event)"></app-image-upload>
 
                         <div *ngIf="merchantForm.get('merchantPicture').touched && merchantForm.get('merchantPicture').invalid" class="invalid-feedback d-block">
                           <span *ngIf="merchantForm.get('merchantPicture').errors?.['required']">{{'Merchant Picture is required'| translate}}.</span>
