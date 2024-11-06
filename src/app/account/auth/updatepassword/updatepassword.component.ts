@@ -33,8 +33,6 @@ export class UpdatepasswordComponent {
   // tslint:disable-next-line: max-line-length
   constructor(private formBuilder: UntypedFormBuilder, 
     private route: ActivatedRoute,
-    private router: Router, 
-    private authenticationService: AuthenticationService,
     private store: Store,
     public toastr:ToastrService
 ) {

@@ -15,6 +15,7 @@ export class PhoneNumberComponent {
   @Input() initialPhoneNumber: string;
   @Input() disabled: boolean = false;
   @Input() inputId: string ;
+  @Input() placeholder: string;
   inputElement: HTMLInputElement;
   language: string = '';
   phone: FormControl; 

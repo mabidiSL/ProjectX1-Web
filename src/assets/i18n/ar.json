@@ -736,7 +736,7 @@
     "Enter supervisor name in arabic":"أدخل اسم المشرف باللغة العربية",
     "Arabic Supervisor Name is required":"اسم المشرف باللغة العربية مطلوب",
     "Supervisor Phone":"هاتف المشرف",
-    "Enter supervisor phone":"أدخل مشرف الهاتف",
+    "Enter supervisor phone":"أدخل هاتف المشرف",
     "Supervisor Phone is required":"مطلوب هاتف المشرف",
     "Merchant Section": "قسم التاجر",
     "Select a section": "حدد قسمًا",
@@ -752,7 +752,9 @@
     "Facebook":"فيسبوك",
     "Twitter": "تويتر",
     "Instagram": "انستغرام",
-    "Please complete all required fields.": ".يرجى إكمال كافة الحقول المطلوبة"
+    "Please complete all required fields.": ".يرجى إكمال كافة الحقول المطلوبة",
+    "Enter merchant phone": "أدخل رقم هاتف التاجر"
+
     
 
 

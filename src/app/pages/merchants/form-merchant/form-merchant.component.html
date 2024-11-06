@@ -73,9 +73,9 @@
                         <div class="form-group ">
                           <label for="confpassword" >{{'Confirm Password' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                           <div class="input-group auth-pass-inputgroup">
-                          <input [type]="fieldTextType ? 'text' : 'password'" id="confpassword" class="form-control" placeholder="{{ 'Confirm Your New Password' | translate }}" formControlName="confpassword" required>
+                          <input [type]="confirmFieldTextType ? 'text' : 'password'" id="confpassword" class="form-control" placeholder="{{ 'Confirm Your New Password' | translate }}" formControlName="confpassword" required>
                           <button class="btn btn-light ms-0" type="button" id="password-addon">
-                            <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()"></i>
+                            <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !confirmFieldTextType, 'mdi-eye-outline': confirmFieldTextType}" (click)="toggleConfirmFieldTextType()"></i>
                           </button>
                           <div *ngIf="merchantForm.get('confpassword').touched && merchantForm.get('confpassword').invalid" class="invalid-feedback d-block">
                             <span *ngIf="merchantForm.get('confpassword').errors?.['required']">{{'Please confirm your new password' | translate}}.</span>
@@ -102,6 +102,7 @@
                        [disabled]="type === 'view'"
                        [initialPhoneNumber]="merchantForm.get('phone').value"
                        [inputId]="'phone'"
+                       [placeholder]="'Enter merchant phone' | translate"
                        *ngIf="merchantForm"
                         (phoneNumberChanged)="onPhoneNumberChanged($event)" >
                       </app-phone-number>

@@ -239,4 +239,14 @@ aw-wizard-navigation-bar.horizontal.large-empty-symbols ul.steps-indicator li:no
       left: -102px;
     }
   }
-  
+  // Setting for intl tel input for RTL style
+  .intl-tel-input{
+    width: 100%;
+  }
+  .iti {
+    width: 100%;
+  }
+  .iti__arrow {
+    margin-right: var(--iti-arrow-padding);
+    margin-left: 0;
+  }

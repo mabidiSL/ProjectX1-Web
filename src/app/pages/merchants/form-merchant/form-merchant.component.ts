@@ -34,7 +34,6 @@ export class FormMerchantComponent implements OnInit {
   error: any = '';
   successmsg: any = false;
   merchant: Merchant = null;
-  fieldTextType!: boolean;
   imageURL: string | undefined;
   existantmerchantLogo: string = null;
   existantmerchantPicture: string = null
@@ -55,6 +54,8 @@ export class FormMerchantComponent implements OnInit {
   filteredCities:  any[] = [];
   serviceTypes: any[] = ['company', 'entreprise'];
   
+  fieldTextType: boolean  = false;;
+  confirmFieldTextType: boolean = false;
  
   constructor(
     private formBuilder: UntypedFormBuilder, 
@@ -361,6 +362,9 @@ export class FormMerchantComponent implements OnInit {
  */
     toggleFieldTextType() {
       this.fieldTextType = !this.fieldTextType;
+    }
+    toggleConfirmFieldTextType() {
+      this.confirmFieldTextType = !this.confirmFieldTextType;
     }
   /**
    * File Upload Image
