@@ -363,7 +363,8 @@ export class FormMerchantComponent implements OnInit {
           const updatedDta = this.detectChanges();
           if (Object.keys(updatedDta).length > 0) {
             console.log(updatedDta);
-            this.store.dispatch(updateMerchantlist({ updatedData: this.merchant }));
+            updatedDta.id = this.globalId;
+            this.store.dispatch(updateMerchantlist({ updatedData: updatedDta }));
           }
           else{
             this.formError = 'Nothing has been changed!!!';
