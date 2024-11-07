@@ -200,7 +200,7 @@
                         <label for="merchantLogo">{{ 'Merchant Logo' | translate }}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                     
                         <!-- File input for selecting or uploading a new image -->
-                        <app-image-upload [existantImage]="existantmerchantLogo" [filename]="fileName1" [alt]="'Merchant Logo'" [disabled]="type ==='view'" (imageUploaded)="onLogoUploaded($event)"></app-image-upload>
+                        <app-image-upload [id]="'merchantLogo'" [type]="'logo'" [label]="'Upload Merchant Logo' | translate" [existantImage]="existantmerchantLogo" [filename]="fileName1" [alt]="'Merchant Logo'" [disabled]="type ==='view'" (logoUploaded)="onImageUpload($event)"></app-image-upload>
                      
                         <div *ngIf="merchantForm.get('merchantLogo').touched && merchantForm.get('merchantLogo').invalid" class="invalid-feedback d-block">
                           <span *ngIf="merchantForm.get('merchantLogo').errors?.['required']">{{'Merchant Logo is required'| translate}}.</span>
@@ -212,7 +212,7 @@
                       <div class="form-group">
                         <label for="merchantPicture">{{'Merchant Picture' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                          
-                        <app-image-upload  [existantImage]="existantmerchantPicture" [filename]="fileName2" [alt]="'Merchant Pictutre'" [disabled]="type ==='view'" (imageUploaded)="onPictureUploaded($event)"></app-image-upload>
+                        <app-image-upload [id]="'merchantPicture'" [type]="'image'" [label]="'Upload Merchant Picture' | translate" [existantImage]="existantmerchantPicture" [filename]="fileName2" [alt]="'Merchant Pictutre'" [disabled]="type ==='view'" (imageUploaded)="onImageUpload($event)"></app-image-upload>
 
                         <div *ngIf="merchantForm.get('merchantPicture').touched && merchantForm.get('merchantPicture').invalid" class="invalid-feedback d-block">
                           <span *ngIf="merchantForm.get('merchantPicture').errors?.['required']">{{'Merchant Picture is required'| translate}}.</span>

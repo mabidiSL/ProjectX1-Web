@@ -386,28 +386,21 @@ export class FormMerchantComponent implements OnInit {
     });
   }
   
-  /**
-   * Store Merchant Logo
-   */
-   onLogoUploaded(event: any){
-      
-      this.storeLogoBase64 = event;
-      this.fileName1 = ''; // Set the file name
-      this.existantmerchantLogo = event;
-      this.merchantForm.controls['merchantLogo'].setValue(this.existantmerchantLogo);
 
-  }
-  /**
-   * Store Merchant Picture
-   */
-  onPictureUploaded(event: any){
-     
-      this.merchantPictureBase64 = event;
-      this.fileName2 = ''; // Set the file name
-      this.existantmerchantPicture = event;
-      this.merchantForm.controls['merchantPicture'].setValue(this.existantmerchantPicture);
   
-    
+  onImageUpload(event: any){
+    if(event.type === 'image'){
+      this.merchantPictureBase64 = event.file;
+      this.fileName2 = ''; // Set the file name
+      this.existantmerchantPicture = event.file;
+      this.merchantForm.controls['merchantPicture'].setValue(this.existantmerchantPicture);
+    }
+    else{//event.type == 'logo'
+      this.storeLogoBase64 = event.file;
+      this.fileName1 = ''; // Set the file name
+      this.existantmerchantLogo = event.file;
+      this.merchantForm.controls['merchantLogo'].setValue(this.existantmerchantLogo);
+    }
   }
   ngOnDestroy() {
     this.destroy$.next();
