@@ -1,15 +1,15 @@
 <div
-[id]="id"
+
 class="image-upload-container dashed-border"
   
 >
   <label
-    for="fileInput"
+    
     class="flex-center"
   >
     <input
       type="file"
-      id="fileInput"
+      [id]="id"
       (change)="fileChange($event)"
     />
     <div class="flex-center">
