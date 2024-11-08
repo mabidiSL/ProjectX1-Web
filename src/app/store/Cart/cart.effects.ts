@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, mergeMap, map } from 'rxjs/operators';
@@ -13,7 +14,7 @@ export class CartEffects {
             ofType(fetchCartData),
             mergeMap(() =>
                 this.CrudService.fetchData('/app/cart').pipe(
-                    map((cartdata) => fetchCartSuccess({ cartdata })),
+                    map((cartdata: any) => fetchCartSuccess({ cartdata })),
                     catchError((error) =>
                         of(fetchCartFail({ error }))
                     )

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, mergeMap, map } from 'rxjs/operators';
@@ -13,7 +14,7 @@ export class InvoiceDataEffects {
             ofType(fetchInvoiceListData),
             mergeMap(() =>
                 this.CrudService.fetchData('/app/invoice').pipe(
-                    map((InvoiceData) => fetchInvoiceListSuccess({ InvoiceData })),
+                    map((InvoiceData: any) => fetchInvoiceListSuccess({ InvoiceData })),
                     catchError((error) =>
                         of(fetchInvoiceListFail({ error }))
                     )

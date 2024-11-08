@@ -1,8 +1,8 @@
 export interface CountryListModel {
     
-     id?: string;
+     id?: number;
      name?: string;
-     nameTrans?: string;
+     name_ar?: string;
      phoneCode?: string;
      flag?: string;
      status? : string;

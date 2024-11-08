@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, mergeMap, map } from 'rxjs/operators';
@@ -25,7 +26,7 @@ export class userslistEffects {
             ofType(fetchuserlistData),
             mergeMap(() =>
                 this.CrudService.fetchData('/app/userlist').pipe(
-                    map((UserListdata) => fetchuserlistSuccess({ UserListdata })),
+                    map((UserListdata: any) => fetchuserlistSuccess({ UserListdata })),
                     catchError((error) =>
                         of(fetchuserlistFail({ error }))
                     )

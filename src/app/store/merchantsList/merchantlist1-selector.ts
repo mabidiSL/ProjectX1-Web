@@ -12,7 +12,7 @@ export const selectDataTotalItems = createSelector(
   selectDataState,
   (state: MerchantlistState) => state?.totalItems || 0
 );
-export const selectMerchantById = (MerchantId: string) =>createSelector(
+export const selectMerchantById = (MerchantId: number) =>createSelector(
   selectDataState,
   (state: MerchantlistState) =>  state?.MerchantListdata.find(Merchant => Merchant.id === +MerchantId)
   );

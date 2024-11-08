@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, mergeMap, map } from 'rxjs/operators';
@@ -13,7 +14,7 @@ export class usersEffects {
             ofType(fetchuserGridData),
             mergeMap(() =>
                 this.CrudService.fetchData('/app/userGrid').pipe(
-                    map((UserGriddata) => fetchuserGridSuccess({ UserGriddata })),
+                    map((UserGriddata: any) => fetchuserGridSuccess({ UserGriddata })),
                     catchError((error) =>
                         of(fetchuserGridFail({ error }))
                     )

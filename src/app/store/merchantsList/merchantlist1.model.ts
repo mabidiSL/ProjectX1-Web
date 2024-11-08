@@ -1,36 +1,10 @@
-export interface MerchantListModel {
-    
-     id?: string;
-     merchantLogo ?: string  ;
-     merchantPicture? :  string ;
-     categoryId?: string;
-     merchantCategory ?:   string;
-     merchantName ?:  string ;
-     serviceType? :  string ;
-     supervisorName ?:  string ;
-     supervisorPhone? :  string ;
-     bankAccountNumber ?:  string  
-     registerCode ?:  string  
-     website ?:  string;
-     whatsup ?: string  ;
-     facebook? :  string ;
-     twitter ?: string  ;
-     instagram? : string  ;
-     walletId?: string ;
-     qrCode?: string ;
-     startDateContract? : string;
-     endDateContract? : string;
-     fileContract? : string;
-     sectionId?: string;
-     merchantSection ?:  string ;
-     stores: any[] ;
-     offers: any[] ;
-     userId? : string;
-     user?: User;
-     updatedAt? :  string;
-     createdAt?: string;
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { PaginateModel } from "src/app/core/interfaces/core.interface";
+import { CityListModel } from "../City/city.model";
 
-
+export interface MerchantListModel  extends PaginateModel
+{   
+    data?: Merchant[]; 
 }
 interface User{
     id?: string;
@@ -48,8 +22,7 @@ interface User{
     image?: string;
     referCount?: string;
     country?: string;
-    user_type?: string;
-    city?: string;
+    city?: CityListModel;
     street?: string;
     building?: string;
     company_registration?: string;
@@ -85,6 +58,8 @@ wallet?: number;
 loyaltyPoint?: number;
 bankName?: string ;
 city_id ?: number;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+user?: any;
 updatedAt? :  string;
 createdAt?: string;
 }

@@ -1,10 +1,10 @@
 export interface CityListModel {
     
-     id?: string;
+     id?: number;
      name?: string;
-     nameTrans?: string;
-     country_id?: string;
-     area_id?: string;
+     name_ar?: string;
+     country_id?: number;
+     area_id?: number;
      latitude?: string;
      longitude?: string;
      status? : string;

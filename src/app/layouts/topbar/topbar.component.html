@@ -68,7 +68,7 @@
           <!-- item-->
           @for (item of listLang; track $index) {
           <a href="javascript:void(0);" class="dropdown-item notify-item" (click)="setLanguage(item.text, item.lang, item.flag)" [ngClass]="{'active': cookieValue === item.lang}">
-            <img src="{{item.flag}}" alt="user-image" class="me-1" height="12"> <span class="align-middle">{{item.text}}</span>
+            <img src="{{item.flag}}" alt="user-image" class="me-1" height="12"> <span class="align-middle">{{item.text | translate}}</span>
           
           </a>
           }

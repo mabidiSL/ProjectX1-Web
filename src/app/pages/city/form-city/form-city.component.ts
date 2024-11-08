@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-  import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component, ElementRef, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
+  import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
   import { ActivatedRoute, Router } from '@angular/router';
   
   import { select, Store } from '@ngrx/store';
@@ -11,56 +11,65 @@ import { Component, Input, OnInit } from '@angular/core';
 import { fetchArealistData } from 'src/app/store/area/area.action';
 import { selectCityById, selectDataLoading } from 'src/app/store/City/city-selector';
 import { addCitylist, getCityById, updateCitylist } from 'src/app/store/City/city.action';
+import { FormUtilService } from 'src/app/core/services/form-util.service';
+import { CityListModel } from 'src/app/store/City/city.model';
+import { AreaListModel } from 'src/app/store/area/area.model';
+import { CountryListModel } from 'src/app/store/country/country.model';
   
 @Component({
   selector: 'app-form-city',
   templateUrl: './form-city.component.html',
   styleUrl: './form-city.component.css'
 })
-export class FormCityComponent  implements OnInit {
+export class FormCityComponent  implements OnInit, OnDestroy {
     
     @Input() type: string;
     cityForm: UntypedFormGroup;
     formError: string | null = null;
     formSubmitted = false;
-    loading$: Observable<any>;
+    loading$: Observable<boolean>;
 
     private destroy$ = new Subject<void>();
-    submitted: any = false;
-    error: any = '';
-    successmsg: any = false;
+    submitted: boolean = false;
+    error: string = '';
+    successmsg: boolean = false;
     fieldTextType!: boolean;
     imageURL: string | undefined;
     isEditing: boolean = false;
-    countries : any[];
-    areas : any[];
-    filteredAreas: any[];
+    countries : CountryListModel[];
+    areas : AreaListModel[];
+    filteredAreas: AreaListModel[];
+
+    originalCityData: CityListModel = {}; 
+    @ViewChild('formElement', { static: false }) formElement: ElementRef;
+
     
     
     constructor(
       private formBuilder: UntypedFormBuilder,
       private route: ActivatedRoute, 
       private router: Router,
+      private formUtilService: FormUtilService,
       public store: Store) {
         
         this.loading$ = this.store.pipe(select(selectDataLoading)); 
-        this.store.dispatch(fetchCountrylistData({ page: 1, itemsPerPage: 10, status:'active' }));
+        this.store.dispatch(fetchCountrylistData({ page: 1, itemsPerPage: 1000, status:'active' }));
         this.store.select(selectDataCountry).subscribe(
           countries => {
             this.countries = countries
           });
 
-        this.store.dispatch(fetchArealistData({ page: 1, itemsPerPage: 10, status:'active' }));
+        this.store.dispatch(fetchArealistData({ page: 1, itemsPerPage: 10000, status:'active' }));
         this.store.select(selectDataArea).subscribe(
             areas => {
               this.areas = areas
             })
         this.cityForm = this.formBuilder.group({
-          id:[''],
+          id:[null],
           name: ['', Validators.required],
           name_ar: ['', Validators.required],
-          country_id:['', Validators.required],
-          area_id:['', Validators.required],
+          country_id:[null, Validators.required],
+          area_id:[null, Validators.required],
           longitude: ['long'],
           latitude: ['lat']
                      
@@ -83,17 +92,20 @@ export class FormCityComponent  implements OnInit {
               this.filteredAreas = this.areas;
               this.cityForm.controls['country_id'].setValue(city.area.country_id);
               this.cityForm.patchValue(city);
+
+              this.originalCityData = { ...city };
+
               this.isEditing = true;
               }
           });
       }
      
     }
-    getCountryName(id: any){
+    getCountryName(id: number){
       this.filteredAreas = this.areas.filter(area => area.country_id == id);
       return this.countries.find(country => country.id === id)?.name ;
     }
-    getAreaName(id: any){
+    getAreaName(id: number){
       return this.filteredAreas.find(area => area.id === id)?.name ;
     }
     /**
@@ -107,7 +119,7 @@ export class FormCityComponent  implements OnInit {
       Object.keys(this.cityForm.controls).forEach(control => {
         this.cityForm.get(control).markAsTouched();
       });
-      this.focusOnFirstInvalid();
+      this.formUtilService.focusOnFirstInvalid(this.cityForm);
       return;
     }
     this.formError = null;
@@ -122,31 +134,23 @@ export class FormCityComponent  implements OnInit {
             this.store.dispatch(addCitylist({ newData }));          }
           else
           { 
-            this.store.dispatch(updateCitylist({ updatedData: newData }));
+            const updatedDta = this.formUtilService.detectChanges<CityListModel>(this.cityForm, this.originalCityData);
+            if (Object.keys(updatedDta).length > 0) {
+              updatedDta.id = newData.id;
+              console.log(updatedDta);
+              this.store.dispatch(updateCitylist({ updatedData: newData }));
+            }
+            else{
+              this.formError = 'Nothing has been changed!!!';
+              this.formUtilService.scrollToTopOfForm(this.formElement);
+            }
           }
     
     }
-    private focusOnFirstInvalid() {
-      const firstInvalidControl = this.getFirstInvalidControl();
-      if (firstInvalidControl) {
-        firstInvalidControl.focus();
-      }
-    }
-  
-    private getFirstInvalidControl(): HTMLInputElement | null {
-      const controls = this.cityForm.controls;
-      for (const key in controls) {
-        if (controls[key].invalid) {
-          const inputElement = document.getElementById(key) as HTMLInputElement;
-          if (inputElement) {
-            return inputElement;
-          }
-        }
-      }
-      return null;
-    }
+   
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onChangeCountrySelection(event : any){
-      const country = event.target.value;
+      const country = event.id;
       if(country){
         this.filteredAreas = this.areas.filter(area => area.country_id == country);
       }

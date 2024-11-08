@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, mergeMap, map } from 'rxjs/operators';
@@ -13,7 +14,7 @@ export class MailEffects {
             ofType(fetchmailData),
             mergeMap(() =>
                 this.CrudService.fetchData('/app/emailData').pipe(
-                    map((maildata) => fetchmailSuccess({ maildata })),
+                    map((maildata: any) => fetchmailSuccess({ maildata })),
                     catchError((error) =>
                         of(fetchmailFail({ error }))
                     )

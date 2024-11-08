@@ -1,9 +1,9 @@
 export interface AreaListModel {
     
-     id?: string;
+     id?: number;
      name?: string;
-     nameTrans?: string;
-     country_id?: string;
+     name_ar?: string;
+     country_id?: number;
      status? : string;
      updatedAt? :  string;
      createdAt?: string;

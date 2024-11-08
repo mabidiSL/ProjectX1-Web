@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, mergeMap, map } from 'rxjs/operators';
@@ -13,7 +14,7 @@ export class OrderEffects {
             ofType(fetchEcoorderDataData),
             mergeMap(() =>
                 this.CrudService.fetchData('/app/orderData').pipe(
-                    map((orderDatas) => fetchEcoorderDataSuccess({ orderDatas })),
+                    map((orderDatas: any) => fetchEcoorderDataSuccess({ orderDatas })),
                     catchError((error) =>
                         of(fetchEcoorderDataFail({ error }))
                     )

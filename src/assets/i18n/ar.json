@@ -200,11 +200,11 @@
       "TEXT": "العملات"
     },
     "COUNTRIES": {
-      "TEXT": "الدول"
+      "TEXT": "البلدان"
     },
-    "CITIES": {
-      "TEXT": "المدن"
-    },
+    "CITIES":{
+      "TEXT":"المدن"
+    },    
     "BANKS": {
       "TEXT": "البنوك"
     },
@@ -553,8 +553,11 @@
     "URL Store":"رابط متجر القسيمة",
     "URL Store is required":"رابط متجر القسيمة مطلوب",
     "Country is required": "البلد مطلوب",
-    "Area":"المنطقة",
+    "area": "المنطقة",
+    "areas": "المناطق",
+    "Areas_List":"قائمة المناطق",
     "Area is required": "المنطقة مطلوبة",
+    "Edit_area": "تعديل المنطقة",
     "City is required": "المدينة مطلوبة",
     "Quantity":"الكمية",
     "Quantity is required": "الكمية مطلوبة",
@@ -615,21 +618,28 @@
     "Add_store": "إضافة متجر",
     "update_store": "تعديل المتجر",
     "Store_Name": "اسم المتجر",
-    "Countries_List": "قائمة الدول",
+    "Countries_List": "قائمة البلدان",
+    "Countries": "البلدان",
     "New_Country": "بلد جديد",
     "Flag": "العلم",
     "Country_Code": "رمزالبلد",
     "Are you Sure You want to delete this country": "هل أنت متأكدأنك تريد حذف هذاالبلد",
     "Country_Name": "الإسم",
-    "Country_Name_Trans": "الاسم المترجم",
-    "Phone_Code": "رمز الهاتف",
-    "Country_flag": "العلم",
-    "Add_country": "أضف البلد",
+    "Country_Name_Trans": "اسم البلد باللغة العربية",
+    "Country Name is required": "اسم البلد مطلوب",
+    "Arabic Country Name is required": "إسم البلد باللغة العربية مطلوب",
+    "Country_flag": "علم البلد",
+    "Flag is required": "علم الدولة مطلوب",
+    "Phone_Code": "رمز البلد",
+        "Add_country": "أضف البلد",
     "update_country": "تعديل البلد",
-    "Areas_List":"Areas List",
+    "Edit country": "تعديل البلد",
+    "Edit_country_details": "تعديل تفاصيل البلد",
     "New_Area": "منطقة جديدة",
     "Area_Name": "الإسم",
     "Area_Name_Trans": " اسم المنطقة المترجم",
+    "Area Name is required": "اسم المنطقة مطلوب",
+    "Arabic Area Name is required": "اسم المنطقة باللغة العربية مطلوب",
     "Add_area": "إضافة منطقة",
     "update_area": "تعديل منطقة",
     "Are you Sure You want to delete this Area": "هل أنت متأكد أنك تريد حذف هذه المنطقة",
@@ -667,12 +677,15 @@
     "Cities_List": "قائمة المدن",
     "New_City": "مدينة جديدة",
     "city_Name": "اسم المدينة",
-    "city_Name_Trans": "الاسم المترجم",
+    "city_Name_Trans": "إسم المدينة بالعربي",
+    "Enter_the_Name_Of_the_city_in_arabic": "أدخل اسم المدينة باللغة العربية",
+    "City Name is required": "اسم المدينة مطلوب",
+    "Arabic City Name is required": "اسم المدينة العربي مطلوب",
     "Area_is_required": "المنطقة ضرورية",
     "Enter_the_Name_Of_the_city": "أدخل اسم المدينة",
     "Add_City": "إضافة مدينة",
     "update_city": "تحديث المدينة",
-    "Edit_City": "تحرير المدينة",
+    "Edit_City": "تحديث المدينة",
     "New_Notification": "إشعار جديد",
     "Notification_List": "قائمة الإشعارات",
     "Notif_title": "عنوان الإشعار",
@@ -683,6 +696,7 @@
     "Edit_notification": "تحرير الإشعار",
     "New_Merchant": "تاجر جديد",
     "Merchants": "التجار",
+    "Cities": "المدن",
     "Are_you_Sure_You_want_to_delete_it?": "هل أنت متأكد أنك تريد الحذف ؟",
     "Delete_Now": "احذف الآن",
     "New_GiftCard": "بطاقة هدايا جديدة",
@@ -711,6 +725,9 @@
     "update_role": "تحديث وظيفة",
     "View_store": "عرض المتجر",
     "View_coupon": "عرض القسيمة",
+    "View_country": "عرض البلد",
+    "View_city": "عرض المدينة",
+    "View_area": "عرض المنطقة",
     "Go_Back": "رجوع",
     "Edit_merchant": "تعديل التاجر",
     "View_giftcard": "عرض بطاقة الهدايا",
@@ -752,9 +769,11 @@
     "Facebook":"فيسبوك",
     "Twitter": "تويتر",
     "Instagram": "انستغرام",
-    "Please complete all required fields.": ".يرجى إكمال كافة الحقول المطلوبة",
+    "Please complete all required fields.": "يرجى إكمال كافة الحقول المطلوبة.",
     "Enter merchant phone": "أدخل رقم هاتف التاجر",
-    "Upload Merchant Picture":"تحميل صورة التاجر"
+    "Upload Merchant Picture":"تحميل صورة التاجر",
+    "English": "إنجليزي",
+     "Arabic":"عربي"
 
     
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, mergeMap, map, tap } from 'rxjs/operators';
@@ -106,7 +107,7 @@ export class countrieslistEffects {
             ofType(deleteCountrylist),
             mergeMap(({ CountryId }) =>
                     this.CrudService.deleteData(`/countries/${CountryId}`).pipe(
-                        map((response: string) => {
+                        map(() => {
                             // If response contains a success message or status, you might want to check it here
                             return deleteCountrylistSuccess({ CountryId });
                           }),

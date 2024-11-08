@@ -1,14 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { addArealist,  getAreaById, updateArealist } from 'src/app/store/area/area.action';
 import { selectAreaById, selectDataLoading } from 'src/app/store/area/area-selector';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
 import { selectDataCountry } from 'src/app/store/country/country-selector';
+import { CountryListModel } from '../../../store/country/country.model';
+import { FormUtilService } from 'src/app/core/services/form-util.service';
+import { AreaListModel } from 'src/app/store/area/area.model';
 
 
 
@@ -18,38 +20,36 @@ import { selectDataCountry } from 'src/app/store/country/country-selector';
   styleUrl: './form-area.component.css'
 })
 
-export class FormAreaComponent implements OnInit {
+export class FormAreaComponent implements OnInit, OnDestroy {
   
   @Input() type: string;
   areaForm: UntypedFormGroup;
   formError: string | null = null;
   formSubmitted = false;
-  loading$: Observable<any>;
+  loading$: Observable<boolean>;
 
   private destroy$ = new Subject<void>();
   areaFlagBase64 : string;
-  submitted: any = false;
-  error: any = '';
-  successmsg: any = false;
+  submitted: boolean = false;
+  error: string = '';
+  successmsg: boolean = false;
   fieldTextType!: boolean;
   imageURL: string | undefined;
   isEditing: boolean = false;
-  countries : any[];
-  // file upload
-  public dropzoneConfig: DropzoneConfigInterface = {
-    clickable: true,
-    addRemoveLinks: true,
-    previewsContainer: false
-  };
-  
+  countries : CountryListModel[];
+ 
+  originalAreaData: AreaListModel = {}; 
+  @ViewChild('formElement', { static: false }) formElement: ElementRef;
+
   constructor(
     private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute, 
     private router: Router,
+    private formUtilService: FormUtilService,
     public store: Store) {
      
       this.loading$ = this.store.pipe(select(selectDataLoading)); 
-      this.store.dispatch(fetchCountrylistData({ page: 1, itemsPerPage: 10, status:'active' }));
+      this.store.dispatch(fetchCountrylistData({ page: 1, itemsPerPage: 1000, status:'active' }));
 
       this.store.select(selectDataCountry).subscribe(
         countries => {
@@ -59,7 +59,7 @@ export class FormAreaComponent implements OnInit {
       this.areaForm = this.formBuilder.group({
         id:[''],
         name: ['', Validators.required],
-       // nameTrans: [''],
+        name_ar: ['', Validators.required],
         country_id:['', Validators.required]
                    
       });
@@ -85,17 +85,7 @@ export class FormAreaComponent implements OnInit {
    
   }
    
-  // convenience getter for easy access to form fields
-  get f() { return this.areaForm.controls; }
-
-  // swiper config
-  slideConfig = {
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: false,
-    dots: true
-  };
-
+  
   /**
    * On submit form
    */
@@ -107,7 +97,7 @@ export class FormAreaComponent implements OnInit {
       Object.keys(this.areaForm.controls).forEach(control => {
         this.areaForm.get(control).markAsTouched();
       });
-      this.focusOnFirstInvalid();
+      this.formUtilService.focusOnFirstInvalid(this.areaForm);
       return;
     }
     this.formError = null;
@@ -118,31 +108,22 @@ export class FormAreaComponent implements OnInit {
         { delete newData.id;
           this.store.dispatch(addArealist({ newData }));          }
         else
-        { 
-          this.store.dispatch(updateArealist({ updatedData: newData }));
+        {
+          const updatedDta = this.formUtilService.detectChanges<AreaListModel>(this.areaForm, this.originalAreaData);
+          if (Object.keys(updatedDta).length > 0) {
+            updatedDta.id = newData.id;
+            console.log(updatedDta);
+            this.store.dispatch(updateArealist({ updatedData: updatedDta }));
+          }
+          else{
+            this.formError = 'Nothing has been changed!!!';
+            this.formUtilService.scrollToTopOfForm(this.formElement);
+          }
         }
       
     
   }
-  private focusOnFirstInvalid() {
-    const firstInvalidControl = this.getFirstInvalidControl();
-    if (firstInvalidControl) {
-      firstInvalidControl.focus();
-    }
-  }
-
-  private getFirstInvalidControl(): HTMLInputElement | null {
-    const controls = this.areaForm.controls;
-    for (const key in controls) {
-      if (controls[key].invalid) {
-        const inputElement = document.getElementById(key) as HTMLInputElement;
-        if (inputElement) {
-          return inputElement;
-        }
-      }
-    }
-    return null;
-  }
+ 
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
@@ -152,7 +133,7 @@ export class FormAreaComponent implements OnInit {
     this.areaForm.reset();
     this.router.navigateByUrl('/private/areas');
   }
-  getCountryName(id: any){
+  getCountryName(id: number){
     return this.countries.find(country => country.id === id)?.name ;
   }
   toggleViewMode(){

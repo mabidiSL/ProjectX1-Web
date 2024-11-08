@@ -1,11 +1,11 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { select, Store } from '@ngrx/store';
-import { addMerchantlist, getLoggedMerchantById, getMerchantById, updateMerchantlist } from 'src/app/store/merchantsList/merchantlist1.action';
+import { addMerchantlist, getLoggedMerchantById, updateMerchantlist } from 'src/app/store/merchantsList/merchantlist1.action';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { selectDataLoading, selectedMerchant, selectMerchantById } from 'src/app/store/merchantsList/merchantlist1-selector';
+import { selectDataLoading, selectedMerchant } from 'src/app/store/merchantsList/merchantlist1-selector';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
 import { fetchArealistData } from 'src/app/store/area/area.action';
 import { fetchCitylistData } from 'src/app/store/City/city.action';
@@ -15,6 +15,12 @@ import { selectDataArea } from 'src/app/store/area/area-selector';
 import { selectDataSection } from 'src/app/store/section/section-selector';
 import { selectDataCity } from 'src/app/store/City/city-selector';
 import { Merchant } from '../../../store/merchantsList/merchantlist1.model';
+import { FormUtilService } from 'src/app/core/services/form-util.service';
+import { UploadEvent } from 'src/app/shared/widget/image-upload/image-upload.component';
+import { AreaListModel } from 'src/app/store/area/area.model';
+import { CityListModel } from 'src/app/store/City/city.model';
+import { CountryListModel } from 'src/app/store/country/country.model';
+import { SectionListModel } from 'src/app/store/section/section.model';
 
 
 @Component({
@@ -22,7 +28,7 @@ import { Merchant } from '../../../store/merchantsList/merchantlist1.model';
   templateUrl: './form-merchant.component.html',
   styleUrl: './form-merchant.component.css'
 })
-export class FormMerchantComponent implements OnInit {
+export class FormMerchantComponent implements OnInit, OnDestroy {
   
   @Input() type: string;
   merchantForm: UntypedFormGroup;
@@ -30,9 +36,9 @@ export class FormMerchantComponent implements OnInit {
   formSubmitted = false;
   private destroy$ = new Subject<void>();
 
-  submitted: any = false;
-  error: any = '';
-  successmsg: any = false;
+  submitted: boolean = false;
+  error: string = '';
+  successmsg: boolean = false;
   merchant: Merchant = null;
   imageURL: string | undefined;
   existantmerchantLogo: string = null;
@@ -42,20 +48,20 @@ export class FormMerchantComponent implements OnInit {
   isEditing: boolean = false;
   fromPendingContext: boolean = false;
 
-  countrylist: any[] = [];
-  arealist$:  Observable<any[]>  ;
-  citylist$:  Observable<any[]> ;
-  loading$: Observable<any>
+  countrylist: CountryListModel[] = [];
+  arealist$:  Observable<AreaListModel[]>  ;
+  citylist$:  Observable<CityListModel[]> ;
+  loading$: Observable<boolean>;
 
-  sectionlist:  any[] = [];
+  sectionlist:  SectionListModel[] = [];
   
-  filteredCountries: any[] = [];
-  filteredAreas :  any[] = [];
-  filteredCities:  any[] = [];
-  serviceTypes: any[] = ['company', 'entreprise'];
-  originalMerchantData: any = {}; 
+  filteredCountries: CountryListModel[] = [];
+  filteredAreas :  AreaListModel[] = [];
+  filteredCities:  CityListModel[] = [];
+  serviceTypes: string[] = ['company', 'entreprise'];
+  originalMerchantData: Merchant = {}; 
 
-  fieldTextType: boolean  = false;;
+  fieldTextType: boolean  = false;
   confirmFieldTextType: boolean = false;
   @ViewChild('formTop', { static: false }) formTop: ElementRef;
   @ViewChild('formElement', { static: false }) formElement: ElementRef;
@@ -64,6 +70,7 @@ export class FormMerchantComponent implements OnInit {
     private formBuilder: UntypedFormBuilder, 
     private route: ActivatedRoute, 
     private router: Router,
+    private formUtilService: FormUtilService,
     public store: Store) {
 
       this.getNavigationState();
@@ -167,7 +174,7 @@ export class FormMerchantComponent implements OnInit {
       // Subscribe to the selected merchant from the store
       this.store
         .pipe(select(selectedMerchant), takeUntil(this.destroy$))
-        .subscribe((merchant: any) => {
+        .subscribe((merchant: Merchant) => {
           if (merchant) {
             console.log(merchant);
 
@@ -186,7 +193,9 @@ export class FormMerchantComponent implements OnInit {
             this.merchantForm.patchValue(merchant);
             this.globalId = merchant.id;
             this.merchantForm.patchValue(merchant.user);
+
             this.originalMerchantData = { ...merchant };
+
             this.isEditing = true;
 
           }
@@ -201,24 +210,23 @@ export class FormMerchantComponent implements OnInit {
         this.fromPendingContext = navigation.extras.state.fromPending ;
       }
   }
-  getCountryName(id: any){
+  getCountryName(id: number){
     return this.filteredCountries.find(country => country.id === id)?.name ;
   }
-  getAreaName(id: any){
+  getAreaName(id: number){
     return this.filteredAreas.find(area => area.id === id)?.name ;
   }
-  getCityName(id: any){
+  getCityName(id: number){
     return this.filteredCities.find(city => city.id === id)?.name ;
   }
-  getSectionName(id: any){
+  getSectionName(id: number){
     return this.sectionlist.find(section => section.id === id)?.name ;
   }
   
 
-  onChangeCountrySelection(event: any){
-    console.log(event);
+  onChangeCountrySelection(event: number){
     
-    const country = event.id;
+    const country = event;
     if(country){
       this.arealist$.subscribe(
         areas => 
@@ -230,8 +238,8 @@ export class FormMerchantComponent implements OnInit {
     }
     
   }
-  onChangeAreaSelection(event: any){
-    const area = event.id;
+  onChangeAreaSelection(event: number){
+    const area = event;
     if(area){
       this.citylist$.subscribe(
         cities => 
@@ -256,7 +264,7 @@ export class FormMerchantComponent implements OnInit {
   
   createMerchantFromForm(formValue): Merchant {
       //const formValue = this.merchantForm.value;
-      const merchant: any = {
+      const merchant: Merchant = {
       
           id : Number(this.globalId),
           username: formValue.username,
@@ -290,31 +298,12 @@ export class FormMerchantComponent implements OnInit {
             merchant.twitter = formValue.instagram;
           }
           if (formValue.whatsup) {
-            merchant.twitter = Number(formValue.whatsup);
+            merchant.whatsup = Number(formValue.whatsup);
           }
           return merchant;
   }
  
-  /**
-   * 
-   * Change Detection in form field
-   */
-  detectChanges(): any {
-    const updatedData = {};
-
-    // Compare each field and add only the modified fields
-    for (const key in this.merchantForm.controls) {
-      if (this.merchantForm.controls[key].dirty) {
-        // Check if the value is different from the original
-        if (this.merchantForm.controls[key].value !== this.originalMerchantData[key]) {
-          updatedData[key] = this.merchantForm.controls[key].value;
-        }
-      }
-    }
-    console.log(updatedData);
-    return updatedData;
-  }
-    
+     
   /**
    * On submit form
    */
@@ -326,7 +315,7 @@ export class FormMerchantComponent implements OnInit {
       Object.keys(this.merchantForm.controls).forEach(control => {
         this.merchantForm.get(control).markAsTouched();
       });
-      this.focusOnFirstInvalid();
+      this.formUtilService.focusOnFirstInvalid(this.merchantForm);
       return;
     }
     this.formError = null;
@@ -347,9 +336,7 @@ export class FormMerchantComponent implements OnInit {
 
       this.merchant = this.createMerchantFromForm(newData);
       if(!this.isEditing)
-        {           
-         
-          
+        {  
           delete this.merchant.id;
           //this.merchant = newData;
           console.log(this.merchant);
@@ -360,7 +347,7 @@ export class FormMerchantComponent implements OnInit {
         { 
           delete this.merchant.password;
           delete this.merchant.email;
-          const updatedDta = this.detectChanges();
+          const updatedDta = this.formUtilService.detectChanges(this.merchantForm, this.originalMerchantData);
           if (Object.keys(updatedDta).length > 0) {
             console.log(updatedDta);
             updatedDta.id = this.globalId;
@@ -368,48 +355,14 @@ export class FormMerchantComponent implements OnInit {
           }
           else{
             this.formError = 'Nothing has been changed!!!';
-            this.scrollToTopOfForm();
+            this.formUtilService.scrollToTopOfForm(this.formElement);
           }
         }
       
     
   }
-  scrollToTopOfForm(): void {
-    // First, scroll to the form element (or to the input element at the top)
-    if (this.formElement) {
-     
-        window.scrollTo({
-        top: this.formElement.nativeElement.offsetTop - 50, // Scroll position minus offset for margin/padding if needed
-        behavior: 'smooth', // Smooth scroll
-      });
-    }
-
-    
-  }
-  private focusOnTopForm(): void {
-      if (this.formTop) {
-        this.formTop.nativeElement.focus();  // Focus on the element with reference #formTop
-      }
-  }
-  private focusOnFirstInvalid() {
-    const firstInvalidControl = this.getFirstInvalidControl();
-    if (firstInvalidControl) {
-      firstInvalidControl.focus();
-    }
-  }
-
-  private getFirstInvalidControl(): HTMLInputElement | null {
-    const controls = this.merchantForm.controls;
-    for (const key in controls) {
-      if (controls[key].invalid) {
-        const inputElement = document.getElementById(key) as HTMLInputElement;
-        if (inputElement) {
-          return inputElement;
-        }
-      }
-    }
-    return null;
-  }
+  
+  
     /**
  * Password Hide/Show
  */
@@ -422,7 +375,7 @@ export class FormMerchantComponent implements OnInit {
   
 
   
-    onImageUpload(event: any): void {
+    onImageUpload(event: UploadEvent): void {
       if (event.type === 'image') {
         // Handle Merchant Picture Upload
         this.merchantPictureBase64 = event.file;
@@ -432,7 +385,7 @@ export class FormMerchantComponent implements OnInit {
       }
     }
     
-    onLogoUpload(event: any): void {
+    onLogoUpload(event: UploadEvent): void {
       if (event.type === 'logo') {
         // Handle Logo Upload
         this.storeLogoBase64 = event.file;

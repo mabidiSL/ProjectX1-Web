@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, mergeMap, map } from 'rxjs/operators';
@@ -13,7 +14,7 @@ export class ChatEffects {
             ofType(fetchchatdata),
             mergeMap(() =>
                 this.CrudService.fetchData('/app/chat').pipe(
-                    map((chat) => fetchchatSuccess({ chat })),
+                    map((chat: any) => fetchchatSuccess({ chat })),
                     catchError((error) =>
                         of(fetchchatFail({ error }))
                     )
@@ -27,7 +28,7 @@ export class ChatEffects {
             ofType(fetchchatMessageData),
             mergeMap(() =>
                 this.CrudService.fetchData('/app/chatMessage').pipe(
-                    map((chatMessage) => fetchchatMessageSuccess({ chatMessage })),
+                    map((chatMessage: any) => fetchchatMessageSuccess({ chatMessage })),
                     catchError((error) =>
                         of(fetchchatMessageFail({ error }))
                     )
