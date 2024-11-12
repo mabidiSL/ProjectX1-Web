@@ -24,7 +24,6 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { selectCountryById } from './country-selector';
 
 @Injectable()
 export class countrieslistEffects {
@@ -62,25 +61,23 @@ export class countrieslistEffects {
             )
         )
     );
-    getCountryById$ = createEffect(() =>
-        this.actions$.pipe(
-          ofType(getCountryById),
-          mergeMap(({ CountryId }) => {
-            // Use the selector to get the Country from the Country
-            return this.store.select(selectCountryById(CountryId)).pipe(
-              map(Country => {
-                if (Country) {
-                  // Dispatch success action with the Country data
-                  return getCountryByIdSuccess({ Country: Country });
-                } else {
-                 // this.toastr.error('Country not found.'); // Show error notification
-              return getCountryByIdFailure({ error: 'Country not found' });
-                }
-              })
-            );
-          })
-        )
-      );
+    getCountryById$ =  createEffect(() =>
+      this.actions$.pipe(
+        ofType(getCountryById),
+        mergeMap(({ CountryId }) => {
+          return this.CrudService.getDataById('/countries', CountryId).pipe(
+            map((Country: any) => {
+              if (Country ) {
+                return getCountryByIdSuccess({ Country: Country.result});
+              } else {
+                return getCountryByIdFailure({ error: 'Country not found' });
+              }
+            })
+          );
+        })
+      )
+    );
+   
     updateData$ = createEffect(() => 
         this.actions$.pipe(
             ofType(updateCountrylist),

@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
-  import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+  import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
   import { ActivatedRoute, Router } from '@angular/router';
   
   import { select, Store } from '@ngrx/store';
@@ -12,9 +12,9 @@ import { fetchArealistData } from 'src/app/store/area/area.action';
 import { selectCityById, selectDataLoading } from 'src/app/store/City/city-selector';
 import { addCitylist, getCityById, updateCitylist } from 'src/app/store/City/city.action';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
-import { CityListModel } from 'src/app/store/City/city.model';
-import { AreaListModel } from 'src/app/store/area/area.model';
-import { CountryListModel } from 'src/app/store/country/country.model';
+import { City, CityListModel } from 'src/app/store/City/city.model';
+import { Area, AreaListModel } from 'src/app/store/area/area.model';
+import { Country } from 'src/app/store/country/country.model';
   
 @Component({
   selector: 'app-form-city',
@@ -36,11 +36,11 @@ export class FormCityComponent  implements OnInit, OnDestroy {
     fieldTextType!: boolean;
     imageURL: string | undefined;
     isEditing: boolean = false;
-    countries : CountryListModel[];
-    areas : AreaListModel[];
-    filteredAreas: AreaListModel[];
+    countries : Country[];
+    areas : Area[];
+    filteredAreas: Area[];
 
-    originalCityData: CityListModel = {}; 
+    originalCityData: City = {}; 
     @ViewChild('formElement', { static: false }) formElement: ElementRef;
 
     
@@ -91,8 +91,7 @@ export class FormCityComponent  implements OnInit, OnDestroy {
             if (city) {
               this.filteredAreas = this.areas;
               this.cityForm.controls['country_id'].setValue(city.area.country_id);
-              this.cityForm.patchValue(city);
-
+              this.patchValueForm(city);
               this.originalCityData = { ...city };
 
               this.isEditing = true;
@@ -101,19 +100,65 @@ export class FormCityComponent  implements OnInit, OnDestroy {
       }
      
     }
+    patchValueForm(city: City){
+      this.cityForm.patchValue({
+        id: city.id,
+        name: city.translation_data[0].name,
+        name_ar: city.translation_data[1].name,
+        area_id: city.area_id,
+        longitude: city.latitude,
+        latitude: city.longitude
+
+      });
+
+    }
     getCountryName(id: number){
       this.filteredAreas = this.areas.filter(area => area.country_id == id);
-      return this.countries.find(country => country.id === id)?.name ;
+      return this.countries.find(country => country.id === id)?.translation_data[0].name ;
     }
     getAreaName(id: number){
-      return this.filteredAreas.find(area => area.id === id)?.name ;
+      return this.filteredAreas.find(area => area.id === id)?.translation_data[0].name ;
+    }
+    createCityFromForm(formValue): City{
+      const city: City = {
+        id: formValue.id,
+        area_id: formValue.area_id? formValue.area_id: null,
+        longitude: formValue.latitude,
+        latitude: formValue.longitude,
+        translation_data: [
+          {
+            name: formValue.name? formValue.name: null,        
+            language: 'en',        
+          },
+          {
+            name: formValue.name_ar? formValue.name_ar: null ,     
+            language:'ar',              
+          }
+        ]
+      }
+      if(this.isEditing){
+        city.translation_data = city.translation_data.filter(
+          translation => translation.name !== '' && translation.name !== null && translation.name !== undefined
+        );
+      
+        // Dynamically remove properties that are undefined or null at the top level of city object
+        Object.keys(city).forEach(key => {
+          if (city[key] === undefined || city[key] === null) {
+            delete city[key];  // Delete property if it's undefined or null
+          }
+        });
+      }
+      console.log(city);
+      return city;
+
+      
     }
     /**
      * On submit form
      */
     onSubmit() {
+    
       this.formSubmitted = true;
-
     if (this.cityForm.invalid) {
       this.formError = 'Please complete all required fields.';
       Object.keys(this.cityForm.controls).forEach(control => {
@@ -123,22 +168,22 @@ export class FormCityComponent  implements OnInit, OnDestroy {
       return;
     }
     this.formError = null;
-    
-              
-        const newData = this.cityForm.value;
-      
+                
         if(!this.isEditing)
-          { delete newData.id;
-            delete newData.country_id;
-            
-            this.store.dispatch(addCitylist({ newData }));          }
+          { 
+            const newData = this.createCityFromForm(this.cityForm.value);
+            delete newData.id;
+            this.store.dispatch(addCitylist({ newData }));         
+          }
           else
           { 
-            const updatedDta = this.formUtilService.detectChanges<CityListModel>(this.cityForm, this.originalCityData);
+            const updatedDta = this.formUtilService.detectChanges<City>(this.cityForm, this.originalCityData);
             if (Object.keys(updatedDta).length > 0) {
-              updatedDta.id = newData.id;
+              updatedDta.id = this.cityForm.value.id;
               console.log(updatedDta);
-              this.store.dispatch(updateCitylist({ updatedData: newData }));
+              const changedData = this.createCityFromForm(updatedDta);
+              console.log(changedData);
+              this.store.dispatch(updateCitylist({ updatedData: changedData }));
             }
             else{
               this.formError = 'Nothing has been changed!!!';

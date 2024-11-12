@@ -8,13 +8,14 @@ import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({ providedIn: 'root' })
 export class CrudService {
-    currentLge: string = '';
+    currentLge: string = '[]';
 
     constructor(
         private http: HttpClient,    
         private cookieService: CookieService,
     ) {       
         this.currentLge = this.cookieService.get('lang');
+        console.log(this.currentLge);
   
     }
    
@@ -48,8 +49,9 @@ export class CrudService {
         let params = new HttpParams();
 
         // Add language parameter if it's set
-        if (this.currentLge && this.currentLge == 'ar') {
-            params = params.set('lang', this.currentLge);
+        if (this.currentLge) {
+            const lge = `["${this.currentLge}"]`;
+            params = params.set('lang', lge);
         }
 
         // Add any additional parameters from the payload
@@ -60,7 +62,6 @@ export class CrudService {
             }
         }
         }
-        console.log(params);
         return params;
       }
       

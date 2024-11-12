@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { PaginateModel } from "src/app/core/interfaces/core.interface";
+import { PaginateModel, Translation } from "src/app/core/interfaces/core.interface";
 import { CityListModel } from "../City/city.model";
 
 export interface MerchantListModel  extends PaginateModel
@@ -36,8 +36,7 @@ email?: string;
 password?: string;
 phone?: string;
 id_number?: number;
-merchantName ?:  string ;
-merchantName_ar?:  string ;
+translation_data?: Translation[];
 serviceType? :  string ;
 supervisorName ?:  string ;
 supervisorName_ar?:  string ;

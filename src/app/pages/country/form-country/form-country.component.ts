@@ -11,7 +11,7 @@
   import { addCountrylist, getCountryById, updateCountrylist } from 'src/app/store/country/country.action';
   import { selectCountryById, selectDataLoading } from 'src/app/store/country/country-selector';
   import { FormUtilService } from 'src/app/core/services/form-util.service';
-  import { CountryListModel } from '../../../store/country/country.model';
+  import { Country } from '../../../store/country/country.model';
   
   
   
@@ -40,7 +40,7 @@
     flag: string = '';
 
     @ViewChild('formElement', { static: false }) formElement: ElementRef;
-    originalCountryData: CountryListModel = {}; 
+    originalCountryData: Country = {}; 
 
     
     constructor(
@@ -60,7 +60,17 @@
                      
         });
        }
-
+    patchValueForm(country: Country){
+        this.countryForm.patchValue({
+          id: country.id,
+          name: country.translation_data[0].name,
+          name_ar: country.translation_data[1].name,
+          phoneCode: country.phoneCode,
+          flag: country.flag,
+  
+        });
+  
+      }
       
     ngOnInit() {
   
@@ -75,14 +85,46 @@
           .subscribe(Country => {
             if (Country) {
               this.flag = Country.flag;
-              this.countryForm.patchValue(Country);
+              this.patchValueForm(Country);
               this.isEditing = true;
               }
           });
       }
      
     }
-    
+    createCountryFromForm(formValue): Country{
+      const country: Country = {
+        id: formValue.id,
+        phoneCode: formValue.phoneCode? formValue.phoneCode: null,
+        flag: formValue.flag? formValue.flag: null,
+        translation_data: [
+          {
+            name: formValue.name? formValue.name: null,        
+            language: 'en',        
+          },
+          {
+            name: formValue.name_ar? formValue.name_ar: null ,     
+            language:'ar',              
+          }
+        ]
+      }
+      if(this.isEditing){
+        country.translation_data = country.translation_data.filter(
+          translation => translation.name !== '' && translation.name !== null && translation.name !== undefined
+        );
+      
+        // Dynamically remove properties that are undefined or null at the top level of Country object
+        Object.keys(country).forEach(key => {
+          if (country[key] === undefined || country[key] === null) {
+            delete country[key];  // Delete property if it's undefined or null
+          }
+        });
+      }
+      console.log(country);
+      return country;
+
+      
+    }
     /**
      * On submit form
      */
@@ -99,23 +141,23 @@
     }
     this.formError = null;
     
-              
-        const newData = this.countryForm.value;
-        if(this.CountryFlagBase64){
-          newData.flag = this.CountryFlagBase64;
-        }
-        
         if(!this.isEditing)
           {
+            const newData = this.createCountryFromForm(this.countryForm.value);
+            if(this.CountryFlagBase64){
+              newData.flag = this.CountryFlagBase64;
+            }
+            delete newData.id;
             this.store.dispatch(addCountrylist({ newData }));          
           }
           else
           { 
-            const updatedDta = this.formUtilService.detectChanges<CountryListModel>(this.countryForm, this.originalCountryData);
+            const updatedDta = this.formUtilService.detectChanges<Country>(this.countryForm, this.originalCountryData);
             if (Object.keys(updatedDta).length > 0) {
-              updatedDta.id = newData.id;
-              console.log(updatedDta);
-              this.store.dispatch(updateCountrylist({ updatedData: updatedDta }));
+              updatedDta.id = this.countryForm.value.id;
+              const changedData = this.createCountryFromForm(updatedDta);
+              console.log(changedData);
+              this.store.dispatch(updateCountrylist({ updatedData: changedData }));
             }
             else
             {

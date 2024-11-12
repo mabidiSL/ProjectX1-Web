@@ -17,3 +17,9 @@ export interface PaginateModel {
     to?: number;
     totalItems?: number;
 }
+export interface Translation{
+    id?: number;
+    name?: string;
+    supervisorName?: string;
+    language?: string;
+}

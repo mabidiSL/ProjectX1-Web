@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Component, EventEmitter, Input, Output, SimpleChanges, ViewChild, OnInit, OnChanges } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -16,7 +17,7 @@ import { CookieService } from 'ngx-cookie-service';
   templateUrl: './custom-table.component.html',
   styleUrl: './custom-table.component.css'
 })
-export class CustomTableComponent  {
+export class CustomTableComponent implements OnInit, OnChanges  {
 
 
   @Input() pageTitle?: string;
@@ -120,25 +121,38 @@ export class CustomTableComponent  {
   }
   
   getProperty(data: any, propertyPath: string): any {
+    console.log(data);
+    console.log(propertyPath);
 
-    const value = propertyPath.split('.').reduce((acc, key) => acc && acc[key], data);
+    // Split the property path by dots
+    const keys = propertyPath.split('.');
 
-      // Check if the value is 'pending' to set approveAction
-  this.approveAction = (value === 'pending');
+    // Iterate over the keys and handle array indices
+    const value = keys.reduce((acc, key) => {
+        // If key is an array index, access it as a number
+        if (key.includes('[') && key.includes(']')) {
+            const index = parseInt(key.slice(key.indexOf('[') + 1, key.indexOf(']')));
+            return acc ? acc[index] : undefined;
+        }
+        return acc ? acc[key] : undefined;
+    }, data);
 
-  // Check if the value is a valid date
-  if (value instanceof Date) {
-    return this.DatePipe.transform(value, 'short'); 
-  }
+    console.log(value);
 
+    // Check if the value is 'pending' to set approveAction
+    this.approveAction = (value === 'pending');
+
+    // Check if the value is a valid date
+    if (value instanceof Date) {
+        return this.DatePipe.transform(value, 'short'); 
+    }
+
+    return value;
   // Check if the value is a valid date string (but not a number)
   // if (typeof value === 'string' && !isNaN(Date.parse(value))) {
   //   return this.DatePipe.transform(value, 'short'); 
   // }
-
-
-  return value;
-    
+   
   }
   onPageSizeChange(event: any){
     this.onPageSizeChanged.emit(event);

@@ -32,7 +32,7 @@
                               [value]="getCountryName(cityForm.get('country_id').value)" 
                               readonly 
                             />
-                           <ng-select [hidden]="type === 'view'" id="country_id" placeholder="{{'Select_the_Country' |translate}}" [items]="countries" formControlName="country_id" bindLabel="name" 
+                           <ng-select [hidden]="type === 'view'" id="country_id" placeholder="{{'Select_the_Country' |translate}}" [items]="countries" formControlName="country_id" bindLabel="translation_data.name" 
                            bindValue="id" (change)="onChangeCountrySelection($event)">
                            </ng-select>
                               <div *ngIf="cityForm.get('country_id').touched && cityForm.get('country_id').invalid" class="invalid-feedback d-block">
@@ -49,7 +49,7 @@
                               [value]="getAreaName(cityForm.get('area_id').value)" 
                               readonly 
                             />
-                           <ng-select [hidden]="type === 'view'"  id="area_id" placeholder="{{'Select_the_Area' |translate}}" [items]="filteredAreas" bindLabel="name" 
+                           <ng-select [hidden]="type === 'view'"  id="area_id" placeholder="{{'Select_the_Area' |translate}}" [items]="filteredAreas" bindLabel="translation_data.name" 
                            bindValue="id" formControlName="area_id">
                               </ng-select>
                               <div *ngIf="cityForm.get('area_id').touched && cityForm.get('area_id').invalid" class="invalid-feedback d-block">

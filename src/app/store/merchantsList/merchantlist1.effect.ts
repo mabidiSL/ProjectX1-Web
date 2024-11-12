@@ -64,7 +64,7 @@ export class MerchantslistEffects1 {
                         //const errorMessage = this.getErrorMessage(error); 
                         this.toastr.error(error.message);
                         return of(addMerchantlistFailure({ error: error.message })); // Dispatch failure action
-                      })                )
+                      }))
             )
         )
     );

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -21,13 +22,14 @@ import { selectDataLoading, selectDataMerchant, selectDataTotalItems } from 'src
 export class ApproveMerchantComponent implements OnInit {
 
 // bread crumb items
+// eslint-disable-next-line @typescript-eslint/ban-types
 breadCrumbItems: Array<{}>;
 public Modules = Modules;
 public Permission = Permission;
 
 merchantApprovalList$: Observable<any[]>;
 totalItems$: Observable<number>;
-loading$: Observable<any>
+loading$: Observable<boolean>;
 
 isDropdownOpen : boolean = false;
 filteredArray: any[] = [];
@@ -37,9 +39,9 @@ itemPerPage: number = 10;
 currentPage : number = 1;
 
 columns : any[]= [
-  { property: 'merchantName', label: 'Merchant Name' },
+  { property: 'translation_data[0].name', label: 'Merchant Name' },
   { property: 'user.email', label: 'Email' },
-  { property: 'createdAt', label: 'Request Date' },
+  { property: 'user.createdAt', label: 'Request Date' },
   { property: 'user.status', label: 'Status' },
 ];
   constructor(public toastr:ToastrService,  public store: Store) {

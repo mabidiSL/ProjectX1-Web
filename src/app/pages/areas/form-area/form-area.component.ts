@@ -8,9 +8,9 @@ import { addArealist,  getAreaById, updateArealist } from 'src/app/store/area/ar
 import { selectAreaById, selectDataLoading } from 'src/app/store/area/area-selector';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
 import { selectDataCountry } from 'src/app/store/country/country-selector';
-import { CountryListModel } from '../../../store/country/country.model';
+import { Country } from '../../../store/country/country.model';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
-import { AreaListModel } from 'src/app/store/area/area.model';
+import { Area, AreaListModel } from 'src/app/store/area/area.model';
 
 
 
@@ -36,9 +36,9 @@ export class FormAreaComponent implements OnInit, OnDestroy {
   fieldTextType!: boolean;
   imageURL: string | undefined;
   isEditing: boolean = false;
-  countries : CountryListModel[];
+  countries : Country[];
  
-  originalAreaData: AreaListModel = {}; 
+  originalAreaData: Area = {}; 
   @ViewChild('formElement', { static: false }) formElement: ElementRef;
 
   constructor(
@@ -57,14 +57,21 @@ export class FormAreaComponent implements OnInit, OnDestroy {
         })
 
       this.areaForm = this.formBuilder.group({
-        id:[''],
+        id:[null],
         name: ['', Validators.required],
         name_ar: ['', Validators.required],
-        country_id:['', Validators.required]
+        country_id:[null, Validators.required]
                    
       });
      }
-     
+  patchValueForm(area: Area){
+      this.areaForm.patchValue({
+        id: area.id,
+        name: area.translation_data[0].name,
+        name_ar: area.translation_data[1].name,
+        country_id: area.country_id,
+        });
+    }
   ngOnInit() {
 
     const AreaId = this.route.snapshot.params['id'];
@@ -77,14 +84,47 @@ export class FormAreaComponent implements OnInit, OnDestroy {
         .pipe(select(selectAreaById(AreaId)), takeUntil(this.destroy$))
         .subscribe(Area => {
           if (Area) {
-            this.areaForm.patchValue(Area);
+
+            this.patchValueForm(Area);
+            this.originalAreaData = { ...Area };
             this.isEditing = true;
             }
         });
     }
    
   }
-   
+  createAreaFromForm(formValue): Area{
+    const area: Area = {
+      id: formValue.id,
+      country_id: formValue.country_id? formValue.country_id: null,
+      translation_data: [
+        {
+          name: formValue.name? formValue.name: null,        
+          language: 'en',        
+        },
+        {
+          name: formValue.name_ar? formValue.name_ar: null ,     
+          language:'ar',              
+        }
+      ]
+    }
+    if(this.isEditing){
+      area.translation_data = area.translation_data.filter(
+        translation => translation.name !== '' && translation.name !== null && translation.name !== undefined
+      );
+    
+      // Dynamically remove properties that are undefined or null at the top level of city object
+      Object.keys(area).forEach(key => {
+        if (area[key] === undefined || area[key] === null) {
+          delete area[key];  // Delete property if it's undefined or null
+        }
+      });
+    }
+    console.log(area);
+    return area;
+
+    
+  }
   
   /**
    * On submit form
@@ -102,18 +142,19 @@ export class FormAreaComponent implements OnInit, OnDestroy {
     }
     this.formError = null;
             
-      const newData = this.areaForm.value;
     
       if(!this.isEditing)
-        { delete newData.id;
+        { const newData = this.createAreaFromForm(this.areaForm.value);
+          delete newData.id;
           this.store.dispatch(addArealist({ newData }));          }
         else
         {
-          const updatedDta = this.formUtilService.detectChanges<AreaListModel>(this.areaForm, this.originalAreaData);
+          const updatedDta = this.formUtilService.detectChanges<Area>(this.areaForm, this.originalAreaData);
           if (Object.keys(updatedDta).length > 0) {
-            updatedDta.id = newData.id;
-            console.log(updatedDta);
-            this.store.dispatch(updateArealist({ updatedData: updatedDta }));
+            updatedDta.id = this.areaForm.value.id;
+            const changedData = this.createAreaFromForm(updatedDta);
+            console.log(changedData);
+            this.store.dispatch(updateArealist({ updatedData: changedData }));
           }
           else{
             this.formError = 'Nothing has been changed!!!';
@@ -134,7 +175,7 @@ export class FormAreaComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('/private/areas');
   }
   getCountryName(id: number){
-    return this.countries.find(country => country.id === id)?.name ;
+    return this.countries.find(country => country.id === id)?.translation_data[0].name ;
   }
   toggleViewMode(){
     this.router.navigateByUrl('/private/areas');

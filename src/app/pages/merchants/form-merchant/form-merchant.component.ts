@@ -17,9 +17,9 @@ import { selectDataCity } from 'src/app/store/City/city-selector';
 import { Merchant } from '../../../store/merchantsList/merchantlist1.model';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { UploadEvent } from 'src/app/shared/widget/image-upload/image-upload.component';
-import { AreaListModel } from 'src/app/store/area/area.model';
-import { CityListModel } from 'src/app/store/City/city.model';
-import { CountryListModel } from 'src/app/store/country/country.model';
+import { Area } from 'src/app/store/area/area.model';
+import { City } from 'src/app/store/City/city.model';
+import { Country } from 'src/app/store/country/country.model';
 import { SectionListModel } from 'src/app/store/section/section.model';
 
 
@@ -48,16 +48,16 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
   isEditing: boolean = false;
   fromPendingContext: boolean = false;
 
-  countrylist: CountryListModel[] = [];
-  arealist$:  Observable<AreaListModel[]>  ;
-  citylist$:  Observable<CityListModel[]> ;
+  countrylist: Country[] = [];
+  arealist$:  Observable<Area[]>  ;
+  citylist$:  Observable<City[]> ;
   loading$: Observable<boolean>;
 
   sectionlist:  SectionListModel[] = [];
   
-  filteredCountries: CountryListModel[] = [];
-  filteredAreas :  AreaListModel[] = [];
-  filteredCities:  CityListModel[] = [];
+  filteredCountries: Country[] = [];
+  filteredAreas :  Area[] = [];
+  filteredCities:  City[] = [];
   serviceTypes: string[] = ['company', 'entreprise'];
   originalMerchantData: Merchant = {}; 
 
@@ -76,10 +76,10 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
       this.getNavigationState();
       this.loading$ = this.store.pipe(select(selectDataLoading)); 
 
-      this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 10, status: 'active' }));
-      this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 10, status: 'active' }));
-      this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 10, status: 'active' }));
-      this.store.dispatch(fetchSectionlistData({page: 1, itemsPerPage: 10, status: 'active' }));
+      this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 100, status: 'active' }));
+      this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 1000, status: 'active' }));
+      this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 10000, status: 'active' }));
+      this.store.dispatch(fetchSectionlistData({page: 1, itemsPerPage: 100, status: 'active' }));
      
       this.initForm();
       
@@ -211,13 +211,13 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
       }
   }
   getCountryName(id: number){
-    return this.filteredCountries.find(country => country.id === id)?.name ;
+    return this.filteredCountries.find(country => country.id === id)?.translation_data[0].name ;
   }
   getAreaName(id: number){
-    return this.filteredAreas.find(area => area.id === id)?.name ;
+    return this.filteredAreas.find(area => area.id === id)?.translation_data[0].name ;
   }
   getCityName(id: number){
-    return this.filteredCities.find(city => city.id === id)?.name ;
+    return this.filteredCities.find(city => city.id === id)?.translation_data[0].name ;
   }
   getSectionName(id: number){
     return this.sectionlist.find(section => section.id === id)?.name ;
@@ -272,11 +272,19 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
           password: formValue.password,
           id_number: Number(formValue.id_number),
           phone: formValue.phone,
-          merchantName: formValue.merchantName,
-          merchantName_ar: formValue.merchantName_ar,
+          translation_data: [
+            {
+              name: formValue.merchantName? formValue.merchantName: null, 
+              supervisorName: formValue.supervisorName? formValue.supervisorName: null,   
+              language: 'en',        
+            },
+            {
+              name: formValue.merchantName_ar? formValue.merchantName_ar: null ,  
+              supervisorName: formValue.supervisorName_ar? formValue.supervisorName_ar: null ,   
+              language:'ar',              
+            }
+          ],
           serviceType: formValue.serviceType,
-          supervisorName: formValue.supervisorName,
-          supervisorName_ar: formValue.supervisorName_ar,
           supervisorPhone: formValue.supervisorPhone,
           merchantLogo : formValue.merchantLogo,
           merchantPicture: formValue.merchantPicture,
@@ -300,6 +308,22 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
           if (formValue.whatsup) {
             merchant.whatsup = Number(formValue.whatsup);
           }
+          merchant.translation_data = merchant.translation_data.map(translation => {
+            // Iterate over each property of the translation and delete empty values
+            Object.keys(translation).forEach(key => {
+              if (translation[key] === '' || translation[key] === null || translation[key] === undefined) {
+                delete translation[key];  // Remove empty fields
+              }
+            });
+            return translation; // Return the modified translation object
+          });
+            // Dynamically remove properties that are undefined or null at the top level of city object
+            Object.keys(merchant).forEach(key => {
+              if (merchant[key] === undefined || merchant[key] === null) {
+                delete merchant[key];  // Delete property if it's undefined or null
+              }
+            });
+          
           return merchant;
   }
  
@@ -349,9 +373,11 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
           delete this.merchant.email;
           const updatedDta = this.formUtilService.detectChanges(this.merchantForm, this.originalMerchantData);
           if (Object.keys(updatedDta).length > 0) {
-            console.log(updatedDta);
-            updatedDta.id = this.globalId;
-            this.store.dispatch(updateMerchantlist({ updatedData: updatedDta }));
+            this.merchant = this.createMerchantFromForm(updatedDta);
+
+            console.log(this.merchant);
+            this.merchant.id = this.globalId;
+            this.store.dispatch(updateMerchantlist({ updatedData: this.merchant }));
           }
           else{
             this.formError = 'Nothing has been changed!!!';
