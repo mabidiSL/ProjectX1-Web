@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, mergeMap, map, tap } from 'rxjs/operators';
+import { catchError, mergeMap, map } from 'rxjs/operators';
 
 import { of } from 'rxjs';
 import { CrudService } from 'src/app/core/services/crud.service';
@@ -23,7 +24,6 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { selectStoreById } from './store-selector';
 
 @Injectable()
 export class StoreslistEffects {
@@ -32,8 +32,7 @@ export class StoreslistEffects {
             ofType(fetchStorelistData),
             mergeMap(({ page, itemsPerPage,status, merchant_id }) =>
                 this.CrudService.fetchData('/stores',{ limit: itemsPerPage, page: page,status: status, merchant_id: merchant_id}).pipe(
-                    tap((response : any) => console.log('Fetched data:', response.result)), 
-                    map((response) => fetchStorelistSuccess({ StoreListdata: response.result })),
+                    map((response: any) => fetchStorelistSuccess({ StoreListdata: response.result })),
                     catchError((error) =>{
                         this.toastr.error('An error occurred while fetching the Store list. Please try again later.'); 
                         console.error('Fetch error:', error); 
@@ -75,7 +74,7 @@ export class StoreslistEffects {
           ofType(getStoreById),
           mergeMap(({ StoreId }) => {
             // Use the selector to get the Store from the store
-            return this.store.select(selectStoreById(StoreId)).pipe(
+            return this.CrudService.getDataById('/stores', StoreId).pipe(
               map(Store => {
                 if (Store) {
                   // Dispatch success action with the Store data
@@ -100,9 +99,9 @@ export class StoreslistEffects {
                 this.router.navigate(['/private/stores']);
                 return  updateStorelistSuccess({ updatedData: response.result })}),
                 catchError((error) =>{
-                    const errorMessage = this.getErrorMessage(error); 
-                    //this.toastr.error(errorMessage);
-                    return of(updateStorelistFailure({ error }));
+                    //const errorMessage = this.getErrorMessage(error); 
+                    this.toastr.error(error.message);
+                    return of(updateStorelistFailure({ error: error.message }));
              }) 
             )
         )
@@ -116,7 +115,7 @@ export class StoreslistEffects {
             ofType(deleteStorelist),
             mergeMap(({ storeId }) =>
                     this.CrudService.deleteData(`/stores/${storeId}`).pipe(
-                        map((response: string) => {
+                        map(() => {
                             // If response contains a success message or status, you might want to check it here
                             this.toastr.success('The Store has been deleted successfully.');
                             return deleteStorelistSuccess({ storeId });

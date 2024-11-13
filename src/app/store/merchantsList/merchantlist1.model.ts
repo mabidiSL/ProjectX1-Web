@@ -38,8 +38,6 @@ phone?: string;
 id_number?: number;
 translation_data?: Translation[];
 serviceType? :  string ;
-supervisorName ?:  string ;
-supervisorName_ar?:  string ;
 supervisorPhone? :  string ;
 merchantLogo ?: string  ;
 merchantPicture? :  string ;

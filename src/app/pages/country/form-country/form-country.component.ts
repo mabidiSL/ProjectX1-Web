@@ -9,7 +9,7 @@
   import { select, Store } from '@ngrx/store';
   import { Observable, Subject, takeUntil } from 'rxjs';
   import { addCountrylist, getCountryById, updateCountrylist } from 'src/app/store/country/country.action';
-  import { selectCountryById, selectDataLoading } from 'src/app/store/country/country-selector';
+  import { selectedCountry, selectDataLoading } from 'src/app/store/country/country-selector';
   import { FormUtilService } from 'src/app/core/services/form-util.service';
   import { Country } from '../../../store/country/country.model';
   
@@ -81,7 +81,7 @@
         
         // Subscribe to the selected Country from the Country
         this.store
-          .pipe(select(selectCountryById(CountryId)), takeUntil(this.destroy$))
+          .pipe(select(selectedCountry), takeUntil(this.destroy$))
           .subscribe(Country => {
             if (Country) {
               this.flag = Country.flag;

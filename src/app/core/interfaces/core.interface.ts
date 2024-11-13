@@ -21,5 +21,8 @@ export interface Translation{
     id?: number;
     name?: string;
     supervisorName?: string;
+    termsAndConditions?: string;
+    description?: string;
+    managerName?: string;
     language?: string;
 }

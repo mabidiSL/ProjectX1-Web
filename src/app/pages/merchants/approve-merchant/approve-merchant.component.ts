@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { fetchMerchantlistData, updateMerchantlist } from 'src/app/store/merchantsList/merchantlist1.action';
 import { selectDataLoading, selectDataMerchant, selectDataTotalItems } from 'src/app/store/merchantsList/merchantlist1-selector';
+import { Merchant } from 'src/app/store/merchantsList/merchantlist1.model';
 
 @Component({
   selector: 'app-approve-merchant',
@@ -27,7 +28,7 @@ breadCrumbItems: Array<{}>;
 public Modules = Modules;
 public Permission = Permission;
 
-merchantApprovalList$: Observable<any[]>;
+merchantApprovalList$: Observable<Merchant[]>;
 totalItems$: Observable<number>;
 loading$: Observable<boolean>;
 

@@ -1,3 +1,4 @@
+/* eslint-disable @angular-eslint/no-output-on-prefix */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, EventEmitter, Input, Output, SimpleChanges, ViewChild, OnInit, OnChanges } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
@@ -9,7 +10,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { _User } from 'src/app/store/Authentication/auth.models';
 import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 
 
 @Component({
@@ -94,7 +94,7 @@ export class CustomTableComponent implements OnInit, OnChanges  {
     this.currentUser = this.currentUserSubject.asObservable();
     this.currentUser.subscribe(user => {
       if (user) {
-      if(user.role.name !== 'Admin')
+      if(user.role.translation_data[0].name !== 'Admin')
       { this.isMerchant = true;}
     }});
    }
@@ -121,37 +121,37 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   }
   
   getProperty(data: any, propertyPath: string): any {
-    console.log(data);
-    console.log(propertyPath);
+   
 
-    // Split the property path by dots
     const keys = propertyPath.split('.');
-
-    // Iterate over the keys and handle array indices
-    const value = keys.reduce((acc, key) => {
-        // If key is an array index, access it as a number
+    let value = keys.reduce((acc, key) => 
+      {
         if (key.includes('[') && key.includes(']')) {
-            const index = parseInt(key.slice(key.indexOf('[') + 1, key.indexOf(']')));
-            return acc ? acc[index] : undefined;
+            const arrayKey = key.slice(0, key.indexOf('[')); 
+            const index = parseInt(key.slice(key.indexOf('[') + 1, key.indexOf(']'))); 
+            return acc && acc[arrayKey] ? acc[arrayKey][index] : undefined;
         }
+        
         return acc ? acc[key] : undefined;
     }, data);
 
-    console.log(value);
-
-    // Check if the value is 'pending' to set approveAction
     this.approveAction = (value === 'pending');
 
-    // Check if the value is a valid date
-    if (value instanceof Date) {
-        return this.DatePipe.transform(value, 'short'); 
-    }
+    if (typeof value === 'string') {
+      // We will use a regex to verify if the string is in ISO 8601 format
+      const iso8601Pattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/;
 
-    return value;
-  // Check if the value is a valid date string (but not a number)
-  // if (typeof value === 'string' && !isNaN(Date.parse(value))) {
-  //   return this.DatePipe.transform(value, 'short'); 
-  // }
+      // If the value matches the ISO 8601 format, parse it as a Date
+      if (iso8601Pattern.test(value)) {
+          value = new Date(value);  
+      }
+  }
+
+  if (value instanceof Date && !isNaN(value.getTime())) {
+      return this.DatePipe.transform(value, 'short');  
+  }
+
+  return value;
    
   }
   onPageSizeChange(event: any){
@@ -243,11 +243,9 @@ export class CustomTableComponent implements OnInit, OnChanges  {
       html2canvas(tableElement).then(canvas => {
         const imgData = canvas.toDataURL('image/png');
         const imgWidth = 190; // Adjust width as needed
-        const pageHeight = pdf.internal.pageSize.height;
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        const heightLeft = imgHeight;
         
-        let position = 0;
+        const position = 0;
         // Add the image to the PDF
         pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
         pdf.save('download.pdf'); // Save the PDF

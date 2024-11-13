@@ -20,14 +20,11 @@ import {
     getMerchantById,
     getMerchantByIdSuccess,
     getMerchantByIdFailure,
-    getLoggedMerchantById,
-    getLoggedMerchantByIdFailure,
-    getLoggedMerchantByIdSuccess
+   
 } from './merchantlist1.action';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { selectMerchantById } from './merchantlist1-selector';
 
 
 @Injectable()
@@ -70,42 +67,24 @@ export class MerchantslistEffects1 {
     );
     getLoggedMerchant$ =  createEffect(() =>
       this.actions$.pipe(
-        ofType(getLoggedMerchantById),
+        ofType(getMerchantById),
         mergeMap(({ merchantId }) => {
           // get merchant by id
           return this.CrudService.getDataById('/merchants', merchantId).pipe(
             map((Merchant: any) => {
               if (Merchant ) {
                 // Dispatch success action with the Merchant data
-                return getLoggedMerchantByIdSuccess({ merchant: Merchant.result });
+                return getMerchantByIdSuccess({ merchant: Merchant.result });
               } else {
                 //this.toastr.error('Merchant not found.'); // Show error notification
-                return getLoggedMerchantByIdFailure({ error: 'Merchant not found' });
+                return getMerchantByIdFailure({ error: 'Merchant not found' });
               }
             })
           );
         })
       )
     );
-    getMerchantById$ = createEffect(() =>
-        this.actions$.pipe(
-          ofType(getMerchantById),
-          mergeMap(({ merchantId }) => {
-            // Use the selector to get the Merchant from the store
-            return this.store.select(selectMerchantById(merchantId)).pipe(
-              map(Merchant => {
-                if (Merchant) {
-                  // Dispatch success action with the Merchant data
-                  return getMerchantByIdSuccess({ merchant: Merchant });
-                } else {
-                  this.toastr.error('Merchant not found.'); // Show error notification
-                  return getMerchantByIdFailure({ error: 'Merchant not found' });
-                }
-              })
-            );
-          })
-        )
-      );
+   
   
     updateData$ = createEffect(() => 
         this.actions$.pipe(

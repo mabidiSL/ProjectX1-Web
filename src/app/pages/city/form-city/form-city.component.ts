@@ -1,5 +1,5 @@
-import { Component, ElementRef, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
-  import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+  import { Component, ElementRef, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
+  import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
   import { ActivatedRoute, Router } from '@angular/router';
   
   import { select, Store } from '@ngrx/store';
@@ -9,11 +9,11 @@ import { Component, ElementRef, Input, OnInit, ViewChild, OnDestroy } from '@ang
   import { selectDataArea } from 'src/app/store/area/area-selector';
 
 import { fetchArealistData } from 'src/app/store/area/area.action';
-import { selectCityById, selectDataLoading } from 'src/app/store/City/city-selector';
+import { selectedCity, selectDataLoading } from 'src/app/store/City/city-selector';
 import { addCitylist, getCityById, updateCitylist } from 'src/app/store/City/city.action';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
-import { City, CityListModel } from 'src/app/store/City/city.model';
-import { Area, AreaListModel } from 'src/app/store/area/area.model';
+import { City } from 'src/app/store/City/city.model';
+import { Area } from 'src/app/store/area/area.model';
 import { Country } from 'src/app/store/country/country.model';
   
 @Component({
@@ -54,15 +54,33 @@ export class FormCityComponent  implements OnInit, OnDestroy {
         
         this.loading$ = this.store.pipe(select(selectDataLoading)); 
         this.store.dispatch(fetchCountrylistData({ page: 1, itemsPerPage: 1000, status:'active' }));
-        this.store.select(selectDataCountry).subscribe(
-          countries => {
-            this.countries = countries
+        this.store.select(selectDataCountry).subscribe(data => {
+            this.countries = [...data].map(country =>{
+              const translatedName = country.translation_data && country.translation_data[0]?.name || 'No name available';
+          
+              return {
+                ...country,  
+                translatedName 
+              };
+            }).sort((a, b) => {
+              // Sort by translatedName
+              return a.translatedName.localeCompare(b.translatedName);
+            });
           });
 
         this.store.dispatch(fetchArealistData({ page: 1, itemsPerPage: 10000, status:'active' }));
         this.store.select(selectDataArea).subscribe(
-            areas => {
-              this.areas = areas
+            data => {
+              this.areas = [...data].map(area =>{
+                const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
+                return {
+                  ...area,  
+                  translatedName 
+                };
+              }).sort((a, b) => {
+                // Sort by translatedName
+                return a.translatedName.localeCompare(b.translatedName);
+              });
             })
         this.cityForm = this.formBuilder.group({
           id:[null],
@@ -86,7 +104,7 @@ export class FormCityComponent  implements OnInit, OnDestroy {
         
         // Subscribe to the selected city from the city
         this.store
-          .pipe(select(selectCityById(CityId)), takeUntil(this.destroy$))
+          .pipe(select(selectedCity), takeUntil(this.destroy$))
           .subscribe(city => {
             if (city) {
               this.filteredAreas = this.areas;

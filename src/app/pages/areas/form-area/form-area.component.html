@@ -32,7 +32,7 @@
                               [value]="getCountryName(areaForm.get('country_id').value)" 
                               readonly 
                             />
-                           <ng-select [hidden]="type === 'view'" id="country_id" placeholder="{{'Select_the_Country' |translate}}" [items]="countries" bindLabel="name" 
+                           <ng-select [hidden]="type === 'view'" id="country_id" placeholder="{{'Select_the_Country' |translate}}" [items]="countries" bindLabel="translatedName" 
                            bindValue="id"  formControlName="country_id" >
                             </ng-select>
                           <div *ngIf="areaForm.get('country_id').touched && areaForm.get('country_id').invalid" class="invalid-feedback d-block">

@@ -13,9 +13,6 @@ export const addMerchantlistSuccess = createAction('[Data] Add Merchantlist Succ
 export const addMerchantlistFailure = createAction('[Data] Add Merchantlist Failure', props<{ error: string }>());
 
 //get Merchant by ID
-export const getLoggedMerchantById = createAction('[Data] get Logged Merchant', props<{ merchantId: number }>());
-export const getLoggedMerchantByIdSuccess = createAction('[Data] getLogged Merchant success', props<{ merchant: Merchant }>());
-export const getLoggedMerchantByIdFailure = createAction('[Data] getLogged Merchant Failure', props<{ error: string }>());
 
 export const getMerchantById = createAction('[Data] get Merchant', props<{ merchantId: number }>());
 export const getMerchantByIdSuccess = createAction('[Data] get Merchant success', props<{ merchant: Merchant }>());

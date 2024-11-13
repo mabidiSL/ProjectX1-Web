@@ -38,16 +38,16 @@ export class FormEmployeeComponent implements OnInit{
   banks : any[] = [{id: '1', name:'BIAT'},{id: '2', name:'BT'}];
   
   
-  countrylist: any[] = [];
-  arealist$:  Observable<any[]>  ;
-  citylist$:  Observable<any[]> ;
-  loading$: Observable<any>
+  countrylist: Country[] = [];
+  arealist$:  Observable<Area[]>  ;
+  citylist$:  Observable<City[]> ;
+  loading$: Observable<boolean>
 
-  rolelist:  any[] = [] ;
-  selectedRole : any = null;
+  rolelist:  Role[] = [] ;
+  selectedRole : Role = null;
 
-  filteredAreas :  any[] = [];
-  filteredCities:  any[] = [];
+  filteredAreas :  Area[] = [];
+  filteredCities:  City[] = [];
 
   public Permission: Permission;
   public Module: Modules;

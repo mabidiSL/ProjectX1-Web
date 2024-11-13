@@ -5,12 +5,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { addArealist,  getAreaById, updateArealist } from 'src/app/store/area/area.action';
-import { selectAreaById, selectDataLoading } from 'src/app/store/area/area-selector';
+import { selectedArea, selectDataLoading } from 'src/app/store/area/area-selector';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
 import { selectDataCountry } from 'src/app/store/country/country-selector';
 import { Country } from '../../../store/country/country.model';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
-import { Area, AreaListModel } from 'src/app/store/area/area.model';
+import { Area } from 'src/app/store/area/area.model';
 
 
 
@@ -52,8 +52,18 @@ export class FormAreaComponent implements OnInit, OnDestroy {
       this.store.dispatch(fetchCountrylistData({ page: 1, itemsPerPage: 1000, status:'active' }));
 
       this.store.select(selectDataCountry).subscribe(
-        countries => {
-          this.countries = countries
+        data => {
+          this.countries = [...data].map(country =>{
+            const translatedName = country.translation_data && country.translation_data[0]?.name || 'No name available';
+        
+            return {
+              ...country,  
+              translatedName 
+            };
+          }).sort((a, b) => {
+            // Sort by translatedName
+            return a.translatedName.localeCompare(b.translatedName);
+          });
         })
 
       this.areaForm = this.formBuilder.group({
@@ -81,7 +91,7 @@ export class FormAreaComponent implements OnInit, OnDestroy {
       
       // Subscribe to the selected Area from the Area
       this.store
-        .pipe(select(selectAreaById(AreaId)), takeUntil(this.destroy$))
+        .pipe(select(selectedArea), takeUntil(this.destroy$))
         .subscribe(Area => {
           if (Area) {
 

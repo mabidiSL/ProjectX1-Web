@@ -773,8 +773,56 @@
     "Enter merchant phone": "أدخل رقم هاتف التاجر",
     "Upload Merchant Picture":"تحميل صورة التاجر",
     "English": "إنجليزي",
-     "Arabic":"عربي"
-
+     "Arabic":"عربي",
+      "All": "الكل",
+      "Dashboard": "لوحة التحكم",
+      "Employees": "الموظفين",
+      "Customers": "العملاء",
+      "Stores": "المتاجر",
+      "Coupons": "القسائم",
+      "Gift_Cards": "بطاقات الهدايا",
+      "Offers": "العروض",
+      "Special_Coupons": "قسائم خاصة",
+      "Role": "الدور",
+      "Merchant_Wallet": "محفظة التاجر",
+      "Merchant_Invoices": "فواتير التاجر",
+      "Merchant_Commissions": "عمولات التاجر",
+      "Customer_Wallet": "محفظة العميل",
+      "Customer_Commissions": "عمولات العميل",
+      "Customer_Abondoned_Tasks": "مهام العميل المهجورة",
+      "Customer_Reviews": "مراجعات العملاء",
+      "Customer_Invoice": "فاتورة العميل",
+      "Notification_Management": "إدارة الإشعارات",
+      "Payment": "الدفع",
+      "Subscription_Reports": "تقارير الاشتراكات",
+      "Coupon_Reports": "تقارير القسائم",
+      "Card_Reports": "تقارير البطاقات",
+      "Subscriptions": "الاشتراكات",
+      "Company_Subscriptions": "اشتراكات الشركة",
+      "PrePrinted_Membership": "العضوية المطبعة مسبقًا",
+      "Marketing_Compaigns": "الحملات التسويقية",
+      "Marketing_Offers": "العروض التسويقية",
+      "Department": "القسم",
+      "System_Administration": "إدارة النظام",
+      "Missions": "المهام",
+      "Contracts": "العقود",
+      "Complaints": "الشكاوى",
+      "Delegate_Statistics": "إحصائيات المندوب",
+      "Social_Media": "وسائل التواصل الاجتماعي",
+      "AppSettings": "إعدادات التطبيق",
+      "ViewAll": "عرض الكل",
+      "Create": "إنشاء",
+      "Update": "تحديث",
+      "Delete": "حذف",
+      "Hide": "إخفاء",
+      "Activate": "تفعيل",
+      "Deactivate": "تعطيل",
+      "Print": "طباعة",
+      "Download": "تنزيل",
+      "Filter": "تصفية",
+      "Permissions": "الصلاحيات"
+}
+    
     
 
 
@@ -813,4 +861,4 @@
    
  
 
-}
+
