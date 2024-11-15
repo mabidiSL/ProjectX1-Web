@@ -54,34 +54,8 @@ export class FormCityComponent  implements OnInit, OnDestroy {
         
         this.loading$ = this.store.pipe(select(selectDataLoading)); 
         this.store.dispatch(fetchCountrylistData({ page: 1, itemsPerPage: 1000, status:'active' }));
-        this.store.select(selectDataCountry).subscribe(data => {
-            this.countries = [...data].map(country =>{
-              const translatedName = country.translation_data && country.translation_data[0]?.name || 'No name available';
-          
-              return {
-                ...country,  
-                translatedName 
-              };
-            }).sort((a, b) => {
-              // Sort by translatedName
-              return a.translatedName.localeCompare(b.translatedName);
-            });
-          });
-
         this.store.dispatch(fetchArealistData({ page: 1, itemsPerPage: 10000, status:'active' }));
-        this.store.select(selectDataArea).subscribe(
-            data => {
-              this.areas = [...data].map(area =>{
-                const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
-                return {
-                  ...area,  
-                  translatedName 
-                };
-              }).sort((a, b) => {
-                // Sort by translatedName
-                return a.translatedName.localeCompare(b.translatedName);
-              });
-            })
+        
         this.cityForm = this.formBuilder.group({
           id:[null],
           name: ['', Validators.required],
@@ -92,10 +66,38 @@ export class FormCityComponent  implements OnInit, OnDestroy {
           latitude: ['lat']
                      
         });
-       }
-    
-      
+  }
+       fetchCountry(){
+        this.store.select(selectDataCountry).subscribe((data) =>{
+          this.countries = [...data].map(country =>{
+            const translatedName = country.translation_data && country.translation_data[0]?.name || 'No name available';
+        
+            return {
+              ...country,  
+              translatedName 
+            };
+          }).sort((a, b) => {
+            // Sort by translatedName
+            return a.translatedName.localeCompare(b.translatedName);
+          });
+        });
+      }
+       fetchAreas(){
+        this.store.select(selectDataArea).subscribe(data =>
+          this.filteredAreas =  [...data].map(area =>{
+          const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
+          return {
+            ...area,  
+            translatedName 
+          };
+        })
+        .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
+        }));
+      }
+     
     ngOnInit() {
+      this.fetchCountry();
+      this.fetchAreas();
   
       const CityId = this.route.snapshot.params['id'];
       if (CityId) {
@@ -107,7 +109,6 @@ export class FormCityComponent  implements OnInit, OnDestroy {
           .pipe(select(selectedCity), takeUntil(this.destroy$))
           .subscribe(city => {
             if (city) {
-              this.filteredAreas = this.areas;
               this.cityForm.controls['country_id'].setValue(city.area.country_id);
               this.patchValueForm(city);
               this.originalCityData = { ...city };
@@ -130,53 +131,50 @@ export class FormCityComponent  implements OnInit, OnDestroy {
       });
 
     }
-    getCountryName(id: number){
-      this.filteredAreas = this.areas.filter(area => area.country_id == id);
-      return this.countries.find(country => country.id === id)?.translation_data[0].name ;
-    }
-    getAreaName(id: number){
-      return this.filteredAreas.find(area => area.id === id)?.translation_data[0].name ;
-    }
+    
     createCityFromForm(formValue): City{
-      const city: City = {
-        id: formValue.id,
-        area_id: formValue.area_id? formValue.area_id: null,
-        longitude: formValue.latitude,
-        latitude: formValue.longitude,
-        translation_data: [
-          {
-            name: formValue.name? formValue.name: null,        
-            language: 'en',        
-          },
-          {
-            name: formValue.name_ar? formValue.name_ar: null ,     
-            language:'ar',              
-          }
-        ]
-      }
-      if(this.isEditing){
-        city.translation_data = city.translation_data.filter(
-          translation => translation.name !== '' && translation.name !== null && translation.name !== undefined
-        );
+
+      const city = formValue;
+      city.translation_data= [];
+      const enFields = [
+        { field: 'name', name: 'name' },
+           
+      ];
+      const arFields = [
+        { field: 'name_ar', name: 'name' },
+            ];
       
-        // Dynamically remove properties that are undefined or null at the top level of city object
+      // Create the English translation if valid
+      const enTranslation = this.formUtilService.createTranslation(city,'en', enFields);
+      if (enTranslation) {
+        city.translation_data.push(enTranslation);
+      }
+
+      // Create the Arabic translation if valid
+      const arTranslation = this.formUtilService.createTranslation(city,'ar', arFields);
+      if (arTranslation) {
+        city.translation_data.push(arTranslation);
+      }
+      if(city.translation_data.length <= 0)
+        delete city.translation_data;
+         
+      // Dynamically remove properties that are undefined or null at the top level of city object
         Object.keys(city).forEach(key => {
           if (city[key] === undefined || city[key] === null) {
             delete city[key];  // Delete property if it's undefined or null
           }
         });
-      }
+      
       console.log(city);
       return city;
-
-      
+     
     }
     /**
      * On submit form
      */
     onSubmit() {
     
-      this.formSubmitted = true;
+    this.formSubmitted = true;
     if (this.cityForm.invalid) {
       this.formError = 'Please complete all required fields.';
       Object.keys(this.cityForm.controls).forEach(control => {
@@ -197,10 +195,8 @@ export class FormCityComponent  implements OnInit, OnDestroy {
           { 
             const updatedDta = this.formUtilService.detectChanges<City>(this.cityForm, this.originalCityData);
             if (Object.keys(updatedDta).length > 0) {
-              updatedDta.id = this.cityForm.value.id;
-              console.log(updatedDta);
               const changedData = this.createCityFromForm(updatedDta);
-              console.log(changedData);
+              changedData.id = this.cityForm.value.id;
               this.store.dispatch(updateCitylist({ updatedData: changedData }));
             }
             else{

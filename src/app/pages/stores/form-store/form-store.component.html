@@ -57,14 +57,8 @@
                       </div>
                 <div *ngIf="currentRole === 'Admin'" class="col-md-6 mb-3">
                   <div class="form-group ">
-                        <label for="merchant_id" >{{'Merchant_Name' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                       <input *ngIf="type === 'view'"
-                          type="text" 
-                          class="form-control" 
-                          [value]="getMerchantName(storeForm.get('merchant_id').value)" 
-                          readonly 
-                      />
-                     <ng-select [hidden]="type === 'view'"  id="merchant_id"  placeholder="{{'Select_the_merchant' | translate}}" [items]="merchantlist" bindLabel="translatedName" 
+                     <label for="merchant_id" >{{'Merchant_Name' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                     <ng-select [readonly]="type === 'view'"  id="merchant_id"  placeholder="{{'Select_the_merchant' | translate}}" [items]="merchantlist" bindLabel="translatedName" 
                      bindValue="id"  formControlName="merchant_id" (change)="onChangeMerchantSelection($event)">
                         </ng-select>
                         <div *ngIf="storeForm.get('merchant_id').touched && storeForm.get('merchant_id').invalid" class="invalid-feedback d-block">
@@ -75,13 +69,7 @@
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
                     <label for="area_id">{{'Area'| translate}}</label>
-                    <input *ngIf="type === 'view'"
-                          type="text" 
-                          class="form-control" 
-                          [value]="getAreaName(storeForm.get('area_id').value)" 
-                          readonly 
-                      />
-                    <ng-select [hidden]="type === 'view'" placeholder="{{'Select_the_Area' | translate}}" [items]="filteredAreas" bindLabel="translatedName" 
+                    <ng-select [readonly]="type === 'view'" placeholder="{{'Select_the_Area' | translate}}" [items]="filteredAreas" bindLabel="translatedName" 
                     bindValue="id"  id="area_id"  formControlName="area_id" (change)="onChangeAreaSelection($event)" >
                     </ng-select>  
                      <div *ngIf="storeForm.get('area_id').touched && storeForm.get('area_id').invalid" class="invalid-feedback d-block">
@@ -92,14 +80,7 @@
                 <div class="col-md-6 mb-3">
                   <div class="form-group ">
                     <label for="city_id" >{{'City' | translate}}</label>
-                    <input *ngIf="type === 'view'"
-                          type="text" 
-                          class="form-control" 
-                          [value]="getCityName(storeForm.get('city_id').value)" 
-                          readonly 
-                      />
-
-                    <ng-select [hidden]="type === 'view'" id="city_id" placeholder="{{'Select_the_City' | translate}}" [items]="filteredCities" bindLabel="translatedName" 
+                    <ng-select [readonly]="type === 'view'" id="city_id" placeholder="{{'Select_the_City' | translate}}" [items]="filteredCities" bindLabel="translatedName" 
                     bindValue="id"  formControlName="city_id" (change)="onChangeAreaSelection($event)" >
                     </ng-select>  
                      <div *ngIf="storeForm.get('city_id').touched && storeForm.get('city_id').invalid" class="invalid-feedback d-block">
@@ -123,11 +104,7 @@
                     </div>   
                     </div>
                   </div>
-                  
-                  
-                   
-                 
-                    <div class="col-md-6 mb-3">
+                  <div class="col-md-6 mb-3">
                         <div class="form-group">
                           <label for="images">{{ 'Store_Pictures' | translate }}</label>
                           <dropzone [disabled]="type === 'view'"class="dropzone" [config]="dropzoneConfig" [message]="'Drop Images here or click to upload.'" (success)="onUploadSuccess($event)">

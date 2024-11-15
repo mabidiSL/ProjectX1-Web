@@ -51,21 +51,6 @@ export class FormAreaComponent implements OnInit, OnDestroy {
       this.loading$ = this.store.pipe(select(selectDataLoading)); 
       this.store.dispatch(fetchCountrylistData({ page: 1, itemsPerPage: 1000, status:'active' }));
 
-      this.store.select(selectDataCountry).subscribe(
-        data => {
-          this.countries = [...data].map(country =>{
-            const translatedName = country.translation_data && country.translation_data[0]?.name || 'No name available';
-        
-            return {
-              ...country,  
-              translatedName 
-            };
-          }).sort((a, b) => {
-            // Sort by translatedName
-            return a.translatedName.localeCompare(b.translatedName);
-          });
-        })
-
       this.areaForm = this.formBuilder.group({
         id:[null],
         name: ['', Validators.required],
@@ -74,6 +59,21 @@ export class FormAreaComponent implements OnInit, OnDestroy {
                    
       });
      }
+     fetchCountry(){
+      this.store.select(selectDataCountry).subscribe((data) =>{
+        this.countries = [...data].map(country =>{
+          const translatedName = country.translation_data && country.translation_data[0]?.name || 'No name available';
+      
+          return {
+            ...country,  
+            translatedName 
+          };
+        }).sort((a, b) => {
+          // Sort by translatedName
+          return a.translatedName.localeCompare(b.translatedName);
+        });
+      });
+    }
   patchValueForm(area: Area){
       this.areaForm.patchValue({
         id: area.id,
@@ -83,7 +83,7 @@ export class FormAreaComponent implements OnInit, OnDestroy {
         });
     }
   ngOnInit() {
-
+    this.fetchCountry();
     const AreaId = this.route.snapshot.params['id'];
     if (AreaId) {
       // Dispatch action to retrieve the Area by ID
@@ -104,32 +104,37 @@ export class FormAreaComponent implements OnInit, OnDestroy {
    
   }
   createAreaFromForm(formValue): Area{
-    const area: Area = {
-      id: formValue.id,
-      country_id: formValue.country_id? formValue.country_id: null,
-      translation_data: [
-        {
-          name: formValue.name? formValue.name: null,        
-          language: 'en',        
-        },
-        {
-          name: formValue.name_ar? formValue.name_ar: null ,     
-          language:'ar',              
-        }
-      ]
-    }
-    if(this.isEditing){
-      area.translation_data = area.translation_data.filter(
-        translation => translation.name !== '' && translation.name !== null && translation.name !== undefined
-      );
-    
-      // Dynamically remove properties that are undefined or null at the top level of city object
+    const area = formValue;
+      area.translation_data= [];
+      const enFields = [
+        { field: 'name', name: 'name' },
+           
+      ];
+      const arFields = [
+        { field: 'name_ar', name: 'name' },
+            ];
+      
+      // Create the English translation if valid
+      const enTranslation = this.formUtilService.createTranslation(area,'en', enFields);
+      if (enTranslation) {
+        area.translation_data.push(enTranslation);
+      }
+
+      // Create the Arabic translation if valid
+      const arTranslation = this.formUtilService.createTranslation(area,'ar', arFields);
+      if (arTranslation) {
+        area.translation_data.push(arTranslation);
+      }
+      if(area.translation_data.length <= 0)
+        delete area.translation_data;
+         
+      // Dynamically remove properties that are undefined or null at the top level of area object
       Object.keys(area).forEach(key => {
         if (area[key] === undefined || area[key] === null) {
           delete area[key];  // Delete property if it's undefined or null
         }
       });
-    }
+    
     console.log(area);
     return area;
 
@@ -161,9 +166,8 @@ export class FormAreaComponent implements OnInit, OnDestroy {
         {
           const updatedDta = this.formUtilService.detectChanges<Area>(this.areaForm, this.originalAreaData);
           if (Object.keys(updatedDta).length > 0) {
-            updatedDta.id = this.areaForm.value.id;
             const changedData = this.createAreaFromForm(updatedDta);
-            console.log(changedData);
+            changedData.id = this.areaForm.value.id;
             this.store.dispatch(updateArealist({ updatedData: changedData }));
           }
           else{

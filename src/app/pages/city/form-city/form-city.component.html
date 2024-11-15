@@ -25,14 +25,8 @@
                       </div>
                       <div class="col-md-6 mb-3">
                         <div class="form-group ">
-                              <label for="country_id" >{{'Country' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                              <input *ngIf="type === 'view'"
-                              type="text" 
-                              class="form-control" 
-                              [value]="getCountryName(cityForm.get('country_id').value)" 
-                              readonly 
-                            />
-                           <ng-select [hidden]="type === 'view'" id="country_id" placeholder="{{'Select_the_Country' |translate}}" [items]="countries" formControlName="country_id" bindLabel="translatedName" 
+                          <label for="country_id" >{{'Country' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                          <ng-select [readonly]="type === 'view'" id="country_id" placeholder="{{'Select_the_Country' |translate}}" [items]="countries" formControlName="country_id" bindLabel="translatedName" 
                            bindValue="id" (change)="onChangeCountrySelection($event)">
                            </ng-select>
                               <div *ngIf="cityForm.get('country_id').touched && cityForm.get('country_id').invalid" class="invalid-feedback d-block">
@@ -42,14 +36,8 @@
                       </div>
                       <div class="col-md-6 mb-3">
                         <div class="form-group ">
-                              <label for="area_id" >{{'area' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                              <input *ngIf="type === 'view'"
-                              type="text" 
-                              class="form-control" 
-                              [value]="getAreaName(cityForm.get('area_id').value)" 
-                              readonly 
-                            />
-                           <ng-select [hidden]="type === 'view'"  id="area_id" placeholder="{{'Select_the_Area' |translate}}" [items]="filteredAreas" bindLabel="translatedName" 
+                           <label for="area_id" >{{'area' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                           <ng-select [readonly]="type === 'view'"  id="area_id" placeholder="{{'Select_the_Area' |translate}}" [items]="filteredAreas" bindLabel="translatedName" 
                            bindValue="id" formControlName="area_id">
                               </ng-select>
                               <div *ngIf="cityForm.get('area_id').touched && cityForm.get('area_id').invalid" class="invalid-feedback d-block">

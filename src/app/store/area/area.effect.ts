@@ -79,25 +79,7 @@ export class AreaEffects {
         })
       )
     );
-    // getAreaById$ = createEffect(() =>
-    //     this.actions$.pipe(
-    //       ofType(getAreaById),
-    //       mergeMap(({ AreaId }) => {
-    //         // Use the selector to get the Area from the Area
-    //         return this.store.select(selectAreaById(AreaId)).pipe(
-    //           map(Area => {
-    //             if (Area) {
-    //               // Dispatch success action with the Area data
-    //               return getAreaByIdSuccess({ Area: Area });
-    //             } else {
-    //              // this.toastr.error('Area not found.'); // Show error notification
-    //           return getAreaByIdFailure({ error: 'Area not found' });
-    //             }
-    //           })
-    //         );
-    //       })
-    //     )
-    //   );
+    
     
     updateData$ = createEffect(() => 
         this.actions$.pipe(

@@ -20,6 +20,9 @@ export interface PaginateModel {
 export interface Translation{
     id?: number;
     name?: string;
+    title?: string;
+    f_name?: string;
+    l_name?: string;
     supervisorName?: string;
     termsAndConditions?: string;
     description?: string;

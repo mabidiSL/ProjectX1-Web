@@ -610,6 +610,7 @@
     "Bank_Account_is_required": "مطلوب حساب البنك",
     "Bank_Name":"اسم البنك",
     "Bank_Account_Number": "رقم الحساب البنكي",
+    "Select_the_Bank": "اختر البنك",
     "Role_is_required": "الوظيفة مطلوبة",
     "Add_merchant": "إضافة تاجر",
     "update_merchant": "تعديل تاجر",
@@ -631,7 +632,7 @@
     "Country_flag": "علم البلد",
     "Flag is required": "علم الدولة مطلوب",
     "Phone_Code": "رمز البلد",
-        "Add_country": "أضف البلد",
+    "Add_country": "أضف البلد",
     "update_country": "تعديل البلد",
     "Edit country": "تعديل البلد",
     "Edit_country_details": "تعديل تفاصيل البلد",
@@ -783,7 +784,7 @@
       "Gift_Cards": "بطاقات الهدايا",
       "Offers": "العروض",
       "Special_Coupons": "قسائم خاصة",
-      "Role": "الدور",
+      "Role": "الوظيفة",
       "Merchant_Wallet": "محفظة التاجر",
       "Merchant_Invoices": "فواتير التاجر",
       "Merchant_Commissions": "عمولات التاجر",
@@ -820,7 +821,24 @@
       "Print": "طباعة",
       "Download": "تنزيل",
       "Filter": "تصفية",
-      "Permissions": "الصلاحيات"
+      "Permissions": "الصلاحيات",
+      "First_Name": "الإسم بالإنقليزي",
+      "Last_Name": "اللقب بالإنقليزي",
+      "First_Name in arabic": "الاسم",
+      "Last_Name in arabic": "اللقب",
+      "View_Employee_Permissions": "عرض صلاحيات الموظف",
+      "View_employee": "عرض الموظف",
+      "Enter_the_Bank_AccountNumber": "أدخل رقم الحساب البنكي",
+      "Enter_employee_phone": "أدخل رقم هاتف الموظف",
+      "Enter_first_name": "أدخل الاسم بالإنقليزي",
+      "Enter_last_name": "أدخل اللقب بالإنقليزي",
+      "Enter_first_name_in_arabic": "أدخل الاسم",
+      "Enter_last_name_in_arabic": "أدخل اللقب",
+      "First_Name_tab": "الاسم",
+      "Last_Name_tab": "اللقب"
+
+
+
 }
     
     

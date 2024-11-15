@@ -90,10 +90,10 @@ export class RolesEffects {
       mergeMap(({ RoleId }) => {
         // Use the selector to get the Role from the store
         return this.CrudService.getDataById('/roles', RoleId).pipe(
-          map(Role => {
+          map((Role: any) => {
             if (Role) {
               // Dispatch success action with the Role data
-              return getRoleByIdSuccess({ Role });
+              return getRoleByIdSuccess({ Role: Role.result });
             } else {
               //this.toastr.error('Role not found.'); // Show error notification
               return getRoleByIdFailure({ error: 'Role not found' });

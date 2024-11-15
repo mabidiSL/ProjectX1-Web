@@ -152,26 +152,31 @@ export class FormRoleComponent implements OnInit, OnDestroy {
 }
 createRoleFromForm(formValue): Role {
   const role = formValue;
-  role.translation_data = [
-    {
-      name: formValue.name? formValue.name: null, 
-      language: 'en',        
-    },
-    {
-      name: formValue.name_ar? formValue.name_ar: null ,  
-      language:'ar',              
-    }
+  role.translation_data = [];
+  const enFields = [
+    { field: 'name', name: 'name' },
+  
   ];
-  role.translation_data = role.translation_data.map(translation => {
-  // Iterate over each property of the translation and delete empty values
-  Object.keys(translation).forEach(key => {
-   if (translation[key] === '' || translation[key] === null || translation[key] === undefined) {
-            delete translation[key];  // Remove empty fields
-          }
-        });
-        return translation; // Return the modified translation object
-  });
-        // Dynamically remove properties that are undefined or null at the top level of city object
+  const arFields = [
+    { field: 'name_ar', name: 'name' },
+   
+  ];
+  
+  // Create the English translation if valid
+  const enTranslation = this.formUtilService.createTranslation(role,'en', enFields);
+  if (enTranslation) {
+    role.translation_data.push(enTranslation);
+  }
+
+  // Create the Arabic translation if valid
+  const arTranslation = this.formUtilService.createTranslation(role,'ar', arFields);
+  if (arTranslation) {
+    role.translation_data.push(arTranslation);
+  }
+  if(role.translation_data.length <= 0)
+    delete role.translation_data;
+
+  // Dynamically remove properties that are undefined or null at the top level of city object
   Object.keys(role).forEach(key => {
     if (role[key] === undefined || role[key] === null) {
         delete role[key];  // Delete property if it's undefined or null
@@ -211,6 +216,7 @@ createRoleFromForm(formValue): Role {
           const updatedDta = this.formUtilService.detectChanges(this.roleForm, this.originalRoleData);
           if (Object.keys(updatedDta).length > 0) {
             const changedData = this.createRoleFromForm(updatedDta);
+            changedData.id =  this.roleForm.value.id;
             this.store.dispatch(updateRolelist({ updatedData: changedData }));
           }
           else{

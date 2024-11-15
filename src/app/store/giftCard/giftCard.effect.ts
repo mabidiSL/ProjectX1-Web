@@ -18,12 +18,12 @@ import {
     deleteGiftCardlistSuccess,
     deleteGiftCardlist,
     getGiftCardById,
-    getGiftCardByIdSuccess
+    getGiftCardByIdSuccess,
+    getGiftCardByIdFailure
 } from './giftCard.action';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { getCouponByIdFailure } from '../coupon/coupon.action';
 
 @Injectable()
 export class GiftCardsEffects {
@@ -106,7 +106,7 @@ export class GiftCardsEffects {
               return getGiftCardByIdSuccess({ GiftCard });
             } else {
               //this.toastr.error('GiftCard not found.')
-              return getCouponByIdFailure({ error: 'GiftCard not found' }); // or handle it differently
+              return getGiftCardByIdFailure({ error: 'GiftCard not found' }); // or handle it differently
             }
           })
         );

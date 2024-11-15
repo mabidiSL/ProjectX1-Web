@@ -63,13 +63,7 @@
                     
                       <div *ngIf="currentRole === 'Admin'" class="col-md-6 mb-3">
                         <label for="merchant_id">{{'Merchant Name'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                        <input *ngIf="type === 'view'"
-                          type="text" 
-                          class="form-control" 
-                          [value]="getMerchantName(formCoupon.get('merchant_id').value)" 
-                          readonly 
-                      />
-                        <ng-select [hidden]="type === 'view'" id="merchant_id"  placeholder="{{'Select_the_merchant' |translate}}" [items]="merchantList" bindLabel="translatedName" 
+                        <ng-select [readonly]="type === 'view'" id="merchant_id"  placeholder="{{'Select_the_merchant' |translate}}" [items]="merchantList" bindLabel="translatedName" 
                         bindValue="id"  formControlName="merchant_id" (change)="onChangeMerchantSelection($event)">
                         </ng-select>
                         <div *ngIf="formCoupon.get('merchant_id').invalid && formCoupon.get('merchant_id').touched" class="text-danger">
@@ -80,7 +74,7 @@
                       <div class="col-md-6 mb-3">
                         <label for="stores">{{'Stores'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                         <ng-select
-                          [disabled]="type === 'view'"
+                          [readonly]="type === 'view'"
                           id="stores"
                           [placeholder]="'Select Stores'| translate"
                           [items]="storeList"
@@ -143,7 +137,13 @@
                     {{'Manager Name is required'|translate}}
                   </div> -->
                 </div>
-              
+                <div class="col-md-6 mb-3">
+                  <label for="managerName_ar">{{'Manager Name in Arabic'|translate}}</label>
+                  <input class="form-control" id="managerName_ar" formControlName="managerName_ar" type="text" [readonly]="type==='view'"/>
+                  <!-- <div *ngIf="formCoupon.get('managerName').invalid && formCoupon.get('managerName').touched">
+                    {{'Manager Name is required'|translate}}
+                  </div> -->
+                </div>
                 <div class="col-md-6 mb-3">
                   <label for="managerPhone">{{'Manager Phone'|translate}}</label><br>
                   <app-phone-number
@@ -221,7 +221,7 @@
               
                 <div class="col-md-6 mb-3">
                   <label for="couponValueBeforeDiscount">{{'Value Before Discount'|translate}}</label>
-                  <input  class="form-control" id="couponValueBeforeDiscount" formControlName="couponValueBeforeDiscount" type="text" [readonly]="type==='view'"/>
+                  <input  class="form-control" id="couponValueBeforeDiscount" formControlName="couponValueBeforeDiscount" type="number" [readonly]="type==='view'"/>
                   <!-- <div *ngIf="formCoupon.get('couponValueBeforeDiscount').invalid && formCoupon.get('couponValueBeforeDiscount').touched">
                     {{'Value Before Discount is required'|translate}}
                   </div> -->

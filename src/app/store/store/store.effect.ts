@@ -75,13 +75,13 @@ export class StoreslistEffects {
           mergeMap(({ StoreId }) => {
             // Use the selector to get the Store from the store
             return this.CrudService.getDataById('/stores', StoreId).pipe(
-              map(Store => {
+              map((Store: any) => {
                 if (Store) {
                   // Dispatch success action with the Store data
-                  return getStoreByIdSuccess({ Store: Store });
+                  return getStoreByIdSuccess({ Store: Store.result });
                 } else {
                   this.toastr.error('Store not found.'); // Show error notification
-              return getStoreByIdFailure({ error: 'Store not found' });
+                  return getStoreByIdFailure({ error: 'Store not found' });
                 }
               })
             );

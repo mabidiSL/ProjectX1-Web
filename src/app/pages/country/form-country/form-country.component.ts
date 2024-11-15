@@ -92,34 +92,37 @@
       }
      
     }
-    createCountryFromForm(formValue): Country{
-      const country: Country = {
-        id: formValue.id,
-        phoneCode: formValue.phoneCode? formValue.phoneCode: null,
-        flag: formValue.flag? formValue.flag: null,
-        translation_data: [
-          {
-            name: formValue.name? formValue.name: null,        
-            language: 'en',        
-          },
-          {
-            name: formValue.name_ar? formValue.name_ar: null ,     
-            language:'ar',              
-          }
-        ]
-      }
-      if(this.isEditing){
-        country.translation_data = country.translation_data.filter(
-          translation => translation.name !== '' && translation.name !== null && translation.name !== undefined
-        );
-      
-        // Dynamically remove properties that are undefined or null at the top level of Country object
+createCountryFromForm(formValue): Country{
+      const country = formValue;
+      country.translation_data= [];
+      const enFields = [
+        { field: 'name', name: 'name' },
+           
+      ];
+      const arFields = [
+        { field: 'name_ar', name: 'name' },
+            ];
+ // Create the English translation if valid
+  const enTranslation = this.formUtilService.createTranslation(country,'en', enFields);
+  if (enTranslation) {
+    country.translation_data.push(enTranslation);
+  }
+
+  // Create the Arabic translation if valid
+  const arTranslation = this.formUtilService.createTranslation(country,'ar', arFields);
+  if (arTranslation) {
+    country.translation_data.push(arTranslation);
+  }
+  if(country.translation_data.length <= 0)
+    delete country.translation_data;
+
+  // Dynamically remove properties that are undefined or null at the top level of Country object
         Object.keys(country).forEach(key => {
           if (country[key] === undefined || country[key] === null) {
             delete country[key];  // Delete property if it's undefined or null
           }
         });
-      }
+      
       console.log(country);
       return country;
 
@@ -154,9 +157,8 @@
           { 
             const updatedDta = this.formUtilService.detectChanges<Country>(this.countryForm, this.originalCountryData);
             if (Object.keys(updatedDta).length > 0) {
-              updatedDta.id = this.countryForm.value.id;
               const changedData = this.createCountryFromForm(updatedDta);
-              console.log(changedData);
+              changedData.id = this.countryForm.value.id;
               this.store.dispatch(updateCountrylist({ updatedData: changedData }));
             }
             else

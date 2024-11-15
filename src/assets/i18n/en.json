@@ -524,12 +524,14 @@
   "Disable_Now": "Disable Now",
   "Employee_Basic_Informations": "Employee Basic Informations",
   "View_Employee_Permissions": "View Employee's Permissions",
+  "View_employee": "View Employee",
   "Edit_employee": "Edit Employee",
   "Update_employee": "Update Employee",
   "Add_employee": "Add Employee",
   "Bank_Account_is_required": "Bank Account is required",
   "Bank_Name":"Bank Name",
   "Bank_Name_is_required": "Bank Name is required",
+  "Select_the_Bank": "Select the Bank",
   "Bank_Account_Number": "Bank Account Number",
   "Role_is_required": "Role is required",
   "Add_merchant": "Add Merchant",
@@ -625,6 +627,7 @@
   "Edit_role": "Edit Role",
   "Add_role": "Add Role",
   "Cities_List": "Cities List",
+  "City": "City",
   "New_City": "New City",
   "city_Name": "City Name",
   "city_Name_Trans": "Arabic City Name",
@@ -760,16 +763,21 @@
       "Print": "Print",
       "Download": "Download",
       "Filter": "Filter",
-      "Permissions":"Permissions"
-    
-    
-  
-  
- 
-
-
- 
-
+      "Permissions":"Permissions",
+      "First_Name": "First Name",
+      "Last_Name": "Last Name",
+      "First_Name in arabic": "First Name in Arabic",
+      "Last_Name in arabic": "Last Name in Arabic",
+      "Enter_the_Bank_AccountNumber": "Enter the Bank Account Number",
+      "Enter_employee_phone": "Enter employee phone",
+      "Enter_first_name": "Enter first name",
+      "Enter_last_name": "Enter last name",
+      "Enter_first_name_in_arabic": "Enter first name in Arabic",
+      "Enter_last_name_in_arabic": "Enter last name in Arabic",
+      "inActive": "inActive",
+      "Active": "Active",
+      "First_Name_tab": "First Name",
+      "Last_Name_tab": "Last Name"
   
 
 }

@@ -114,6 +114,7 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
       merchant_id: [null, Validators.required],
       stores: [null, Validators.required],
       managerName: [''],
+      managerName_ar: [''],
       managerPhone: [''],
       startDateGiftCard: ['', Validators.required],
       endDateGiftCard: ['', Validators.required],
@@ -175,7 +176,7 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
           if (GiftCard) {
             
             if(this.currentRole == 'Admin'){
-              this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 100, status:'', merchant_id: GiftCard.merchant_id}));
+              this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000, status:'', merchant_id: GiftCard.merchant_id}));
             }
             this.storeList$ = this.store.pipe(select(selectData));
             // Patch the form with GiftCard data
@@ -224,13 +225,13 @@ getFileNameFromUrl(url: string): string {
   const parts = url.split('/');
   return parts[parts.length - 1]; // Returns the last part, which is the filename
 }
-onChangeMerchantSelection(event: any){
-  const merchant = event.target.value;
+onChangeMerchantSelection(event: Merchant){
+  const merchant = event;
+  this.storeList = [];
+  this.formGiftCard.get('stores').setValue(null);
   if(merchant){
     this.isLoading = true;
-    this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 10 ,status:'', merchant_id: merchant}));
-    this.storeList$ = this.store.pipe(select(selectData));
-    this.storeList$.subscribe(data => {
+    this.store.pipe(select(selectData)).subscribe(data => {
       if(data && data.length > 0){
         this.storeList = [...data].map(store =>{
         const translatedName = store.translation_data && store.translation_data[0]?.name || 'No name available';
@@ -238,7 +239,9 @@ onChangeMerchantSelection(event: any){
           ...store,  
           translatedName 
         };
-      }).sort((a, b) => {
+      })
+      .filter(store => store.merchant_id === merchant.id)
+      .sort((a, b) => {
         // Sort by translatedName
         return a.translatedName.localeCompare(b.translatedName);
       })
@@ -253,38 +256,47 @@ onPhoneNumberChanged(phoneNumber: string) {
 }
 createGiftCardFromForm(formValue): GiftCard{
   const giftCard = formValue;
-  giftCard.translation_data= [
-    {
-      name: formValue.name? formValue.name: null,  
-      description: formValue.description? formValue.description: null,
-      termsAndConditions: formValue.termsAndConditions? formValue.termsAndConditions: null,     
-      language: 'en',        
-    },
-    {
-      name: formValue.name_ar? formValue.name_ar: null ,  
-      description: formValue.description_ar? formValue.description_ar: null,     
-      termsAndConditions: formValue.termsAndConditions_ar? formValue.termsAndConditions_ar: null,     
-      language:'ar',              
-    }];
-  
-  if(this.isEditing){
-    giftCard.translation_data = giftCard.translation_data.map(translation => {
-      // Iterate over each property of the translation and delete empty values
-      Object.keys(translation).forEach(key => {
-        if (translation[key] === '' || translation[key] === null || translation[key] === undefined) {
-          delete translation[key];  // Remove empty fields
-        }
-      });
-      return translation; // Return the modified translation object
-    });
-  
-    // Dynamically remove properties that are undefined or null at the top level of city object
+  giftCard.translation_data= [];
+  const enFields = [
+    { field: 'name', name: 'name' },
+    { field: 'description', name: 'description' },
+    { field: 'termsAndConditions', name: 'termsAndConditions' },
+    { field: 'managerName', name: 'managerName' }
+  ];
+  const arFields = [
+    { field: 'name_ar', name: 'name' },
+    { field: 'description_ar', name: 'description' },
+    { field: 'termsAndConditions_ar', name: 'termsAndConditions' },
+    { field: 'managerName_ar', name: 'managerName' }
+
+
+  ];
+  // Create the English translation if valid
+  const enTranslation = this.formUtilService.createTranslation(giftCard,'en', enFields);
+  if (enTranslation) {
+    giftCard.translation_data.push(enTranslation);
+  }
+
+  // Create the Arabic translation if valid
+  const arTranslation = this.formUtilService.createTranslation(giftCard,'ar', arFields);
+  if (arTranslation) {
+    giftCard.translation_data.push(arTranslation);
+  }
+  if(giftCard.translation_data.length <= 0)
+    delete giftCard.translation_data;
+
+  // Dynamically remove properties that are undefined or null at the top level of city object
     Object.keys(giftCard).forEach(key => {
       if (giftCard[key] === undefined || giftCard[key] === null) {
         delete giftCard[key];  // Delete property if it's undefined or null
       }
     });
-  }
+    delete giftCard.name;  
+    delete giftCard.name_ar;    
+    delete giftCard.description;
+    delete giftCard.description_ar;
+    delete giftCard.termsAndConditions;
+    delete giftCard.termsAndConditions_ar;
   console.log(giftCard);
   return giftCard;
 
@@ -317,6 +329,7 @@ onSubmit(){
         if (Object.keys(updatedDta).length > 0) {
           const changedData = this.createGiftCardFromForm(updatedDta);
           console.log(changedData);
+          changedData.id =  this.formGiftCard.value.id;
           this.store.dispatch(updateGiftCardlist({ updatedData: changedData }));
         }
         else{

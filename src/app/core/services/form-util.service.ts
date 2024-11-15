@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ElementRef, Injectable } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 
@@ -70,5 +71,19 @@ export class FormUtilService{
     }
 
     
+  }
+  /***
+   * Creates Translated Objects
+   */
+  createTranslation (formValue: any,language: string, fields: {field: string, name: string}[]): any  {
+    const translation: any = { language };
+
+    fields.forEach(({ field, name }) => {
+      if (formValue[field]) {
+        translation[name] = formValue[field];
+      }
+    });
+    // Only return the translation if it has at least one valid property (other than 'language')
+    return Object.keys(translation).length > 1 ? translation : null;
   }
 }

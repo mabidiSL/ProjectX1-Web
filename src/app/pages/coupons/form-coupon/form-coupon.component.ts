@@ -233,13 +233,13 @@ getFileNameFromUrl(url: string): string {
   return parts[parts.length - 1]; // Returns the last part, which is the filename
 }
 
-onChangeMerchantSelection(event: any){
-  const merchant = event.target.value;
+onChangeMerchantSelection(event: Merchant){
+  const merchant = event;
+  this.storeList = [];
+  this.formCoupon.get('stores').setValue(null);
   if(merchant){
     this.isLoading = true;
-    this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,status:'', merchant_id: merchant}));
-    this.storeList$ = this.store.pipe(select(selectData));
-    this.storeList$.subscribe(data => {
+    this.store.pipe(select(selectData)).subscribe(data => {
     if(data && data.length > 0){
       this.storeList = [...data].map(store =>{
       const translatedName = store.translation_data && store.translation_data[0]?.name || 'No name available';
@@ -247,7 +247,9 @@ onChangeMerchantSelection(event: any){
         ...store,  
         translatedName 
       };
-    }).sort((a, b) => {
+    })
+    .filter(store => store.merchant_id === merchant.id)
+    .sort((a, b) => {
       // Sort by translatedName
       return a.translatedName.localeCompare(b.translatedName);
     })
@@ -258,38 +260,49 @@ onChangeMerchantSelection(event: any){
 }
 createCouponFromForm(formValue): Coupon{
   const coupon = formValue;
-  coupon.translation_data= [
-    {
-      name: formValue.name? formValue.name: null,  
-      description: formValue.description? formValue.description: null,
-      termsAndConditions: formValue.termsAndConditions? formValue.termsAndConditions: null,     
-      language: 'en',        
-    },
-    {
-      name: formValue.name_ar? formValue.name_ar: null ,  
-      description: formValue.description_ar? formValue.description_ar: null,     
-      termsAndConditions: formValue.termsAndConditions_ar? formValue.termsAndConditions_ar: null,     
-      language:'ar',              
-    }];
+  coupon.translation_data= [];
+  const enFields = [
+    { field: 'name', name: 'name' },
+    { field: 'description', name: 'description' },
+    { field: 'termsAndConditions', name: 'termsAndConditions' },
+    { field: 'managerName', name: 'managerName' }
+
+  ];
+  const arFields = [
+    { field: 'name_ar', name: 'name' },
+    { field: 'description_ar', name: 'description' },
+    { field: 'termsAndConditions_ar', name: 'termsAndConditions' },
+    { field: 'managerName_ar', name: 'managerName' }
+
+
+  ];
   
-  if(this.isEditing){
-    coupon.translation_data = coupon.translation_data.map(translation => {
-      // Iterate over each property of the translation and delete empty values
-      Object.keys(translation).forEach(key => {
-        if (translation[key] === '' || translation[key] === null || translation[key] === undefined) {
-          delete translation[key];  // Remove empty fields
-        }
-      });
-      return translation; // Return the modified translation object
-    });
-  
-    // Dynamically remove properties that are undefined or null at the top level of city object
+  // Create the English translation if valid
+  const enTranslation = this.formUtilService.createTranslation(coupon,'en', enFields);
+  if (enTranslation) {
+    coupon.translation_data.push(enTranslation);
+  }
+
+  // Create the Arabic translation if valid
+  const arTranslation = this.formUtilService.createTranslation(coupon,'ar', arFields);
+  if (arTranslation) {
+    coupon.translation_data.push(arTranslation);
+  }
+  if(coupon.translation_data.length <= 0)
+    delete coupon.translation_data;
+
+  // Dynamically remove properties that are undefined or null at the top level of city object
     Object.keys(coupon).forEach(key => {
       if (coupon[key] === undefined || coupon[key] === null) {
         delete coupon[key];  // Delete property if it's undefined or null
       }
     });
-  }
+    delete coupon.name;  
+    delete coupon.name_ar;    
+    delete coupon.description;
+    delete coupon.description_ar;
+    delete coupon.termsAndConditions;
+    delete coupon.termsAndConditions_ar;
   console.log(coupon);
   return coupon;
 
@@ -326,6 +339,7 @@ createCouponFromForm(formValue): Coupon{
         const updatedDta = this.formUtilService.detectChanges(this.formCoupon, this.originalCouponData);
         if (Object.keys(updatedDta).length > 0) {
           const changedData = this.createCouponFromForm(updatedDta);
+          changedData.id =  this.formCoupon.value.id;
           console.log(changedData);
           this.store.dispatch(updateCouponlist({ updatedData: changedData }));
         }
