@@ -76,7 +76,8 @@
                           bindLabel="translatedName" 
                           bindValue="id"  
                           formControlName="stores" 
-                          multiple>
+                          [multiple] = "true"
+                          >
                           </ng-select>
                           <!-- <div *ngIf="isLoading" class="text-info">Loading stores...</div> -->
                           <div *ngIf="formGiftCard.get('stores').invalid && formGiftCard.get('stores').touched">

@@ -32,7 +32,7 @@ export class StoreslistEffects {
             ofType(fetchStorelistData),
             mergeMap(({ page, itemsPerPage,status, merchant_id }) =>
                 this.CrudService.fetchData('/stores',{ limit: itemsPerPage, page: page,status: status, merchant_id: merchant_id}).pipe(
-                    map((response: any) => fetchStorelistSuccess({ StoreListdata: response.result })),
+                    map((response: any) => {console.log(response.result);return fetchStorelistSuccess({ StoreListdata: response.result })}),
                     catchError((error) =>{
                         this.toastr.error('An error occurred while fetching the Store list. Please try again later.'); 
                         console.error('Fetch error:', error); 
@@ -151,6 +151,6 @@ export class StoreslistEffects {
     private getCurrentUserRole(): string {
         // Replace with your actual logic to retrieve the user role
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        return currentUser ? currentUser.role.name : '';
+        return currentUser ? currentUser.role.translation_data[0].name : '';
     }
 }

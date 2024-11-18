@@ -8,7 +8,7 @@
         <div class="card">
             <div class="card-body ">
               <form  [formGroup]="storeForm"  class="m-4">
-                <div *ngIf="formError" class="alert alert-danger">{{ formError }}</div>
+                <div *ngIf="formError" class="alert alert-danger">{{ formError | translate }}</div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <div class="form-group ">
@@ -58,7 +58,7 @@
                 <div *ngIf="currentRole === 'Admin'" class="col-md-6 mb-3">
                   <div class="form-group ">
                      <label for="merchant_id" >{{'Merchant_Name' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                     <ng-select [readonly]="type === 'view'"  id="merchant_id"  placeholder="{{'Select_the_merchant' | translate}}" [items]="merchantlist" bindLabel="translatedName" 
+                     <ng-select [readonly]="type === 'view'"  id="merchant_id"  placeholder="{{'Select_the_merchant' | translate}}" [items]="merchantList" bindLabel="translatedName" 
                      bindValue="id"  formControlName="merchant_id" (change)="onChangeMerchantSelection($event)">
                         </ng-select>
                         <div *ngIf="storeForm.get('merchant_id').touched && storeForm.get('merchant_id').invalid" class="invalid-feedback d-block">
@@ -81,10 +81,10 @@
                   <div class="form-group ">
                     <label for="city_id" >{{'City' | translate}}</label>
                     <ng-select [readonly]="type === 'view'" id="city_id" placeholder="{{'Select_the_City' | translate}}" [items]="filteredCities" bindLabel="translatedName" 
-                    bindValue="id"  formControlName="city_id" (change)="onChangeAreaSelection($event)" >
+                    bindValue="id"  formControlName="city_id" >
                     </ng-select>  
                      <div *ngIf="storeForm.get('city_id').touched && storeForm.get('city_id').invalid" class="invalid-feedback d-block">
-                        <span *ngIf="storeForm.get('city_id').errors?.['required']">{{'area_is_required'| translate}}.</span>
+                        <span *ngIf="storeForm.get('city_id').errors?.['required']">{{'city_is_required'| translate}}.</span>
                     </div>   
                    </div>                     
                 </div>
@@ -105,12 +105,14 @@
                     </div>
                   </div>
                   <div class="col-md-6 mb-3">
+                  </div>      
+                  <div class="col-md-6 mb-3">
                         <div class="form-group">
                           <label for="images">{{ 'Store_Pictures' | translate }}</label>
                           <dropzone [disabled]="type === 'view'"class="dropzone" [config]="dropzoneConfig" [message]="'Drop Images here or click to upload.'" (success)="onUploadSuccess($event)">
                           </dropzone>
                         </div>
-                     </div>
+                  </div>
                      <div class="col-md-6 mb-3">
                       <div class="form-group">
                         <label for="images"></label>

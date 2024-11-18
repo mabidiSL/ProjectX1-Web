@@ -60,7 +60,7 @@ export class FormNotificationComponent implements OnInit {
         description: [''],
         title_ar: ['', Validators.required],
         description_ar: [''],
-        userId: [9]
+        user_id: [92]
         
       });
       this.bsConfig = this.datepickerConfigService.getConfig();
@@ -101,7 +101,7 @@ export class FormNotificationComponent implements OnInit {
     });
 
   }
-parseToCronExpression(date : Date): string{
+parseToCronExpression(date : any): any{
 
   const parseDate = new Date(date);
   const mins = parseDate.getMinutes();
@@ -115,7 +115,7 @@ parseToCronExpression(date : Date): string{
 createNotificationFromForm(formValue): Notification{
 
   const notification = formValue;
-  notification.cronExpression = this.parseToCronExpression(notification.cronExpression)
+  //notification.cronExpression = this.parseToCronExpression(notification.cronExpression)
   
   notification.translation_data= [];
   const enFields = [
@@ -150,6 +150,7 @@ createNotificationFromForm(formValue): Notification{
         delete notification[key];  // Delete property if it's undefined or null
       }
     });
+    delete notification.cronExpression;
     delete notification.title;
     delete notification.title_ar;
     delete notification.description;

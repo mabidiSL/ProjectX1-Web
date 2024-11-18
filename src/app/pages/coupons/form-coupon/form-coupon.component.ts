@@ -81,7 +81,9 @@ export class FormCouponComponent implements OnInit, OnDestroy{
 
       if(this.currentRole !== 'Admin')
           this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,status:'', merchant_id: this.merchantId}));
-      
+      else
+          this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,status:'', merchant_id: null}));
+
       this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 100 , status: 'active'})); 
       
       this.initForm();
@@ -167,8 +169,23 @@ export class FormCouponComponent implements OnInit, OnDestroy{
       return a.translatedName.localeCompare(b.translatedName);
     });
     });
-    this.storeList$ = this.store.pipe(select(selectData));
-
+    this.store.pipe(select(selectData)).subscribe(data => {
+      if(data && data.length > 0){
+        this.storeList = [...data].map(store =>{
+        const translatedName = store.translation_data && store.translation_data[0]?.name || 'No name available';
+        return {
+          ...store,  
+          translatedName 
+        };
+      })
+      .sort((a, b) => {
+        // Sort by translatedName
+        return a.translatedName.localeCompare(b.translatedName);
+      })
+     }
+     console.log(this.storeList);
+     
+    });
     if(this.currentRole !== 'Admin'){
       this.formCoupon.get('merchant_id').setValue(this.merchantId);
       this.isLoading = true;
@@ -184,11 +201,13 @@ export class FormCouponComponent implements OnInit, OnDestroy{
         .pipe(select(selectedCoupon), takeUntil(this.destroy$))
         .subscribe(coupon => {
           if (coupon) {
-            if(this.currentRole == 'Admin'){
+            console.log(coupon);
+            coupon.stores = this.bindStore(coupon.stores)
+            if(this.currentRole === 'Admin'){
               this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000, status:'', merchant_id: coupon.merchant_id}));
+              this.fetchStore(coupon.merchant_id);
             }
-           
-            this.storeList$ = this.store.pipe(select(selectData));
+           console.log(this.storeList);
             // Patch the form with coupon data
             this.existantcouponLogo = coupon.couponLogo;
             if(coupon.couponLogo){
@@ -203,6 +222,17 @@ export class FormCouponComponent implements OnInit, OnDestroy{
         });
     }
   
+}
+bindStore(stores: any[]){
+  stores = [...stores].map(store =>{
+    const translatedName = store.translation_data && store.translation_data[0]?.name || 'No name available';
+    return {
+      ...store,  
+      translatedName 
+    };
+});
+
+return stores;
 }
 patchValueForm(coupon: Coupon){
   this.formCoupon.patchValue(coupon);
@@ -231,6 +261,24 @@ getFileNameFromUrl(url: string): string {
   if (!url) return '';
   const parts = url.split('/');
   return parts[parts.length - 1]; // Returns the last part, which is the filename
+}
+fetchStore(id: number){
+  this.store.pipe(select(selectData)).subscribe(data => {
+    if(data && data.length > 0){
+      this.storeList = [...data].map(store =>{
+      const translatedName = store.translation_data && store.translation_data[0]?.name || 'No name available';
+      return {
+        ...store,  
+        translatedName 
+      };
+    })
+    .filter(store => store.merchant_id === id)
+    .sort((a, b) => {
+      // Sort by translatedName
+      return a.translatedName.localeCompare(b.translatedName);
+    })
+   }
+  });
 }
 
 onChangeMerchantSelection(event: Merchant){

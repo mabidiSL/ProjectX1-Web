@@ -21,7 +21,7 @@ export interface Coupon {
         city?:  City;
         quantity?: number;
         merchant?: Merchant;
-        store?: any;//Store;
+        stores?: any;//Store;
         managerPhone?: string;
         startDateCoupon?: Date;
         endDateCoupon?: Date;

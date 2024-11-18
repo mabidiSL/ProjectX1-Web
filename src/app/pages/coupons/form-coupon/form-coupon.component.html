@@ -21,7 +21,7 @@
                       <div class="col-md-6 mb-3">
                           <label for="name_ar">{{'Translated Name'|translate}}</label>
                           <input class="form-control" id="name_ar" formControlName="name_ar" type="text" [readonly]="type==='view'"/>
-                          <div *ngIf="formCoupon.get('transName').invalid && formCoupon.get('transName').touched" class="text-danger">
+                          <div *ngIf="formCoupon.get('name_ar').invalid && formCoupon.get('name_ar').touched" class="text-danger">
                               {{'Translated name is required'|translate}}
                           </div>
                       </div>
@@ -37,7 +37,7 @@
                       <div class="col-md-6 mb-3">
                           <label for="termsAndConditions_ar">{{'Terms and Conditions'|translate}}</label>
                           <textarea class="form-control" id="termsAndConditions_ar" formControlName="termsAndConditions_ar" rows="5" [readonly]="type==='view'"></textarea>
-                          <div *ngIf="formCoupon.get('transTermsAndConditions').invalid && formCoupon.get('transTermsAndConditions').touched" class="text-danger">
+                          <div *ngIf="formCoupon.get('termsAndConditions_ar').invalid && formCoupon.get('termsAndConditions_ar').touched" class="text-danger">
                               {{'Translated Terms and Conditions are required'|translate}}
                           </div>
                       </div>
@@ -78,8 +78,10 @@
                           id="stores"
                           [placeholder]="'Select Stores'| translate"
                           [items]="storeList"
+                          bindLabel="translatedName" 
+                          bindValue="id"
                           formControlName="stores"
-                          multiple
+                          [multiple] = "true"
                           >
                         </ng-select>
                         <!-- <div *ngIf="isLoading" class="text-info">Loading stores...</div> -->

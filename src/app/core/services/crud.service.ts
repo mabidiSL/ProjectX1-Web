@@ -23,7 +23,17 @@ export class CrudService {
     /***
      * Get 
      */
-   
+    fetchMyNotif<T>(url: string): Observable<T> {
+        let params = new HttpParams();
+
+        // Add language parameter if it's set
+        if (this.currentLge) {
+            const lge = `["${this.currentLge}"]`;
+            params = params.set('lang', lge);
+        }
+        return this.http.get<T>(` ${environment.baseURL}${url}`,{params: params});
+    }
+
     fetchData<T>(url: string, payload?: Params ): Observable<T> {
          return this.http.get<T>(` ${environment.baseURL}${url}`, {params: this.setParams(payload)});
     }

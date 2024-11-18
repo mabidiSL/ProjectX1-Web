@@ -152,6 +152,6 @@ export class GiftCardsEffects {
     private getCurrentUserRole(): string {
       // Replace with your actual logic to retrieve the user role
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      return currentUser ? currentUser.role.name : '';
-  }
+      return currentUser ? currentUser.role.translation_data[0].name : '';
+    }
 }

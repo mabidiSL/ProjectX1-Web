@@ -420,7 +420,6 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
           }
         }
       
-    
   }
   
   

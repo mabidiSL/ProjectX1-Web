@@ -494,6 +494,8 @@
     "Please enter your username": "يرجى إدخال اسم المستخدم الخاص بك",
     "Please enter your email": "يرجى إدخال بريدك الإلكتروني",
     "Phone": "الهاتف",
+    "Remember me":"تذكرني",
+    "Log In": "تسجيل الدخول",
     "Enter the Phone": "أدخل الهاتف",
     "Enter Your Phone:": "أدخل رقم هاتفك",
     "Enter the Password": "أدخل كلمة المرور",
@@ -739,6 +741,7 @@
     "Total Offers":"إجمالي العروض",
     "Total Stores": "إجمالي الفروع",
     "National ID": "رقم الهوية الوطنية",
+    "ID Number": "رقم الهوية الوطنية",
     "Enter your National ID number": "أدخل رقم الهوية الوطنية الخاص بك",
     "id_number is required": "مطلوب رقم الهوية",
     "Phone Number": "رقم الهاتف",
@@ -835,7 +838,27 @@
       "Enter_first_name_in_arabic": "أدخل الاسم",
       "Enter_last_name_in_arabic": "أدخل اللقب",
       "First_Name_tab": "الاسم",
-      "Last_Name_tab": "اللقب"
+      "Last_Name_tab": "اللقب",
+      "Infinite - 2024":"٢٠٢٤ - أنفنيت",
+      "Infinite": "أنفنيت",
+      "2024": "٢٠٢٤",
+      "2025":"٢٠٢٥",
+      "Forgot your password?": "نسيت كلمة السر؟",
+      "Reset Password": "إعادة تعيين كلمة المرور",
+      "Reset Password with Infinite.": "إعادة تعيين كلمة المرور مع أنفنيت.",
+      "Enter your Email and instructions will be sent to you!": "أدخل بريدك الإلكتروني وسيتم إرسال التعليمات إليك!",
+      "Enter email": "أدخل البريد الإلكتروني",
+      "Email is required": "البريد الإلكتروني مطلوب",
+      "Email must be a valid email address": "يجب أن يكون البريد الإلكتروني عنوان بريد إلكتروني صالح",
+      "Reset": "إعادة تعيين",
+      "Register": "تسجيل",
+      "Register as a Merchant": "سجل كتاجر",
+      "Operator": "أنفنيت",
+      "Merchant": "تاجر",
+      "Continue as": "تابع"
+
+
+
 
 
 

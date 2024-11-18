@@ -50,7 +50,7 @@ export class NotificationsEffects {
       this.actions$.pipe(
           ofType(fetchMyNotificationlistData),
           mergeMap(() =>
-              this.CrudService.fetchData('/notifications/my-notifications ').pipe(
+              this.CrudService.fetchMyNotif('/notifications/my-notifications').pipe(
                   map((response: any) => fetchMyNotificationlistSuccess({ NotificationListdata : response.result })),
                   catchError((error) =>{
                     this.toastr.error('An error occurred while fetching the My Notification list. Please try again later.'); 

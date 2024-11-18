@@ -222,6 +222,7 @@ private getNavigationState(){
         // Sort by translatedName
         return a.translatedName.localeCompare(b.translatedName);
       });
+      console.log(this.merchantList);
     });
   }
   fetchAreas(){
@@ -393,6 +394,7 @@ private getNavigationState(){
           if (Object.keys(updatedDta).length > 0) {
             const changedData = this.createStoreFromForm(updatedDta);
             changedData.images = this.parseImages(this.uploadedFiles);
+            changedData.id = this.storeForm.value.id;
             this.store.dispatch(updateStorelist({ updatedData: changedData }));
           }
           else{

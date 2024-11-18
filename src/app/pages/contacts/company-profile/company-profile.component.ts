@@ -87,7 +87,7 @@ export class CompanyProfileComponent implements OnInit {
      private getCurrentUserId(): number {
       // Replace with your actual logic to retrieve the user role
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      if(currentUser.role.name !== 'Admin'){
+      if(currentUser.role.translation_data[0].name !== 'Admin'){
          return currentUser.merchantId ;
       }
   }
