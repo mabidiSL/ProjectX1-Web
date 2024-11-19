@@ -141,20 +141,7 @@ export const MENU: MenuItem[] = [
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.PrePrinted_Membership, claimValue: [Permission.ViewAll]}],
         link:'/pages/coming-soon',
     },
-    {
-        id: 24,
-        label: 'MENUITEMS.GIFTS.TEXT',
-        icon: 'bx bxs-gift',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Gift_Cards, claimValue: [Permission.ViewAll]}],
-        link:'/private/giftCards',
-    },
-    {
-        id: 49,
-        label: 'MENUITEMS.PENDINGGIFTS.TEXT',
-        icon: 'bx bxs-gift',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Gift_Cards, claimValue: [Permission.ViewAll,Permission.Approve, Permission.Decline]}],
-        link:'/private/giftCards/approve',
-    },
+   
     {
         id: 13,
         label: 'MENUITEMS.DEPARTMENTMANAGEMENT.TEXT',
