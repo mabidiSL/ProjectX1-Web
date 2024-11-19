@@ -55,7 +55,6 @@ export class FormNotificationComponent implements OnInit {
 
       this.notifForm = this.formBuilder.group({
         id: [null],
-        cronExpression:[''],
         title: ['', Validators.required],
         description: [''],
         title_ar: ['', Validators.required],
@@ -101,21 +100,10 @@ export class FormNotificationComponent implements OnInit {
     });
 
   }
-parseToCronExpression(date : any): any{
 
-  const parseDate = new Date(date);
-  const mins = parseDate.getMinutes();
-  const hours = parseDate.getHours();
-  const day = parseDate.getDate();
-  const month = parseDate.getMonth() + 1;
-  const year = parseDate.getFullYear();
-  const cronExp = `${mins} ${hours} ${day} ${month} ${year}`; 
-  return cronExp;
-}
 createNotificationFromForm(formValue): Notification{
 
   const notification = formValue;
-  //notification.cronExpression = this.parseToCronExpression(notification.cronExpression)
   
   notification.translation_data= [];
   const enFields = [
@@ -150,7 +138,6 @@ createNotificationFromForm(formValue): Notification{
         delete notification[key];  // Delete property if it's undefined or null
       }
     });
-    delete notification.cronExpression;
     delete notification.title;
     delete notification.title_ar;
     delete notification.description;
