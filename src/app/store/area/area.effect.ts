@@ -23,7 +23,7 @@ import {
 } from './area.action';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { FormUtilService } from 'src/app/core/services/form-util.service';
 
 @Injectable()
 export class AreaEffects {
@@ -35,9 +35,9 @@ export class AreaEffects {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     map((response: any) => fetchArealistSuccess({ AreaListdata: response.result })),
                     catchError((error) =>{
-                        this.toastr.error('An error occurred while fetching the Area list. Please try again later.'); 
-                        console.error('Fetch error:', error); 
-                        return of(fetchArealistFail({ error: 'Error fetching data' })); 
+                      const errorMessage = this.formUtilService.getErrorMessage(error);
+                      this.toastr.error(errorMessage); 
+                      return of(fetchArealistFail({ error: errorMessage })); 
                       })
                 )
             ),
@@ -56,9 +56,9 @@ export class AreaEffects {
                         return addArealistSuccess({newData: response});
                       }),
                       catchError((error) => {
-                        const errorMessage = this.getErrorMessage(error); 
-                        this.toastr.error(errorMessage);
-                        return of(addArealistFailure({ error: error.message })); // Dispatch failure action
+                        const errorMessage = this.formUtilService.getErrorMessage(error);
+                        this.toastr.error(errorMessage); 
+                        return of(addArealistFailure({ error: errorMessage })); // Dispatch failure action
                       })                )
             )
         )
@@ -113,7 +113,8 @@ export class AreaEffects {
                             return deleteArealistSuccess({ AreaId });
                           }),
                           catchError((error) => {
-                            this.toastr.error('Failed to delete the Area. Please try again.');
+                            const errorMessage = this.formUtilService.getErrorMessage(error);
+                            this.toastr.error(errorMessage); 
                             return  of(deleteArealistFailure({ error: error.message }))})                )
             ))
     );
@@ -124,17 +125,8 @@ export class AreaEffects {
         private CrudService: CrudService,
         public toastr:ToastrService,
         private router: Router,
-        private store: Store
+        private formUtilService: FormUtilService,
     ) { 
     }
-    private getErrorMessage(error: any): string {
-        // Implement logic to convert backend error to user-friendly message
-        if (error.status === 400) {
-          return 'Invalid Area data. Please check your inputs and try again.';
-        } else if (error.status === 409) {
-          return 'A Area with this code already exists.';
-        } else {
-          return 'An unexpected error occurred. Please try again later.';
-        }
-      }
+  
 }

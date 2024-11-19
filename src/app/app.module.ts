@@ -25,7 +25,7 @@ import { LayoutsModule } from './layouts/layouts.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CyptolandingComponent } from './cyptolanding/cyptolanding.component';
-import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 // Auth
@@ -61,8 +61,8 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
-import { ThemeService } from './core/services/theme.service';
-import { CookieService } from 'ngx-cookie-service';
+// import { ThemeService } from './core/services/theme.service';
+// import { CookieService } from 'ngx-cookie-service';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeAr from '@angular/common/locales/ar'; // Arabic locale
@@ -161,13 +161,13 @@ export function createTranslateLoader(http: HttpClient): any {
 })
 export class AppModule { 
 
-  constructor(private translateService: TranslateService,private themeService: ThemeService,private cookieService: CookieService,) {
-    // Set default language to Arabic ('ar')
-    this.translateService.setDefaultLang('ar');
-    this.cookieService.delete('lang');
-    this.cookieService.set('lang', 'ar', { expires: 365, path: '/' })  
-    this.translateService.use('ar');  // Automatically use Arabic on app load
-    this.themeService.loadRtlStyles();
+  // constructor(private translateService: TranslateService,private themeService: ThemeService,private cookieService: CookieService,) {
+  //   // Set default language to Arabic ('ar')
+  //   this.translateService.setDefaultLang('ar');
+  //   this.cookieService.delete('lang');
+  //   this.cookieService.set('lang', 'ar', { expires: 365, path: '/' })  
+  //   this.translateService.use('ar');  // Automatically use Arabic on app load
+  //   this.themeService.loadRtlStyles();
 
-  }
+  // }
 }

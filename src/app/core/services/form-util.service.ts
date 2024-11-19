@@ -88,4 +88,19 @@ export class FormUtilService{
     // Only return the translation if it has at least one valid property (other than 'language')
     return Object.keys(translation).length > 1 ? translation : null;
   }
+/***
+   * Creates getErrorMessage
+   */
+   getErrorMessage(error: any): string {
+    // Implement logic to convert backend error to user-friendly message
+    if (error.status === 400) {
+      if (error.error && error.error.result && Array.isArray(error.error.result.error)) {
+        // Extract the first validation error message from the list
+        return error.error.result.error.map(err => `${err.path}: ${err.message}`).join(', ');
+      }
+      return 'Bad Request: Validation error';
+    }
+    else
+        return error.error.result.error;
+  }
 }

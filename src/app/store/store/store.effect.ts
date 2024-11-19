@@ -23,7 +23,7 @@ import {
 } from './store.action';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { FormUtilService } from 'src/app/core/services/form-util.service';
 
 @Injectable()
 export class StoreslistEffects {
@@ -34,9 +34,9 @@ export class StoreslistEffects {
                 this.CrudService.fetchData('/stores',{ limit: itemsPerPage, page: page,status: status, merchant_id: merchant_id}).pipe(
                     map((response: any) => {console.log(response.result);return fetchStorelistSuccess({ StoreListdata: response.result })}),
                     catchError((error) =>{
-                        this.toastr.error('An error occurred while fetching the Store list. Please try again later.'); 
-                        console.error('Fetch error:', error); 
-                        return of(fetchStorelistFail({ error: 'Error fetching data' })); 
+                      const errorMessage = this.formUtilService.getErrorMessage(error);
+                      this.toastr.error(errorMessage);
+                      return of(fetchStorelistFail({ error: errorMessage })); 
                       })
                 )
             ),
@@ -62,9 +62,9 @@ export class StoreslistEffects {
                         return addStorelistSuccess({newData: response.result});
                       }),
                       catchError((error) => {
-                        const errorMessage = this.getErrorMessage(error); 
+                        const errorMessage = this.formUtilService.getErrorMessage(error);
                         this.toastr.error(errorMessage);
-                        return of(addStorelistFailure({ error: error.message })); // Dispatch failure action
+                        return of(addStorelistFailure({ error: errorMessage })); // Dispatch failure action
                       })                )
             )
         )
@@ -99,9 +99,9 @@ export class StoreslistEffects {
                 this.router.navigate(['/private/stores']);
                 return  updateStorelistSuccess({ updatedData: response.result })}),
                 catchError((error) =>{
-                    //const errorMessage = this.getErrorMessage(error); 
-                    this.toastr.error(error.message);
-                    return of(updateStorelistFailure({ error: error.message }));
+                  const errorMessage = this.formUtilService.getErrorMessage(error);
+                  this.toastr.error(errorMessage);
+                    return of(updateStorelistFailure({ error: errorMessage}));
              }) 
             )
         )
@@ -121,8 +121,9 @@ export class StoreslistEffects {
                             return deleteStorelistSuccess({ storeId });
                           }),
                           catchError((error) => {
-                            this.toastr.error('Failed to delete the Store. Please try again.');
-                            return  of(deleteStorelistFailure({ error: error.message }))
+                            const errorMessage = this.formUtilService.getErrorMessage(error);
+                            this.toastr.error(errorMessage);
+                            return  of(deleteStorelistFailure({ error: errorMessage }))
                         })
                       ) 
                      )
@@ -136,18 +137,9 @@ export class StoreslistEffects {
         private CrudService: CrudService,
         public toastr:ToastrService,
         private router: Router,
-        private store: Store
+        private formUtilService: FormUtilService
     ) { }
-    private getErrorMessage(error: any): string {
-        // Implement logic to convert backend error to user-friendly message
-        if (error.status === 400) {
-          return 'Invalid Store data. Please check your inputs and try again.';
-        } else if (error.status === 409) {
-          return 'A Store with this code already exists.';
-        } else {
-          return 'An unexpected error occurred. Please try again later.';
-        }
-      }
+   
     private getCurrentUserRole(): string {
         // Replace with your actual logic to retrieve the user role
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));

@@ -23,7 +23,7 @@ import {
 } from './coupon.action';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { FormUtilService } from 'src/app/core/services/form-util.service';
 
 @Injectable()
 export class CouponslistEffects {
@@ -35,9 +35,9 @@ export class CouponslistEffects {
                 this.CrudService.fetchData('/coupons',{ limit: itemsPerPage, page: page, status: status}).pipe(
                     map((response: any) => fetchCouponlistSuccess({ CouponListdata : response.result })),
                     catchError((error) =>{
-                      this.toastr.error('An error occurred while fetching the Coupon list. Please try again later.'); 
-                      console.error('Fetch error:', error); 
-                      return of(fetchCouponlistFail({ error: 'Error fetching data' })); 
+                      const errorMessage = this.formUtilService.getErrorMessage(error);
+                      this.toastr.error(errorMessage);
+                      return of(fetchCouponlistFail({ error: errorMessage })); 
                     })
                 )
             ),
@@ -62,9 +62,9 @@ export class CouponslistEffects {
                         return addCouponlistSuccess({newData});
                       }),
                     catchError((error) => {
-                      const errorMessage = this.getErrorMessage(error); 
+                      const errorMessage = this.formUtilService.getErrorMessage(error);
                       this.toastr.error(errorMessage);
-                      return of(addCouponlistFailure({ error: error.message })); // Dispatch failure action
+                      return of(addCouponlistFailure({ error: errorMessage })); // Dispatch failure action
                     }))
                 
             )
@@ -82,9 +82,9 @@ export class CouponslistEffects {
                 return updateCouponlistSuccess({ updatedData }); // Make sure to return the action
               }),
               catchError((error) =>{
-                //const errorMessage = this.getErrorMessage(error); 
-                this.toastr.error(error.message);
-                return of(updateCouponlistFailure({ error }));
+                const errorMessage = this.formUtilService.getErrorMessage(error);
+                this.toastr.error(errorMessage);
+                return of(updateCouponlistFailure({ error: errorMessage }));
               }) 
             )
           )
@@ -121,8 +121,9 @@ export class CouponslistEffects {
                             return deleteCouponlistSuccess({ couponId });
                           }),
                     catchError((error) => {
-                      this.toastr.error('Failed to delete the coupon. Please try again.');
-                      return  of(deleteCouponlistFailure({ error: error.message }))})
+                      const errorMessage = this.formUtilService.getErrorMessage(error);
+                      this.toastr.error(errorMessage);
+                      return  of(deleteCouponlistFailure({ error: errorMessage }))})
                 )
             )
         )
@@ -133,19 +134,10 @@ export class CouponslistEffects {
         private actions$: Actions,
         private CrudService: CrudService,
         private router: Router,
-        private store: Store,
+        private formUtilService: FormUtilService,
         public toastr:ToastrService
     ) { }
-    private getErrorMessage(error: any): string {
-      // Implement logic to convert backend error to user-friendly message
-      if (error.status === 400) {
-        return 'Invalid coupon data. Please check your inputs and try again.';
-      } else if (error.status === 409) {
-        return 'A coupon with this code already exists.';
-      } else {
-        return 'An unexpected error occurred. Please try again later.';
-      }
-    }
+   
     private getCurrentUserRole(): string {
       // Replace with your actual logic to retrieve the user role
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));

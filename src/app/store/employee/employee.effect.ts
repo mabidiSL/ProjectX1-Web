@@ -8,7 +8,7 @@ import { CrudService } from 'src/app/core/services/crud.service';
 import { addEmployeelist, addEmployeelistFailure, addEmployeelistSuccess, deleteEmployeelist, deleteEmployeelistFailure, deleteEmployeelistSuccess, fetchEmployeelistData, fetchEmployeelistFail, fetchEmployeelistSuccess, getEmployeeById, getEmployeeByIdFailure, getEmployeeByIdSuccess, updateEmployeelist, updateEmployeelistFailure, updateEmployeelistSuccess } from './employee.action';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { FormUtilService } from 'src/app/core/services/form-util.service';
 
 @Injectable()
 export class EmployeeslistEffects {
@@ -21,9 +21,9 @@ export class EmployeeslistEffects {
                 this.CrudService.fetchData('/users', { limit:itemsPerPage , page: page, role: role}).pipe(
                     map((response: any) => fetchEmployeelistSuccess({ EmployeeListdata : response.result })),
                     catchError((error) =>{
-                      this.toastr.error('An error occurred while fetching the Employee list. Please try again later.'); 
-                      console.error('Fetch error:', error); 
-                      return of(fetchEmployeelistFail({ error: 'Error fetching data' })); 
+                      const errorMessage = this.formUtilService.getErrorMessage(error);
+                      this.toastr.error(errorMessage);
+                      return of(fetchEmployeelistFail({ error: errorMessage })); 
                     })
                 )
             ),
@@ -42,9 +42,9 @@ export class EmployeeslistEffects {
                         return addEmployeelistSuccess({newData});
                       }),
                       catchError((error) => {
-                       // const errorMessage = this.getErrorMessage(error); 
-                        this.toastr.error(error.message);
-                        return of(addEmployeelistFailure({ error: error.message })); // Dispatch failure action
+                        const errorMessage = this.formUtilService.getErrorMessage(error);
+                        this.toastr.error(errorMessage);
+                        return of(addEmployeelistFailure({ error: errorMessage })); // Dispatch failure action
                       })                )
             )
         )
@@ -60,9 +60,9 @@ export class EmployeeslistEffects {
                 return updateEmployeelistSuccess({ updatedData }); // Make sure to return the action
               }),
               catchError((error) =>{
-                const errorMessage = this.getErrorMessage(error); 
+                const errorMessage = this.formUtilService.getErrorMessage(error);
                 this.toastr.error(errorMessage);
-                return of(updateEmployeelistFailure({ error }));
+                return of(updateEmployeelistFailure({ error: errorMessage }));
               })             )
           )
         )
@@ -99,8 +99,9 @@ export class EmployeeslistEffects {
                             return deleteEmployeelistSuccess({ employeeId });
                           }),
                           catchError((error) => {
-                            this.toastr.error('Failed to delete the Employee. Please try again.');
-                            return  of(deleteEmployeelistFailure({ error: error.message }))})                )
+                            const errorMessage = this.formUtilService.getErrorMessage(error);
+                            this.toastr.error(errorMessage); 
+                            return  of(deleteEmployeelistFailure({ error: errorMessage }))})                )
             )
         )
     );
@@ -111,16 +112,7 @@ export class EmployeeslistEffects {
         private CrudService: CrudService,
         public toastr:ToastrService,
         private router: Router,
-        private store: Store
+        private formUtilService: FormUtilService
     ) { }
-    private getErrorMessage(error: any): string {
-      // Implement logic to convert backend error to user-friendly message
-      if (error.status === 400) {
-        return 'Invalid Employee data. Please check your inputs and try again.';
-      } else if (error.status === 409) {
-        return 'A Employee with this code already exists.';
-      } else {
-        return 'An unexpected error occurred. Please try again later.';
-      }
-    }
+    
 }

@@ -223,53 +223,7 @@ export const MENU: MenuItem[] = [
         link:'/pages/coming-soon',
                
     },
-    {
-        id: 29,
-        label: 'MENUITEMS.SYSTEMLADMINISTRATION.TEXT',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}],
-        isTitle:true
-               
-    },
-    {
-        id: 30,
-        label: 'MENUITEMS.BANKS.TEXT',
-        icon: 'bx bxs-bank',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}],
-        link:'/pages/coming-soon',
-               
-    },
-    {
-        id: 31,
-        label: 'MENUITEMS.CURRENCIES.TEXT',
-        icon: 'bx bx-money',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}],
-        link:'/pages/coming-soon',
-               
-    },
-    {
-        id: 32,
-        label: 'MENUITEMS.COUNTRIES.TEXT',
-        icon: 'bx bx-globe',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}],
-        link: '/private/countries',
-               
-    },
-    {
-        id: 34,
-        label: 'MENUITEMS.AREAS.TEXT',
-        icon: 'dripicons-map',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}],
-        link: '/private/areas'
-               
-    },
-    {
-        id: 35,
-        label: 'MENUITEMS.CITIES.TEXT',
-        icon: 'bx bxs-city',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}],
-        link: '/private/cities'
-               
-    },
+    
     {
         id: 36,
         label: 'MENUITEMS.NOTIFICATIONMANAGEMENT.TEXT',

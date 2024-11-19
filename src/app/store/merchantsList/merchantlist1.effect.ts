@@ -25,6 +25,7 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { FormUtilService } from 'src/app/core/services/form-util.service';
 
 
 @Injectable()
@@ -37,9 +38,9 @@ export class MerchantslistEffects1 {
                     tap((response : any) => console.log('Fetched data:', response.result)), 
                     map((response) => {return fetchMerchantlistSuccess({ MerchantListdata: response.result })}),
                     catchError((error) =>{
-                        this.toastr.error('An error occurred while fetching the Merchant list. Please try again later.'); 
-                        console.error('Fetch error:', error); 
-                        return of(fetchMerchantlistFail({ error: 'Error fetching data' })); 
+                      const errorMessage = this.formUtilService.getErrorMessage(error);
+                      this.toastr.error(errorMessage); 
+                      return of(fetchMerchantlistFail({ error: error.message })); 
                       })
                 )
                 ),
@@ -58,8 +59,8 @@ export class MerchantslistEffects1 {
                         return addMerchantlistSuccess({newData});
                       }),
                       catchError((error) => {
-                        //const errorMessage = this.getErrorMessage(error); 
-                        this.toastr.error(error.message);
+                        const errorMessage = this.formUtilService.getErrorMessage(error);
+                        this.toastr.error(errorMessage); 
                         return of(addMerchantlistFailure({ error: error.message })); // Dispatch failure action
                       }))
             )
@@ -76,7 +77,7 @@ export class MerchantslistEffects1 {
                 // Dispatch success action with the Merchant data
                 return getMerchantByIdSuccess({ merchant: Merchant.result });
               } else {
-                //this.toastr.error('Merchant not found.'); // Show error notification
+                this.toastr.error('Merchant not found.'); // Show error notification
                 return getMerchantByIdFailure({ error: 'Merchant not found' });
               }
             })
@@ -98,9 +99,9 @@ export class MerchantslistEffects1 {
                     this.router.navigate(['/private/merchants/list']);
                     return  updateMerchantlistSuccess({ updatedData })}),
                     catchError((error) =>{
-                        const errorMessage = this.getErrorMessage(error); 
-                        this.toastr.error(errorMessage);
-                        return of(updateMerchantlistFailure({ error }));
+                      const errorMessage = this.formUtilService.getErrorMessage(error);
+                      this.toastr.error(errorMessage);  
+                      return of(updateMerchantlistFailure({ error: error.message }));
                       })                 );
             })
         )
@@ -118,7 +119,8 @@ export class MerchantslistEffects1 {
                             return deleteMerchantlistSuccess({ userId });
                           }),
                           catchError((error) => {
-                            this.toastr.error('Failed to delete the Merchant. Please try again.');
+                            const errorMessage = this.formUtilService.getErrorMessage(error);
+                            this.toastr.error(errorMessage);                          
                             return  of(deleteMerchantlistFailure({ error: error.message }))})                )
             )
         )
@@ -130,6 +132,7 @@ export class MerchantslistEffects1 {
         private CrudService: CrudService,
         public toastr:ToastrService,
         private router: Router,
+        private formUtilService: FormUtilService,
         private store: Store
     ) {
 

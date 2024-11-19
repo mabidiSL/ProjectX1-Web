@@ -23,7 +23,7 @@ import {
 } from './city.action';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { FormUtilService } from 'src/app/core/services/form-util.service';
 
 @Injectable()
 export class CityEffects {
@@ -34,9 +34,9 @@ export class CityEffects {
                 this.CrudService.fetchData('/cities',{ limit: itemsPerPage, page: page}).pipe(
                     map((response: any) => fetchCitylistSuccess({ CityListdata: response.result })),
                     catchError((error) =>{
-                        this.toastr.error('An error occurred while fetching the City list. Please try again later.'); 
-                        console.error('Fetch error:', error); 
-                        return of(fetchCitylistFail({ error: 'Error fetching data' })); 
+                      const errorMessage = this.formUtilService.getErrorMessage(error);
+                        this.toastr.error(errorMessage); 
+                        return of(fetchCitylistFail({ error: errorMessage })); 
                       })
                 )
             ),
@@ -55,9 +55,9 @@ export class CityEffects {
                         return addCitylistSuccess({newData: response});
                       }),
                       catchError((error) => {
-                        const errorMessage = this.getErrorMessage(error); 
-                        this.toastr.error(errorMessage);
-                        return of(addCitylistFailure({ error: error.message })); // Dispatch failure action
+                        const errorMessage = this.formUtilService.getErrorMessage(error);
+                        this.toastr.error(errorMessage); 
+                        return of(addCitylistFailure({ error: errorMessage })); // Dispatch failure action
                       })                )
             )
         )
@@ -94,9 +94,9 @@ export class CityEffects {
                         return updateCitylistSuccess({ updatedData : response.result})
                     }),
                     catchError((error) =>{
-                        const errorMessage = this.getErrorMessage(error); 
-                        this.toastr.error(errorMessage);
-                        return of(updateCitylistFailure({ error }));
+                      const errorMessage = this.formUtilService.getErrorMessage(error);
+                      this.toastr.error(errorMessage); 
+                      return of(updateCitylistFailure({ error: errorMessage }));
                       })                );
             })
         )
@@ -114,8 +114,9 @@ export class CityEffects {
                             return deleteCitylistSuccess({ CityId });
                           }),
                           catchError((error) => {
-                            this.toastr.error('Failed to delete the City. Please try again.');
-                            return  of(deleteCitylistFailure({ error: error.message }))})                )
+                            const errorMessage = this.formUtilService.getErrorMessage(error);
+                            this.toastr.error(errorMessage);
+                            return  of(deleteCitylistFailure({ error: errorMessage }))})                )
             )
         )
     );
@@ -126,17 +127,8 @@ export class CityEffects {
         private CrudService: CrudService,
         public toastr:ToastrService,
         private router: Router,
-        private store: Store
+        private formUtilService: FormUtilService
     ) { 
     }
-    private getErrorMessage(error: any): string {
-        // Implement logic to convert backend error to user-friendly message
-        if (error.status === 400) {
-          return 'Invalid City data. Please check your inputs and try again.';
-        } else if (error.status === 409) {
-          return 'A City with this code already exists.';
-        } else {
-          return 'An unexpected error occurred. Please try again later.';
-        }
-      }
+   
 }

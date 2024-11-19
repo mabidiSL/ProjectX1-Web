@@ -23,7 +23,7 @@ import {
 } from './country.action';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { FormUtilService } from 'src/app/core/services/form-util.service';
 
 @Injectable()
 export class countrieslistEffects {
@@ -54,9 +54,9 @@ export class countrieslistEffects {
                         return addCountrylistSuccess({newData: response});
                       }),
                       catchError((error) => {
-                        const errorMessage = this.getErrorMessage(error); 
-                        this.toastr.error(errorMessage);
-                        return of(addCountrylistFailure({ error: error.message })); // Dispatch failure action
+                        const errorMessage = this.formUtilService.getErrorMessage(error);
+                        this.toastr.error(errorMessage); 
+                        return of(addCountrylistFailure({ error: errorMessage })); // Dispatch failure action
                       })                )
             )
         )
@@ -89,9 +89,9 @@ export class countrieslistEffects {
                         this.router.navigate(['/private/countries']);
                         return updateCountrylistSuccess({ updatedData : response.result})}),
                         catchError((error) =>{
-                            const errorMessage = this.getErrorMessage(error); 
-                            this.toastr.error(errorMessage);
-                            return of(updateCountrylistFailure({ error }));
+                          const errorMessage = this.formUtilService.getErrorMessage(error);
+                          this.toastr.error(errorMessage);
+                            return of(updateCountrylistFailure({ error : errorMessage}));
                           })                );
             })
         )
@@ -109,7 +109,8 @@ export class countrieslistEffects {
                             return deleteCountrylistSuccess({ CountryId });
                           }),
                           catchError((error) => {
-                            this.toastr.error('Failed to delete the Country. Please try again.');
+                            const errorMessage = this.formUtilService.getErrorMessage(error);
+                            this.toastr.error(errorMessage); 
                             return  of(deleteCountrylistFailure({ error: error.message }))})                )
             )
         )
@@ -121,16 +122,7 @@ export class countrieslistEffects {
         private CrudService: CrudService,
         public toastr:ToastrService,
         private router: Router,
-        private store: Store
+        private formUtilService: FormUtilService
     ) { }
-    private getErrorMessage(error: any): string {
-        // Implement logic to convert backend error to user-friendly message
-        if (error.status === 400) {
-          return 'Invalid Country data. Please check your inputs and try again.';
-        } else if (error.status === 409) {
-          return 'A Country with this code already exists.';
-        } else {
-          return 'An unexpected error occurred. Please try again later.';
-        }
-      }
+    
 }

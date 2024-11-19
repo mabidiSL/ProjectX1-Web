@@ -23,7 +23,7 @@ import {
 } from './role.actions';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { FormUtilService } from 'src/app/core/services/form-util.service';
 
 @Injectable()
 export class RolesEffects {
@@ -35,9 +35,9 @@ export class RolesEffects {
                 this.CrudService.fetchData('/roles/me',{ limit: itemsPerPage, page: page,status: status}).pipe(
                     map((response: any) => fetchRolelistSuccess({ RoleListdata : response.result })),
                     catchError((error) =>{
-                      this.toastr.error('An error occurred while fetching the Role list. Please try again later.'); 
-                      console.error('Fetch error:', error); 
-                      return of(fetchRolelistFail({ error: 'Error fetching data' })); 
+                      const errorMessage = this.formUtilService.getErrorMessage(error);
+                      this.toastr.error(errorMessage);
+                      return of(fetchRolelistFail({ error: errorMessage })); 
                     })
                 )
             ),
@@ -57,9 +57,9 @@ export class RolesEffects {
                         return addRolelistSuccess({newData});
                       }),
                       catchError((error) => {
-                        const errorMessage = this.getErrorMessage(error); 
+                        const errorMessage = this.formUtilService.getErrorMessage(error);
                         this.toastr.error(errorMessage);
-                        return of(addRolelistFailure({ error: error.message })); // Dispatch failure action
+                        return of(addRolelistFailure({ error: errorMessage })); // Dispatch failure action
                       })                )
             )
         )
@@ -75,9 +75,9 @@ export class RolesEffects {
                 return updateRolelistSuccess({ updatedData }); // Make sure to return the action
               }),
               catchError((error) =>{
-                const errorMessage = this.getErrorMessage(error); 
+                const errorMessage = this.formUtilService.getErrorMessage(error);
                 this.toastr.error(errorMessage);
-                return of(updateRolelistFailure({ error }));
+                return of(updateRolelistFailure({ error: errorMessage }));
               })             )
           )
         )
@@ -115,8 +115,10 @@ export class RolesEffects {
                             return deleteRolelistSuccess({ RoleId });
                           }),
                           catchError((error) => {
-                            this.toastr.error('Failed to delete the Role. Please try again.');
-                            return  of(deleteRolelistFailure({ error: error.message }))})                )
+                            const errorMessage = this.formUtilService.getErrorMessage(error);
+                            this.toastr.error(errorMessage);  
+                            return  of(deleteRolelistFailure({ error: errorMessage }))})      
+                                    )
             )
         )
     );
@@ -126,17 +128,8 @@ export class RolesEffects {
         private actions$: Actions,
         private CrudService: CrudService,
         private router: Router,
-        private store: Store,
+        private formUtilService: FormUtilService,
         public toastr:ToastrService
     ) { }
-    private getErrorMessage(error: any): string {
-      // Implement logic to convert backend error to user-friendly message
-      if (error.status === 400) {
-        return 'Invalid Role data. Please check your inputs and try again.';
-      } else if (error.status === 409) {
-        return 'A Role with this code already exists.';
-      } else {
-        return 'An unexpected error occurred. Please try again later.';
-      }
-    }
+    
 }

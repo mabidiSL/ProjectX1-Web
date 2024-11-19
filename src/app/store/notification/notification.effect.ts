@@ -26,7 +26,7 @@ import {
 } from './notification.action';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { FormUtilService } from 'src/app/core/services/form-util.service';
 
 @Injectable()
 export class NotificationsEffects {
@@ -38,9 +38,9 @@ export class NotificationsEffects {
                 this.CrudService.fetchData('/notifications/',{ limit: itemsPerPage, page: page}).pipe(
                     map((response: any) => fetchNotificationlistSuccess({ NotificationListdata : response.result })),
                     catchError((error) =>{
-                      this.toastr.error('An error occurred while fetching the Notification list. Please try again later.'); 
-                      console.error('Fetch error:', error); 
-                      return of(fetchNotificationlistFail({ error: 'Error fetching data' })); 
+                      const errorMessage = this.formUtilService.getErrorMessage(error);
+                      this.toastr.error(errorMessage);
+                      return of(fetchNotificationlistFail({ error: errorMessage })); 
                     })
                 )
             ),
@@ -53,9 +53,9 @@ export class NotificationsEffects {
               this.CrudService.fetchMyNotif('/notifications/my-notifications').pipe(
                   map((response: any) => fetchMyNotificationlistSuccess({ NotificationListdata : response.result })),
                   catchError((error) =>{
-                    this.toastr.error('An error occurred while fetching the My Notification list. Please try again later.'); 
-                    console.error('Fetch error:', error); 
-                    return of(fetchMyNotificationlistFail({ error: 'Error fetching data' })); 
+                    const errorMessage = this.formUtilService.getErrorMessage(error);
+                    this.toastr.error(errorMessage);
+                    return of(fetchMyNotificationlistFail({ error: errorMessage })); 
                   })
               )
           ),
@@ -75,9 +75,9 @@ export class NotificationsEffects {
                         return addNotificationlistSuccess({newData});
                       }),
                       catchError((error) => {
-                        const errorMessage = this.getErrorMessage(error); 
+                        const errorMessage = this.formUtilService.getErrorMessage(error);
                         this.toastr.error(errorMessage);
-                        return of(addNotificationlistFailure({ error: error.message })); // Dispatch failure action
+                        return of(addNotificationlistFailure({ error: errorMessage })); // Dispatch failure action
                       })                )
             )
         )
@@ -94,9 +94,9 @@ export class NotificationsEffects {
                 return updateNotificationlistSuccess({ updatedData }); // Make sure to return the action
               }),
               catchError((error) =>{
-                const errorMessage = this.getErrorMessage(error); 
+                const errorMessage = this.formUtilService.getErrorMessage(error);
                 this.toastr.error(errorMessage);
-                return of(updateNotificationlistFailure({ error }));
+                return of(updateNotificationlistFailure({ error: errorMessage }));
               })             )
           )
         )
@@ -135,8 +135,9 @@ export class NotificationsEffects {
                             return deleteNotificationlistSuccess({ notificationId });
                           }),
                           catchError((error) => {
-                            this.toastr.error('Failed to delete the Notification. Please try again.');
-                            return  of(deleteNotificationlistFailure({ error: error.message }))})
+                          const errorMessage = this.formUtilService.getErrorMessage(error);
+                          this.toastr.error(errorMessage);
+                          return  of(deleteNotificationlistFailure({ error: error.message }))})
                 )
             )
         )
@@ -147,17 +148,8 @@ export class NotificationsEffects {
         private actions$: Actions,
         private CrudService: CrudService,
         private router: Router,
-        private store: Store,
+        private formUtilService: FormUtilService,
         public toastr:ToastrService
     ) { }
-    private getErrorMessage(error: any): string {
-      // Implement logic to convert backend error to user-friendly message
-      if (error.status === 400) {
-        return 'Invalid Notification data. Please check your inputs and try again.';
-      } else if (error.status === 409) {
-        return 'A Notification with this code already exists.';
-      } else {
-        return 'An unexpected error occurred. Please try again later.';
-      }
-    }
+   
 }
