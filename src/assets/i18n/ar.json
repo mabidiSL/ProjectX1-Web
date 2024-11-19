@@ -661,6 +661,7 @@
     "Select_the_Country": "اختر البلد",
     "Country_is_required": "البلد مطلوب",
     "merchant_is_required": "التاجر ضروري",
+    "Pending_coupons":"الكوبونز المعلقة",
     "Employee_List": "قائمة الموظفين",
     "New_Employee": "موظف جديد",
     "Select_the_Area": "اختر المنطقة",
@@ -911,7 +912,11 @@
         "Company Name is required": "اسم الشركة مطلوب",
         "Company Name in arabic": "اسم الشركة بالعربية",
         "Arabic Company Name is required": "اسم الشركة بالعربية مطلوب",
-        "update_company_profile": "تحديث الملف الشخصي للشركة"
+        "update_company_profile": "تحديث الملف الشخصي للشركة",
+        "Back to Dashboard": "الرجوع إلى لوحة التحكم",
+        "Coming Soon": "قريباً"
+
+
 
 
       

@@ -49,18 +49,26 @@ export class PhoneNumberComponent implements AfterViewInit {
 
     this.inputElement = document.querySelector(`#${this.inputId}`) as HTMLInputElement; 
     this.checkLanguageAndApplyRtl();
-    const iti = intlTelInput(this.inputElement, this.itiOptions);
+    
+    setTimeout(() => {
+      try {
+            const iti = intlTelInput(this.inputElement, this.itiOptions);
 
-    if (this.initialPhoneNumber) {
-      this.inputElement.value = this.initialPhoneNumber;
-      iti.setNumber( this.initialPhoneNumber);
-    }
-    this.inputElement.addEventListener('input', () => {
-      const phoneNumber = this.inputElement.value;
-      this.phoneNumberChanged.emit(phoneNumber);
-    });
+            if (this.initialPhoneNumber) {
+              this.inputElement.value = this.initialPhoneNumber;
+              iti.setNumber( this.initialPhoneNumber);
+            }
+            this.inputElement.addEventListener('input', () => {
+              const phoneNumber = this.inputElement.value;
+              this.phoneNumberChanged.emit(phoneNumber);
+            });
+          } catch (error) {
+            console.error('Error initializing intlTelInput:', error);
+          }
+        }, 0); // Delay execution to let the DOM render fully
+      }
  
 
-  }
+  
   
 }

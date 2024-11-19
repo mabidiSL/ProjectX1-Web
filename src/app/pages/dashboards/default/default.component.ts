@@ -111,13 +111,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
         link: "/private/coupons",
         value: this.rateStatics.totalCoupons
       },
-      {
-        icon: "bx bxs-gift",
-        title: "Gift Cards",
-        link: "/private/coupons",
-        value: this.rateStatics.totalGiftCards
-      },
-      {
+            {
         icon: "bxs-user-detail",
         title: "Customers",
         value: this.rateStatics.totalCustomers
@@ -144,12 +138,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
         link: "/private/coupons",
         value: this.rateStatics.totalCoupons
       },
-      {
-        icon: "bx bxs-gift",
-        title: "Gift Cards",
-        link: "/private/coupons",
-        value: this.rateStatics.totalGiftCards
-      },
+      
       {
         icon: "bxs-user-detail",
         title: "Employees",
