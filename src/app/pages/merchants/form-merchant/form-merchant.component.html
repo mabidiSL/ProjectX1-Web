@@ -102,7 +102,7 @@
                         <label for="phone" >{{'Phone Number' |  translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label><br>
                        <app-phone-number
                        [disabled]="type === 'view'"
-                       *ngIf="merchantForm"
+                       *ngIf="merchantForm && merchantForm.get('phone').value"
                        [initialPhoneNumber]="merchantForm.get('phone').value"
                        [inputId]="'phone'"
                        [placeholder]="'Enter merchant phone' | translate"
@@ -148,7 +148,7 @@
                         <app-phone-number
                         [initialPhoneNumber]="merchantForm.get('supervisorPhone').value"
                         [disabled]="type === 'view'"
-                        *ngIf="merchantForm"
+                        *ngIf="merchantForm && merchantForm.get('supervisorPhone').value"
                         [inputId]="'supervisorPhone'"
                         [placeholder]="'Enter supervisor phone' | translate"
                         (phoneNumberChanged)="onSupervisorPhoneChanged($event)" >

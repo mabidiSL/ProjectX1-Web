@@ -95,8 +95,9 @@
                       <label for="phone" >{{'Phone Number' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label><br>
                      <app-phone-number
                      [disabled]="type === 'view'"
-                     *ngIf="storeForm"
+                     *ngIf="storeForm && storeForm.get('phone').value"
                      [placeholder]="'Enter store phone' | translate"
+                     [inputId]="'phone'"
                      [initialPhoneNumber]="storeForm.get('phone').value"
                      (phoneNumberChanged)="onPhoneNumberChanged($event)" >
                     </app-phone-number>
