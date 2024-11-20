@@ -53,7 +53,6 @@
                               <app-phone-number
                               [initialPhoneNumber]="merchantForm.get('supervisorPhone').value"
                               [disabled]="type === 'view'"
-                              *ngIf="merchantForm"
                               [inputId]="'supervisorPhone'"
                               [placeholder]="'Enter supervisor phone' | translate"
                               (phoneNumberChanged)="onSupervisorPhoneChanged($event)" >

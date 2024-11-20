@@ -89,7 +89,6 @@
                                <app-phone-number
                                [disabled]="type==='view'"
                                [initialPhoneNumber]="employeeForm.get('phone').value"
-                                *ngIf="employeeForm" 
                                 [placeholder]="'Enter_employee_phone' | translate"
                                 (phoneNumberChanged)="onPhoneNumberChanged($event)" >
                               </app-phone-number>

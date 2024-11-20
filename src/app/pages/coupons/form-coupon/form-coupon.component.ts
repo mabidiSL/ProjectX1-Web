@@ -128,8 +128,8 @@ export class FormCouponComponent implements OnInit, OnDestroy{
       startDateCoupon: [null, Validators.required],
       endDateCoupon: [null, Validators.required],
       contractRepName: [''],
-      sectionOrderAppearance: [''],
-      categoryOrderAppearance: [''],
+      sectionOrderAppearance: [null],
+      categoryOrderAppearance: [null],
       couponLogo: ['', Validators.required],
       couponType: ['free', Validators.required],// free,discountPercent,discountAmount,servicePrice checkboxes
       couponValueBeforeDiscount:[''],

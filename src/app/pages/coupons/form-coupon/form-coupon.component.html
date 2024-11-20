@@ -151,6 +151,7 @@
                   <app-phone-number
                      [disabled]="type === 'view'"
                      [initialPhoneNumber]="formCoupon.get('managerPhone').value"
+                     [placeholder]="'Enter manager phone' | translate"
                      (phoneNumberChanged)="onPhoneNumberChanged($event)" >
                     </app-phone-number>
                   <!-- <div *ngIf="formCoupon.get('managerPhone').invalid && formCoupon.get('managerPhone').touched">

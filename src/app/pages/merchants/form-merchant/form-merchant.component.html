@@ -105,7 +105,6 @@
                        [initialPhoneNumber]="merchantForm.get('phone').value"
                        [inputId]="'phone'"
                        [placeholder]="'Enter merchant phone' | translate"
-                       *ngIf="merchantForm"
                         (phoneNumberChanged)="onPhoneNumberChanged($event)" >
                       </app-phone-number>
                        <div *ngIf="merchantForm.get('phone').touched && merchantForm.get('phone').invalid" class="invalid-feedback d-block">
@@ -148,7 +147,7 @@
                         <app-phone-number
                         [initialPhoneNumber]="merchantForm.get('supervisorPhone').value"
                         [disabled]="type === 'view'"
-                        *ngIf="merchantForm"
+                        
                         [inputId]="'supervisorPhone'"
                         [placeholder]="'Enter supervisor phone' | translate"
                         (phoneNumberChanged)="onSupervisorPhoneChanged($event)" >
@@ -229,7 +228,7 @@
                   
                     <div class="col-md-6 mb-3">
                       <div class="form-group">
-                        <label for="area_id">{{'Area' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                        <label for="area_id">{{'area' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                         <ng-select  [readonly]="type === 'view'" id="area_id" placeholder="{{'Select_the_Area' | translate}}" [items]="filteredAreas" bindLabel="translatedName" 
                         bindValue="id" formControlName="area_id" (change)="onChangeAreaSelection($event)" >
                         </ng-select> 

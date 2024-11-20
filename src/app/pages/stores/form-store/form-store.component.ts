@@ -373,16 +373,15 @@ private getNavigationState(){
           
       let newData = this.storeForm.value;
       delete newData.area_id;
-
-          if(!this.isEditing)
-            {           
-              if(this.uploadedFiles){
-                const images: any[] = [];
-                this.uploadedFiles.forEach(file => {
-                  images.push(file.dataURL); // Push each Base64 string into the images array
-              });
-              newData.images =  images;
-              }
+      if(this.uploadedFiles){
+        const images: any[] = [];
+        this.uploadedFiles.forEach(file => {
+          images.push(file.dataURL); // Push each Base64 string into the images array
+      });
+      newData.images =  images;
+      }
+      if(!this.isEditing)
+        {           
               delete newData.id;
               newData = this.createStoreFromForm(newData);
               //Dispatch Action
