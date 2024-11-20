@@ -442,7 +442,7 @@
         "LIST": {
           "BASIC": "الجداول الأساسية",
           "DataTables": "جداول البيانات",
-          "EditTableTables": "الجداول القابلة للتحرير"
+          "EditTableTables": "الجداول القابلة للتعديل"
         }
       },
       "CHARTS": {
@@ -681,7 +681,7 @@
     "End": "النهاية",
     "Stores_List": "قائمة المتاجر",
     "New_Store": "متجر جديد",
-    "Edit_store": "تحرير المتجر",
+    "Edit_store": "تعديل المتجر",
     "New_Role": "وظيفة جديدة",
     "Role_List": "قائمة الوظائف",
     "role_name": "اسم الوظيفة",
@@ -708,7 +708,7 @@
     "Scheduled_Date_and_Time": "التاريخ والوقت المحدد",
     "Add_notif": "إضافة إشعار",
     "update_notif": "تحديث الإشعار",
-    "Edit_notification": "تحرير الإشعار",
+    "Edit_notification": "تعديل الإشعار",
     "New_Merchant": "تاجر جديد",
     "Merchants": "التجار",
     "Cities": "المدن",
@@ -915,7 +915,14 @@
         "update_company_profile": "تحديث الملف الشخصي للشركة",
         "Back to Dashboard": "الرجوع إلى لوحة التحكم",
         "Coming Soon": "قريباً",
-        "Enter manager phone": "أدخل رقم هاتف المدير"
+        "Enter manager phone": "أدخل رقم هاتف المدير",
+        "Notif_title in arabic": "عنوان الإشعار بالعربي",
+        "Send_to":"إرسال إلى",
+        "Select_the_customer": "اختر العميل",
+        "Notifications": "الإشعارات"
+
+
+
 
 
 

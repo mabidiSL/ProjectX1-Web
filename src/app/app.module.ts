@@ -13,7 +13,6 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ToastrModule } from 'ngx-toastr';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
-import { SharedModule } from './cyptolanding/shared/shared.module';
 
 // Store
 import { StoreModule } from '@ngrx/store';
@@ -24,7 +23,6 @@ import { ExtrapagesModule } from './extrapages/extrapages.module';
 import { LayoutsModule } from './layouts/layouts.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CyptolandingComponent } from './cyptolanding/cyptolanding.component';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -33,10 +31,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common
 import { rootReducer } from './store';
 import { AuthenticationEffects } from './store/Authentication/authentication.effects';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-
-import { CandidateEffects } from './store/Candidate/candidate.effects';
-
-import { CustomerEffects } from './store/customer/customer.effects';
 import { MerchantsModule } from './pages/merchants/merchants.module';
 import { MerchantslistEffects1 } from './store/merchantsList/merchantlist1.effect';
 import { CouponsModule } from './pages/coupons/coupons.module';
@@ -66,6 +60,7 @@ import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeAr from '@angular/common/locales/ar'; // Arabic locale
+import { CustomerEffects } from './store/customer/customer.effect';
 
 // Register the Arabic locale
 registerLocaleData(localeAr, 'ar');
@@ -85,8 +80,7 @@ export function createTranslateLoader(http: HttpClient): any {
 
 @NgModule({
   declarations: [
-    AppComponent,
-    CyptolandingComponent
+    AppComponent
   ],
   imports: [
     NgxMaskDirective,
@@ -117,7 +111,6 @@ export function createTranslateLoader(http: HttpClient): any {
     AccordionModule.forRoot(),
     TabsModule.forRoot(),
     TooltipModule.forRoot(),
-    SharedModule,
     ScrollToModule.forRoot(),
     SlickCarouselModule,
     ToastrModule.forRoot(),
@@ -135,8 +128,6 @@ export function createTranslateLoader(http: HttpClient): any {
       MerchantslistEffects1,
       StoreslistEffects,
       countrieslistEffects,
-      CandidateEffects,
-     
       CustomerEffects,
       AreaEffects,
       CityEffects,

@@ -1,18 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HTTP_INTERCEPTORS, HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
 
-import { TokenStorageService } from '../../core/services/token-storage.service';
 import { catchError, Observable, switchMap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
-import { AuthfakeauthenticationService } from '../services/authfake.service';
+import { AuthenticationService } from '../services/auth.service';
 
 // const TOKEN_HEADER_KEY = 'Authorization';       // for Spring Boot back-end
-const TOKEN_HEADER_KEY = 'x-auth-token';   // for Node.js Express back-end
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private router: Router, private authService: AuthfakeauthenticationService) { }
+  constructor(private router: Router, private authService: AuthenticationService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = localStorage.getItem('token');  // Adjust the key as needed
@@ -25,7 +24,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 if (error.status === 401) {
                     return this.handle401Error(request, next);
                 }
-                return throwError(() => error);;
+                return throwError(() => error);
                 })
             );
          }
@@ -41,7 +40,7 @@ export class AuthInterceptor implements HttpInterceptor {
       }
     
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
-        const refreshToken = localStorage.getItem('refreshToken');;  // Retrieve the refresh token
+        const refreshToken = localStorage.getItem('refreshToken');  // Retrieve the refresh token
         if (refreshToken) {
           // Call refresh token API
           return this.authService.refreshToken(refreshToken).pipe(
@@ -57,7 +56,7 @@ export class AuthInterceptor implements HttpInterceptor {
               // Handle refresh token failure (e.g., logout the user)
               this.authService.logout();
               location.reload();
-              return throwError(() => error);;
+              return throwError(() => error);
             })
           );
         }

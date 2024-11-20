@@ -13,7 +13,7 @@ export class DashboardService {
     }
     getStatistics(rateDuration: string): Observable<any>{
 
-        return this.HttpClient.get<any>(` ${environment.baseURL}/dashboard?rateDuration=${rateDuration}`);
+        return this.HttpClient.get<any>(`${environment.baseURL}/dashboard?rateDuration=${rateDuration}`);
 
     }
 }

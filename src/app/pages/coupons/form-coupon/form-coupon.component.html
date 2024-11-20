@@ -149,6 +149,7 @@
                 <div class="col-md-6 mb-3">
                   <label for="managerPhone">{{'Manager Phone'|translate}}</label><br>
                   <app-phone-number
+                     *ngIf="formCoupon"
                      [disabled]="type === 'view'"
                      [initialPhoneNumber]="formCoupon.get('managerPhone').value"
                      [placeholder]="'Enter manager phone' | translate"

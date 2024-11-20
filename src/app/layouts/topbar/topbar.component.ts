@@ -2,8 +2,6 @@
 import { Component, OnInit, Output, EventEmitter, Inject, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
-import { AuthenticationService } from '../../core/services/auth.service';
-import { AuthfakeauthenticationService } from '../../core/services/authfake.service';
 import { CookieService } from 'ngx-cookie-service';
 import { LanguageService } from '../../core/services/language.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -52,8 +50,8 @@ export class TopbarComponent implements OnInit, OnDestroy {
 
   // Define layoutMode as a property
 
-  constructor(@Inject(DOCUMENT) private document: any, private router: Router, private authService: AuthenticationService,
-    private authFackservice: AuthfakeauthenticationService,
+  constructor(@Inject(DOCUMENT) private document: any, 
+    private router: Router, 
     public languageService: LanguageService,
     public translate: TranslateService,
     public _cookiesService: CookieService, 
@@ -202,14 +200,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
     event.preventDefault();
     this.mobileMenuButtonClicked.emit();
   }
-/**
-   * Update Profile the user
-   */
-  updateProfile() {
-   
-    this.authFackservice.logout();
 
- }
   /**
    * Logout the user
    */

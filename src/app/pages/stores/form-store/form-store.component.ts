@@ -21,6 +21,7 @@ import { City } from 'src/app/store/City/city.model';
 import { Merchant } from 'src/app/store/merchantsList/merchantlist1.model';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { Branch } from 'src/app/store/store/store.model';
+import * as _ from 'lodash';
 
 
 @Component({
@@ -170,10 +171,11 @@ export class FormStoreComponent implements OnInit, OnDestroy {
          
             this.storeForm.get('area_id').setValue(areaId); 
             this.storeForm.get('city_id').setValue(Store.city_id); 
+            this.storeForm.get('images').setValue(Store.images); 
 
             console.log(this.uploadedFiles);
             this.patchValueForm(Store);
-            this.originalStoreData = { ...Store };
+            this.originalStoreData = _.cloneDeep(Store);
 
             this.isEditing = true;
 
@@ -379,6 +381,7 @@ private getNavigationState(){
           images.push(file.dataURL); // Push each Base64 string into the images array
       });
       newData.images =  images;
+      this.storeForm.get('images').setValue(images);
       }
       if(!this.isEditing)
         {           
@@ -388,11 +391,18 @@ private getNavigationState(){
               this.store.dispatch(addStorelist({ newData }));
         }
         else
-        {
+        { 
+          if(this.uploadedFiles)
+            this.storeForm.get('images').setValue(this.originalStoreData.images);
+
+          console.log(this.originalStoreData);
+          console.log(this.storeForm.value);
+          
           const updatedDta = this.formUtilService.detectChanges(this.storeForm, this.originalStoreData);
           if (Object.keys(updatedDta).length > 0) {
             const changedData = this.createStoreFromForm(updatedDta);
-            changedData.images = this.parseImages(this.uploadedFiles);
+            if(this.uploadedFiles)
+              changedData.images = this.parseImages(this.uploadedFiles);
             changedData.id = this.storeForm.value.id;
             this.store.dispatch(updateStorelist({ updatedData: changedData }));
           }

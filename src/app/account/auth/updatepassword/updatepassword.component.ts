@@ -1,10 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { AuthenticationService } from '../../../core/services/auth.service';
-import { AuthfakeauthenticationService } from '../../../core/services/authfake.service';
 
 import { select, Store } from '@ngrx/store';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { updatePassword } from 'src/app/store/Authentication/authentication.actions';
 import { ToastrService } from 'ngx-toastr';
 import { selectDataLoading } from 'src/app/store/Authentication/authentication-selector';
@@ -15,7 +14,7 @@ import { Observable } from 'rxjs';
   templateUrl: './updatepassword.component.html',
   styleUrl: './updatepassword.component.scss'
 })
-export class UpdatepasswordComponent {
+export class UpdatepasswordComponent implements OnInit {
 
   public token: string;
   updatePassForm: UntypedFormGroup;
@@ -24,7 +23,7 @@ export class UpdatepasswordComponent {
 
   error: any = '';
   returnUrl: string;
-  fieldTextType: boolean  = false;;
+  fieldTextType: boolean  = false;
   confirmFieldTextType: boolean = false;
 
   // set the currenr year

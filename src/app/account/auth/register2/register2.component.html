@@ -117,20 +117,22 @@
                       
                       <div class="col-md-6 mb-3">
                         <div class="form-group">
-                          <label for="merchantLogo">{{ 'Merchant Logo' | translate }}</label>
+                          <label for="merchantLogo">{{ 'Merchant Logo' | translate }}<span class="text-danger">*</span></label>
                       
                           <app-image-upload [id]="'merchantLogo'" [type]="'logo'" [label]="'Upload Merchant Logo' | translate" [existantImage]="existantmerchantLogo" [filename]="fileName1" [alt]="'Merchant Logo'"  (logoUploaded)="onLogoUpload($event)"></app-image-upload>
-                       
+                          <div *ngIf="signupForm.get('merchantLogo').touched && signupForm.get('merchantLogo').invalid" class="invalid-feedback d-block">
+                            <span *ngIf="signupForm.get('merchantLogo').errors?.['required']">{{'Merchant Logo is required'| translate}}.</span>
+                          </div>   
                          
                         </div>
                       </div>
                       <div class="col-md-6 mb-3">
                         <div class="form-group">
-                          <label for="merchantPicture">{{'Merchant Picture' | translate}}</label>
-                           
+                          <label for="merchantPicture">{{'Merchant Picture' | translate}}<span class="text-danger">*</span></label>
                           <app-image-upload [id]="'merchantPicture'" [type]="'image'" [label]="'Upload Merchant Picture' | translate" [existantImage]="existantmerchantPicture" [filename]="fileName2" [alt]="'Merchant Pictutre'"  (imageUploaded)="onImageUpload($event)"></app-image-upload>
-  
-                         
+                          <div *ngIf="signupForm.get('merchantPicture').touched && signupForm.get('merchantPicture').invalid" class="invalid-feedback d-block">
+                            <span *ngIf="signupForm.get('merchantPicture').errors?.['required']">{{'Merchant Logo is required'| translate}}.</span>
+                          </div>  
                         </div>
                       </div>
                   
@@ -202,15 +204,18 @@
                     </div>
                     <div class="col-md-6 mb-3">
                       <div class="form-group">
-                        <label for="supervisorPhone">{{'Supervisor Phone' | translate}}</label><br>
+                        <label for="supervisorPhone">{{'Supervisor Phone' | translate}}<span  class="text-danger">*</span></label><br>
                         <app-phone-number
                         [initialPhoneNumber]="signupForm.get('supervisorPhone').value"
                         *ngIf="signupForm"
                         [inputId]="'supervisorPhone'"
                         [placeholder]="'Enter supervisor phone' | translate"
                         (phoneNumberChanged)="onSupervisorPhoneChanged($event)" >
-                       </app-phone-number>               
-                             </div>
+                       </app-phone-number>  
+                       <div *ngIf="signupForm.get('supervisorPhone').touched && signupForm.get('supervisorPhone').invalid" class="invalid-feedback d-block">
+                        <span *ngIf="signupForm.get('supervisorPhone').errors?.['required']">{{'Supervisor Phone is required'| translate}}.</span>
+                      </div>                  
+                        </div>
                     </div>
                   
                     <div class="col-md-6 mb-3">

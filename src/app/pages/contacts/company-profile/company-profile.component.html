@@ -51,6 +51,7 @@
                             <div class="form-group">
                               <label for="supervisorPhone">{{'Supervisor Phone' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label><br>
                               <app-phone-number
+                              *ngIf="merchantForm"
                               [initialPhoneNumber]="merchantForm.get('supervisorPhone').value"
                               [disabled]="type === 'view'"
                               [inputId]="'supervisorPhone'"

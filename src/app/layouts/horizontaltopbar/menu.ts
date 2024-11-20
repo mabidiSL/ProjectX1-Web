@@ -757,7 +757,7 @@ export const MENU: MenuItem[] = [
                     {
                         id: 120,
                         label: 'MENUITEMS.AUTHENTICATION.LIST.REGISTER2',
-                        link: '/auth/signup-2',
+                        link: '/auth/register',
                         parentId: 116
                     },
                     {

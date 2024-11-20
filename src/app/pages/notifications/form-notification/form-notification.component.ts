@@ -12,6 +12,9 @@ import { Notification } from 'src/app/store/notification/notification.model';
 import { DatepickerConfigService } from 'src/app/core/services/date.service';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker/bs-datepicker.config';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
+import { fetchCustomerlistData } from 'src/app/store/customer/customer.action';
+import { Customer } from 'src/app/store/customer/customer.model';
+import { selectData } from 'src/app/store/customer/customer-selector';
 //import { Bold, Essentials, Italic, Mention, Paragraph, Undo } from '@ckeditor';
 
 
@@ -32,6 +35,7 @@ export class FormNotificationComponent implements OnInit {
   loading$: Observable<boolean>;
   bsConfig: Partial<BsDatepickerConfig>;
   originalNotificationData: Notification = {}; 
+  userList: Customer[];
 
 
   messageDesc: string = '';
@@ -52,14 +56,14 @@ export class FormNotificationComponent implements OnInit {
     private formUtilService: FormUtilService,
     public store: Store) {
       this.loading$ = this.store.pipe(select(selectDataLoading)); 
-
+      this.store.dispatch(fetchCustomerlistData({page: 1, itemsPerPage: 1000, role: 3 }));
       this.notifForm = this.formBuilder.group({
         id: [null],
         title: ['', Validators.required],
         description: [''],
         title_ar: ['', Validators.required],
         description_ar: [''],
-        user_id: [92]
+        user_id: [null]
         
       });
       this.bsConfig = this.datepickerConfigService.getConfig();
@@ -79,7 +83,7 @@ export class FormNotificationComponent implements OnInit {
         .pipe(select(selectedNotification), takeUntil(this.destroy$))
         .subscribe(Notif => {
           if (Notif) {
-            this.notifForm.patchValue(Notif);
+            console.log(Notif);
             this.patchValueForm(Notif);
             this.originalNotificationData = { ...Notif };
             this.isEditing = true;
@@ -89,8 +93,13 @@ export class FormNotificationComponent implements OnInit {
     }
    
   }
+  fetchCustomers(){
+    this.store.select(selectData).subscribe(data=>{
+      this.userList = data
+    });
+  }
   patchValueForm(notification: Notification){
-
+    this.notifForm.get('user_id').setValue(notification.user_id);
     this.notifForm.patchValue({
       title: notification.translation_data[0].title,
       title_ar: notification.translation_data[1].title,

@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-body ">
               <form #formElement [formGroup]="notifForm"  >
-                <div *ngIf="formError" class="alert alert-danger">{{ formError }}</div>
+                <div *ngIf="formError" class="alert alert-danger">{{ formError | translate }}</div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <div class="form-group ">
@@ -43,6 +43,14 @@
                             <span *ngIf="notificationForm.get('title').errors?.['required']">{{'title is required'| translate}}.</span>
                           </div> -->
                       </div> 
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                      <label for="user_id" >{{'Send_to' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                      <ng-select [readonly]="type === 'view'" id="user_id" placeholder="{{'Select_the_customer' | translate}}" [items]="userList" bindLabel="email" 
+                      bindValue="id"  formControlName="user_id"  >
+                      </ng-select>  
+                    </div>
                   </div>
                    
               </div>

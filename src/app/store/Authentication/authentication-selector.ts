@@ -16,6 +16,10 @@ export const getisLoggedIn = createSelector(
     getLayoutState,
     (state: AuthenticationState) => state.isLoggedIn
 );
+export const selectMessage = createSelector(
+  getLayoutState,
+  (state: AuthenticationState) => state.message
+);
 export const selectDataLoading = createSelector(
     getLayoutState,
     (state: AuthenticationState) => state?.loading || false

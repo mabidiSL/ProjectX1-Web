@@ -108,7 +108,7 @@ export class NotificationsEffects {
       ofType(getNotificationById),
       mergeMap(({ notificationId }) => {
         // Use the selector to get the Notification from the store
-        return this.CrudService.getDataById('/cities', notificationId).pipe(
+        return this.CrudService.getDataById('/notifications', notificationId).pipe(
           map((Notification: any) => {
             if (Notification) {
               // Dispatch success action with the Notification data

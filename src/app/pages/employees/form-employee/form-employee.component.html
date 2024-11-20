@@ -87,6 +87,7 @@
                               <div class="form-group">
                                 <label for="phone" >{{'Phone Number'| translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label><br>
                                <app-phone-number
+                               *ngIf="employeeForm"
                                [disabled]="type==='view'"
                                [initialPhoneNumber]="employeeForm.get('phone').value"
                                 [placeholder]="'Enter_employee_phone' | translate"

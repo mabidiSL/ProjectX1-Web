@@ -95,6 +95,7 @@
                       <label for="phone" >{{'Phone Number' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label><br>
                      <app-phone-number
                      [disabled]="type === 'view'"
+                     *ngIf="storeForm"
                      [placeholder]="'Enter store phone' | translate"
                      [initialPhoneNumber]="storeForm.get('phone').value"
                      (phoneNumberChanged)="onPhoneNumberChanged($event)" >
@@ -144,7 +145,7 @@
                                     </div>
                                   </div>
                                   <div class="flex-shrink-0 ms-3">
-                                    <button [disabled]="type === 'view'" (click)="removeFile(file)" class="btn btn-sm btn-danger">{{'Delete'| translate}}</button>
+                                    <button [hidden]="type === 'view'" (click)="removeFile(file)" class="btn btn-sm btn-danger">{{'Delete'| translate}}</button>
                                   </div>
                                 </div>
                               </div>

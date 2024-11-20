@@ -1,0 +1,39 @@
+.btn-gold {
+    background-color: #d4af37; /* gold color */
+    border-color: #d4af37;
+    color: #333; /* optional: set text color to dark gray */
+  }
+  .container {
+    max-width: 1400px; /* or any other width you prefer */
+    max-height: 800px;
+    
+  }
+  .logo-row {
+    margin-bottom: 40px; /* adjust the value to your liking */
+    margin-top: 20px;
+  }
+  .card {
+    border: 5px solid #d4af37; /* add a 1px solid border with a light gray color */
+    border-radius: 20px; /* add a 10px border radius to give it a rounded corner */
+    padding: 20px; /* add some padding to create space between the border and the content */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* add a subtle box shadow to give it some depth */
+  }
+  .card-body{
+    margin-top: 20px;
+  } 
+  .account-pages {
+    position: absolute; /* Allows it to cover the full viewport */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full width of the viewport */
+    height: 100vh; /* Full height of the viewport */
+    background-image: url('/assets/images/home2.jpg');
+    background-size: cover; /* Cover the entire area */
+    background-position: center center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    background-color: #454545; /* Fallback color */
+   // color: #FFFFFF; /* Text color */
+    display: flex; /* Center content vertically and horizontally */
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+}

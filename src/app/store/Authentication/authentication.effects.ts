@@ -1,15 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable, Inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap, catchError, exhaustMap, tap, first } from 'rxjs/operators';
-import { BehaviorSubject, from, Observable, of } from 'rxjs';
-import { AuthenticationService } from '../../core/services/auth.service';
-import { login, loginSuccess, loginFailure,forgetPassword, logout, logoutSuccess, Register, RegisterSuccess, RegisterFailure, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfilePassword, updateProfileSuccess, updateProfileFailure, updateProfilePasswordSuccess, updateProfilePasswordFailure, forgetPasswordSuccess, forgetPasswordFailure } from './authentication.actions';
+import { map, catchError, exhaustMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { login, loginSuccess, loginFailure,forgetPassword, logout, logoutSuccess, Register, RegisterSuccess, RegisterFailure, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfilePassword, updateProfileSuccess, updateProfileFailure, updateProfilePasswordSuccess, updateProfilePasswordFailure, forgetPasswordSuccess, forgetPasswordFailure, verifyEmailSuccess, verifyEmail, verifyEmailFailure } from './authentication.actions';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
-import { AuthfakeauthenticationService } from 'src/app/core/services/authfake.service';
-import { UserProfileService } from 'src/app/core/services/user.service';
+import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { _User, User } from './auth.models';
+import { FormUtilService } from 'src/app/core/services/form-util.service';
 
 @Injectable()
 export class AuthenticationEffects {
@@ -19,10 +18,9 @@ export class AuthenticationEffects {
 
   constructor(
     @Inject(Actions) private actions$: Actions,
-    private AuthenticationService: AuthenticationService,
-    private AuthfakeService: AuthfakeauthenticationService,
-    private userService: UserProfileService,
+    private AuthService: AuthenticationService,
     private router: Router,
+    private formUtilService: FormUtilService,
     public toastr:ToastrService) {
 
       this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
@@ -38,7 +36,7 @@ export class AuthenticationEffects {
       ofType(Register),
       exhaustMap(({ newData }) => {
         
-          return this.AuthfakeService.register(newData ).pipe(
+          return this.AuthService.register(newData ).pipe(
             map((user) => {
               if(user){
               this.toastr.success('Registration completed, Check you Inbox soon!!!');
@@ -47,9 +45,9 @@ export class AuthenticationEffects {
               }
             }),
             catchError((error) => {
-              const errorMessage = this.getErrorMessage(error); 
-              this.toastr.error(errorMessage);
-              return of(RegisterFailure({ error: error.message }))
+              const errorMessage = this.formUtilService.getErrorMessage(error);
+              this.toastr.error(errorMessage); 
+              return of(RegisterFailure({ error: errorMessage }))
             })
           );
        
@@ -57,14 +55,36 @@ export class AuthenticationEffects {
     )
   );
 
-
+  verifyEmail$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(verifyEmail),
+      exhaustMap(({ token }) => {
+        
+          return this.AuthService.verifyEmail(token).pipe(
+            map((message: any) => {
+              if(message){
+              this.toastr.success('Email Verified');
+             // this.router.navigate(['/auth/login']);
+              return verifyEmailSuccess({ message: message.result })
+              }
+            }),
+            catchError((error) => {
+              const errorMessage = this.formUtilService.getErrorMessage(error);
+              this.toastr.error(errorMessage); 
+              return of(verifyEmailFailure({ error: errorMessage }))
+            })
+          );
+       
+      })
+    )
+  );
 
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(login),
       exhaustMap(({ email, password }) => {
         
-          return this.AuthfakeService.login(email, password).pipe(
+          return this.AuthService.login(email, password).pipe(
             map((response) => {
                       
                 localStorage.setItem('token', response.result.accessToken);
@@ -78,9 +98,9 @@ export class AuthenticationEffects {
 
             }),
             catchError((error) => {
-              const errorMessage = this.getErrorMessage(error); 
-              this.toastr.error(error.message);
-              return of(loginFailure({ error: error.message }))})); 
+              const errorMessage = this.formUtilService.getErrorMessage(error);
+              this.toastr.error(errorMessage); 
+              return of(loginFailure({ error: errorMessage }))})); 
             
         
       })
@@ -91,14 +111,15 @@ export class AuthenticationEffects {
     this.actions$.pipe(
       ofType(forgetPassword),
       exhaustMap((action) => {
-        return this.AuthfakeService.forgotPassword(action.email).pipe(
+        return this.AuthService.forgotPassword(action.email).pipe(
           map((response: any) => {
             this.toastr.success(response.result);
             return forgetPasswordSuccess({message: response.result});
           }),
           catchError((error: any) => {
-            this.toastr.error(error.message);
-            return of(forgetPasswordFailure({error: error.message}));
+            const errorMessage = this.formUtilService.getErrorMessage(error);
+              this.toastr.error(errorMessage);
+            return of(forgetPasswordFailure({error: errorMessage}));
           }),
           tap(() => {
             // Navigate to another route after successful response
@@ -111,16 +132,16 @@ export class AuthenticationEffects {
     this.actions$.pipe(
       ofType(updatePassword),
       exhaustMap(({ password, token }) => {
-        return this.AuthfakeService.updatePassword(password, token).pipe(
+        return this.AuthService.updatePassword(password, token).pipe(
           map((response: any) => {
             this.toastr.success('Password has been updated successfully!!!');
             return updatePasswordSuccess({message: response});
 
           }),
           catchError((error: any) => {
-            console.log(error);
-            this.toastr.error(`Update Password Failure: ${error.error.result.error}`);
-            return of(updatePasswordFailure({error: error.error.result.error}));}),
+            const errorMessage = this.formUtilService.getErrorMessage(error);
+              this.toastr.error(errorMessage);
+            return of(updatePasswordFailure({error: errorMessage}));}),
           tap(() => {
             // Navigate to another route after successful response
             this.router.navigate(['auth/login']); // or any other route you want
@@ -132,7 +153,7 @@ export class AuthenticationEffects {
     this.actions$.pipe(
     ofType(updateProfile),
     exhaustMap((user : any ) => {
-      return this.AuthfakeService.updateProfile(user.user).pipe(
+      return this.AuthService.updateProfile(user.user).pipe(
         map(() => {
              localStorage.setItem('currentUser', JSON.stringify(user.user));
             this.toastr.success('The profile was updated successfully.');
@@ -142,8 +163,9 @@ export class AuthenticationEffects {
          
         ),
         catchError((error: any) => {
-          this.toastr.error(`Update Profile Failure: ${error.message}`);
-          return of(updateProfileFailure({ error }));
+          const errorMessage = this.formUtilService.getErrorMessage(error);
+          this.toastr.error(errorMessage);
+          return of(updateProfileFailure({ error:errorMessage }));
         }),
        
       );
@@ -154,7 +176,7 @@ export class AuthenticationEffects {
     this.actions$.pipe(
       ofType(updateProfilePassword),
       exhaustMap(({ oldPassword, newPassword}) => {
-        return this.AuthfakeService.updateProfilePassword( oldPassword, newPassword).pipe(
+        return this.AuthService.updateProfilePassword( oldPassword, newPassword).pipe(
           map((response: any) => {
             if (response) {
              
@@ -166,8 +188,9 @@ export class AuthenticationEffects {
           }),
           catchError((error: any) => {
             
-            this.toastr.error(`Update Password Failure: ${error.message}`);
-            return of(updateProfilePasswordFailure({error:error}));
+            const errorMessage = this.formUtilService.getErrorMessage(error);
+            this.toastr.error(errorMessage);
+            return of(updateProfilePasswordFailure({error: errorMessage}));
           }),
          
         );

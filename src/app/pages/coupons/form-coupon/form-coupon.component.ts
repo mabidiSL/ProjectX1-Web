@@ -95,10 +95,26 @@ export class FormCouponComponent implements OnInit, OnDestroy{
     const startDate = new Date(control.get('startDateCoupon')?.value);
     const endDate = new Date(control.get('endDateCoupon')?.value);
     const currentDate = new Date();
-  
+     // Normalize currentDate to midnight (00:00:00)
+    currentDate.setHours(0, 0, 0, 0);
+
+    // Normalize startDate to midnight (00:00:00)
+    if (startDate) {
+      startDate.setHours(0, 0, 0, 0);
+    }
+
+    // Normalize endDate to midnight (00:00:00)
+    if (endDate) {
+      endDate.setHours(0, 0, 0, 0);
+    }
+    console.log(currentDate);
+    console.log(startDate);
+    console.log(endDate);
     if (startDate && endDate) {
       // Check if both dates are valid
       if (startDate < currentDate || endDate < currentDate) {
+        console.log(startDate < currentDate);
+        
         return { invalidDate: true }; // Both dates must be >= current date
       }
       if (startDate >= endDate) {
@@ -125,8 +141,8 @@ export class FormCouponComponent implements OnInit, OnDestroy{
       managerName: [''],
       managerName_ar: [''],
       managerPhone: [''],
-      startDateCoupon: [null, Validators.required],
-      endDateCoupon: [null, Validators.required],
+      startDateCoupon: ['', Validators.required],
+      endDateCoupon: ['', Validators.required],
       contractRepName: [''],
       sectionOrderAppearance: [null],
       categoryOrderAppearance: [null],

@@ -1,11 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAction, props } from '@ngrx/store';
-import { _User, User } from './auth.models';
+import { _User } from './auth.models';
 
 // Register action
 export const Register = createAction('[Authentication] Register', props<{ newData : any }>());
 export const RegisterSuccess = createAction('[Authentication] Register Success', props<{ user: any }>());
 export const RegisterFailure = createAction('[Authentication] Register Failure', props<{ error: string }>());
-
+// Email verification action
+export const verifyEmail = createAction('[Authentication] verifyEmail', props<{ token : string }>());
+export const verifyEmailSuccess = createAction('[Authentication] verifyEmail Success', props<{ message: string }>());
+export const verifyEmailFailure = createAction('[Authentication] verifyEmail Failure', props<{ error: string }>());
 // login action
 export const login = createAction('[Authentication] Login', props<{ email: string, password: string }>());
 export const loginSuccess = createAction('[Authentication] Login Success', props<{ user: _User, token: string }>());

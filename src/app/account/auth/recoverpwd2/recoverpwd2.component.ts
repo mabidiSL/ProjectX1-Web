@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 
-import { AuthenticationService } from '../../../core/services/auth.service';
-import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-recoverpwd2',
@@ -21,7 +18,7 @@ export class Recoverpwd2Component implements OnInit {
   success: any = '';
   loading: any = false;
 
-  constructor(private formBuilder: UntypedFormBuilder, private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService) { }
+  constructor(private formBuilder: UntypedFormBuilder) { }
 
   ngOnInit(): void {
     this.resetForm = this.formBuilder.group({

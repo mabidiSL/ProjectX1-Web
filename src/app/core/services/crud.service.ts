@@ -31,24 +31,24 @@ export class CrudService {
             const lge = `["${this.currentLge}"]`;
             params = params.set('lang', lge);
         }
-        return this.http.get<T>(` ${environment.baseURL}${url}`,{params: params});
+        return this.http.get<T>(`${environment.baseURL}${url}`,{params: params});
     }
 
     fetchData<T>(url: string, payload?: Params ): Observable<T> {
-         return this.http.get<T>(` ${environment.baseURL}${url}`, {params: this.setParams(payload)});
+         return this.http.get<T>(`${environment.baseURL}${url}`, {params: this.setParams(payload)});
     }
     
     addData<T>(url: string, newData: T): Observable<T> {
-        return this.http.post<T>(` ${environment.baseURL}${url}`, newData);
+        return this.http.post<T>(`${environment.baseURL}${url}`, newData);
     }
 
     updateData<T>(url: string, updatedData: T): Observable<T> {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         delete (updatedData as any).id;
-        return this.http.patch<T>(` ${environment.baseURL}${url}`, updatedData);
+        return this.http.patch<T>(`${environment.baseURL}${url}`, updatedData);
     }
     getDataById<T>(url, id: number): Observable<T> {
-        return this.http.get<T>(` ${environment.baseURL}${url}/${id}`);
+        return this.http.get<T>(`${environment.baseURL}${url}/${id}`);
 
     }
     deleteData(url: string): Observable<string> {

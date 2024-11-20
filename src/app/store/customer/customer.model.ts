@@ -1,10 +1,26 @@
-export interface CustomersModel {
-    id: number;
-    username: string;
-    phone: string;
-    email: string;
-    address: string;
-    rating: string;
-    balance: string;
-    date: string;
+import { PaginateModel, Translation } from "src/app/core/interfaces/core.interface";
+import {  Role } from "../Role/role.models";
+import { City } from "../City/city.model";
+
+export interface CustomerListModel  extends PaginateModel
+{   
+    data?: Customer[]; 
+}
+export interface Customer {
+    
+        id?: number;
+        translation_data?: Translation[];
+        email?: string;
+        phone?: string;
+        password?: string;
+        image?: string;
+        city_id?: number; // City;
+        city?: City;
+        bank_id?: number;
+        bankAccountNumber?: string;
+        bankName?: string;
+        role_id?: number;
+        role?: Role;
+        createdBy?: string;
+        status?: string;//pending,approved,active, inactive, disabled
 }

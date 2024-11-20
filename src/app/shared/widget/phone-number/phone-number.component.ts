@@ -46,16 +46,10 @@ export class PhoneNumberComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
+   
       this.inputElement = document.querySelector(`#${this.inputId}`) as HTMLInputElement; 
-
-      if (this.inputElement) {
-        this.checkLanguageAndApplyRtl();
-  
-        try {
-    
-    
-            const iti = intlTelInput(this.inputElement, this.itiOptions);
+      this.checkLanguageAndApplyRtl();
+      const iti = intlTelInput(this.inputElement, this.itiOptions);
 
             if (this.initialPhoneNumber) {
               this.inputElement.value = this.initialPhoneNumber;
@@ -65,11 +59,9 @@ export class PhoneNumberComponent implements AfterViewInit {
               const phoneNumber = this.inputElement.value;
               this.phoneNumberChanged.emit(phoneNumber);
             });
-          } catch (error) {
-            console.error('Error initializing intlTelInput:', error);
-          }
+          
        
-        }
-        }  , 0);
+        
+     
   }
 }

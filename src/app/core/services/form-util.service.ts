@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ElementRef, Injectable } from "@angular/core";
 import { FormGroup } from "@angular/forms";
+import { includes } from "lodash";
 
 @Injectable({
     providedIn: 'root'
@@ -46,6 +47,13 @@ export class FormUtilService{
 
     // Compare each field and add only the modified fields
     for (const key in form.controls) {
+      console.log(form.controls[key].value);
+      console.log(data[key]);
+      if(key.includes('phone') ||key.includes('Phone')){
+        if (form.controls[key].value !== data[key]) {
+          changedData[key] = form.controls[key].value;
+      }
+      }
       if (form.controls[key].dirty) {
         // Check if the value is different from the original
         

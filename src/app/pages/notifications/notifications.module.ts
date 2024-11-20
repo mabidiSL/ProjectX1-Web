@@ -13,6 +13,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { ViewNotificationComponent } from './view-notification/view-notification.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { ViewNotificationComponent } from './view-notification/view-notification
     ReactiveFormsModule,
     TranslateModule,
     UIModule,
+    NgSelectModule,
     CKEditorModule,
     TooltipModule.forRoot(),
     PaginationModule.forRoot(),

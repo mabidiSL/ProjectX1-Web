@@ -119,6 +119,7 @@ passwordMatchValidator(formGroup: FormGroup) {
     toggleFieldTextType2() {
       this.fieldTextType2 = !this.fieldTextType2;
     }
+  
   onSubmit() {
     this.formSubmitted = true;
 
@@ -134,6 +135,9 @@ passwordMatchValidator(formGroup: FormGroup) {
       this.formError = null;
 
       const updatedUser =  this.profileForm.value;
+      delete updatedUser.logo;
+      delete updatedUser.email;
+
       this.store.dispatch(updateProfile({ user: updatedUser }));
 
    

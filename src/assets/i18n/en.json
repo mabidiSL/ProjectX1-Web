@@ -856,7 +856,12 @@
         "update_company_profile": "Update Company Profile",
         "Back to Dashboard": "Back to Dashboard",
         "Coming Soon": "Coming Soon",
-        "Enter manager phone": "Enter manager phone"
+        "Enter manager phone": "Enter manager phone",
+        "Notif_title in arabic": "Notification Title",
+        "Send_to":"Send To",
+        "Select_the_customer": "Select the Customer",
+        "Notifications": "Notifications"
+
 
 
 

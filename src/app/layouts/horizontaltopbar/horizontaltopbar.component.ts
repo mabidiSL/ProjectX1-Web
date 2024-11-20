@@ -1,18 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit, AfterViewInit, Inject, ViewChild, Input, ElementRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import MetisMenu from 'metismenujs';
 import { CookieService } from 'ngx-cookie-service';
 import { LanguageService } from '../../core/services/language.service';
 
-import { EventService } from '../../core/services/event.service';
-import { AuthenticationService } from '../../core/services/auth.service';
-import { AuthfakeauthenticationService } from '../../core/services/authfake.service';
 
 import { DOCUMENT } from '@angular/common';
 
 import { MENU } from './menu';
 import { MenuItem } from './menu.model';
-import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-horizontaltopbar',
@@ -44,8 +41,9 @@ export class HorizontaltopbarComponent implements OnInit, AfterViewInit {
   ];
 
   // tslint:disable-next-line: max-line-length
-  constructor(@Inject(DOCUMENT) private document: any, private router: Router, private eventService: EventService, private authService: AuthenticationService,
-    private authFackservice: AuthfakeauthenticationService,
+  constructor(@Inject(DOCUMENT) private document: any,
+   private router: Router, 
+  
     public languageService: LanguageService,
     // tslint:disable-next-line: variable-name
     public _cookiesService: CookieService) {
@@ -296,7 +294,7 @@ export class HorizontaltopbarComponent implements OnInit, AfterViewInit {
     for (let i = 0; i < links.length; i++) {
       paths.push(links[i]['pathname']);
     }
-    var itemIndex = paths.indexOf(window.location.pathname);
+    const itemIndex = paths.indexOf(window.location.pathname);
     if (itemIndex === -1) {
       const strIndex = window.location.pathname.lastIndexOf('/');
       const item = window.location.pathname.substr(0, strIndex).toString();

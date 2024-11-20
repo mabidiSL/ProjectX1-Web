@@ -1,70 +1,71 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
-
-import { getFirebaseBackend } from '../../authUtils';
-import { User } from 'src/app/store/Authentication/auth.models';
-import { from, map } from 'rxjs';
-
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { _User, User } from 'src/app/store/Authentication/auth.models';
+import { environment } from 'src/environments/environment';
+//import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
-
 export class AuthenticationService {
+    private currentUserSubject: BehaviorSubject<User>;
+    public currentUser: Observable<_User>;
+    
 
-    user: User;
+    constructor(private http: HttpClient) {
+        
+        const storedUser = localStorage.getItem('currentUser');
+        const user = storedUser ? JSON.parse(storedUser) : null;
+        this.currentUserSubject = new BehaviorSubject<_User>(user);
+        this.currentUser = this.currentUserSubject.asObservable();
+    }
+   
+    public get currentUserValue(): _User {
+        return this.currentUserSubject.value;
+    }
+    verifyEmail(token: string){
+        return this.http.post<any>(`${environment.baseURL}/auth/verify-email`, {token} );
 
-    constructor() {
+    }
+    register ( data: any){
+        return this.http.post<any>(`${environment.baseURL}/auth/register-merchant`, data );
+
+    }
+    login(loginKey: string, password: string) {
+       
+        return this.http.post<any>(`${environment.baseURL}/auth/login`, { loginKey, password });
+      
+    }
+    forgotPassword(email: string){
+        return this.http.post(`${environment.baseURL}/auth/forgot-password`,{email}) ;
+    }
+    updateProfilePassword( oldPassword: string, newPassword: string){
+       // const id = this.currentUserSubject.value.userId;
+         return this.http.post(`${environment.baseURL}/auth/change-password`,{oldPassword,newPassword});
+        
+    }
+    updatePassword(password: string, token: string){
+
+        return this.http.post(`${environment.baseURL}/auth/reset-password`,{password, token});
+      
+   }
+    updateProfile(user: any){
+        const id = user.id;
+        delete user.id;
+        return this.http.patch(` ${environment.baseURL}/users/${id}`,user) ;
     }
 
-    /**
-     * Returns the current user
-     */
-    public currentUser(): User {
-        return getFirebaseBackend().getAuthenticatedUser();
+    refreshToken(refreshToken: string): Observable<any> {
+        return this.http.post(` ${environment.baseURL}/auth/refresh`, { refreshToken: refreshToken });
     }
-
-
-    /**
-     * Performs the auth
-     * @param email email of user
-     * @param password password of user
-     */
-    login(email: string, password: string) {
-        return from(getFirebaseBackend().loginUser(email, password).pipe(map(user => {
-            return user;
-        }
-        )));
-    }
-
-    /**
-     * Performs the register
-     * @param email email
-     * @param password password
-     */
-    register(user: User) {
-        // return from(getFirebaseBackend().registerUser(user));
-
-        return from(getFirebaseBackend().registerUser(user).then((response: any) => {
-            const user = response;
-            return user;
-        }));
-    }
-
-    /**
-     * Reset password
-     * @param email email
-     */
-    resetPassword(email: string) {
-        return getFirebaseBackend().forgetPassword(email).then((response: any) => {
-            const message = response.data;
-            return message;
-        });
-    }
-
-    /**
-     * Logout the user
-     */
     logout() {
-        // logout the user
-        getFirebaseBackend().logout();
+        // remove user from local storage to log user out
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('timeLifeToken');
+        //clean up the cookies
+        document.cookie = 'lang=; Max-Age=-99999999; path=/';
+        this.currentUserSubject.next(null);
     }
 }
-

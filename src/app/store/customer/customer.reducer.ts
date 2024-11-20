@@ -1,41 +1,42 @@
-import { Action, createReducer, on } from '@ngrx/store';
-import { addCustomerlistSuccess, fetchCustomerData, fetchCustomerFail, fetchCustomerSuccess, updateCustomerlistSuccess } from './customer.action';
+// src/app/Customerlist.reducer.ts
+import { createReducer, on } from '@ngrx/store';
+import { fetchCustomerlistData, fetchCustomerlistFail, fetchCustomerlistSuccess} from './customer.action';
+import { Customer } from './customer.model';
 
-
-export interface CustomerState {
-    customer: any[];
-    loading: boolean;
-    error: any;
+export interface CustomerlistState {
+  CustomerListdata: Customer[];
+  totalItems: number;
+  selectedCustomer: Customer;
+  loading: boolean;
+  error: string;
 }
 
-export const initialState: CustomerState = {
-    customer: [],
-    loading: false,
-    error: null,
+export const initialState: CustomerlistState = {
+  CustomerListdata: [],
+  totalItems: 0,
+  selectedCustomer: null,
+  loading: false,
+  error: null,
 };
 
-export const CustomerReducer = createReducer(
-    initialState,
-    on(fetchCustomerData, (state) => {
-        return { ...state, loading: true, error: null };
-    }),
-    on(fetchCustomerSuccess, (state, { customer }) => {
-        return { ...state, customer, loading: false };
-    }),
-    on(fetchCustomerFail, (state, { error }) => {
-        return { ...state, error, loading: false };
-    }),
-
-    on(addCustomerlistSuccess, (state, { newData }) => {
-        return { ...state, customer: [newData, ...state.customer], error: null };
-
-    }),
-    on(updateCustomerlistSuccess, (state, { updatedData }) => {
-        return { ...state, customer: state.customer.map((customer) => customer.id === updatedData.id ? updatedData : customer), error: null };
-    }),
+export const CustomerListReducer = createReducer(
+  initialState,
+  on(fetchCustomerlistData, state => ({
+    ...state,
+    loading: true,
+    error: null
+  })),
+  on(fetchCustomerlistSuccess, (state, { CustomerListdata }) => ({
+    ...state,
+    CustomerListdata: CustomerListdata.data,
+    totalItems:CustomerListdata.totalItems,
+    loading: false,
+    error: null
+  })),
+  on(fetchCustomerlistFail, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false
+  })),
+ 
 );
-
-// Selector
-export function reducer(state: CustomerState | undefined, action: Action) {
-    return CustomerReducer(state, action);
-}

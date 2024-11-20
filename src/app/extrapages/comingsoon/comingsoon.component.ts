@@ -25,9 +25,9 @@ export class ComingsoonComponent implements OnInit {
     this._trialEndsAt = "2026-12-31";
 
     interval(1000).pipe(
-      map((x) => {
+      map(() => {
         this._diff = Date.parse(this._trialEndsAt) - Date.parse(new Date().toString());
-      })).subscribe((x) => {
+      })).subscribe(() => {
         this._days = this.getDays(this._diff);
         this._hours = this.getHours(this._diff);
         this._minutes = this.getMinutes(this._diff);

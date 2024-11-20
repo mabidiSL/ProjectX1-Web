@@ -80,7 +80,8 @@ columns : any[]= [
   }
 
   onApproveEvent( event: any) {
-    this.store.dispatch(updateMerchantlist({ updatedData: event }));
+    const object = { id: event.id, status: event.status};
+    this.store.dispatch(updateMerchantlist({ updatedData: object }));
   }
 
 
