@@ -15,7 +15,6 @@ export class CrudService {
         private cookieService: CookieService,
     ) {       
         this.currentLge = this.cookieService.get('lang');
-        console.log(this.currentLge);
   
     }
    

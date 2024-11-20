@@ -107,13 +107,11 @@ export class FormCouponComponent implements OnInit, OnDestroy{
     if (endDate) {
       endDate.setHours(0, 0, 0, 0);
     }
-    console.log(currentDate);
-    console.log(startDate);
-    console.log(endDate);
+ 
     if (startDate && endDate) {
       // Check if both dates are valid
       if (startDate < currentDate || endDate < currentDate) {
-        console.log(startDate < currentDate);
+     
         
         return { invalidDate: true }; // Both dates must be >= current date
       }
@@ -199,7 +197,6 @@ export class FormCouponComponent implements OnInit, OnDestroy{
         return a.translatedName.localeCompare(b.translatedName);
       })
      }
-     console.log(this.storeList);
      
     });
     if(this.currentRole !== 'Admin'){
@@ -217,7 +214,7 @@ export class FormCouponComponent implements OnInit, OnDestroy{
         .pipe(select(selectedCoupon), takeUntil(this.destroy$))
         .subscribe(coupon => {
           if (coupon) {
-            console.log(coupon);
+          
             if(this.currentRole === 'Admin'){
               this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000, status:'', merchant_id: coupon.merchant_id}));
               //this.fetchStore(coupon.merchant_id);
@@ -356,7 +353,7 @@ createCouponFromForm(formValue): Coupon{
     delete coupon.termsAndConditions_ar;
     delete coupon.managerName;
     delete coupon.managerName_ar;
-  console.log(coupon);
+
   return coupon;
 
   
@@ -385,7 +382,7 @@ createCouponFromForm(formValue): Coupon{
          delete newData.codeCoupon;
          delete newData.id;
          newData = this.createCouponFromForm(newData);
-         console.log(newData);
+      
          this.store.dispatch(addCouponlist({ newData }));
       }
       else
@@ -394,7 +391,7 @@ createCouponFromForm(formValue): Coupon{
         if (Object.keys(updatedDta).length > 0) {
           const changedData = this.createCouponFromForm(updatedDta);
           changedData.id =  this.formCoupon.value.id;
-          console.log(changedData);
+ 
           this.store.dispatch(updateCouponlist({ updatedData: changedData }));
         }
         else{

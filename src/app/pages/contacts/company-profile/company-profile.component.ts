@@ -250,7 +250,6 @@ export class CompanyProfileComponent implements OnInit {
 
     onChangeCountrySelection(event: Country){
       const country = event;
-      console.log(country);
       this.merchantForm.get('area_id').setValue(null);
       this.merchantForm.get('city_id').setValue(null);
       this.filteredAreas = [];
@@ -372,7 +371,6 @@ export class CompanyProfileComponent implements OnInit {
       const updatedDta = this.formUtilService.detectChanges(this.merchantForm, this.originalMerchantData);
       if (Object.keys(updatedDta).length > 0) {
         const changedData = this.createMerchantFromForm(updatedDta);
-        console.log(changedData);
         changedData.id = newData.id;
         this.store.dispatch(updateMerchantlist({ updatedData: changedData }));
       }

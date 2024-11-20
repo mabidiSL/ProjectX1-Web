@@ -114,7 +114,7 @@ export class FormRoleComponent implements OnInit, OnDestroy {
             this.patchValueForm(role);
             this.claims = this.role.claims;
             this.originalRoleData = _.cloneDeep(role);
-            console.log(this.originalRoleData)
+            
             this.isEditing = true;
             this.patchClaimsToCheckboxes(role.claims);
 
@@ -217,9 +217,7 @@ createRoleFromForm(formValue): Role {
         else
         { 
           const updatedDta = this.formUtilService.detectChanges(this.roleForm, this.originalRoleData);
-          console.log(this.roleForm.value);
-          console.log(this.originalRoleData);
-          console.log(_.isEqual(this.roleForm.value.claims,this.originalRoleData.claims));
+          
           if(!_.isEqual(this.roleForm.value.claims,this.originalRoleData.claims)){
             updatedDta.claims = this.roleForm.value.claims;
           }

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, mergeMap, map, tap } from 'rxjs/operators';
+import { catchError, mergeMap, map } from 'rxjs/operators';
 
 import { of } from 'rxjs';
 import { CrudService } from 'src/app/core/services/crud.service';
@@ -35,8 +35,7 @@ export class MerchantslistEffects1 {
             ofType(fetchMerchantlistData),
             mergeMap(({ page, itemsPerPage, status }) => 
                   this.CrudService.fetchData('/merchants',{ limit: itemsPerPage, page: page, status: status}).pipe(
-                    tap((response : any) => console.log('Fetched data:', response.result)), 
-                    map((response) => {return fetchMerchantlistSuccess({ MerchantListdata: response.result })}),
+                    map((response: any) => {return fetchMerchantlistSuccess({ MerchantListdata: response.result })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
                       this.toastr.error(errorMessage); 

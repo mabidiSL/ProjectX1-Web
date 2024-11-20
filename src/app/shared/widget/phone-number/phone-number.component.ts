@@ -35,7 +35,6 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
 
   checkLanguageAndApplyRtl(): void {
     this.language = this.cookieService.get('lang'); 
-    console.log(this.language)
     if (this.language === 'ar') {
       this.inputElement.setAttribute('dir', 'rtl'); 
       this.itiOptions.i18n = ar; 
@@ -44,7 +43,6 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
       this.inputElement.setAttribute('dir', 'ltr');
       delete this.itiOptions.i18n;
     }
-    console.log(this.itiOptions);
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['initialPhoneNumber']) {
@@ -63,7 +61,6 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
 
     if (!this.inputElement && document.querySelector(`#${this.inputId}`)) {
       this.inputElement = document.querySelector(`#${this.inputId}`) as HTMLInputElement; 
-      console.log(this.inputElement);
       if(this.inputElement){
       this.checkLanguageAndApplyRtl();
       

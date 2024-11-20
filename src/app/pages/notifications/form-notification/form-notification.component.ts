@@ -83,7 +83,7 @@ export class FormNotificationComponent implements OnInit {
         .pipe(select(selectedNotification), takeUntil(this.destroy$))
         .subscribe(Notif => {
           if (Notif) {
-            console.log(Notif);
+            
             this.patchValueForm(Notif);
             this.originalNotificationData = { ...Notif };
             this.isEditing = true;
@@ -151,7 +151,7 @@ createNotificationFromForm(formValue): Notification{
     delete notification.title_ar;
     delete notification.description;
     delete notification.description_ar;
-  console.log(notification);
+  
   return notification;
  
 }
@@ -181,7 +181,7 @@ createNotificationFromForm(formValue): Notification{
         }
         else
         {
-          console.log('i am in update employee');
+          
           const updatedDta = this.formUtilService.detectChanges(this.notifForm, this.originalNotificationData);
 
           if (Object.keys(updatedDta).length > 0) {

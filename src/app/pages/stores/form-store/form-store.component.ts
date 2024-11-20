@@ -142,7 +142,7 @@ export class FormStoreComponent implements OnInit, OnDestroy {
                 return this.arealist$.pipe(
                     map(areas => {
                         this.filteredAreas = areas.filter(a => a.country_id === merchant_country_id);
-                        console.log(this.filteredAreas);
+                 
                     })
                 );
             } else {
@@ -154,7 +154,6 @@ export class FormStoreComponent implements OnInit, OnDestroy {
   }
 
     const StoreId = this.route.snapshot.params['id'];
-    console.log('Store ID from snapshot:', StoreId);
     if (StoreId) {
       // Dispatch action to retrieve the Store by ID
       this.store.dispatch(getStoreById({ StoreId }));
@@ -164,16 +163,13 @@ export class FormStoreComponent implements OnInit, OnDestroy {
         .pipe(select(selectStoreById), takeUntil(this.destroy$))
         .subscribe(Store => {
           if (Store) {
-            console.log('Retrieved Store:', Store);
             this.uploadedFiles = Store.images;
-            console.log(this.uploadedFiles);
             const areaId = Store.city.area_id;
          
             this.storeForm.get('area_id').setValue(areaId); 
             this.storeForm.get('city_id').setValue(Store.city_id); 
             this.storeForm.get('images').setValue(Store.images); 
 
-            console.log(this.uploadedFiles);
             this.patchValueForm(Store);
             this.originalStoreData = _.cloneDeep(Store);
 
@@ -204,7 +200,6 @@ private getNavigationState(){
 }
    
   onPhoneNumberChanged(phoneNumber: string) {
-    console.log('PHONE NUMBER', phoneNumber);
     this.storeForm.get('phone').setValue(phoneNumber);
   }
 
@@ -224,7 +219,6 @@ private getNavigationState(){
         // Sort by translatedName
         return a.translatedName.localeCompare(b.translatedName);
       });
-      console.log(this.merchantList);
     });
   }
   fetchAreas(){
@@ -280,7 +274,6 @@ private getNavigationState(){
     const area = event;
     this.filteredCities = [];
     this.storeForm.get('city_id').setValue(null);
-    console.log(area);
     if(area){
       this.store.select(selectDataCity).subscribe((data) => {
         this.filteredCities = [...data].map(city =>{
@@ -395,9 +388,7 @@ private getNavigationState(){
           if(this.uploadedFiles)
             this.storeForm.get('images').setValue(this.originalStoreData.images);
 
-          console.log(this.originalStoreData);
-          console.log(this.storeForm.value);
-          
+   
           const updatedDta = this.formUtilService.detectChanges(this.storeForm, this.originalStoreData);
           if (Object.keys(updatedDta).length > 0) {
             const changedData = this.createStoreFromForm(updatedDta);

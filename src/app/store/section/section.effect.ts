@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, mergeMap, map, tap } from 'rxjs/operators';
+import { catchError, mergeMap, map } from 'rxjs/operators';
 
 import { of } from 'rxjs';
 import { CrudService } from 'src/app/core/services/crud.service';
@@ -35,8 +35,7 @@ export class SectionEffects {
             ofType(fetchSectionlistData),
             mergeMap(({ page, itemsPerPage }) =>
                 this.CrudService.fetchData('/sections',{ limit: itemsPerPage, page: page}).pipe(
-                    tap((response : any) => console.log('Fetched data:', response.result.data)), 
-                    map((response) => fetchSectionlistSuccess({ SectionListdata: response.result.data })),
+                    map((response: any) => fetchSectionlistSuccess({ SectionListdata: response.result.data })),
                     catchError((error) =>
                         of(fetchSectionlistFail({ error }))
                     )

@@ -32,7 +32,8 @@ export class StoreslistEffects {
             ofType(fetchStorelistData),
             mergeMap(({ page, itemsPerPage,status, merchant_id }) =>
                 this.CrudService.fetchData('/stores',{ limit: itemsPerPage, page: page,status: status, merchant_id: merchant_id}).pipe(
-                    map((response: any) => {console.log(response.result);return fetchStorelistSuccess({ StoreListdata: response.result })}),
+                    map((response: any) => {
+                    return fetchStorelistSuccess({ StoreListdata: response.result })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
                       this.toastr.error(errorMessage);

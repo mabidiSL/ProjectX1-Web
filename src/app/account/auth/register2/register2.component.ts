@@ -200,7 +200,6 @@ export class Register2Component implements OnInit {
   
   onChangeCountrySelection(event: Country){
     const country = event;
-    console.log(country);
     this. signupForm.get('area_id').setValue(null);
     this. signupForm.get('city_id').setValue(null);
     this.filteredAreas = [];

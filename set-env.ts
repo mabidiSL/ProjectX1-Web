@@ -23,13 +23,11 @@ function ensureDirAndWriteFile(filePath, content) {
 
   // Check if the directory exists, and if not, create it
   if (!fs.existsSync(dirPath)) {
-    console.log(`Directory doesn't exist. Creating: ${dirPath}`);
     fs.mkdirSync(dirPath, { recursive: true });
   }
 
   // Write the content to the file
   fs.writeFileSync(filePath, content, 'utf8');
-  console.log(`File written to: ${filePath}`);
 }
 
 // Write the environment files

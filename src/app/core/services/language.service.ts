@@ -29,7 +29,6 @@ export class LanguageService {
   }
 
   public setLanguage(lang) {
-    console.log('i am in the set language');
     this.cookieService.delete('lang');
     this.cookieService.set('lang', lang, { expires: 365, path: '/' })     
     this.translate.use(lang);

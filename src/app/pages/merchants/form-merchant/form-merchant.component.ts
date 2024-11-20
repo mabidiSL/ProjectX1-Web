@@ -166,7 +166,6 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
         .subscribe((merchant: Merchant) => {
           if (merchant) {
 
-            console.log(merchant); 
             this.globalId = merchant.id;
             this.patchValueForm(merchant);
             this.merchantForm.controls['country_id'].setValue(merchant.user.city.area.country_id);
@@ -269,7 +268,7 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
 
   onChangeCountrySelection(event: Country){
     const country = event;
-    console.log(country);
+ 
     this.merchantForm.get('area_id').setValue(null);
     this.merchantForm.get('city_id').setValue(null);
     this.filteredAreas = [];
@@ -382,7 +381,7 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
     }
     this.formError = null;
       const newData = this.merchantForm.value;
-      console.log(newData);
+    
       if(this.storeLogoBase64){
         newData.merchantLogo = this.storeLogoBase64;
       }
@@ -400,7 +399,7 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
         {  
           delete this.merchant.id;
           //this.merchant = newData;
-          console.log(this.merchant);
+          
           //Dispatch Action
           this.store.dispatch(addMerchantlist({ newData: this.merchant }));
         }

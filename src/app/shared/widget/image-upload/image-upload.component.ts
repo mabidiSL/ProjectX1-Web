@@ -47,7 +47,6 @@ export class ImageUploadComponent {
       // Emit the result (base64 string) to the parent component
       this.selectedFile = reader.result as string
       if(this.type === 'logo'){
-        console.log('logo');
         this.logoUploaded.emit({file: this.selectedFile, type: this.type});
       }
       else if(this.type === 'image') {

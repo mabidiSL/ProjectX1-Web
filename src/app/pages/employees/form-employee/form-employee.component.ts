@@ -123,7 +123,7 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
         .pipe(select(selectedEmployee), takeUntil(this.destroy$))
         .subscribe(employee => {
           if (employee) {
-            console.log(employee);
+  
             
             this.employeeForm.controls['country_id'].setValue(employee.city.area.country_id);
             this.employeeForm.controls['area_id'].setValue(employee.city.area_id);
@@ -307,7 +307,7 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
     delete employee.bankAccountNumber;
 
 
-   console.log(employee);  
+
    return employee;
 }
 
@@ -332,7 +332,7 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
         }
         else
         { 
-          console.log('i am in update employee');
+      
           const updatedDta = this.formUtilService.detectChanges(this.employeeForm, this.originalEmployeeData);
 
           if (Object.keys(updatedDta).length > 0) {
@@ -359,7 +359,7 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
 
       // Update the permission keys and module keys based on the selected role
       if (this.selectedRole) {
-        console.log(this.selectedRole);
+    
         this.isPermissionsOpen = true;
         this.setPermissionsForRole();
       }
@@ -379,7 +379,7 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
         this.permissions[module][permission] = this.hasPermission(module, permission);
       });
     });
-    console.log(this.permissions);
+
   }
 
   // Check if the selected role has permission for a module and permission
