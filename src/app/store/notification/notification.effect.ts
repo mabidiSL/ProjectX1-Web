@@ -66,7 +66,7 @@ export class NotificationsEffects {
         this.actions$.pipe(
             ofType(addNotificationlist),
             mergeMap(({ newData }) =>
-                this.CrudService.addData('/notifications/schedule-notif/mobile', newData).pipe(
+                this.CrudService.addData('/notifications/mobile', newData).pipe(
                     map((newData) => {
                         
                         this.router.navigate(['/private/notifications']);

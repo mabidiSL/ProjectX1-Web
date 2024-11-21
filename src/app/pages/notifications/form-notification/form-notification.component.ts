@@ -60,9 +60,9 @@ export class FormNotificationComponent implements OnInit {
       this.notifForm = this.formBuilder.group({
         id: [null],
         title: ['', Validators.required],
-        description: [''],
+        description: ['' , Validators.required],
         title_ar: ['', Validators.required],
-        description_ar: [''],
+        description_ar: ['',  Validators.required],
         user_id: [null]
         
       });
@@ -103,8 +103,8 @@ export class FormNotificationComponent implements OnInit {
     this.notifForm.patchValue({
       title: notification.translation_data[0].title,
       title_ar: notification.translation_data[1].title,
-      decsription: notification.translation_data[0].description,
-      decsription_ar: notification.translation_data[1].description
+      description: notification.translation_data[0].description,
+      description_ar: notification.translation_data[1].description
 
     });
 

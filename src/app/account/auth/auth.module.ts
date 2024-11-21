@@ -8,7 +8,6 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { UIModule } from '../../shared/ui/ui.module';
 import { LoginComponent } from './login/login.component';
 import { Register2Component } from './register2/register2.component';
-import { Recoverpwd2Component } from './recoverpwd2/recoverpwd2.component';
 
 import { AuthRoutingModule } from './auth-routing';
 import { PasswordresetComponent } from './passwordreset/passwordreset.component';
@@ -26,7 +25,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
-  declarations: [LoginComponent,   PasswordresetComponent, Register2Component, Recoverpwd2Component, UpdatepasswordComponent],
+  declarations: [LoginComponent,  PasswordresetComponent, Register2Component, UpdatepasswordComponent],
   imports: [
     WidgetModule,
     NgSelectModule,

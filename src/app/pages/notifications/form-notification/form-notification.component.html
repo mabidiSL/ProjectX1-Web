@@ -29,9 +29,9 @@
                        <label for="description" >{{'Description' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                        <textarea class="form-control" id="description" formControlName="description" rows="3" [readonly]="type==='view'"></textarea>
                        <!-- <ckeditor [editor]="Editor" id="description" class="form-control"  data="Content of the Notification Message" (change)="onEditorChange($event)"></ckeditor> -->
-                       <!-- <div *ngIf="notificationForm.get('title').touched && notificationForm.get('title').invalid" class="invalid-feedback d-block">
-                            <span *ngIf="notificationForm.get('title').errors?.['required']">{{'title is required'| translate}}.</span>
-                          </div> -->
+                       <div *ngIf="notifForm.get('title').touched && notifForm.get('title').invalid" class="invalid-feedback d-block">
+                            <span *ngIf="notifForm.get('title').errors?.['required']">{{'title is required'| translate}}.</span>
+                          </div>
                       </div> 
                   </div>
                   <div class="col-md-6 mb-3">
@@ -39,15 +39,15 @@
                        <label for="description_ar" >{{'Description in arabic' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                        <textarea class="form-control" id="description_ar" formControlName="description_ar" rows="3" [readonly]="type==='view'"></textarea>
                        <!-- <ckeditor [editor]="Editor" id="description" class="form-control"  data="Content of the Notification Message" (change)="onEditorChange($event)"></ckeditor> -->
-                       <!-- <div *ngIf="notificationForm.get('title').touched && notificationForm.get('title').invalid" class="invalid-feedback d-block">
-                            <span *ngIf="notificationForm.get('title').errors?.['required']">{{'title is required'| translate}}.</span>
-                          </div> -->
+                       <div *ngIf="notifForm.get('title').touched && notifForm.get('title').invalid" class="invalid-feedback d-block">
+                            <span *ngIf="notifForm.get('title').errors?.['required']">{{'title is required'| translate}}.</span>
+                          </div>
                       </div> 
                   </div>
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
                       <label for="user_id" >{{'Send_to' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                      <ng-select [readonly]="type === 'view'" id="user_id" placeholder="{{'Select_the_customer' | translate}}" [items]="userList" bindLabel="email" 
+                      <ng-select [readonly]="type === 'view'" id="user_id" placeholder="{{'Select_the_customer' | translate}}" [items]="userList" bindLabel="username" 
                       bindValue="id"  formControlName="user_id"  >
                       </ng-select>  
                     </div>

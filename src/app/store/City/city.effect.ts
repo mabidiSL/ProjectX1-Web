@@ -8,18 +8,7 @@ import { CrudService } from 'src/app/core/services/crud.service';
 import {
     fetchCitylistData, fetchCitylistSuccess,
     fetchCitylistFail,
-    addCitylistFailure,
-    addCitylistSuccess,
-    addCitylist,
-    updateCitylistFailure,
-    updateCitylistSuccess,
-    updateCitylist,
-    deleteCitylistFailure,
-    deleteCitylistSuccess,
-    deleteCitylist,
-    getCityById,
-    getCityByIdSuccess,
-    getCityByIdFailure
+   
 } from './city.action';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
@@ -43,83 +32,6 @@ export class CityEffects {
         ),
     );
   
-    addData$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(addCitylist),
-            mergeMap(({ newData }) =>
-                this.CrudService.addData('/cities', newData).pipe(
-                    map((response) => {
-                        this.toastr.success('The new City has been added successfully.');
-                        this.router.navigate(['/private/cities']);
-                        // Dispatch the action to fetch the updated City list after adding a new City
-                        return addCitylistSuccess({newData: response});
-                      }),
-                      catchError((error) => {
-                        const errorMessage = this.formUtilService.getErrorMessage(error);
-                        this.toastr.error(errorMessage); 
-                        return of(addCitylistFailure({ error: errorMessage })); // Dispatch failure action
-                      })                )
-            )
-        )
-    );
-    getCityById$ =  createEffect(() =>
-      this.actions$.pipe(
-        ofType(getCityById),
-        mergeMap(({ CityId }) => {
-          return this.CrudService.getDataById('/cities', CityId).pipe(
-            map((City: any) => {
-              if (City ) {
-                return getCityByIdSuccess({ City: City.result});
-              } else {
-                return getCityByIdFailure({ error: 'City not found' });
-              }
-            })
-          );
-        })
-      )
-    );
-   
-  
-
-    updateData$ = createEffect(() => 
-        this.actions$.pipe(
-            ofType(updateCitylist),
-            mergeMap(({ updatedData }) => {
-               
-                return this.CrudService.updateData(`/cities/${updatedData.id}`, updatedData).pipe(
-                    map((response : any) => 
-                    {
-                        this.toastr.success('The City has been updated successfully.');
-                        this.router.navigate(['/private/cities']); 
-                        return updateCitylistSuccess({ updatedData : response.result})
-                    }),
-                    catchError((error) =>{
-                      const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage); 
-                      return of(updateCitylistFailure({ error: errorMessage }));
-                      })                );
-            })
-        )
-    );
-
-
-   deleteData$ = createEffect(() =>
-    
-        this.actions$.pipe(
-            ofType(deleteCitylist),
-            mergeMap(({ CityId }) =>
-                    this.CrudService.deleteData(`/cities/${CityId}`).pipe(
-                        map(() => {
-                            // If response contains a success message or status, you might want to check it here
-                            return deleteCitylistSuccess({ CityId });
-                          }),
-                          catchError((error) => {
-                            const errorMessage = this.formUtilService.getErrorMessage(error);
-                            this.toastr.error(errorMessage);
-                            return  of(deleteCitylistFailure({ error: errorMessage }))})                )
-            )
-        )
-    );
     
     
     constructor(

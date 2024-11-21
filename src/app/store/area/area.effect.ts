@@ -8,18 +8,7 @@ import { CrudService } from 'src/app/core/services/crud.service';
 import {
     fetchArealistData, fetchArealistSuccess,
     fetchArealistFail,
-    addArealistFailure,
-    addArealistSuccess,
-    addArealist,
-    updateArealistFailure,
-    updateArealistSuccess,
-    updateArealist,
-    deleteArealistFailure,
-    deleteArealistSuccess,
-    deleteArealist,
-    getAreaById,
-    getAreaByIdSuccess,
-    getAreaByIdFailure
+  
 } from './area.action';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
@@ -44,80 +33,10 @@ export class AreaEffects {
         ),
     );
   
-    addData$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(addArealist),
-            mergeMap(({ newData }) =>
-                this.CrudService.addData('/areas', newData).pipe(
-                    map((response) => {
-                        this.toastr.success('The new Area has been added successfully.');
-                        this.router.navigate(['/private/areas']);
-                        // Dispatch the action to fetch the updated Area list after adding a new Area
-                        return addArealistSuccess({newData: response});
-                      }),
-                      catchError((error) => {
-                        const errorMessage = this.formUtilService.getErrorMessage(error);
-                        this.toastr.error(errorMessage); 
-                        return of(addArealistFailure({ error: errorMessage })); // Dispatch failure action
-                      })                )
-            )
-        )
-    );
-    getAreaById$ =  createEffect(() =>
-      this.actions$.pipe(
-        ofType(getAreaById),
-        mergeMap(({ AreaId }) => {
-          return this.CrudService.getDataById('/cities', AreaId).pipe(
-            map((Area: any) => {
-              if (Area ) {
-                return getAreaByIdSuccess({ Area: Area.result});
-              } else {
-                return getAreaByIdFailure({ error: 'Area not found' });
-              }
-            })
-          );
-        })
-      )
-    );
+  
     
     
-    updateData$ = createEffect(() => 
-        this.actions$.pipe(
-            ofType(updateArealist),
-            mergeMap(({ updatedData }) => {
-                
-                return this.CrudService.updateData(`/areas/${updatedData.id}`, updatedData).pipe(
-                    map((response : any) =>
-                    {
-                        this.toastr.success('The Area has been updated successfully.');
-                        this.router.navigate(['/private/areas']);
-                        return updateArealistSuccess({ updatedData : response.result})
-                    }),
-                    catchError((error) =>{
-                        //const errorMessage = this.getErrorMessage(error); 
-                        this.toastr.error(error.message);
-                        return of(updateArealistFailure({ error:error.message  }));
-                      }));
-            }))
-    );
-
-
-   deleteData$ = createEffect(() =>
-    
-        this.actions$.pipe(
-            ofType(deleteArealist),
-            mergeMap(({ AreaId }) =>
-                    this.CrudService.deleteData(`/areas/${AreaId}`).pipe(
-                        map( ()=> {
-                            // If response contains a success message or status, you might want to check it here
-                            return deleteArealistSuccess({ AreaId });
-                          }),
-                          catchError((error) => {
-                            const errorMessage = this.formUtilService.getErrorMessage(error);
-                            this.toastr.error(errorMessage); 
-                            return  of(deleteArealistFailure({ error: error.message }))})                )
-            ))
-    );
+   
     
     
     constructor(
