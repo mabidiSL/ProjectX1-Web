@@ -72,7 +72,7 @@ export class FormNotificationComponent implements OnInit {
   year: number = new Date().getFullYear();
   ngOnInit() {
     
-
+    this.fetchCustomers();
     const notifId = this.route.snapshot.params['id'];
     if (notifId) {
       // Dispatch action to retrieve the notif by ID
@@ -99,7 +99,7 @@ export class FormNotificationComponent implements OnInit {
     });
   }
   patchValueForm(notification: Notification){
-    this.notifForm.get('user_id').setValue(notification.user_id);
+    this.notifForm.patchValue(notification);
     this.notifForm.patchValue({
       title: notification.translation_data[0].title,
       title_ar: notification.translation_data[1].title,
