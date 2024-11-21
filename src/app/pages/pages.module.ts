@@ -18,12 +18,8 @@ import { UIModule } from '../shared/ui/ui.module';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { PagesRoutingModule } from './pages-routing.module';
 import { DashboardsModule } from './dashboards/dashboards.module';
-
 import { ContactsModule } from './contacts/contacts.module';
-import { UtilityModule } from './utility/utility.module';
-
 import { HttpClientModule } from '@angular/common/http';
-
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageService } from '../core/services/language.service';
 
@@ -43,7 +39,6 @@ import { LanguageService } from '../core/services/language.service';
     HttpClientModule,
     UIModule,
     ContactsModule,
-    UtilityModule,
     WidgetModule,
     FullCalendarModule,
     TabsModule.forRoot(),
