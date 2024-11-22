@@ -213,15 +213,6 @@ export class AuthenticationEffects {
     )
   );
 
-  private getErrorMessage(error: any): string {
-    // Implement logic to convert backend error to user-friendly message
-    if (error.status === 400) {
-      return 'Please check your inputs and try again.';
-    } else if (error.status === 409) {
-      return 'A Merchant with these data already exists.';
-    } else {
-      return 'An unexpected error occurred. Please try again later.';
-    }
-  }
+  
 
 }
