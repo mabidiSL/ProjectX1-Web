@@ -8,7 +8,7 @@
       <div class="card">
           <div class="card-body">
               <form [formGroup]="formCoupon"  >
-                <div *ngIf="formError" class="alert alert-danger">{{ formError }}</div>
+                <div *ngIf="formError" class="alert alert-danger">{{ formError | translate }}</div>
                   <div class="row">
                       <div class="col-md-6 mb-3">
                           <label for="name">{{'Name_coupon'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
@@ -19,7 +19,7 @@
                       </div>
                      
                       <div class="col-md-6 mb-3">
-                          <label for="name_ar">{{'Name_coupon_arabic'|translate}}</label>
+                          <label for="name_ar">{{'Name_coupon_arabic'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                           <input class="form-control" id="name_ar" formControlName="name_ar" type="text" [readonly]="type==='view'"/>
                           <div *ngIf="formCoupon.get('name_ar').invalid && formCoupon.get('name_ar').touched" class="text-danger">
                               {{'Translated name is required'|translate}}
@@ -27,7 +27,7 @@
                       </div>
 
                       <div class="col-md-6 mb-3">
-                          <label for="termsAndConditions">{{'Terms and Conditions'|translate}}</label>
+                          <label for="termsAndConditions">{{'Terms and Conditions'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                           <textarea class="form-control" id="termsAndConditions" formControlName="termsAndConditions" rows="5" [readonly]="type==='view'"></textarea>
                           <div *ngIf="formCoupon.get('termsAndConditions').invalid && formCoupon.get('termsAndConditions').touched" class="text-danger">
                               {{'Terms and Conditions are required'|translate}}
@@ -35,7 +35,7 @@
                       </div>
 
                       <div class="col-md-6 mb-3">
-                          <label for="termsAndConditions_ar">{{'Terms and Conditions'|translate}}</label>
+                          <label for="termsAndConditions_ar">{{'Terms and Conditions in arabic'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                           <textarea class="form-control" id="termsAndConditions_ar" formControlName="termsAndConditions_ar" rows="5" [readonly]="type==='view'"></textarea>
                           <div *ngIf="formCoupon.get('termsAndConditions_ar').invalid && formCoupon.get('termsAndConditions_ar').touched" class="text-danger">
                               {{'Translated Terms and Conditions are required'|translate}}
@@ -149,7 +149,7 @@
                 <div class="col-md-6 mb-3">
                   <label for="managerPhone">{{'Manager Phone'|translate}}</label><br>
                   <app-phone-number
-                     *ngIf="formCoupon && formCoupon.get('managerPhone').value"
+                     *ngIf="formCoupon"
                      [disabled]="type === 'view'"
                      [inputId]="'managerPhone'"
                      [initialPhoneNumber]="formCoupon.get('managerPhone').value"

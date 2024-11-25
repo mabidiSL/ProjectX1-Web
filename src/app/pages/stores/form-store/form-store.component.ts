@@ -2,7 +2,7 @@
 import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EMPTY, filter, map, switchMap } from 'rxjs';
+import { EMPTY,  map } from 'rxjs';
 import { _User } from 'src/app/store/Authentication/auth.models';
 
 import { select, Store } from '@ngrx/store';
@@ -131,17 +131,23 @@ export class FormStoreComponent implements OnInit, OnDestroy {
      
       this.storeForm.get('merchant_id').setValue(this.merchantId);
       
-      this.merchantlist$.pipe(
-        filter(merchant => !!merchant), // Only continue if merchant is not null
-        switchMap(merchant => {
-            const selectMerchant = merchant.find(m => m.id === this.merchantId);
-    
+      this.store.select(selectDataMerchant).subscribe(data=>{
+        
+            const selectMerchant = data.find(m => m.id === this.merchantId);
             if (selectMerchant) {
                 const merchant_country_id = selectMerchant.user.city.area.country.id;
-    
-                return this.arealist$.pipe(
+                return this.store.select(selectDataArea).pipe(
                     map(areas => {
                         this.filteredAreas = areas.filter(a => a.country_id === merchant_country_id);
+                        this.filteredAreas =  [...this.filteredAreas].map(area =>{
+                          const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
+                          return {
+                            ...area,  
+                            translatedName 
+                          };
+                        })
+                        .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
+                        })
                  
                     })
                 );
@@ -149,8 +155,8 @@ export class FormStoreComponent implements OnInit, OnDestroy {
                 this.filteredAreas = [];
                 return EMPTY; // Return an empty observable
             }
-        })
-    ).subscribe();
+        
+      });
   }
 
     const StoreId = this.route.snapshot.params['id'];
@@ -169,7 +175,7 @@ export class FormStoreComponent implements OnInit, OnDestroy {
             this.storeForm.get('area_id').setValue(areaId); 
             this.storeForm.get('city_id').setValue(Store.city_id); 
             this.storeForm.get('images').setValue(Store.images); 
-
+            this.storeForm.get('phone').setValue(Store.phone);
             this.patchValueForm(Store);
             this.originalStoreData = _.cloneDeep(Store);
 

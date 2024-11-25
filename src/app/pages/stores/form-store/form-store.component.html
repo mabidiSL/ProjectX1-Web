@@ -95,7 +95,7 @@
                       <label for="phone" >{{'Phone Number' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label><br>
                      <app-phone-number
                      [disabled]="type === 'view'"
-                     *ngIf="storeForm && storeForm.get('phone').value"
+                     *ngIf="storeForm"
                      [placeholder]="'Enter store phone' | translate"
                      [inputId]="'phone'"
                      [initialPhoneNumber]="storeForm.get('phone').value"
@@ -106,8 +106,7 @@
                     </div>   
                     </div>
                   </div>
-                  <div class="col-md-6 mb-3">
-                  </div>      
+                       
                   <div class="col-md-6 mb-3">
                         <div class="form-group">
                           <label for="images">{{ 'Store_Pictures' | translate }}</label>

@@ -542,6 +542,7 @@
   "Store_Pictures": "Branch Pictures",
   "Add_store": "Add Branch",
   "update_store": "Update Branch",
+  "arabic store Name is required": "Arabic Branch Name is required",
   "Store_Name": "Branch Name",
   "Countries_List":"Countries List",
   "Countries": "Countries",
@@ -678,7 +679,7 @@
   "Previous": "Previous",
   "Next": "Next",
   "update_role": "Update Role",
-  "View_store": "View store",
+  "View_store": "View Branch",
   "View_coupon": "View coupon",
   "View_country": "View Country",
   "View_city": "View City",
@@ -688,8 +689,8 @@
   "Edit_merchant": "Edit Merchant",
   "View_merchant":"View Merchant",
   "Merchant Logo":"Merchant Logo",
-  "Select_Stores": "Select Stores",
-  "Name_coupon_arabic":"Name_coupon_arabic",
+  "Select_Stores": "Select Branches",
+  "Name_coupon_arabic":"Name Coupon in Arabic",
   "Name_coupon": "Coupon Name",
   "Qr Merchant": "Qr Merchant",
   "id_number is required": "National ID is required",
@@ -731,7 +732,7 @@
     "Dashboard": "Dashboard",
     "Employees": "Employees",
     "Customers": "Customers",
-    "Stores": "Stores",
+    "Stores": "Branches",
     "Coupons": "Coupons",
     "Gift_Cards": "Gift Cards",
     "Offers": "Offers",
@@ -808,9 +809,9 @@
       "ID Number": "ID Number",
       "Operator": "Operator",
       "Continue as": "Continue as",
-      "Store_Name in arabic": "Store Name in Arabic",
-      "Store_url": "Store URL",
-      "Enter store phone": "Enter store phone",
+      "Store_Name in arabic": "Branch Name in Arabic",
+      "Store_url": "Branch URL",
+      "Enter store phone": "Enter branch phone",
       "Drop Images here or click to upload.": "Drop Images here or click to upload.",
       "Profile Details": "Profile Details",
       "My Profile": "My Profile",
@@ -860,7 +861,9 @@
         "Notif_title in arabic": "Notification Title",
         "Send_to":"Send To",
         "Select_the_customer": "Select the Customer",
-        "Notifications": "Notifications"
+        "Notifications": "Notifications",
+        "role_name in arabic":"Role Name in Arabic"
+
 
 
 

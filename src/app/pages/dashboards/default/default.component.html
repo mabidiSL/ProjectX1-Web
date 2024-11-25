@@ -36,7 +36,6 @@
                                 <img src="assets/images/users/avatar-1.jpg" alt="" class="img-thumbnail rounded-circle">
                             </div>
                             <h5 class="font-size-15 text-truncate">{{ 'Infinite' | translate }}</h5>
-                            <p class="text-muted mb-0 text-truncate">{{ 'Admin\'s company' | translate }}</p>
                         </div>
 
                         <div class="col-sm-8">
@@ -118,42 +117,7 @@
     <!-- end row -->
 
     <div class="row">
-        <div class="col-xl-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title mb-4">{{ 'Customer\'s Rating' | translate }}</h4>
-                    <div>
-                        <apx-chart class="apex-charts" dir="ltr" 
-                        [series]="CustomerRatingChart.series" 
-                        [chart]="CustomerRatingChart.chart" 
-                        [colors]="CustomerRatingChart.colors" 
-                        [plotOptions]="CustomerRatingChart.plotOptions" 
-                        [legend]="CustomerRatingChart.legend" 
-                        [responsive]="CustomerRatingChart.responsive" 
-                        [labels]="CustomerRatingChart.labels">
-                        </apx-chart>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title mb-4">{{ 'Number of customers purchased from visitors' | translate }}</h4>
-                    <div>
-                        <apx-chart class="apex-charts" dir="ltr" 
-                        [series]="CustomerRatingChart.series" 
-                        [chart]="CustomerRatingChart.chart" 
-                        [colors]="CustomerRatingChart.colors" 
-                        [plotOptions]="CustomerRatingChart.plotOptions" 
-                        [legend]="CustomerRatingChart.legend" 
-                        [responsive]="CustomerRatingChart.responsive" 
-                        [labels]="CustomerRatingChart.labels">
-                        </apx-chart>
-                    </div>
-                </div>
-            </div>
-        </div>
+      
         <div class="col-xl-4">
             <div class="card">
                 <div class="card-body">
