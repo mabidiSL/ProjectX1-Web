@@ -61,6 +61,11 @@ import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeAr from '@angular/common/locales/ar'; // Arabic locale
 import { CustomerEffects } from './store/customer/customer.effect';
+import { AreasModule } from './pages/areas/areas.module';
+import { CityModule } from './pages/city/city.module';
+import { CountryModule } from './pages/country/country.module';
+import { GiftCardModule } from './pages/gift-card/gift-card.module';
+import { GiftCardsEffects } from './store/giftCard/giftCard.effect';
 
 // Register the Arabic locale
 registerLocaleData(localeAr, 'ar');
@@ -102,6 +107,10 @@ export function createTranslateLoader(http: HttpClient): any {
     LayoutsModule,
     MerchantsModule,
     CouponsModule,
+    AreasModule,
+    CityModule,
+    CountryModule,
+    GiftCardModule,
     EmployeesModule,
     StoresModule,
     NotificationsModule,
@@ -133,7 +142,8 @@ export function createTranslateLoader(http: HttpClient): any {
       CityEffects,
       NotificationsEffects,
       RolesEffects,
-      SectionEffects
+      SectionEffects,
+      GiftCardsEffects
       
     ]),
   ],

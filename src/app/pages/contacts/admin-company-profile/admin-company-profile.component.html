@@ -1,0 +1,111 @@
+<div class="container-fluid">
+    <app-page-title title="{{'Company Profile Details' | translate}}" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+    <div #formElement class="row">
+        <div class="col-19">
+            <div class="card">
+                <div class="card-body ">
+                  <form  [formGroup]="adminForm"  class="m-4">
+                    <div *ngIf="formError" class="alert alert-danger">{{ formError | translate}}</div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group ">
+                            <label for="f_name" >{{'Company Name'| translate }} <span   class="text-danger">*</span></label>
+                            <input type="text" id="f_name" class="form-control" formControlName="f_name" placeholder="{{ 'Enter merchant name' | translate }}" required    >
+                            <div *ngIf="adminForm.get('f_name').touched && adminForm.get('f_name').invalid" class="invalid-feedback d-block">
+                            <span *ngIf="adminForm.get('f_name').errors?.['required']">{{'Company Name is required'| translate}}.</span>
+                            </div>  
+                        </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group ">
+                            <label for="f_name_ar" >{{'Company Name in arabic' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                            <input type="text" id="f_name_ar" class="form-control" formControlName="f_name_ar" placeholder="{{ 'Enter merchant name in arabic' | translate }}" required [readonly]="type==='view'">
+                            <div *ngIf="adminForm.get('f_name_ar').touched && adminForm.get('f_name_ar').invalid" class="invalid-feedback d-block">
+                              <span *ngIf="adminForm.get('f_name_ar').errors?.['required']">{{'Arabic Company Name is required'| translate}}.</span>
+                            </div>  
+                          </div>
+                        </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="form-group">
+                            <label for="phone">{{'Supervisor Phone' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label><br>
+                            <app-phone-number
+                            *ngIf="adminForm"
+                            [initialPhoneNumber]="merchantForm.get('supervisorPhone').value"
+                            [disabled]="type === 'view'"
+                            [inputId]="'supervisorPhone'"
+                            [placeholder]="'Enter supervisor phone' | translate"
+                            (phoneNumberChanged)="onSupervisorPhoneChanged($event)" >
+                           </app-phone-number> 
+                           <div *ngIf="adminForm.get('supervisorPhone').touched && adminForm.get('supervisorPhone').invalid" class="invalid-feedback d-block">
+                            <span *ngIf="merchantForm.get('supervisorPhone').errors?.['required']">{{'Supervisor Phone is required'| translate}}.</span>
+                          </div>                      
+                          </div>
+                  </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                              <label for="image">{{ 'company Logo' | translate }}<span  class="text-danger">*</span></label>
+                          
+                              <!-- File input for selecting or uploading a new image -->
+                              <app-image-upload [id]="'image'" [type]="'logo'" [label]="'Upload Company Logo' | translate" [existantImage]="existantImage" [filename]="fileName1" [alt]="'Company Logo'" [disabled]="type ==='view'" (logoUploaded)="onLogoUpload($event)"></app-image-upload>
+                           
+                              <div *ngIf="adminForm.get('image').touched && adminForm.get('image').invalid" class="invalid-feedback d-block">
+                                <span *ngIf="adminForm.get('image').errors?.['required']">{{'Company Logo is required'| translate}}.</span>
+                              </div>   
+                            </div>
+                          </div>
+      
+                        <div class="col-md-6 mb-3">
+                        <div class="form-group">
+                            <label for="country_id" >{{'Country' | translate}}</label>
+                            <ng-select  id="country_id" placeholder="{{'Select_the_Country' |translate}}" [items]="filteredCountries" bindLabel="translatedName" 
+                            bindValue="id"  formControlName="country_id" (change)="onChangeCountrySelection($event)" >
+                            </ng-select>  
+                        </div>
+                        </div>
+    
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                            <label for="area_id">{{'area' | translate}}</label>
+                            <ng-select  id="area_id"  formControlName="area_id" placeholder="{{'Select_the_Area' |translate}}" [items]="filteredAreas" bindLabel="translatedName" 
+                            bindValue="id" (change)="onChangeAreaSelection($event)" >
+                            </ng-select>                         
+                            </div>
+                        </div>
+    
+                        <div class="col-md-6 mb-3">
+                        <div class="form-group ">
+                            <label for="city_id" >{{'City' | translate}}</label>
+                            <ng-select id="city_id" placeholder="{{'Select_the_City' |translate}}" [items]="filteredCities" bindLabel="translatedName" 
+                            bindValue="id"  formControlName="city_id"  >
+                            </ng-select>                      
+                        </div>
+                        </div>
+    
+                          <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                              <label for="bankAccountNumber">{{'Bank Account Number' | translate}}</label>
+                              <input type="text" id="bankAccountNumber" class="form-control" placeholder="{{ 'Enter Bank Account Number' | translate }}" formControlName="bankAccountNumber" [readonly]="type==='view'">
+                            </div>
+                          </div>
+        
+                      </div>      
+            <div class="col-12  mt-4">
+                  <div class="d-flex justify-content-end">
+                    
+                      <button type="button" id="cancel-btn" class="btn btn-outline-secondary me-2" (click)="onCancel()">{{ 'Cancel' | translate }}</button>
+                      <button type="submit" class="btn btn-success" (click)="onSubmit()">{{ 'update_company_profile' | translate }}</button>
+                      <div id="elmLoader" class="loader" *ngIf="loading$ | async">
+                        <div class="spinner-border text-primary avatar-sm" role="status">
+                          <span class="visually-hidden">{{'Loading...' | translate}}</span>
+                        </div>
+                      </div>   
+                    
+                  </div>
+             </div>
+          </form>
+        </div>
+    </div>
+    </div> <!-- end col -->
+    </div>
+    </div>
+    

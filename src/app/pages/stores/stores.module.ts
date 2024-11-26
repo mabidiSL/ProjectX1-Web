@@ -24,7 +24,6 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
-import { ApproveStoreComponent } from './approve-store/approve-store.component';
 import { ViewStoreComponent } from './view-store/view-store.component';
 
 
@@ -34,7 +33,6 @@ import { ViewStoreComponent } from './view-store/view-store.component';
     CreateStoreComponent,
     EditStoreComponent,
     FormStoreComponent,
-    ApproveStoreComponent,
     ViewStoreComponent
   ],
   imports: [

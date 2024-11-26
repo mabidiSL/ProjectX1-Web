@@ -38,7 +38,7 @@
                           <label for="termsAndConditions_ar">{{'Terms and Conditions in arabic'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                           <textarea class="form-control" id="termsAndConditions_ar" formControlName="termsAndConditions_ar" rows="5" [readonly]="type==='view'"></textarea>
                           <div *ngIf="formCoupon.get('termsAndConditions_ar').invalid && formCoupon.get('termsAndConditions_ar').touched" class="text-danger">
-                              {{'Translated Terms and Conditions are required'|translate}}
+                              {{'Translated Terms and Conditions in arabic are required'|translate}}
                           </div>
                       </div>
                       <div class="col-md-6 mb-3">

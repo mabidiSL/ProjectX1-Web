@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Translation } from "src/app/core/interfaces/core.interface";
+import { City } from "../City/city.model";
 import {  Role } from "../Role/role.models";
 
 export class User {
@@ -19,6 +22,7 @@ export class _User {
  
 id?: number;
 username?: string;
+translation_data?: Translation[];
 merchantId?: number;
 email?: string;
 password?: string;
@@ -31,9 +35,10 @@ totalOrder?: number;
 url?: string;
 phone?: string;
 country?: string;
-user_type?: string;//will be changed by role
+user?: any;
+city_id?: number;
 status?: string;
-city?: string;
+city?: City;
 street?: string;
 building?: string;
 company_registration?: string;

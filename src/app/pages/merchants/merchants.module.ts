@@ -17,7 +17,6 @@ import { UIModule } from '../../shared/ui/ui.module';
 
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { ApproveMerchantComponent } from './approve-merchant/approve-merchant.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { UiSwitchModule } from 'ngx-ui-switch';
@@ -31,7 +30,6 @@ import { ViewMerchantComponent } from './view-merchant/view-merchant.component';
 @NgModule({
   declarations: [
     MerchantListComponent,
-    ApproveMerchantComponent,
     CreateMerchantComponent,
     EditMerchantComponent,
     FormMerchantComponent,

@@ -24,6 +24,10 @@ export const selectDataLoading = createSelector(
     getLayoutState,
     (state: AuthenticationState) => state?.loading || false
   );
+  export const selectLoggedUser = createSelector(
+    getLayoutState,
+    (state: AuthenticationState) => state?.user || null
+  );
 export const getError = createSelector(
     getLayoutState,
     (state: AuthenticationState) => state.error

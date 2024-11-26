@@ -405,7 +405,7 @@ export class CompanyProfileComponent implements OnInit {
   onCancel(){
 
     this.merchantForm.reset();
-    this.router.navigateByUrl('/private/coupons');
+    this.router.navigateByUrl('/private/dashboard');
   }
   
 }

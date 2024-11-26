@@ -62,16 +62,16 @@ export const MENU: MenuItem[] = [
 
         
     },
-    {
-        id: 9,
-        label: 'MENUITEMS.MERCHANTSAPPROVAL.TEXT',
-        link: '/private/merchants/approve',
-        icon: 'bx bx-store',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Merchants, claimValue: [Permission.Approve, Permission.Decline]}]
+    // {
+    //     id: 9,
+    //     label: 'MENUITEMS.MERCHANTSAPPROVAL.TEXT',
+    //     link: '/private/merchants/approve',
+    //     icon: 'bx bx-store',
+    //     claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Merchants, claimValue: [Permission.Approve, Permission.Decline]}]
 
         
-    },
-    {
+    // },
+     {
         id: 10,
         label: 'MENUITEMS.STORES.TEXT',
         link: '/private/stores',
@@ -80,15 +80,15 @@ export const MENU: MenuItem[] = [
 
         
     },
-    {
-        id: 10,
-        label: 'MENUITEMS.PENDINGSTORES.TEXT',
-        link: '/private/stores/approve',
-        icon: 'bx bx-store',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Stores, claimValue: [Permission.ViewAll,Permission.Approve, Permission.Decline]}]
+    // {
+    //     id: 10,
+    //     label: 'MENUITEMS.PENDINGSTORES.TEXT',
+    //     link: '/private/stores/approve',
+    //     icon: 'bx bx-store',
+    //     claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Stores, claimValue: [Permission.ViewAll,Permission.Approve, Permission.Decline]}]
 
         
-    },
+    // },
     {  id: 12,
         label: 'MENUITEMS.OFFERS.TEXT',
         icon:  'bx bxs-offer',
@@ -103,20 +103,7 @@ export const MENU: MenuItem[] = [
         claims: [{claimType: Modules.All, claimValue: [Permission.All]}],
         isTitle: true
     },
-    {
-        id: 19,
-        label: 'MENUITEMS.SUBSCRIPTION.TEXT',
-        icon:  'bx bx-bell',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Subscriptions, claimValue: [Permission.ViewAll]}],
-        link:'/pages/coming-soon',
-    },
-    {
-        id: 20,
-        label: 'MENUITEMS.COMPANYSUBSCRIPTION.TEXT',
-        icon: 'bx bxs-report',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Company_Subscriptions, claimValue: [Permission.ViewAll]}],
-        link:'/pages/coming-soon',
-    },
+    
     {
         id: 21,
         label: 'MENUITEMS.COUPONMANAGEMENT.TEXT',
@@ -133,6 +120,35 @@ export const MENU: MenuItem[] = [
         link: '/private/coupons/approve',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Coupons, claimValue: [Permission.ViewAll,Permission.Approve, Permission.Decline]}],
        
+    },
+    
+    {
+        id: 24,
+        label: 'MENUITEMS.GIFTS.TEXT',
+        icon: 'bx bxs-gift',
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Gift_Cards, claimValue: [Permission.ViewAll]}],
+        link:'/private/giftCards',
+    },
+    {
+        id: 49,
+        label: 'MENUITEMS.PENDINGGIFTS.TEXT',
+        icon: 'bx bxs-gift',
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Gift_Cards, claimValue: [Permission.ViewAll,Permission.Approve, Permission.Decline]}],
+        link:'/private/giftCards/approve',
+    },
+    {
+        id: 19,
+        label: 'MENUITEMS.SUBSCRIPTION.TEXT',
+        icon:  'bx bx-bell',
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Subscriptions, claimValue: [Permission.ViewAll]}],
+        link:'/pages/coming-soon',
+    },
+    {
+        id: 20,
+        label: 'MENUITEMS.COMPANYSUBSCRIPTION.TEXT',
+        icon: 'bx bxs-report',
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Company_Subscriptions, claimValue: [Permission.ViewAll]}],
+        link:'/pages/coming-soon',
     },
     {
         id: 23,
@@ -208,6 +224,53 @@ export const MENU: MenuItem[] = [
         icon: 'bx bxs-discount',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Special_Coupons, claimValue: [Permission.ViewAll]}],
         link:'/pages/coming-soon',
+               
+    },
+    {
+        id: 29,
+        label: 'MENUITEMS.SYSTEMLADMINISTRATION.TEXT',
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}],
+        isTitle:true
+               
+    },
+    {
+        id: 30,
+        label: 'MENUITEMS.BANKS.TEXT',
+        icon: 'bx bxs-bank',
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}],
+        link:'/pages/coming-soon',
+               
+    },
+    {
+        id: 31,
+        label: 'MENUITEMS.CURRENCIES.TEXT',
+        icon: 'bx bx-money',
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}],
+        link:'/pages/coming-soon',
+               
+    },
+    {
+        id: 32,
+        label: 'MENUITEMS.COUNTRIES.TEXT',
+        icon: 'bx bx-globe',
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}],
+        link: '/private/countries',
+               
+    },
+    {
+        id: 34,
+        label: 'MENUITEMS.AREAS.TEXT',
+        icon: 'dripicons-map',
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}],
+        link: '/private/areas'
+               
+    },
+    {
+        id: 35,
+        label: 'MENUITEMS.CITIES.TEXT',
+        icon: 'bx bxs-city',
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}],
+        link: '/private/cities'
                
     },
     

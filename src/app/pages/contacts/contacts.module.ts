@@ -19,9 +19,10 @@ import { ProfileComponent } from './profile/profile.component';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TranslateModule } from '@ngx-translate/core';
 import { CompanyProfileComponent } from './company-profile/company-profile.component';
+import { AdminCompanyProfileComponent } from './admin-company-profile/admin-company-profile.component';
 
 @NgModule({
-  declarations: [ ProfileComponent, CompanyProfileComponent],
+  declarations: [ ProfileComponent, CompanyProfileComponent, AdminCompanyProfileComponent],
   imports: [
     CommonModule,
     TranslateModule,

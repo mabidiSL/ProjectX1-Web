@@ -146,7 +146,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
     switch (notification.type) {
 
       case 'merchant-registration':
-        this.router.navigate(['private/merchants/approve']); 
+        this.router.navigate(['private/merchants']); 
         break;
       case 'coupon-approval-request':
        this.router.navigate(['private/coupons/approve']); 
@@ -161,12 +161,12 @@ export class TopbarComponent implements OnInit, OnDestroy {
         this.router.navigate(['private/giftCards']); 
         break;  
       case 'store-approval-request':
-        this.router.navigate(['private/stores/approve']); 
-        break;
-      case 'store-approved':
         this.router.navigate(['private/stores']); 
         break;
-      // Add other cases for different notification types
+      // case 'store-approved':
+      //   this.router.navigate(['private/stores']); 
+      //   break;
+      // // Add other cases for different notification types
       default:
     }
    }

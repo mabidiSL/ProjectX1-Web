@@ -5,7 +5,6 @@ import { CreateStoreComponent } from './create-store/create-store.component';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { EditStoreComponent } from './edit-store/edit-store.component';
 import { StoresComponent } from './stores.component';
-import { ApproveStoreComponent } from './approve-store/approve-store.component';
 import { ViewStoreComponent } from './view-store/view-store.component';
 
 const routes: Routes = [
@@ -45,16 +44,7 @@ const routes: Routes = [
   
      }
   },
-  {
-    path: "approve",
-    component: ApproveStoreComponent,
-    canActivate: [RoleGuard],
-    data: {
-      claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Stores, claimValue:[Permission.ViewAll,Permission.Approve,Permission.Decline]}]
-  
-    }
-  },
-  
+
 ];
 
 @NgModule({
