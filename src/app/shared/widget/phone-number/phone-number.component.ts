@@ -66,7 +66,7 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
       
       this.iti = intlTelInput(this.inputElement, this.itiOptions);
 
-            if (this.initialPhoneNumber) {
+            if (this.initialPhoneNumber && this.initialPhoneNumber !== '') {
               this.inputElement.value = this.initialPhoneNumber;
               this.iti.setNumber( this.initialPhoneNumber);
             }

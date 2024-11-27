@@ -92,10 +92,10 @@ export class AdminCompanyProfileComponent implements OnInit{
    private initForm() {
     this.adminForm = this.formBuilder.group({
     id: [null],
-    f_name: ['', Validators.required],
-    f_name_ar: ['', Validators.required],
-
+    name: ['', Validators.required],
+    name_ar: ['', Validators.required],
     image:[''],
+    phone: [''],
     country_id:[null,Validators.required],
     city_id:[null,Validators.required],
     area_id:[null,Validators.required], 

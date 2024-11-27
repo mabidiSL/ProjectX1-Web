@@ -20,6 +20,8 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TranslateModule } from '@ngx-translate/core';
 import { CompanyProfileComponent } from './company-profile/company-profile.component';
 import { AdminCompanyProfileComponent } from './admin-company-profile/admin-company-profile.component';
+import { CdkStepperModule } from '@angular/cdk/stepper';
+import { NgStepperModule } from 'angular-ng-stepper';
 
 @NgModule({
   declarations: [ ProfileComponent, CompanyProfileComponent, AdminCompanyProfileComponent],
@@ -30,6 +32,8 @@ import { AdminCompanyProfileComponent } from './admin-company-profile/admin-comp
     WidgetModule,
     UIModule,
     NgSelectModule,
+    CdkStepperModule,
+    NgStepperModule,
     NgApexchartsModule,
     FormsModule, 
     ReactiveFormsModule ,
