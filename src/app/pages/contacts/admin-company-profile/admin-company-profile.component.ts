@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 
 import { select, Store } from '@ngrx/store';
-import { Observable, Subject } from 'rxjs';
-import { selectDataLoading } from 'src/app/store/merchantsList/merchantlist1-selector';
+import { Observable } from 'rxjs';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
 import { fetchArealistData } from 'src/app/store/area/area.action';
 import { fetchCitylistData } from 'src/app/store/City/city.action';
@@ -18,13 +17,12 @@ import { selectDataCity } from 'src/app/store/City/city-selector';
 import { Country } from 'src/app/store/country/country.model';
 import { Area } from 'src/app/store/area/area.model';
 import { City } from 'src/app/store/City/city.model';
-import { Merchant } from 'src/app/store/merchantsList/merchantlist1.model';
 import { UploadEvent } from 'src/app/shared/widget/image-upload/image-upload.component';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
-import { selectLoggedUser } from 'src/app/store/Authentication/authentication-selector';
+import { selectDataLoading, selectLoggedUser } from 'src/app/store/Authentication/authentication-selector';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { _User } from 'src/app/store/Authentication/auth.models';
-import { updateProfile } from 'src/app/store/Authentication/authentication.actions';
+import { updateCompanyProfile } from 'src/app/store/Authentication/authentication.actions';
 @Component({
   selector: 'app-admin-company-profile',
   templateUrl: './admin-company-profile.component.html',
@@ -32,31 +30,13 @@ import { updateProfile } from 'src/app/store/Authentication/authentication.actio
 })
 export class AdminCompanyProfileComponent implements OnInit{
  
-  @Input() type: string;
   adminForm: UntypedFormGroup;
   formError: string | null = null;
   formSubmitted = false;
-  private destroy$ = new Subject<void>();
   breadCrumbItems: Array<object>;
 
-  submitted: boolean = false;
-  error: string = '';
-  successmsg: boolean = false;
-  fieldTextType!: boolean;
-  imageURL: string | undefined;
-  existantmerchantLogo: string = null;
-  existantmerchantPicture: string = null
-  merchantPictureBase64: string = null;
-  LogoBase64: string = null;
-  isEditing: boolean = false;
-  fromPendingContext: boolean = false;
-
-  countrylist: Country[] = [];
-  countrylist$: Observable<Country[]>  ;
-  arealist$:  Observable<Area[]>  ;
-  currentMerchant :  Merchant  ;
-
-  citylist$:  Observable<City[]> ;
+  existantRegistrationFile: string = null;
+  existantcompanyLogo: string = null
   loading$: Observable<boolean>;
 
   sectionlist:  any[] = [];
@@ -64,11 +44,10 @@ export class AdminCompanyProfileComponent implements OnInit{
   filteredCountries: Country[] = [];
   filteredAreas :  Area[] = [];
   filteredCities:  City[] = [];
-  serviceTypes: string[] = ['company', 'entreprise'];
-  originalMerchantData: Merchant = {}; 
+  originalCompanyData: any = {}; 
+
   @ViewChild('formElement', { static: false }) formElement: ElementRef;
   currentUser: _User = null;
-  existantImage: string = null;
 
  
   constructor(
@@ -79,7 +58,6 @@ export class AdminCompanyProfileComponent implements OnInit{
     public store: Store) {
 
       this.loading$ = this.store.pipe(select(selectDataLoading)); 
-
       this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 100, status: 'active' }));
       this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 1000, status: 'active' }));
       this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 10000, status: 'active' }));
@@ -94,19 +72,38 @@ export class AdminCompanyProfileComponent implements OnInit{
     id: [null],
     name: ['', Validators.required],
     name_ar: ['', Validators.required],
-    image:[''],
-    phone: [''],
-    country_id:[null,Validators.required],
-    city_id:[null,Validators.required],
-    area_id:[null,Validators.required], 
+    description: [''],
+    description_ar: [''],
+    companyEmail: [''],
+    website: [''],
+    VAT: [''],
+    registrationCode: [''],
+    registrationFile: [''],
+    section_id:[null],
+    companyLogo: ['', Validators.required],
+    officeTel: [''],
+    building_floor: [''],
+    street: [''],
+    country_id:[null],
+    city_id:[null],
+    area_id:[null], 
+    bank: [''],
     bankAccountNumber: [''],
+    IBAN: [''],
+    SWIFT: [''],
+    whatsup: [''] ,
+    facebook:['']  ,
+    twitter:  [''],
+    instagram: [''] ,
+    Snapchat: [''] ,
+    Tiktok:['']  ,
+    LinkedIn:['']  
+
     
   });} 
-  // set the currenr year
-  year: number = new Date().getFullYear();
+
   fileName1: string = ''; 
-  fileName2: string = ''; 
-  globalId : number = null;
+  fileName: string = ''; 
 
   ngOnInit() {
     this.fetchCountry();
@@ -117,8 +114,7 @@ export class AdminCompanyProfileComponent implements OnInit{
     this.store.select(selectLoggedUser).subscribe(
       user => {
         if (user) {
-          this.currentUser = user;
-               
+          this.currentUser = user;     
         }
         else
         {
@@ -130,18 +126,19 @@ export class AdminCompanyProfileComponent implements OnInit{
           this.adminForm.controls['country_id'].setValue(this.currentUser.city.area.country_id);
           this.adminForm.controls['area_id'].setValue(this.currentUser.city.area_id);
           this.adminForm.controls['city_id'].setValue(this.currentUser.city_id);
-          this.existantImage = this.currentUser.image;
+          this.existantcompanyLogo = this.currentUser.image;
           this.patchValueForm(this.currentUser);
-          this.originalMerchantData = _.cloneDeep(this.currentUser);
-          this.isEditing = true;
+          this.originalCompanyData = _.cloneDeep(this.currentUser);
 
     }
    
-    patchValueForm(user: _User){
-      this.adminForm.patchValue(user);
+    patchValueForm(company: any){
+      this.adminForm.patchValue(company);
       this.adminForm.patchValue({
-        f_name: user.translation_data[0].f_name,
-        f_name_ar: user.translation_data[1].f_name,
+        name: company.translation_data[0].name,
+        name_ar: company.translation_data[1].name,
+        description: company.translation_data[0].description,
+        description_ar: company.translation_data[1].description,
         
       });
     
@@ -252,44 +249,50 @@ export class AdminCompanyProfileComponent implements OnInit{
     }
   
   onPhoneNumberChanged(phoneNumber: string) {
-    this.adminForm.get('phone').setValue(phoneNumber);
+    this.adminForm.get('officeTel').setValue(phoneNumber);
   }
-
-  createUserFromForm(formValue): Merchant {
-    const user = formValue;
-    user.translation_data = [];
+ 
+  createProfileFromForm(formValue): any {
+    const company = formValue;
+    company.translation_data = [];
     const enFields = [
-      { field: 'f_name', name: 'f_name' },
+      { field: 'name', name: 'name' },
+      { field: 'description', name: 'description' },
+
     ];
     const arFields = [
-      { field: 'f_name_ar', name: 'f_name' },
+      { field: 'name_ar', name: 'name' },
+      { field: 'description_ar', name: 'description' },
+
     ];
    // Create the English translation if valid
-    const enTranslation = this.formUtilService.createTranslation(user,'en', enFields );
+    const enTranslation = this.formUtilService.createTranslation(company,'en', enFields );
     if (enTranslation) {
-      user.translation_data.push(enTranslation);
+      company.translation_data.push(enTranslation);
     }
    
     // Create the Arabic translation if valid
-    const arTranslation = this.formUtilService.createTranslation(user,'ar', arFields );
+    const arTranslation = this.formUtilService.createTranslation(company,'ar', arFields );
     if (arTranslation) {
-      user.translation_data.push(arTranslation);
+      company.translation_data.push(arTranslation);
     }
-    if(user.translation_data.length <= 0)
-      delete user.translation_data;
+    if(company.translation_data.length <= 0)
+      delete company.translation_data;
     // Dynamically remove properties that are undefined or null at the top level of city object
-    Object.keys(user).forEach(key => {
-      if (user[key] === undefined || user[key] === null) {
-          delete user[key];  // Delete property if it's undefined or null
+    Object.keys(company).forEach(key => {
+      if (company[key] === undefined || company[key] === null) {
+          delete company[key];  // Delete property if it's undefined or null
        }
     });
 
-   delete user.f_name;  
-   delete user.f_name_ar;    
-   delete user.area_id;
-   delete user.country_id;
+   delete company.name;  
+   delete company.name_ar; 
+   delete company.description;  
+   delete company.description_ar;     
+   delete company.area_id;
+   delete company.country_id;
 
-   return user;
+   return company;
 }
 
   /**
@@ -306,19 +309,20 @@ export class AdminCompanyProfileComponent implements OnInit{
       this.formUtilService.focusOnFirstInvalid(this.adminForm);
       return;
     }
-    this.formError = null;
+      this.formError = null;
       const newData = this.adminForm.value;
-      if(this.existantImage){
-        newData.image = this.existantImage;
+      if(this.existantcompanyLogo){
+        newData.companyLogo = this.existantcompanyLogo;
       }
           
-      const updatedDta = this.formUtilService.detectChanges(this.adminForm, this.originalMerchantData);
+      const updatedDta = this.formUtilService.detectChanges(this.adminForm, this.originalCompanyData);
       if (Object.keys(updatedDta).length > 0) {
-        const changedData = this.createUserFromForm(updatedDta);
+        const changedData = this.createProfileFromForm(updatedDta);
         changedData.id = newData.id;
-        this.store.dispatch(updateProfile({ user: changedData }));
+        this.store.dispatch(updateCompanyProfile({ company: changedData }));
       }
-      else{
+      else
+      {
         this.formError = 'Nothing has been changed!!!';
         this.formUtilService.scrollToTopOfForm(this.formElement);
       }
@@ -326,22 +330,22 @@ export class AdminCompanyProfileComponent implements OnInit{
       
     
   }
-     
-  onImageUpload(event: UploadEvent): void {
-    if (event.type === 'image') {
-      this.fileName2 = ''; // Set the file name
-      this.existantImage = event.file;
-      this.adminForm.controls['merchantPicture'].setValue(this.existantImage);
-    }
-  }
-  
   onLogoUpload(event: UploadEvent): void {
     if (event.type === 'logo') {
       // Handle Logo Upload
-      this.LogoBase64 = event.file;
+      this.fileName = ''; // Set the file name
+      this.existantcompanyLogo = event.file;
+      this.adminForm.controls['companyLogo'].setValue(this.existantcompanyLogo);
+    }
+  }  
+
+  
+  uploadFileRegistration(event: UploadEvent): void {
+    if (event.type === 'logo') {
+      // Handle Logo Upload
       this.fileName1 = ''; // Set the file name
-      this.existantmerchantLogo = event.file;
-      this.adminForm.controls['merchantLogo'].setValue(this.existantmerchantLogo);
+      this.existantRegistrationFile = event.file;
+      this.adminForm.controls['registrationFile'].setValue(this.existantRegistrationFile);
     }
   }
   onCancel(){

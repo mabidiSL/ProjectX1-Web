@@ -3,7 +3,7 @@ import { Injectable, Inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, catchError, exhaustMap, tap } from 'rxjs/operators';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { login, loginSuccess, loginFailure,forgetPassword, logout, logoutSuccess, Register, RegisterSuccess, RegisterFailure, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfilePassword, updateProfileSuccess, updateProfileFailure, updateProfilePasswordSuccess, updateProfilePasswordFailure, forgetPasswordSuccess, forgetPasswordFailure, verifyEmailSuccess, verifyEmail, verifyEmailFailure } from './authentication.actions';
+import { login, loginSuccess, loginFailure,forgetPassword, logout, logoutSuccess, Register, RegisterSuccess, RegisterFailure, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfilePassword, updateProfileSuccess, updateProfileFailure, updateProfilePasswordSuccess, updateProfilePasswordFailure, forgetPasswordSuccess, forgetPasswordFailure, verifyEmailSuccess, verifyEmail, verifyEmailFailure, updateCompanyProfile, updateCompanyProfileSuccess, updateCompanyProfileFailure } from './authentication.actions';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
@@ -171,7 +171,30 @@ export class AuthenticationEffects {
       );
     }),
   ));
-     
+
+  updateCompanyProfile$ = createEffect(()=>
+    this.actions$.pipe(
+    ofType(updateCompanyProfile),
+    exhaustMap((company : any ) => {
+      return this.AuthService.updateCompanyProfile(company).pipe(
+        map((response : any) => {
+            //localStorage.setItem('currentUser', JSON.stringify(user.user));
+            this.toastr.success('The company profile was updated successfully.');
+            this.router.navigate(['/private/dashboard']);
+            return updateCompanyProfileSuccess({company:response});
+          }
+         
+        ),
+        catchError((error: any) => {
+          const errorMessage = this.formUtilService.getErrorMessage(error);
+          this.toastr.error(errorMessage);
+          return of(updateCompanyProfileFailure({ error:errorMessage }));
+        }),
+       
+      );
+    }),
+  ));   
+
   updateProfilePassword$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateProfilePassword),

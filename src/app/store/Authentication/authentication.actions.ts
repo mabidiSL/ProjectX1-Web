@@ -41,3 +41,8 @@ export const updateProfile = createAction('[Profile] updateProfile', props<{ use
 export const updateProfileSuccess = createAction('[Profile] updateProfile Success', props<{ user: any }>());
 export const updateProfileFailure = createAction('[Profile] updateProfile Failure', props<{ error: any }>());
 
+// Update Company Profile action
+export const updateCompanyProfile = createAction('[Profile] updateCompanyProfile', props<{ company: any }>());
+export const updateCompanyProfileSuccess = createAction('[Profile] updateCompanyProfile Success', props<{ company: any }>());
+export const updateCompanyProfileFailure = createAction('[Profile] updateCompanyProfile Failure', props<{ error: string }>());
+

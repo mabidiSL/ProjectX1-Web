@@ -54,6 +54,11 @@ export class AuthenticationService {
         delete user.id;
         return this.http.patch(` ${environment.baseURL}/users/${id}`,user) ;
     }
+    updateCompanyProfile(company: any){
+        const id = company.id;
+        delete company.id;
+        return this.http.patch(` ${environment.baseURL}/company/${id}`,company) ;
+    }
 
     refreshToken(refreshToken: string): Observable<any> {
         return this.http.post(` ${environment.baseURL}/auth/refresh`, { refreshToken: refreshToken });

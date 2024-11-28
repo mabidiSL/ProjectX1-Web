@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { Register, RegisterFailure, RegisterSuccess, forgetPassword, forgetPasswordFailure, forgetPasswordSuccess, login, loginFailure, loginSuccess, logout, logoutSuccess, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfileFailure, updateProfilePassword, updateProfilePasswordFailure, updateProfilePasswordSuccess, updateProfileSuccess, verifyEmail, verifyEmailFailure, verifyEmailSuccess } from './authentication.actions';
+import { Register, RegisterFailure, RegisterSuccess, forgetPassword, forgetPasswordFailure, forgetPasswordSuccess, login, loginFailure, loginSuccess, logout, logoutSuccess, updateCompanyProfile, updateCompanyProfileFailure, updateCompanyProfileSuccess, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfileFailure, updateProfilePassword, updateProfilePasswordFailure, updateProfilePasswordSuccess, updateProfileSuccess, verifyEmail, verifyEmailFailure, verifyEmailSuccess } from './authentication.actions';
 import { _User } from './auth.models';
 
 export interface AuthenticationState {
@@ -48,6 +48,11 @@ export const authenticationReducer = createReducer(
     on(updateProfile, (state) => ({ ...state, loading: true, error: null })),
     on(updateProfileSuccess, (state, { user }) => ({ ...state, loading: false, user, error: null })),
     on(updateProfileFailure, (state, { error }) => ({ ...state, loading: false, error })),
+   
+    on(updateCompanyProfile, (state) => ({ ...state, loading: true, error: null })),
+    on(updateCompanyProfileSuccess, (state, { company }) => ({ ...state, loading: false, company, error: null })),
+    on(updateCompanyProfileFailure, (state, { error }) => ({ ...state, loading: false, error })),
+
 
     on(updateProfilePassword, state => ({ ...state,  loading: true,  error: null, })),
     on(updateProfilePasswordSuccess, (state, { message }) => ({ ...state, loading: false,message, error: null,  })),
