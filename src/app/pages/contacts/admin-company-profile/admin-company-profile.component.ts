@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import * as _ from 'lodash';
 
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
 import { fetchArealistData } from 'src/app/store/area/area.action';
 import { fetchCitylistData } from 'src/app/store/City/city.action';
@@ -19,10 +19,10 @@ import { Area } from 'src/app/store/area/area.model';
 import { City } from 'src/app/store/City/city.model';
 import { UploadEvent } from 'src/app/shared/widget/image-upload/image-upload.component';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
-import { selectDataLoading, selectLoggedUser } from 'src/app/store/Authentication/authentication-selector';
+import { selectCompany, selectDataLoading } from 'src/app/store/Authentication/authentication-selector';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { _User } from 'src/app/store/Authentication/auth.models';
-import { updateCompanyProfile } from 'src/app/store/Authentication/authentication.actions';
+import { getCompanyProfile, updateCompanyProfile } from 'src/app/store/Authentication/authentication.actions';
 @Component({
   selector: 'app-admin-company-profile',
   templateUrl: './admin-company-profile.component.html',
@@ -38,6 +38,7 @@ export class AdminCompanyProfileComponent implements OnInit{
   existantRegistrationFile: string = null;
   existantcompanyLogo: string = null
   loading$: Observable<boolean>;
+  private destroy$ = new Subject<void>();
 
   sectionlist:  any[] = [];
   
@@ -56,8 +57,16 @@ export class AdminCompanyProfileComponent implements OnInit{
     private router: Router,
     private formUtilService: FormUtilService,
     public store: Store) {
-
-      this.loading$ = this.store.pipe(select(selectDataLoading)); 
+      
+     
+      this.currentUser = this.authService.currentUserValue;
+      console.log(this.currentUser.companyId);
+     
+      console.log('***********');
+      this.loading$ = this.store.pipe(select(selectDataLoading));
+      console.log('***********');
+ 
+      this.store.dispatch(getCompanyProfile({companyId: this.currentUser.companyId}))
       this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 100, status: 'active' }));
       this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 1000, status: 'active' }));
       this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 10000, status: 'active' }));
@@ -110,25 +119,20 @@ export class AdminCompanyProfileComponent implements OnInit{
     this.fetchAreas();
     this.fetchCities();
     this.fetchSection();
-
-    this.store.select(selectLoggedUser).subscribe(
-      user => {
-        if (user) {
-          this.currentUser = user;     
-        }
-        else
-        {
-          this.currentUser = this.authService.currentUserValue;
-        }
-      
-    });
-
-          this.adminForm.controls['country_id'].setValue(this.currentUser.city.area.country_id);
-          this.adminForm.controls['area_id'].setValue(this.currentUser.city.area_id);
-          this.adminForm.controls['city_id'].setValue(this.currentUser.city_id);
-          this.existantcompanyLogo = this.currentUser.image;
-          this.patchValueForm(this.currentUser);
-          this.originalCompanyData = _.cloneDeep(this.currentUser);
+   
+    this.store
+          .pipe(select(selectCompany), takeUntil(this.destroy$))
+          .subscribe(company => {
+            if (company) {
+              this.adminForm.controls['country_id'].setValue(company.city.area.country_id);
+              this.adminForm.controls['area_id'].setValue(company.city.area_id);
+              this.adminForm.controls['city_id'].setValue(company.city_id);
+              this.existantcompanyLogo = company.image;
+              this.patchValueForm(company);
+              this.originalCompanyData = _.cloneDeep(company);
+              }
+          });
+         
 
     }
    

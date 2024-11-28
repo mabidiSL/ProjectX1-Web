@@ -3,7 +3,7 @@ import { Injectable, Inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, catchError, exhaustMap, tap } from 'rxjs/operators';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { login, loginSuccess, loginFailure,forgetPassword, logout, logoutSuccess, Register, RegisterSuccess, RegisterFailure, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfilePassword, updateProfileSuccess, updateProfileFailure, updateProfilePasswordSuccess, updateProfilePasswordFailure, forgetPasswordSuccess, forgetPasswordFailure, verifyEmailSuccess, verifyEmail, verifyEmailFailure, updateCompanyProfile, updateCompanyProfileSuccess, updateCompanyProfileFailure } from './authentication.actions';
+import { login, loginSuccess, loginFailure, forgetPassword, logout, logoutSuccess, Register, RegisterSuccess, RegisterFailure, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfilePassword, updateProfileSuccess, updateProfileFailure, updateProfilePasswordSuccess, updateProfilePasswordFailure, forgetPasswordSuccess, forgetPasswordFailure, verifyEmailSuccess, verifyEmail, verifyEmailFailure, updateCompanyProfile, updateCompanyProfileSuccess, updateCompanyProfileFailure, getCompanyProfile, getCompanyProfileSuccess, getCompanyProfileFailure } from './authentication.actions';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
@@ -90,7 +90,7 @@ export class AuthenticationEffects {
                 localStorage.setItem('token', response.result.accessToken);
                 localStorage.setItem('refreshToken', response.result.refreshToken);
                 localStorage.setItem('currentUser', JSON.stringify(response.result.user));
-
+               // console.log(response.result.user);
                 this.currentUserSubject.next(response.result.user);
                 this.router.navigate(['/private']);
                 //this.toastr.success('Login successfully!!!');
@@ -194,7 +194,27 @@ export class AuthenticationEffects {
       );
     }),
   ));   
-
+  getCompanyProfile$ = createEffect(()=>
+    this.actions$.pipe(
+    ofType(getCompanyProfile),
+    exhaustMap(({companyId}) => {
+      console.log(companyId);
+      return this.AuthService.getCompanyProfile(companyId).pipe(
+        map((response : any) => {
+            
+            return getCompanyProfileSuccess({company:response.result});
+          }
+         
+        ),
+        catchError((error: any) => {
+          const errorMessage = this.formUtilService.getErrorMessage(error);
+          this.toastr.error(errorMessage);
+          return of(getCompanyProfileFailure({ error:errorMessage }));
+        }),
+       
+      );
+    }),
+  ));
   updateProfilePassword$ = createEffect(() =>
     this.actions$.pipe(
       ofType(updateProfilePassword),

@@ -46,3 +46,7 @@ export const updateCompanyProfile = createAction('[Profile] updateCompanyProfile
 export const updateCompanyProfileSuccess = createAction('[Profile] updateCompanyProfile Success', props<{ company: any }>());
 export const updateCompanyProfileFailure = createAction('[Profile] updateCompanyProfile Failure', props<{ error: string }>());
 
+// get Company Profile by ID action
+export const getCompanyProfile = createAction('[Profile] getCompanyProfile', props<{ companyId: number }>());
+export const getCompanyProfileSuccess = createAction('[Profile] getCompanyProfileSuccess Success', props<{ company: any }>());
+export const getCompanyProfileFailure = createAction('[Profile] getCompanyProfileFailure Failure', props<{ error: string }>());

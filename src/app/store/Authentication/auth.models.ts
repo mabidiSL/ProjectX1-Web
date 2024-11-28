@@ -44,6 +44,7 @@ building?: string;
 company_registration?: string;
 registrationDate?: string;
 updatedAt?: string;
+companyId?: number;
 role?: Role;// the type will be Role
 }
 

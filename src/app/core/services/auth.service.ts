@@ -52,16 +52,19 @@ export class AuthenticationService {
     updateProfile(user: any){
         const id = user.id;
         delete user.id;
-        return this.http.patch(` ${environment.baseURL}/users/${id}`,user) ;
+        return this.http.patch(`${environment.baseURL}/users/${id}`,user) ;
     }
     updateCompanyProfile(company: any){
         const id = company.id;
         delete company.id;
-        return this.http.patch(` ${environment.baseURL}/company/${id}`,company) ;
+        return this.http.patch(`${environment.baseURL}/companies/${id}`,company) ;
     }
-
+    getCompanyProfile(companyId: number){
+ 
+        return this.http.get<any>(`${environment.baseURL}/companies/${companyId}`) ;
+    }
     refreshToken(refreshToken: string): Observable<any> {
-        return this.http.post(` ${environment.baseURL}/auth/refresh`, { refreshToken: refreshToken });
+        return this.http.post(`${environment.baseURL}/auth/refresh`, { refreshToken: refreshToken });
     }
     logout() {
         // remove user from local storage to log user out

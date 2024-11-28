@@ -79,7 +79,7 @@
                         </div>
                       </div>
                     </div>
-                    <div *ngIf="(currentUser | async)?.role.translation_data[0].name !=='Admin'" class="col-lg-6">
+                    <div *ngIf="currentUser.role.translation_data[0].name !=='Admin'" class="col-lg-6">
                       <div class="mb-3">
                         <div class="form-group">
                           <label for="section_id">{{'Company Section' | translate}} </label>

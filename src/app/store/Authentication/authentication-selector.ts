@@ -24,6 +24,10 @@ export const selectDataLoading = createSelector(
     getLayoutState,
     (state: AuthenticationState) => state?.loading || false
   );
+  export const selectCompany = createSelector(
+    getLayoutState,
+    (state: AuthenticationState) => state?.company || null
+  );
   export const selectLoggedUser = createSelector(
     getLayoutState,
     (state: AuthenticationState) => state?.user || null

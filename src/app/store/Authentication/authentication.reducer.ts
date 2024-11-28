@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createReducer, on } from '@ngrx/store';
-import { Register, RegisterFailure, RegisterSuccess, forgetPassword, forgetPasswordFailure, forgetPasswordSuccess, login, loginFailure, loginSuccess, logout, logoutSuccess, updateCompanyProfile, updateCompanyProfileFailure, updateCompanyProfileSuccess, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfileFailure, updateProfilePassword, updateProfilePasswordFailure, updateProfilePasswordSuccess, updateProfileSuccess, verifyEmail, verifyEmailFailure, verifyEmailSuccess } from './authentication.actions';
+import { Register, RegisterFailure, RegisterSuccess, forgetPassword, forgetPasswordFailure, forgetPasswordSuccess, getCompanyProfile, getCompanyProfileFailure, getCompanyProfileSuccess, login, loginFailure, loginSuccess, logout, logoutSuccess, updateCompanyProfile, updateCompanyProfileFailure, updateCompanyProfileSuccess, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfileFailure, updateProfilePassword, updateProfilePasswordFailure, updateProfilePasswordSuccess, updateProfileSuccess, verifyEmail, verifyEmailFailure, verifyEmailSuccess } from './authentication.actions';
 import { _User } from './auth.models';
 
 export interface AuthenticationState {
@@ -7,6 +8,7 @@ export interface AuthenticationState {
     loading: boolean,
     user: _User | null;
     message: string;
+    company: any | null;
     token: string |null;
     error: string | null;
 }
@@ -15,6 +17,7 @@ const initialState: AuthenticationState = {
     isLoggedIn: false,
     loading: false,
     message: null,
+    company: null,
     user: null,
     token: null,
     error: null,
@@ -52,7 +55,10 @@ export const authenticationReducer = createReducer(
     on(updateCompanyProfile, (state) => ({ ...state, loading: true, error: null })),
     on(updateCompanyProfileSuccess, (state, { company }) => ({ ...state, loading: false, company, error: null })),
     on(updateCompanyProfileFailure, (state, { error }) => ({ ...state, loading: false, error })),
-
+    
+    on(getCompanyProfile, (state) => ({ ...state, loading: true, error: null })),
+    on(getCompanyProfileSuccess, (state, { company }) => ({ ...state, loading: false, company, error: null })),
+    on(getCompanyProfileFailure, (state, { error }) => ({ ...state, loading: false, error })),
 
     on(updateProfilePassword, state => ({ ...state,  loading: true,  error: null, })),
     on(updateProfilePasswordSuccess, (state, { message }) => ({ ...state, loading: false,message, error: null,  })),
