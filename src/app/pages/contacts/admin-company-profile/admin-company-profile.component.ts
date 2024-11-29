@@ -83,6 +83,8 @@ export class AdminCompanyProfileComponent implements OnInit{
     name_ar: ['', Validators.required],
     description: [''],
     description_ar: [''],
+    supervisorName: [''],
+    supervisorName_ar: [''],
     companyEmail: [''],
     website: [''],
     VAT: [''],
@@ -90,14 +92,14 @@ export class AdminCompanyProfileComponent implements OnInit{
     registrationFile: [''],
     section_id:[null],
     companyLogo: ['', Validators.required],
-    officeTel: [''],
+    officeTel: [null],
+    supervisorPhone: [null],
     building_floor: [''],
     street: [''],
     country_id:[null],
     city_id:[null],
     area_id:[null], 
     bank: [''],
-    bankAccountNumber: [''],
     IBAN: [''],
     SWIFT: [''],
     whatsup: [''] ,
@@ -124,10 +126,8 @@ export class AdminCompanyProfileComponent implements OnInit{
           .pipe(select(selectCompany), takeUntil(this.destroy$))
           .subscribe(company => {
             if (company) {
-              this.adminForm.controls['country_id'].setValue(company.city.area.country_id);
-              this.adminForm.controls['area_id'].setValue(company.city.area_id);
-              this.adminForm.controls['city_id'].setValue(company.city_id);
-              this.existantcompanyLogo = company.image;
+              
+              this.existantcompanyLogo = company.companyLogo;
               this.patchValueForm(company);
               this.originalCompanyData = _.cloneDeep(company);
               }
@@ -138,11 +138,18 @@ export class AdminCompanyProfileComponent implements OnInit{
    
     patchValueForm(company: any){
       this.adminForm.patchValue(company);
+  
+      this.adminForm.controls['country_id'].setValue(company.user.city.area.country_id);
+      this.adminForm.controls['area_id'].setValue(company.user.city.area_id);
+      this.adminForm.controls['city_id'].setValue(company.user.city_id);
       this.adminForm.patchValue({
         name: company.translation_data[0].name,
         name_ar: company.translation_data[1].name,
         description: company.translation_data[0].description,
         description_ar: company.translation_data[1].description,
+        supervisorName: company.translation_data[0].supervisorName,
+        supervisorName_ar: company.translation_data[1].supervisorName,
+
         
       });
     
@@ -255,18 +262,24 @@ export class AdminCompanyProfileComponent implements OnInit{
   onPhoneNumberChanged(phoneNumber: string) {
     this.adminForm.get('officeTel').setValue(phoneNumber);
   }
- 
+  onSupervisorPhoneChanged(phoneNumber: string) {
+    this.adminForm.get('supervisorPhone').setValue(phoneNumber);
+  }
   createProfileFromForm(formValue): any {
     const company = formValue;
     company.translation_data = [];
     const enFields = [
       { field: 'name', name: 'name' },
       { field: 'description', name: 'description' },
+      { field: 'supervisorName', name: 'supervisorName' },
+
 
     ];
     const arFields = [
       { field: 'name_ar', name: 'name' },
       { field: 'description_ar', name: 'description' },
+      { field: 'supervisorName_ar', name: 'supervisorName' },
+
 
     ];
    // Create the English translation if valid
@@ -303,6 +316,8 @@ export class AdminCompanyProfileComponent implements OnInit{
    * On submit form
    */
   onSubmit() {
+    console.log('on submit');
+    
     this.formSubmitted = true;
 
     if (this.adminForm.invalid) {
@@ -322,7 +337,11 @@ export class AdminCompanyProfileComponent implements OnInit{
       const updatedDta = this.formUtilService.detectChanges(this.adminForm, this.originalCompanyData);
       if (Object.keys(updatedDta).length > 0) {
         const changedData = this.createProfileFromForm(updatedDta);
+        if(this.existantcompanyLogo !== this.originalCompanyData.companyLogo)
+          changedData.companyLogo = this.existantcompanyLogo;
+        
         changedData.id = newData.id;
+        console.log(changedData);
         this.store.dispatch(updateCompanyProfile({ company: changedData }));
       }
       else

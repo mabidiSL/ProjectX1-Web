@@ -3,7 +3,7 @@ import { Injectable, Inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, catchError, exhaustMap, tap } from 'rxjs/operators';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { login, loginSuccess, loginFailure, forgetPassword, logout, logoutSuccess, Register, RegisterSuccess, RegisterFailure, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfilePassword, updateProfileSuccess, updateProfileFailure, updateProfilePasswordSuccess, updateProfilePasswordFailure, forgetPasswordSuccess, forgetPasswordFailure, verifyEmailSuccess, verifyEmail, verifyEmailFailure, updateCompanyProfile, updateCompanyProfileSuccess, updateCompanyProfileFailure, getCompanyProfile, getCompanyProfileSuccess, getCompanyProfileFailure } from './authentication.actions';
+import { login, loginSuccess, loginFailure, forgetPassword, logout, logoutSuccess, Register, RegisterSuccess, RegisterFailure, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfilePassword, updateProfileSuccess, updateProfileFailure, updateProfilePasswordSuccess, updateProfilePasswordFailure, forgetPasswordSuccess, forgetPasswordFailure, verifyEmailSuccess, verifyEmail, verifyEmailFailure, updateCompanyProfile, updateCompanyProfileSuccess, updateCompanyProfileFailure, getCompanyProfile, getCompanyProfileSuccess, getCompanyProfileFailure, logoutFailure } from './authentication.actions';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
@@ -175,7 +175,7 @@ export class AuthenticationEffects {
   updateCompanyProfile$ = createEffect(()=>
     this.actions$.pipe(
     ofType(updateCompanyProfile),
-    exhaustMap((company : any ) => {
+    exhaustMap(({company} ) => {
       return this.AuthService.updateCompanyProfile(company).pipe(
         map((response : any) => {
             //localStorage.setItem('currentUser', JSON.stringify(user.user));
@@ -240,22 +240,37 @@ export class AuthenticationEffects {
       }),
     ));
     
-  logout$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(logout),
-      tap(() => {
-        // Perform any necessary cleanup or side effects before logging out
-       
-        localStorage.removeItem('currentUser');
-        localStorage.removeItem('token');
-        this.currentUserSubject.next(null);
-        this.router.navigate(['/auth/login']);
-        this.toastr.success('You are logged out !!!');
-      }),
-      exhaustMap(() => of(logoutSuccess({user: null, token: null})))
-    )
-  );
+    logout$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(logout),
+        exhaustMap(() => {
+          return this.AuthService.logout().pipe(
+            map((response: any) => {
+              if (response) {
 
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('token');
+                this.currentUserSubject.next(null);
+                this.router.navigate(['/auth/login']);
+                this.toastr.success(response.result);
+                return logoutSuccess({message:response.result});
+              }
+              
+            }),
+            catchError((error: any) => {
+              
+              const errorMessage = this.formUtilService.getErrorMessage(error);
+              this.toastr.error(errorMessage);
+              return of(logoutFailure({error: errorMessage}));
+            }),
+           
+          );
+        }),
+      )
+    );
+  
+   
+  
   
 
 }

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createReducer, on } from '@ngrx/store';
-import { Register, RegisterFailure, RegisterSuccess, forgetPassword, forgetPasswordFailure, forgetPasswordSuccess, getCompanyProfile, getCompanyProfileFailure, getCompanyProfileSuccess, login, loginFailure, loginSuccess, logout, logoutSuccess, updateCompanyProfile, updateCompanyProfileFailure, updateCompanyProfileSuccess, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfileFailure, updateProfilePassword, updateProfilePasswordFailure, updateProfilePasswordSuccess, updateProfileSuccess, verifyEmail, verifyEmailFailure, verifyEmailSuccess } from './authentication.actions';
+import { Register, RegisterFailure, RegisterSuccess, forgetPassword, forgetPasswordFailure, forgetPasswordSuccess, getCompanyProfile, getCompanyProfileFailure, getCompanyProfileSuccess, login, loginFailure, loginSuccess, logout, logoutFailure, logoutSuccess, updateCompanyProfile, updateCompanyProfileFailure, updateCompanyProfileSuccess, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfileFailure, updateProfilePassword, updateProfilePasswordFailure, updateProfilePasswordSuccess, updateProfileSuccess, verifyEmail, verifyEmailFailure, verifyEmailSuccess } from './authentication.actions';
 import { _User } from './auth.models';
 
 export interface AuthenticationState {
@@ -38,8 +38,9 @@ export const authenticationReducer = createReducer(
     on(loginFailure, (state, { error }) => ({ ...state, loading: false, isLoggedIn: false, error })),
    
     on(logout, (state) => ({ ...state, user: null, loading: true, isLoggedIn: false, token: null, error: null })),
-    on(logoutSuccess, (state, { user, token }) => ({ ...state, loading: false, user, token, isLoggedIn: false, error: null })),
-    
+    on(logoutSuccess, (state, { message }) => ({ ...state, loading: false, message, isLoggedIn: false, error: null })),
+    on(logoutFailure, (state, { error }) => ({ ...state, loading: false, isLoggedIn: false, error })),
+
     on(forgetPassword, state => ({ ...state, loading: true, error: null, })),
     on(forgetPasswordSuccess, (state, { message }) => ({ ...state, loading: false,  message,  error: null,    })),
     on(forgetPasswordFailure, (state, { error }) => ({ ...state,  loading: false,  error,  })) ,

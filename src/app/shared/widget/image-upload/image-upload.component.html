@@ -4,6 +4,7 @@ class="image-upload-container dashed-border"
   
 >
   <label
+    
     class="flex-center"
   >
     <input
@@ -15,22 +16,7 @@ class="image-upload-container dashed-border"
       <em class="fas fa-cloud-upload-alt text-gray-600 fs-30"></em>
       <div>
         <p *ngIf="selectedFile || existantImage; else defaultText" class="selected-file">
-                    <!-- For image files, show preview -->
-                    <img *ngIf="isImage(selectedFile || existantImage)"
-                    [src]="selectedFile || existantImage"
-                    [alt]="alt"
-                    class="img-fluid"
-                    width="200">
-               <!-- For other files like PDFs, show a file name or icon -->
-               <canvas #canvas *ngIf="isPdf(selectedFile || existantImage)" id="pdf-canvas"></canvas>
-
-               <!-- <span *ngIf="!isImage(selectedFile || existantImage)">
-                 <i class="fas fa-file-pdf text-danger fs-30"></i>
-                 <p class="mt-2 text-sm font-medium fs-15">
-                   {{ (selectedFile?.name || existantImage?.name) || 'PDF File' }}
-                 </p>
-               </span> -->
-       
+            <img [src]="selectedFile || existantImage" [alt]="alt" class="img-fluid" width="200">
         </p>
         <ng-template #defaultText>
           <p class="mt-2 text-sm font-medium fs-15">

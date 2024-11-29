@@ -67,13 +67,8 @@ export class AuthenticationService {
         return this.http.post(`${environment.baseURL}/auth/refresh`, { refreshToken: refreshToken });
     }
     logout() {
-        // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
-        localStorage.removeItem('token');
-        localStorage.removeItem('refreshToken');
-        localStorage.removeItem('timeLifeToken');
-        //clean up the cookies
-        document.cookie = 'lang=; Max-Age=-99999999; path=/';
         this.currentUserSubject.next(null);
+        return this.http.post(`${environment.baseURL}/auth/logout`,{}) ;
+        
     }
 }

@@ -34,7 +34,9 @@ export const updateProfilePasswordFailure = createAction('[Profile] updateProfil
 
 // logout action
 export const logout = createAction('[Authentication] Logout');
-export const logoutSuccess = createAction('[Auth] Logout Success',props<{ user: _User, token: string }>());
+export const logoutSuccess = createAction('[Auth] Logout Success',props<{ message: string }>());
+export const logoutFailure = createAction('[Profile] Logout Failure', props<{ error: any }>());
+
  
 // Update Profile action
 export const updateProfile = createAction('[Profile] updateProfile', props<{ user: any }>());
