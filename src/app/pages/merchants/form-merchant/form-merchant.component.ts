@@ -59,7 +59,6 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
   filteredCountries: Country[] = [];
   filteredAreas :  Area[] = [];
   filteredCities:  City[] = [];
-  serviceTypes: string[] = ['company', 'entreprise'];
   originalMerchantData: Merchant = {}; 
 
   fieldTextType: boolean  = false;
@@ -116,19 +115,18 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
     password: ['', this.type === 'create' ? Validators.required : null],
     confpassword: ['', this.type === 'create' ? Validators.required : null],
     id_number: [null, Validators.required],
-    phone:['',Validators.required], //Validators.pattern(/^\d{3}-\d{3}-\d{4}$/)*/],
+    phone:[null,Validators.required], //Validators.pattern(/^\d{3}-\d{3}-\d{4}$/)*/],
     country_id:[null, Validators.required],
     city_id:[null, Validators.required],
     area_id:[null, Validators.required], 
-    serviceType: [null, Validators.required],
     supervisorName: ['', Validators.required],
     supervisorName_ar: ['', Validators.required],
-    supervisorPhone: ['', Validators.required],
+    supervisorPhone: [null, Validators.required],
     bankAccountNumber: [''],
     merchantName:['', Validators.required],
     merchantName_ar:['', Validators.required],
-    merchantPicture: ['', Validators.required],
-    merchantLogo: ['', Validators.required],
+    image: ['', Validators.required],
+    companyLogo: ['', Validators.required],
     activationCode: [''],
     qrCode: [''],
     section_id:[null, Validators.required],
@@ -440,7 +438,7 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
         this.merchantPictureBase64 = event.file;
         this.fileName2 = ''; // Set the file name
         this.existantmerchantPicture = event.file;
-        this.merchantForm.controls['merchantPicture'].setValue(this.existantmerchantPicture);
+        this.merchantForm.controls['image'].setValue(this.existantmerchantPicture);
       }
     }
     
@@ -450,7 +448,7 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
         this.storeLogoBase64 = event.file;
         this.fileName1 = ''; // Set the file name
         this.existantmerchantLogo = event.file;
-        this.merchantForm.controls['merchantLogo'].setValue(this.existantmerchantLogo);
+        this.merchantForm.controls['companyLogo'].setValue(this.existantmerchantLogo);
       }
     }
   ngOnDestroy() {

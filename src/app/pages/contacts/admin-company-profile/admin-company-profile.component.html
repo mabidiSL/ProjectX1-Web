@@ -112,7 +112,7 @@
                           [initialPhoneNumber]="adminForm.get('supervisorPhone').value"
                           [inputId]="'supervisorPhone'"
                           [placeholder]="'Enter Supervisor Phone' | translate"
-                          (phoneNumberChanged)="onPhoneNumberChanged($event)" >
+                          (phoneNumberChanged)="onSupervisorPhoneChanged($event)" >
                          </app-phone-number> 
                           <!-- <div *ngIf="adminForm.get('officeTel').touched && adminForm.get('officeTel').invalid" class="invalid-feedback d-block">
                             <span *ngIf="adminForm.get('officeTel').errors?.['required']">{{'Company Phone is required'| translate}}.</span>

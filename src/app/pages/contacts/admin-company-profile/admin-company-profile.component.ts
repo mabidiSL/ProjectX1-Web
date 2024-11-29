@@ -305,7 +305,9 @@ export class AdminCompanyProfileComponent implements OnInit{
    delete company.name;  
    delete company.name_ar; 
    delete company.description;  
-   delete company.description_ar;     
+   delete company.description_ar;  
+   delete company.supervisorName; 
+   delete company.supervisorName_ar;    
    delete company.area_id;
    delete company.country_id;
 

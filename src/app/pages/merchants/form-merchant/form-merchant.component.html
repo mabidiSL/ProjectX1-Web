@@ -15,7 +15,7 @@
 
                   <div class="col-md-6 mb-3">
                     <div class="form-group ">
-                    <label for="merchantName" >{{'Merchant_Name'| translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                    <label for="merchantName" >{{'Merchant Name'| translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                     <input type="text" id="merchantName" class="form-control" formControlName="merchantName" placeholder="{{ 'Enter merchant name' | translate }}" required [readonly]="type==='view'">
                     <div *ngIf="merchantForm.get('merchantName').touched && merchantForm.get('merchantName').invalid" class="invalid-feedback d-block">
                       <span *ngIf="merchantForm.get('merchantName').errors?.['required']">{{'Merchant Name is required'| translate}}.</span>
@@ -103,7 +103,7 @@
                        <app-phone-number
                        [disabled]="type === 'view'"
                        *ngIf="merchantForm "
-                       [initialPhoneNumber]="merchantForm.get('phone').value"
+                       [initialPhoneNumber]="merchantForm.get('phone')?.value"
                        [inputId]="'phone'"
                        [placeholder]="'Enter merchant phone' | translate"
                         (phoneNumberChanged)="onPhoneNumberChanged($event)" >
@@ -113,7 +113,7 @@
                       </div>   
                       </div>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <!-- <div class="col-md-6 mb-3">
                       <div class="form-group">
                         <label for="serviceType">{{'Service Type' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                         <ng-select [readonly]="type === 'view'" placeholder="{{'Select service type' |translate}}" id="serviceType"  [items]="serviceTypes" formControlName="serviceType"  >
@@ -122,7 +122,7 @@
                         <span *ngIf="merchantForm.get('serviceType').errors?.['required']">{{'Service Type is required'| translate}}.</span>
                       </div>
                     </div>
-                    </div>
+                    </div> -->
                  
                     <div class="col-md-6 mb-3">
                       <div class="form-group">
@@ -146,7 +146,7 @@
                       <div class="form-group">
                         <label for="supervisorPhone">{{'Supervisor Phone' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label><br>
                         <app-phone-number
-                        [initialPhoneNumber]="merchantForm.get('supervisorPhone').value"
+                        [initialPhoneNumber]="merchantForm.get('supervisorPhone')?.value"
                         [disabled]="type === 'view'"
                         *ngIf="merchantForm "
                         [inputId]="'supervisorPhone'"
@@ -169,7 +169,7 @@
                         </div>   
                       </div>
                     </div>
-                    <div *ngIf="type !== 'create'" class="col-md-6 mb-3">
+                    <ng-template *ngIf="type !== 'create'" class="col-md-6 mb-3">
                       <div class="form-group ">
                         <label for="activationCode" >{{'Activation Code' | translate}} </label>
                         <input type="text" id="activationCode" class="form-control" formControlName="activationCode"   [readonly]="type==='view'">
@@ -177,8 +177,8 @@
                             <span *ngIf="merchantForm.get('activationCode').errors?.['required']">{{'id_number is required'| translate}}.</span>
                           </div>
                     </div>
-                   </div>
-                    <div *ngIf="type !== 'create'" class="col-md-6 mb-3">
+                   </ng-template>
+                    <ng-template *ngIf="type !== 'create'" class="col-md-6 mb-3">
                       <div class="form-group">
                         <label for="qrCode">{{ 'QR Code' | translate }}</label>
                     
@@ -188,29 +188,29 @@
                           <img [src]="merchantForm.get('qrCode').value" alt="Merchant QR Code" class="img-fluid"  width="200">
                         </div> 
                       </div>
-                    </div>
-                    <div class="col-md-6 mb-3"></div>
+                    </ng-template>
+                   
                     <div class="col-md-6 mb-3">
                       <div class="form-group">
-                        <label for="merchantLogo">{{ 'Merchant Logo' | translate }}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                        <label for="companyLogo">{{ 'Merchant Logo' | translate }}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                     
                         <!-- File input for selecting or uploading a new image -->
-                        <app-image-upload [id]="'merchantLogo'" [type]="'logo'" [label]="'Upload Merchant Logo' | translate" [existantImage]="existantmerchantLogo" [filename]="fileName1" [alt]="'Merchant Logo'" [disabled]="type ==='view'" (logoUploaded)="onLogoUpload($event)"></app-image-upload>
+                        <app-image-upload [id]="'companyLogo'" [type]="'logo'" [label]="'Upload company Logo' | translate" [existantImage]="existantmerchantLogo" [filename]="fileName1" [alt]="'Coupon Logo'" [disabled]="type ==='view'" (logoUploaded)="onLogoUpload($event)"></app-image-upload>
                      
-                        <div *ngIf="merchantForm.get('merchantLogo').touched && merchantForm.get('merchantLogo').invalid" class="invalid-feedback d-block">
-                          <span *ngIf="merchantForm.get('merchantLogo').errors?.['required']">{{'Merchant Logo is required'| translate}}.</span>
+                        <div *ngIf="merchantForm.get('companyLogo').touched && merchantForm.get('companyLogo').invalid" class="invalid-feedback d-block">
+                          <span *ngIf="merchantForm.get('companyLogo').errors?.['required']">{{'Merchant Logo is required'| translate}}.</span>
                         </div>   
                       </div>
                     </div>
 
                     <div class="col-md-6 mb-3">
                       <div class="form-group">
-                        <label for="merchantPicture">{{'Merchant Picture' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                        <label for="image">{{'Merchant Picture' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                          
-                        <app-image-upload [id]="'merchantPicture'" [type]="'image'" [label]="'Upload Merchant Picture' | translate" [existantImage]="existantmerchantPicture" [filename]="fileName2" [alt]="'Merchant Pictutre'" [disabled]="type ==='view'" (imageUploaded)="onImageUpload($event)"></app-image-upload>
+                        <app-image-upload [id]="'image'" [type]="'image'" [label]="'Upload Merchant Picture' | translate" [existantImage]="existantmerchantPicture" [filename]="fileName2" [alt]="'Merchant Pictutre'" [disabled]="type ==='view'" (imageUploaded)="onImageUpload($event)"></app-image-upload>
 
-                        <div *ngIf="merchantForm.get('merchantPicture').touched && merchantForm.get('merchantPicture').invalid" class="invalid-feedback d-block">
-                          <span *ngIf="merchantForm.get('merchantPicture').errors?.['required']">{{'Merchant Picture is required'| translate}}.</span>
+                        <div *ngIf="merchantForm.get('image').touched && merchantForm.get('image').invalid" class="invalid-feedback d-block">
+                          <span *ngIf="merchantForm.get('image').errors?.['required']">{{'Merchant Picture is required'| translate}}.</span>
                         </div>   
                       </div>
                     </div>

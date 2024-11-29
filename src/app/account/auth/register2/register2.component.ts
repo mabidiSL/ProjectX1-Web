@@ -47,7 +47,6 @@ export class Register2Component implements OnInit {
   arealist$:  Observable<Area[]>  ;
   citylist$:  Observable<City[]> ;
   loading$: Observable<boolean>;
-  serviceTypes: string[] = ['company', 'entreprise'];
   existantmerchantLogo: string = null;
   existantmerchantPicture: string = null
 
@@ -86,15 +85,14 @@ export class Register2Component implements OnInit {
       country_id:[''],
       city_id:[''],
       area_id:[''], 
-      serviceType: ['',Validators.required],
       supervisorName: ['', Validators.required],
       supervisorName_ar: ['', Validators.required],
       supervisorPhone: ['', Validators.required],
       bankAccountNumber: [null],
       merchantName:['', Validators.required],
       merchantName_ar:['', Validators.required],
-      merchantPicture: ['', Validators.required],
-      merchantLogo: ['', Validators.required],
+      image: ['', Validators.required],
+      companyLogo: ['', Validators.required],
       section_id:['', Validators.required],
       website: [null],
       whatsup:[null],
@@ -319,10 +317,10 @@ export class Register2Component implements OnInit {
       
       const newData = this.signupForm.value;
       if(this.storeLogoBase64){
-        newData.merchantLogo = this.storeLogoBase64;
+        newData.companyLogo = this.storeLogoBase64;
       }
       if(this.merchantPictureBase64){
-        newData.merchantPicture = this.merchantPictureBase64;
+        newData.image = this.merchantPictureBase64;
       }
       delete newData.confpassword;
   
@@ -353,7 +351,7 @@ export class Register2Component implements OnInit {
       this.merchantPictureBase64 = event.file;
       this.fileName2 = ''; // Set the file name
       this.existantmerchantPicture = event.file;
-      this. signupForm.controls['merchantPicture'].setValue(this.existantmerchantPicture);
+      this. signupForm.controls['image'].setValue(this.existantmerchantPicture);
     }
   }
   
@@ -363,7 +361,7 @@ export class Register2Component implements OnInit {
       this.storeLogoBase64 = event.file;
       this.fileName1 = ''; // Set the file name
       this.existantmerchantLogo = event.file;
-      this. signupForm.controls['merchantLogo'].setValue(this.existantmerchantLogo);
+      this. signupForm.controls['companyLogo'].setValue(this.existantmerchantLogo);
     }
   }
 }
