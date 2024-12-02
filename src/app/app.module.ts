@@ -66,6 +66,9 @@ import { CityModule } from './pages/city/city.module';
 import { CountryModule } from './pages/country/country.module';
 import { GiftCardModule } from './pages/gift-card/gift-card.module';
 import { GiftCardsEffects } from './store/giftCard/giftCard.effect';
+import { LogsEffects } from './store/Log/log.effects';
+import { RolesModule } from './pages/roles/roles.module';
+import { LogsModule } from './pages/logs/logs.module';
 
 // Register the Arabic locale
 registerLocaleData(localeAr, 'ar');
@@ -113,6 +116,8 @@ export function createTranslateLoader(http: HttpClient): any {
     GiftCardModule,
     EmployeesModule,
     StoresModule,
+    RolesModule,
+    LogsModule,
     NotificationsModule,
     TranslateModule,
     AppRoutingModule,
@@ -129,9 +134,7 @@ export function createTranslateLoader(http: HttpClient): any {
       logOnly: environment.production, // Restrict extension to log-only mode
     }),
     EffectsModule.forRoot([
-      
       AuthenticationEffects,
- 
       EmployeeslistEffects,
       CouponslistEffects,
       MerchantslistEffects1,
@@ -143,7 +146,8 @@ export function createTranslateLoader(http: HttpClient): any {
       NotificationsEffects,
       RolesEffects,
       SectionEffects,
-      GiftCardsEffects
+      GiftCardsEffects,
+      LogsEffects
       
     ]),
   ],

@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { RolesRoutingModule } from './roles-routing.module';
 import { RolesComponent } from './roles.component';
@@ -13,6 +12,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { ViewRoleComponent } from './view-role/view-role.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [

@@ -16,12 +16,20 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { DirectiveModule } from '../directive/directive.module';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 @NgModule({
   declarations: [PagetitleComponent,  LoaderComponent, CustomTableComponent],
   imports: [
     CommonModule,
+    MatTableModule,
+    MatSortModule,
+    MatIconModule,
+    MatCheckboxModule,
     TranslateModule,
     FormsModule,
     RouterModule,

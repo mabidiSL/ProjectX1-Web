@@ -1,0 +1,64 @@
+<div id="elmLoader" class="loader" *ngIf="loading$ | async">
+    <div class="spinner-border text-primary avatar-sm" role="status">
+      <span class="visually-hidden">{{'Loading...' | translate}}</span>
+    </div>
+  </div> 
+  <div #formElement class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form [formGroup]="logForm"  >
+                  <div *ngIf="formError" class="alert alert-danger">{{ formError | translate }}</div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="title">{{'Title'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                            <input class="form-control" id="title" formControlName="title" type="text" readonly/>
+                            
+                        </div>
+                       
+                        <!-- <div class="col-md-6 mb-3">
+                            <label for="title_ar">{{'Title in arabic'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                            <input class="form-control" id="title_ar" formControlName="title_ar" type="text" readonly/>
+                            
+                        </div> -->
+                        <div class="col-md-6 mb-3">
+                            <label for="description">{{'Description'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                            <textarea class="form-control" id="description" formControlName="description" rows="5" [readonly]="type==='view'"></textarea>
+                           
+                        </div>
+                      <!-- <div class="col-md-6 mb-3">
+                        <label for="description_ar">{{'Description in arabic'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                        <textarea class="form-control" id="description_ar" formControlName="description_ar" rows="5" readonly></textarea>
+                       
+                    </div> -->
+                    <div class="col-md-6 mb-3">
+                      <label for="actionDate">{{'Date'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                      <input class="form-control" id="actionDate" formControlName="actionDate" type="date" readonly/>
+                      
+                  </div><div class="col-md-6 mb-3">
+                    <label for="user_id">{{'User ID'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                    <input class="form-control" id="user_id" formControlName="user_id" type="text" readonly/>
+                   
+                </div><div class="col-md-6 mb-3">
+                  <label for="ipAdress">{{'IP Address'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                  <input class="form-control" id="ipAdress" formControlName="ipAdress" type="text" readonly/>
+                  <div *ngIf="logForm.get('ipAdress').invalid && logForm.get('ipAdress').touched" class="text-danger">
+                      {{'Title in arabic is required'|translate}}
+                  </div>
+              </div>
+                       
+                     
+                 
+                  <div class="col-12  mt-4">
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-success" (click)="toggleViewMode()">{{ 'Go_Back' | translate }}</button>
+                    </div>
+                  </div>
+                  </div>
+                </form>
+            </div>
+        </div>
+    </div> <!-- end col -->
+  </div>
+  
+  

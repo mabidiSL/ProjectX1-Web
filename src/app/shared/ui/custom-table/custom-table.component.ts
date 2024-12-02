@@ -66,6 +66,11 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   private currentUserSubject: BehaviorSubject<_User>;
   public currentUser: Observable<_User>;
   
+   // Tracks the currently sorted column
+   sortedColumn: string | null = null;
+   // Tracks the sorting direction: 'asc' for ascending or 'desc' for descending
+   sortDirection: 'asc' | 'desc' = 'asc';
+  
   @ViewChild('removeItemModal', { static: false }) removeItemModal?: ModalDirective;
   idToDelete : any;
   isDropdownOpen: boolean = false;
@@ -160,6 +165,48 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   pageChangedEvent(event: any) {
     this.pageChanged.emit(event);
   }
+sortData(column: string): void {
+  if (this.sortedColumn === column) {
+    // Toggle sorting direction if the same column is clicked
+    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+  } else {
+    // Set new column and default to ascending
+    this.sortedColumn = column;
+    this.sortDirection = 'asc';
+  }
+
+  // Perform the sorting
+  this.filteredArray.sort((a, b) => {
+    const valueA = a[column];
+    const valueB = b[column];
+
+    // Handle null or undefined values
+    if (valueA == null || valueB == null) {
+      return valueA == null ? (this.sortDirection === 'asc' ? 1 : -1) : (this.sortDirection === 'asc' ? -1 : 1);
+    }
+
+    // Handle date comparison
+    if (Date.parse(valueA) && Date.parse(valueB)) {
+      const dateA = new Date(valueA).getTime();
+      const dateB = new Date(valueB).getTime();
+      return this.sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
+    }
+
+    // Handle numeric comparison
+    if (typeof valueA === 'number' && typeof valueB === 'number') {
+      return this.sortDirection === 'asc' ? valueA - valueB : valueB - valueA;
+    }
+
+    // Handle string comparison (case insensitive)
+    if (typeof valueA === 'string' && typeof valueB === 'string') {
+      const compareResult = valueA.trim().toLowerCase().localeCompare(valueB.trim().toLowerCase());
+      return this.sortDirection === 'asc' ? compareResult : -compareResult;
+    }
+
+    // Fallback for other data types
+    return 0;
+  });
+}
 
   searchEvent() {
     if (this.searchTerm) {

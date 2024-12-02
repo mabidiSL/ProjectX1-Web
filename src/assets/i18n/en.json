@@ -173,6 +173,10 @@
       "TEXT": "Marketing Campaigns"
      
    }, 
+   "LOGS":{
+    "TEXT": "Logs"
+
+   },
    "MARKETINGOFFERS":{
     "TEXT": "Marketing Offers"
     }, 

@@ -1,0 +1,8 @@
+.sort-arrow {
+    cursor: pointer;
+    transition: color 0.3s ease; /* Smooth transition for hover effect */
+  }
+  
+  .sort-arrow:hover {
+    color: black; /* Ensure hover changes color to black */
+  }

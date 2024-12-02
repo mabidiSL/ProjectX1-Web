@@ -23,6 +23,7 @@ const routes: Routes = [
   { path: 'areas', loadChildren: () => import('./areas/areas.module').then(m => m.AreasModule), canActivate: [RoleGuard] },
   { path: 'cities', loadChildren: () => import('./city/city.module').then(m => m.CityModule), canActivate: [RoleGuard] },
   { path: 'giftCards',loadChildren: () => import('./gift-card/gift-card.module').then(m => m.GiftCardModule), canActivate: [RoleGuard] },
+  { path: 'logs',loadChildren: () => import('./logs/logs.module').then(m => m.LogsModule), canActivate: [RoleGuard] },
 
 ];
 

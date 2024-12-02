@@ -1,3 +1,5 @@
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 
 <div class="row">
   <div class="col-lg-12">
@@ -60,7 +62,20 @@
     <thead class="table-light">
       <tr>
         <th scope="col" style="width: 40px;"></th>
-        <th scope="col" *ngFor="let column of columns" style="text-align: center;">{{column.label | translate}}</th>
+        <th scope="col" *ngFor="let column of columns" style="text-align: center;">
+          <div 
+          (click)="sortData(column.property)" 
+          style="cursor: pointer; display: flex; align-items: center; justify-content: center;"
+        >
+          {{ column.label | translate }}
+          <span 
+            style="margin-left: 8px; color: gray;" 
+            [style.color]="sortedColumn === column.property ? 'black' : 'gray'"
+          >
+            {{ sortedColumn === column.property ? (sortDirection === 'asc' ? '↑' : '↓') : '↓' }}
+          </span>
+        </div>
+        </th>
         <th *ngIf="isMerchant && !pending || !isMerchant" scope="col" style="width: 200px;text-align: center;">{{'Actions'| translate}}</th>
       </tr>
     </thead>
@@ -130,9 +145,9 @@
             <td class="text-center">
               <div style="display: flex; justify-content: center;">
               <ul class="list-unstyled hstack gap-1 mb-0">
-                 <!-- <li data-bs-toggle="tooltip" data-bs-placement="top" title="{{'View'|translate}}">
-                   <a href="javascript:void(0);" class="btn btn-sm btn-soft-primary" *hasClaim="viewButtonPermission" (click)="view(data.id)"><i class="mdi mdi-eye-outline"></i></a>
-                 </li> -->
+                 <li data-bs-toggle="tooltip" data-bs-placement="top" title="{{'View'|translate}}">
+                   <a [routerLink]="[viewButtonLink, data.id]" class="btn btn-sm btn-soft-primary" *hasClaim="viewButtonPermission" (click)="$event.stopPropagation()"><i class="mdi mdi-eye-outline"></i></a>
+                 </li> 
                  <li data-bs-toggle="tooltip" data-bs-placement="top" title="{{'Edit'|translate}}">
                    <a [routerLink]="[editButtonLink, data.id]" class="btn btn-sm btn-soft-info" *hasClaim="editButtonPermission" (click)="$event.stopPropagation()"><i class="mdi mdi-pencil-outline"></i></a>
  

@@ -1,0 +1,25 @@
+<div class="container-fluid">
+
+    <app-page-title title="{{'Logs'| translate}}" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+    <app-custom-table
+      [columns]="columns"
+      [viewButtonLink]="'/private/logs/view'"
+      [viewButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.View]}]"
+      [ArrayData]="originalArray"
+      [totalItems]="(totalItems$ | async)"
+      (onPageSizeChanged)="onPageSizeChanged($event)"
+      (pageChanged)="onPageChanged($event)"
+      >
+</app-custom-table>
+   
+  </div>
+
+  
+  <div id="elmLoader" class="loader" *ngIf="loading$ | async">
+    <div class="spinner-border text-primary avatar-sm" role="status">
+      <span class="visually-hidden">{{'Loading...' | translate}}</span>
+    </div>
+  </div>    
+  
+  
+  

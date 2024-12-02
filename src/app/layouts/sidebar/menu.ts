@@ -384,6 +384,14 @@ export const MENU: MenuItem[] = [
         icon:  'bx bx-error',
         link:'/pages/coming-soon',
                 
+    },
+    {
+        id: 50,
+        label: 'MENUITEMS.LOGS.TEXT',
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Complaints, claimValue: [Permission.ViewAll]}],
+        icon:  'bx bx-error',
+        link:'/private/logs',
+                
     }
     
 ];

@@ -24,7 +24,6 @@ export class FormRoleComponent implements OnInit, OnDestroy {
   formSubmitted = false;
 
   private destroy$ = new Subject<void>();
-  Rolelist$: Observable<Role[]>;
   loading$: Observable<boolean>;
 
   role: Role;
