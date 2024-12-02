@@ -68,7 +68,8 @@ export  enum Modules
         Complaints = 33,
         Delegate_Statistics = 34,
         Social_Media = 35,
-        AppSettings = 36
+        AppSettings = 36,
+        Logs = 37,
         
         
        

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, Input, OnChanges } from '@angular/core';
 import MetisMenu from 'metismenujs';
 import { EventService } from '../../core/services/event.service';
@@ -7,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { MENU } from './menu';
 import { MenuItem } from './menu.model';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sidebar',
@@ -96,7 +97,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
     for (let i = 0; i < links.length; i++) {
       paths.push(links[i]['pathname']);
     }
-    var itemIndex = paths.indexOf(window.location.pathname);
+    const itemIndex = paths.indexOf(window.location.pathname);
     if (itemIndex === -1) {
       const strIndex = window.location.pathname.lastIndexOf('/');
       const item = window.location.pathname.substr(0, strIndex).toString();

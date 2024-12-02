@@ -97,8 +97,11 @@
         "SCROLLABLE": "Scrollable"
       }
     },
-    "USERMANAGEMENT": {
-      "TEXT": "User Management"
+    "CUSTOMERMANAGEMENT": {
+      "TEXT": "Customer Management"
+    },
+    "EMPLOYEEMANAGEMENT": {
+      "TEXT": "Employee Management"
     },
     "CALENDAR": {
       "TEXT": "Calendar"
@@ -167,10 +170,10 @@
       "TEXT": "Pending Gifts Cards"
     },
    "MARKETINGMANAGEMENT":{
-      "TEXT": "Marketing Management"
+      "TEXT": "Promotion Management"
    },
    "MARKETINGCOMPAIGNS":{
-      "TEXT": "Marketing Campaigns"
+      "TEXT": "Campaigns"
      
    }, 
    "LOGS":{
@@ -178,7 +181,7 @@
 
    },
    "MARKETINGOFFERS":{
-    "TEXT": "Marketing Offers"
+    "TEXT": "Banners"
     }, 
     "SPECIALCOUPONS":{
       "TEXT": "Special Coupons"
@@ -187,7 +190,13 @@
       "TEXT": "System Administration"
     },  
     "STORES":{
-      "TEXT": "Approved Branches"
+      "TEXT": "Branches",
+      "LIST": {
+        "CREATE": "Add Branch",
+        "STORES": "Branch List"
+        
+        
+      }
     },
     "PENDINGSTORES":{
       "TEXT": "Pending Branches"
@@ -214,10 +223,10 @@
       "TEXT":"Banks"
     },
     "NOTIFICATIONMANAGEMENT":{
-      "TEXT":"App Management"
+      "TEXT":"App Settings"
     },
     "APPNOTIFICATION":{
-      "TEXT":"App Notifications"
+      "TEXT":"Push Notifications"
     },
    
     "SOCIALMEDIASET":{
@@ -225,11 +234,11 @@
 
     },
     "FINANCIALMANAGEMENT":{
-      "TEXT":"Financial Management"
+      "TEXT":"Payment Management"
 
     },
     "TAX":{
-      "TEXT":"Tax"
+      "TEXT":"Tax / Vat"
 
     },
     "CUSTOMERINVOICES":{
@@ -242,145 +251,93 @@
     },
     
     "PAYMENTS":{
-      "TEXT":"Payments"
+      "TEXT":"Payment Methods"
 
     },
-    "CONTRACTSANDFOLLOWUPS":{
-      "TEXT":"Contracts and Follow-Ups"
-
-    },
-    "CONTRACTS":{
-      "TEXT": "Contracts"
-    },
-    "MISSIONS":{
-      "TEXT":"Missions"
-
-    },
-    "DELEGATESTATISTICS":{
-      "TEXT":"Delegate Statistics"
-
-    },
+   
+    
     "COMPLAINTS":{
       "TEXT":"Complaints"
 
     },
-    "MERCHANTSMANAGEMENT":{
-      "TEXT": " Merchant Management"
+    "MERCHANTMANAGEMENT":{
+      "TEXT": "Merchant Management"
     },
     
-
-    "PROJECTS": {
-      "TEXT": "Projects",
-      "LIST": {
-        "GRID": "Projects Grid",
-        "PROJECTLIST": "Projects List",
-        "OVERVIEW": "Project Overview",
-        "CREATE": "Create New"
-      }
-    },
-    "TASKS": {
-      "TEXT": "Tasks",
-      "LIST": {
-        "TASKLIST": "Task List",
-        "KANBAN": "Kanban Board",
-        "CREATETASK": "Create Task"
-      }
-    },
     "EMPLOYEES": {
       "TEXT": "Employees",
       "LIST": {
-        "EMPLOYEESLIST": "Employee List"
+        "CREATE": "Add Employee",
+        "EMPLOYEES": "Employee List"
         
         
       }
     },
     "CUSTOMERS": {
-      "TEXT": "Customers",
-      "LIST": {
-        "CUSTOMERSLIST": "Customer List",
-        "ABANDONEDTASKS": "Abandoned Tasks",
-        "CUSTOMERSREVIEWS": "Customer Reviews"
-
-      }
-    },
-    "ROLESETUP": {
-      "TEXT": "Role Management"
-    }, 
-    "MERCHANTSLIST": {
-      "TEXT": "Approved Merchants"
-    },
-    "MERCHANTSAPPROVAL": {
-      "TEXT": "Pending Merchants"
-    },
-    
-    "CUSTOMERSCOMMISSION": {
-      "TEXT": "Customers Commissions"
+      "TEXT": "Customers"
       
     },
+    
+    "CUSTOMERSREVIEWS": {
+      "TEXT": "Customer Reviews"
+      
+    },
+    "ROLESETUP": {
+      "TEXT": "Role Management",
+      "LIST": {
+        "CREATE": "Add Role",
+        "ROLES": "Role List"
+      }
+    }, 
+    "MERCHANTSLIST": {
+      "TEXT": "Merchants",
+      "LIST": {
+        "CREATE": "Add Merchant",
+        "APPROVEDLIST": "Merchant List"
+      }
+    },
+  
     "MERCHANTSCOMMISSION": {
       "TEXT": "Merchant Commissions"
       
     },
     
-    "OFFERS": {
-      "TEXT": "Offers"
-      
-    },
-    "DEPARTMENTMANAGEMENT":{
-      "TEXT": "Department Management"
-    },
-    "DEPARTMENTLIST":{
-      "TEXT": "Department List"
-    },
-    "WALLETMANAGEMENT":{
-      "TEXT": "Wallet Management"
-    },
+   
+   
     "MERCHANTWALLET":{
       "TEXT": "Merchant Wallet "
     },
+    
     "PRODUCTMANAGEMENT":{
-      "TEXT": "Product Management"
-    },
+      "TEXT": "Offer Management",
+       "COUPONS": {
+          "TEXT": "Coupons",
+          "LIST": {
+            "CREATE": "Add Coupon",
+            "COUPONS": "Coupons List",
+            "APPROVALCOUPONS": "Pending Coupons"
+        }
+       },
+        "GIFTCARDS": {
+          "TEXT": "Gift Cards",
+          "LIST": {
+            "CREATE": "Add Gift Card",
+            "GIFTCARDS": "Gift Cards List",
+            "APPROVALGIFTCARDS": "Pending Gift Cards"
+          }
+        }
+
+      }
+    ,
     "CUSTOMERWALLET":{
       "TEXT": "Customer Wallet "
     },
-    "SUBSCRIPTION":{
-      "TEXT":"Subscriptions"
+    "LOYALTYPOINTS":{
+      "TEXT": "Customer Loyalty Point "
     },
-    "COMPANYSUBSCRIPTION":{
-      "TEXT":"Company Subscriptions"
-    },
-    "PREPRINTEDMEMBERSHIP":{
-      "TEXT": "Pre-Printed Memberships"
-    },
-    "SALESANDREPORTS": {
-      "TEXT": "Sales & Reports",
-      "BADGE": "New",
-      "LIST": {
-        "EARNINGREPORT": "Earning Reports",
-        "INHOUSESALES": "InHouse Sales",
-        "VENDORSALES": "Vendor Sales",
-        "TRANSACTIONREPORT": "Transaction Reports"
-      }
-    },
-    "JOBS": {
-      "TEXT": "Jobs",
-      "BADGE": "New",
-      "LIST": {
-        "JOBLIST": "Job List",
-        "JOBGRID": "Job Grid",
-        "APPLYJOB": "Apply Job",
-        "JOBDETAILS": "Job Details",
-        "JOBCATEGORIES": "Jobs Categories",
-        "CANDIDATE": {
-          "TEXT": "Candidate",
-          "LIST": {
-            "LIST": "List",
-            "OVERVIEW": "Overview"
-          }
-        }
-      }
-    },
+    
+    
+   
     "PAGES": {
       "TEXT": "Pages"
     },
@@ -418,97 +375,11 @@
     },
     "COMPONENTS": {
       "TEXT": "Components"
-    },
-    "UIELEMENTS": {
-      "TEXT": "UI Elements",
-      "LIST": {
-        "ALERTS": "Alerts",
-        "BUTTONS": "Buttons",
-        "CARDS": "Cards",
-        "CAROUSEL": "Carousel",
-        "DROPDOWNS": "Dropdowns",
-        "GRID": "Grid",
-        "IMAGES": "Images",
-        "LIGHTBOX": "Lightbox",
-        "MODALS": "Modals",
-        "RANGESLIDER": "Range Slider",
-        "PROGRESSBAR": "Progress Bars",
-        "PLACEHOLDER": "Placeholder",
-        "SWEETALERT": "Sweet Alert",
-        "TABS": "Tabs & Accordions",
-        "TYPOGRAPHY": "Typography",
-        "TOASTS": "Toasts",
-        "VIDEO": "Video",
-        "GENERAL": "General",
-        "COLORS": "Colors",
-        "RATING": "Rating",
-        "NOTIFICATION": "Notification",
-        "UTILITIES": "Utilities",
-        "CROPPER": "Image Cropper"
-      }
-    },
-    "FORMS": {
-      "TEXT": "Forms",
-      "BADGE": "09",
-      "LIST": {
-        "ELEMENTS": "Form Elements",
-        "VALIDATION": "Form Validation",
-        "ADVANCED": "Form Advanced",
-        "EDITOR": "Form Editor",
-        "FILEUPLOAD": "Form File Upload",
-        "REPEATER": "Form Repeater",
-        "WIZARD": "Form Wizard",
-        "MASK": "Form Mask",
-        "LAYOUTS": "Form Layouts"
-      }
-    },
-    "TABLES": {
-      "TEXT": "Tables",
-      "LIST": {
-        "BASIC": "Basic Tables",
-        "DataTables": "Data Tables",
-        "EditTableTables": "Editable Table"
-      }
-    },
-    "CHARTS": {
-      "TEXT": "Charts",
-      "LIST": {
-        "APEX": "Apex Chart",
-        "CHARTJS": "Chartjs Chart",
-        "CHARTIST": "Chartist Chart",
-        "ECHART": "E Chart"
-      }
-    },
-    "ICONS": {
-      "TEXT": "Icons",
-      "LIST": {
-        "BOXICONS": "Boxicons",
-        "MATERIALDESIGN": "Material Design",
-        "DRIPICONS": "Dripicons",
-        "FONTAWESOME": "Font Awesome"
-      }
-    },
-    "MAPS": {
-      "TEXT": "Maps",
-      "LIST": {
-        "GOOGLEMAP": "Google Maps",
-        "LEAFLETMAP": "Leaflet Maps",
-        "AMCHARTS": "AmCharts"
-      }
-    },
-    "MULTILEVEL": {
-      "TEXT": "Multi Level",
-      "LIST": {
-        "LEVEL1": {
-          "1": "Level 1.1",
-          "2": "Level 1.2",
-          "LEVEL2": {
-            "1": "Level 2.1",
-            "2": "Level 2.2"
-          }
-        }
-      }
     }
+    
+   
+    
+    
   },
   "Manager Name in Arabic": "Manager Name in Arabic",
   "Coupon_Approval_List": "Coupon Approval List",

@@ -100,58 +100,8 @@
     "USERMANAGEMENT": {
       "TEXT": "إدارة المستخدمين"
     },
-    "CALENDAR": {
-      "TEXT": "التقويم"
-    },
-    "CHAT": {
-      "TEXT": "الدردشة",
-      "BADGE": "جديد"
-    },
-    "FILEMANAGER": {
-      "TEXT": "مدير الملفات",
-      "BADGE": "جديد"
-    },
-    "ECOMMERCE": {
-      "TEXT": "التجارة الإلكترونية",
-      "LIST": {
-        "PRODUCTS": "المنتجات",
-        "PRODUCTDETAIL": "تفاصيل المنتج",
-        "ORDERS": "الطلبات",
-        "CUSTOMERS": "العملاء",
-        "CART": "عربة التسوق",
-        "CHECKOUT": "الدفع",
-        "SHOPS": "المتاجر",
-        "ADDPRODUCT": "إضافة منتج"
-      }
-    },
-    "CRYPTO": {
-      "TEXT": "العملات المشفرة",
-      "LIST": {
-        "WALLET": "المحفظة",
-        "BUY/SELL": "شراء/بيع",
-        "EXCHANGE": "التبادل",
-        "LENDING": "الإقراض",
-        "ORDERS": "الطلبات",
-        "KYCAPPLICATION": "تطبيق KYC",
-        "ICOLANDING": "هبوط ICO"
-      }
-    },
-    "EMAIL": {
-      "TEXT": "البريد الإلكتروني",
-      "LIST": {
-        "INBOX": "الصندوق الوارد",
-        "READEMAIL": "قراءة البريد",
-        "TEMPLATE": {
-          "BADGE": "جديد",
-          "TEXT": "القالب",
-          "LIST": {
-            "BASIC": "العمل الأساسي",
-            "ALERT": "تنبيه البريد",
-            "BILLING": "فواتير البريد"
-          }
-        }
-      }
-    },
+
+   
     "COUPONMANAGEMENT": {
       "TEXT": "إدارة الكوبونز",
       "LIST": {
@@ -168,7 +118,13 @@
       "TEXT": "بطاقات الهدايا المعلقة"
     },
     "STORES":{
-      "TEXT": "المتاجر"
+      "TEXT": "المتاجر",
+      "LIST": {
+        "CREATE": "إضافة متجر",
+        "STORES": "قائمة المتاجر"
+        
+        
+      }
     },
     "PENDINGSTORES":{
       "TEXT": "المتاجر المعلقة"
@@ -182,6 +138,10 @@
     "MARKETINGCOMPAIGNS": {
       "TEXT": "حملات التسويق"
     },
+    "LOGS":{
+    "TEXT": "السجلات"
+
+   },
     "MARKETINGOFFERS": {
       "TEXT": "عروض التسويق"
     },
@@ -222,7 +182,7 @@
       "TEXT": "الإدارة المالية"
     },
     "TAX": {
-      "TEXT": "الضرائب"
+      "TEXT": "الضريبة / ضريبة القيمة المضافة"
     },
     "CUSTOMERINVOICES": {
       "TEXT": "فواتير العملاء"
@@ -271,9 +231,13 @@
     "EMPLOYEES": {
       "TEXT": "الموظفون",
       "LIST": {
-        "EMPLOYEESLIST": "قائمة الموظفين",
-        "ROLESETUP": "إعداد الأذونات"
+        "CREATE": "إضافة موظف",
+        "EMPLOYEES": "قائمة الموظفين"
       }
+    },
+    "CUSTOMERSREVIEWS": {
+      "TEXT":  "مراجعات العملاء"
+      
     },
     "CUSTOMERS": {
       "TEXT": "العملاء",
@@ -284,10 +248,27 @@
       }
     },
     "ROLESETUP": {
-      "TEXT": "ادارة الصلاحيات"
+      "TEXT": "ادارة الصلاحيات",
+      "LIST": {
+        "CREATE": "إضافة صلاحية",
+        "ROLES": "الصلاحيات"
+      }
     }, 
+    "CUSTOMERMANAGEMENT": {
+      "TEXT": "إدارة العملاء"
+    },
+    "EMPLOYEEMANAGEMENT": {
+      "TEXT": "إدارة الموظفين"
+    },
+    "MERCHANTMANAGEMENT":{
+      "TEXT": "إدارة التجار"
+    },
     "MERCHANTSLIST": {
-      "TEXT": "قائمة التجار"
+      "TEXT": "قائمة التجار",
+      "LIST": {
+        "CREATE": "إضافة تاجر",
+        "APPROVEDLIST": "التجار"
+      }
     },
     "MERCHANTSAPPROVAL": {
       "TEXT": "قائمة الموافقات للتجار"
@@ -301,61 +282,41 @@
     "AREAS": {
       "TEXT": "المناطق"
     },
-    "DEPARTMENTMANAGEMENT": {
-      "TEXT": "إدارة الكوبونز"
-    },
-    "DEPARTMENTLIST": {
-      "TEXT": "قائمة الأقسام"
-    },
-    "WALLETMANAGEMENT": {
-      "TEXT": "إدارة المحفظة"
-    },
+    
+    
     "MERCHANTWALLET": {
       "TEXT": "محفظة التاجر"
     },
     "PRODUCTMANAGEMENT": {
-      "TEXT": "إدارة المنتجات"
-    },
+      "TEXT": "إدارة المنتجات",
+      "COUPONS": {
+        "TEXT": "الكوبونز",
+        "LIST": {
+          "CREATE": "إضافة كوبون",
+          "COUPONS": "قائمة الكوبونز",
+          "APPROVALCOUPONS": "الكوبونز المعلقة"
+      }
+      },
+      
+        "GIFTCARDS": {
+          "TEXT": "بطاقات الهدايا",
+          "LIST": {
+            "CREATE": "إضافة بطاقة هدية",
+            "GIFTCARDS": "قائمة بطاقات الهدايا",
+            "APPROVALGIFTCARDS": "بطاقات الهدايا المعلقة"
+          }
+        }
+    }
+  ,
     "CUSTOMERWALLET": {
       "TEXT": "محفظة العميل"
     },
-    "SUBSCRIPTION": {
-      "TEXT": "الاشتراكات"
+    "LOYALTYPOINTS":{
+      "TEXT": "نقاط ولاء العملاء"
     },
-    "COMPANYSUBSCRIPTION": {
-      "TEXT": "اشتراكات الشركة"
-    },
-    "PREPRINTEDMEMBERSHIP": {
-      "TEXT": "عضويات مطبوعة مسبقاً"
-    },
-    "SALESANDREPORTS": {
-      "TEXT": "المبيعات والتقارير",
-      "BADGE": "جديد",
-      "LIST": {
-        "EARNINGREPORT": "تقارير الأرباح",
-        "INHOUSESALES": "مبيعات داخلية",
-        "VENDORSALES": "مبيعات الموردين",
-        "TRANSACTIONREPORT": "تقارير المعاملات"
-      }
-    },
-      "JOBS": {
-        "TEXT": "الوظائف",
-        "BADGE": "جديد",
-        "LIST": {
-          "JOBLIST": "قائمة الوظائف",
-          "JOBGRID": "شبكة الوظائف",
-          "APPLYJOB": "تقديم طلب وظيفة",
-          "JOBDETAILS": "تفاصيل الوظيفة",
-          "JOBCATEGORIES": "فئات الوظائف",
-          "CANDIDATE": {
-            "TEXT": "المرشح",
-            "LIST": {
-              "LIST": "القائمة",
-              "OVERVIEW": "نظرة عامة"
-            }
-          }
-        }
-      },
+   
+    
+      
       "PAGES": {
         "TEXT": "الصفحات"
       },
@@ -393,97 +354,10 @@
       },
       "COMPONENTS": {
         "TEXT": "المكونات"
-      },
-      "UIELEMENTS": {
-        "TEXT": "عناصر واجهة المستخدم",
-        "LIST": {
-          "ALERTS": "تنبيهات",
-          "BUTTONS": "أزرار",
-          "CARDS": "بطاقات",
-          "CAROUSEL": "دوارة",
-          "DROPDOWNS": "قوائم منسدلة",
-          "GRID": "شبكة",
-          "IMAGES": "صور",
-          "LIGHTBOX": "نافذة منبثقة",
-          "MODALS": "نماذج منبثقة",
-          "RANGESLIDER": "شريط التمرير",
-          "PROGRESSBAR": "شريط التقدم",
-          "PLACEHOLDER": "نموذج",
-          "SWEETALERT": "تنبيه سهل",
-          "TABS": "التبويبات والأكورديونات",
-          "TYPOGRAPHY": "الطباعة",
-          "TOASTS": "إشعارات",
-          "VIDEO": "فيديو",
-          "GENERAL": "عام",
-          "COLORS": "الألوان",
-          "RATING": "تقييم",
-          "NOTIFICATION": "إشعار",
-          "UTILITIES": "أدوات",
-          "CROPPER": "محرر الصور"
-        }
-      },
-      "FORMS": {
-        "TEXT": "النماذج",
-        "BADGE": "09",
-        "LIST": {
-          "ELEMENTS": "عناصر النموذج",
-          "VALIDATION": "التحقق من النموذج",
-          "ADVANCED": "النموذج المتقدم",
-          "EDITOR": "محرر النموذج",
-          "FILEUPLOAD": "رفع الملفات",
-          "REPEATER": "مكرر النموذج",
-          "WIZARD": "معالج النموذج",
-          "MASK": "قناع النموذج",
-          "LAYOUTS": "تخطيطات النموذج"
-        }
-      },
-      "TABLES": {
-        "TEXT": "الجداول",
-        "LIST": {
-          "BASIC": "الجداول الأساسية",
-          "DataTables": "جداول البيانات",
-          "EditTableTables": "الجداول القابلة للتعديل"
-        }
-      },
-      "CHARTS": {
-        "TEXT": "الرسوم البيانية",
-        "LIST": {
-          "APEX": "رسم بياني APEX",
-          "CHARTJS": "رسم بياني Chart.js",
-          "CHARTIST": "رسم بياني Chartist",
-          "ECHART": "رسم بياني ECharts"
-        }
-      },
-      "ICONS": {
-        "TEXT": "الأيقونات",
-        "LIST": {
-          "BOXICONS": "Boxicons",
-          "MATERIALDESIGN": "تصميم المواد",
-          "DRIPICONS": "Dripicons",
-          "FONTAWESOME": "Font Awesome"
-        }
-      },
-      "MAPS": {
-        "TEXT": "الخرائط",
-        "LIST": {
-          "GOOGLEMAP": "خرائط جوجل",
-          "LEAFLETMAP": "خرائط Leaflet",
-          "AMCHARTS": "خرائط AmCharts"
-        }
-      },
-      "MULTILEVEL": {
-        "TEXT": "متعدد المستويات",
-        "LIST": {
-          "LEVEL1": {
-            "1": "المستوى 1.1",
-            "2": "المستوى 1.2",
-            "LEVEL2": {
-              "1": "المستوى 2.1",
-              "2": "المستوى 2.2"
-            }
-          }
-        }
       }
+    
+    
+   
     },
     "Email": "البريد الإلكتروني",
     "Username": "اسم المستخدم",
