@@ -33,9 +33,10 @@
                     </div> -->
                     <div class="col-md-6 mb-3">
                       <label for="actionDate">{{'Date'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                      <input class="form-control" id="actionDate" formControlName="actionDate" type="date" readonly/>
+                      <input bsDatepicker class="form-control" id="actionDate" placeholder="yyyy-mm-dd" formControlName="actionDate" [bsConfig]="bsConfig" [readonly]="type==='view'"/>
                       
-                  </div><div class="col-md-6 mb-3">
+                  </div>
+                  <div class="col-md-6 mb-3">
                     <label for="user_id">{{'User ID'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                     <input class="form-control" id="user_id" formControlName="user_id" type="text" readonly/>
                    

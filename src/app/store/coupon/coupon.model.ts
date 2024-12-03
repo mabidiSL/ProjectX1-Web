@@ -15,7 +15,6 @@ export interface Coupon {
         translation_data?: Translation[];    
         codeCoupon?: string;
         qrCode?: string;
-        urlStore?: string;
         country?: Country;
         area?: Area;
         city?:  City;

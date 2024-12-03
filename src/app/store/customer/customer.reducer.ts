@@ -1,6 +1,6 @@
 // src/app/Customerlist.reducer.ts
 import { createReducer, on } from '@ngrx/store';
-import { fetchCustomerlistData, fetchCustomerlistFail, fetchCustomerlistSuccess} from './customer.action';
+import { fetchCustomerlistData, fetchCustomerlistFail, fetchCustomerlistSuccess, getCustomerById, getCustomerByIdFailure, getCustomerByIdSuccess} from './customer.action';
 import { Customer } from './customer.model';
 
 export interface CustomerlistState {
@@ -38,5 +38,23 @@ export const CustomerListReducer = createReducer(
     error,
     loading: false
   })),
- 
+  //Handle getting Customer by id
+  on(getCustomerById, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
+  })),
+  // Handle success of getting Customer by ID and store the Customer object in the state
+   on(getCustomerByIdSuccess, (state, { customer }) => ({
+    ...state,
+    selectedCustomer: customer,
+    loading: false,
+    error: null
+  })),
+// Handle success of getting Customer by ID and store the Customer object in the state
+on(getCustomerByIdFailure, (state, { error }) => ({
+  ...state,
+  error,
+  loading: false, 
+})),
 );

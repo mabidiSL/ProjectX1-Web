@@ -1,0 +1,182 @@
+<div id="elmLoader" class="loader" *ngIf="loading$ | async">
+    <div class="spinner-border text-primary avatar-sm" role="status">
+      <span class="visually-hidden">{{'Loading...' | translate}}</span>
+    </div>
+  </div> 
+     <div class="row">
+          <div class="col-12">
+              <div class="card">
+                  <div class="card-body">
+                    <!-- <div class="d-flex align-items-start">
+                        <!-- Logo Section -->
+                        <!-- <div class="logo-container me-4">
+                          <app-image-upload
+                            [id]="'image'"
+                            [type]="'logo'"
+                            [label]="'Upload customer Logo' | translate"
+                            [existantImage]="existantImage"
+                            [filename]="fileName1"
+                            [alt]="'Customer Logo'"
+                            [disabled]="type === 'view'"
+                            (logoUploaded)="onLogoUpload($event)">
+                          </app-image-upload>
+                        </div> --> 
+                      <form  [formGroup]="customerForm"  class="m-4">
+                        <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group ">
+                               <label for="f_name" >{{'First_Name' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                                <input type="text" id="f_name" [readonly]="type==='view'"class="form-control" formControlName="f_name"  placeholder="{{ 'Enter_first_name' | translate }}" required>
+                                <div *ngIf="customerForm.get('f_name').touched && customerForm.get('f_name').invalid" class="invalid-feedback d-block">
+                                    <span *ngIf="customerForm.get('f_name').errors?.['required']">{{'First Name is required'| translate}}.</span>
+                                  </div>
+                              </div> 
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <div class="form-group ">
+                               <label for="l_name" >{{'Last_Name' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                                <input type="text" id="l_name" [readonly]="type==='view'"class="form-control" formControlName="l_name" placeholder="{{ 'Enter_last_name' | translate }}" required>
+                                <div *ngIf="customerForm.get('l_name').touched && customerForm.get('l_name').invalid" class="invalid-feedback d-block">
+                                    <span *ngIf="customerForm.get('l_name').errors?.['required']">{{'Last Name is required'| translate}}.</span>
+                                  </div>
+                              </div> 
+                          </div>
+                          
+                          <div class="col-md-6 mb-3">
+                            <div class="form-group ">
+                               <label for="f_name_ar" >{{'First_Name in arabic' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                                <input type="text" id="f_name_ar" [readonly]="type==='view'"class="form-control" formControlName="f_name_ar" placeholder="{{ 'Enter_first_name_in_arabic' | translate }}" required>
+                                <div *ngIf="customerForm.get('f_name_ar').touched && customerForm.get('f_name_ar').invalid" class="invalid-feedback d-block">
+                                    <span *ngIf="customerForm.get('f_name_ar').errors?.['required']">{{'First Name in arabic is required'| translate}}.</span>
+                                  </div>
+                              </div> 
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <div class="form-group ">
+                               <label for="l_name_ar" >{{'Last_Name in arabic' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                                <input type="text" id="l_name_ar" [readonly]="type==='view'"class="form-control" formControlName="l_name_ar" placeholder="{{ 'Enter_last_name_in_arabic' | translate }}" required [readonly]="type==='view'">
+                                <div *ngIf="customerForm.get('l_name_ar').touched && customerForm.get('l_name_ar').invalid" class="invalid-feedback d-block">
+                                    <span *ngIf="customerForm.get('l_name_ar').errors?.['required']">{{'Last Name in arabic is required'| translate}}.</span>
+                                  </div>
+                              </div> 
+                          </div>
+                          
+                            <div class="col-md-6 mb-3">
+                              <div class="form-group ">
+                                 <label for="username" >{{'Username' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                                  <input type="text" id="username" [readonly]="type==='view'"class="form-control" formControlName="username" placeholder="{{ 'Enter username' | translate }}" required [readonly]="type==='view'">
+                                  <div *ngIf="customerForm.get('username').touched && customerForm.get('username').invalid" class="invalid-feedback d-block">
+                                      <span *ngIf="customerForm.get('username').errors?.['required']">{{'Username is required'| translate}}.</span>
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="col-md-6 mb-3">
+                              <div class="form-group ">
+                                <label for="email">{{'Email'| translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                                <input type="email" id="email" class="form-control" [readonly]="type==='view'" formControlName="email" placeholder="{{ 'Enter the email' | translate }}" required [readonly]="type!=='create'">
+                                <div *ngIf="customerForm.get('email').touched && customerForm.get('email').invalid" class="invalid-feedback d-block">
+                                  <span *ngIf="customerForm.get('email').errors?.['required']">{{'Email is required'| translate}}.</span>
+                                </div>
+                              </div>
+                            </div>
+                       
+                         
+                              <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                  <label for="phone" >{{'Phone Number'| translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label><br>
+                                 <app-phone-number
+                                 *ngIf="customerForm"
+                                 [disabled]="type==='view'"
+                                 [inputId]="'phone'"
+                                 [initialPhoneNumber]="customerForm.get('phone').value"
+                                  [placeholder]="'Enter_employee_phone' | translate"
+                                  (phoneNumberChanged)="onPhoneNumberChanged($event)" >
+                                </app-phone-number>
+                                 <div *ngIf="customerForm.get('phone').touched && customerForm.get('phone').invalid" class="invalid-feedback d-block">
+                                  <span *ngIf="customerForm.get('phone').errors?.['required']">{{'Phone Number is required'| translate}}.</span>
+                                </div>   
+                                </div>
+                              </div>
+                              <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                  <label for="gender" >{{'Gender' | translate}}</label>
+                                  <ng-select [readonly]="type === 'view'" id="gender" placeholder="{{'Select_the_Gender' | translate}}" [items]="gender"  formControlName="gender" >
+                                  </ng-select>  
+                                </div>
+                              </div>
+                              <div class="col-md-6 mb-3">
+                                <label for="registrationDate">{{'Registration_Date'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                                <input bsDatepicker class="form-control" id="registrationDate" placeholder="yyyy-mm-dd" formControlName="registrationDate" [bsConfig]="bsConfig" [readonly]="type==='view'"/>
+                                
+                            </div>
+                              <div class="col-md-6 mb-3">
+                                <div class="form-group ">
+                                   <label for="wallet" >{{'Wallet' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                                    <input type="text" id="wallet" [readonly]="type==='view'"class="form-control" formControlName="wallet" placeholder="{{ 'Wallet' | translate }}" required [readonly]="type==='view'">
+                                    <!-- <div *ngIf="customerForm.get('wallet').touched && customerForm.get('wallet').invalid" class="invalid-feedback d-block">
+                                        <span *ngIf="customerForm.get('wallet').errors?.['required']">{{'Username is required'| translate}}.</span>
+                                      </div>-->
+                                  </div>  
+                              </div>
+                              <div class="col-md-6 mb-3">
+                                <div class="form-group ">
+                                   <label for="loyaltyPoint" >{{'Loyalty_Points' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                                    <input type="text" id="loyaltyPoint" [readonly]="type==='view'"class="form-control" formControlName="loyaltyPoint" placeholder="{{ 'Loyalty Points' | translate }}" required [readonly]="type==='view'">
+                                    <!-- <div *ngIf="customerForm.get('loyaltyPoint').touched && customerForm.get('loyaltyPoint').invalid" class="invalid-feedback d-block">
+                                        <span *ngIf="customerForm.get('loyaltyPoint').errors?.['required']">{{'Username is required'| translate}}.</span>
+                                      </div>-->
+                                  </div>  
+                              </div>
+                              
+                              <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                  <label for="country_id" >{{'Country' | translate}}</label>
+                                  <ng-select [readonly]="type === 'view'" id="country_id" placeholder="{{'Select_the_Country' | translate}}" [items]="countrylist" bindLabel="translatedName" 
+                                  bindValue="id"  formControlName="country_id" (change)="onChangeCountrySelection($event)" >
+                                  </ng-select>  
+                                </div>
+                              </div>
+                              
+                                <div class="col-md-6 mb-3">
+                                  <div class="form-group">
+                                    <label for="area_id">{{'area' | translate}}</label>
+                                    <ng-select [readonly]="type === 'view'" id="area_id" placeholder="{{'Select_the_Area' | translate}}" [items]="filteredAreas" bindLabel="translatedName" 
+                                    bindValue="id"  formControlName="area_id" (change)="onChangeAreaSelection($event)" >
+                                    </ng-select>                         
+                                  </div>
+                                </div>
+            
+                              <div class="col-md-6 mb-3">
+                                <div class="form-group ">
+                                  <label for="city_id" >{{'City' | translate}}</label>
+                                  <ng-select [readonly]="type === 'view'" id="city_id" placeholder="{{'Select_the_City' | translate}}" [items]="filteredCities" bindLabel="translatedName" 
+                               bindValue="id"  formControlName="city_id"  >
+                               </ng-select>                      
+                                </div>
+                              </div>
+                              <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                  <label for="image">{{ 'Customer Logo' | translate }}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                              
+                                  <!-- File input for selecting or uploading a new image -->
+                                  <app-image-upload [id]="'image'" [type]="'logo'" [label]="'Upload customer Logo' | translate" [existantImage]="existantImage" [filename]="fileName1" [alt]="'Customer Logo'" [disabled]="type ==='view'" (logoUploaded)="onLogoUpload($event)"></app-image-upload>
+                               
+                                  <!-- <div *ngIf="customerForm.get('image').touched && customerForm.get('image').invalid" class="invalid-feedback d-block">
+                                    <span *ngIf="customerForm.get('image').errors?.['required']">{{'Merchant Logo is required'| translate}}.</span>
+                                  </div>    -->
+                                </div>
+                              </div>       
+                         
+                                
+                              <div class="col-12  mt-4">
+                                <div class="d-flex justify-content-end">
+                                    <button type="button" class="btn btn-success" (click)="toggleViewMode()">{{ 'Go_Back' | translate }}</button>
+                                </div>
+                              </div>
+                       </div>
+                    </form>
+                  </div>
+              </div>
+          </div> <!-- end col -->
+        </div>
+   

@@ -9,12 +9,14 @@ import { ViewLogsComponent } from './view-logs/view-logs.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { LogsComponent } from './logs.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 
 @NgModule({
   declarations: [LogsComponent, FormLogsComponent, ViewLogsComponent],
   imports: [
     CommonModule,
+    BsDatepickerModule,
     FormsModule, 
     ReactiveFormsModule ,
     UIModule,

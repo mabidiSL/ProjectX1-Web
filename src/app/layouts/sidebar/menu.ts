@@ -26,8 +26,8 @@ export const MENU: MenuItem[] = [
         id: 6,
         label: 'MENUITEMS.CUSTOMERS.TEXT',
         icon: 'bxs-user-detail',
-        link:'/pages/coming-soon',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customers, claimValue: [Permission.ViewAll]}]
+        link:'/private/customers',
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customers, claimValue: [Permission.ViewAll, Permission.Create]}]
 
     },
     {
@@ -347,7 +347,14 @@ export const MENU: MenuItem[] = [
         isTitle:true
                
     },
-    
+    {
+        id: 32,
+        label: 'MENUITEMS.COUNTRIES.TEXT',
+        icon: 'bx bx-globe',
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}],
+        link: '/private/countries',
+               
+    },
     {
         id: 34,
         label: 'MENUITEMS.AREAS.TEXT',
@@ -356,14 +363,7 @@ export const MENU: MenuItem[] = [
         link: '/private/areas'
                
     },
-    {
-        id: 30,
-        label: 'MENUITEMS.BANKS.TEXT',
-        icon: 'bx bxs-bank',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}],
-        link:'/pages/coming-soon',
-               
-    },
+    
     {
         id: 35,
         label: 'MENUITEMS.CITIES.TEXT',
@@ -372,12 +372,13 @@ export const MENU: MenuItem[] = [
         link: '/private/cities'
                
     },
+   
     {
-        id: 32,
-        label: 'MENUITEMS.COUNTRIES.TEXT',
-        icon: 'bx bx-globe',
+        id: 30,
+        label: 'MENUITEMS.BANKS.TEXT',
+        icon: 'bx bxs-bank',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}],
-        link: '/private/countries',
+        link:'/pages/coming-soon',
                
     },
     {
@@ -389,14 +390,6 @@ export const MENU: MenuItem[] = [
                
     },
     {
-        id: 50,
-        label: 'MENUITEMS.LOGS.TEXT',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Logs, claimValue: [Permission.ViewAll]}],
-        icon:  'bx bx-error',
-        link:'/private/logs',
-                
-    },
-    {
         id: 40,
         label: 'MENUITEMS.TAX.TEXT',
         icon: 'bx bxs-dollar-circle',
@@ -405,12 +398,21 @@ export const MENU: MenuItem[] = [
                 
     },
     {
-        id: 36,
-        label: 'MENUITEMS.NOTIFICATIONMANAGEMENT.TEXT',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Social_Media, claimValue: [Permission.ViewAll]},],
-        isTitle: true
-          
+        id: 50,
+        label: 'MENUITEMS.LOGS.TEXT',
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Logs, claimValue: [Permission.ViewAll]}],
+        icon:  'bx bx-error',
+        link:'/private/logs',
+                
     },
+   
+    // {
+    //     id: 36,
+    //     label: 'MENUITEMS.NOTIFICATIONMANAGEMENT.TEXT',
+    //     claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Social_Media, claimValue: [Permission.ViewAll]},],
+    //     isTitle: true
+          
+    // },
        
     {
         id: 38,

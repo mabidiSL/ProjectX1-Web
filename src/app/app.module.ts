@@ -57,7 +57,7 @@ import { DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 // import { ThemeService } from './core/services/theme.service';
 // import { CookieService } from 'ngx-cookie-service';
-import { LOCALE_ID } from '@angular/core';
+//import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeAr from '@angular/common/locales/ar'; // Arabic locale
 import { CustomerEffects } from './store/customer/customer.effect';
@@ -69,6 +69,7 @@ import { GiftCardsEffects } from './store/giftCard/giftCard.effect';
 import { LogsEffects } from './store/Log/log.effects';
 import { RolesModule } from './pages/roles/roles.module';
 import { LogsModule } from './pages/logs/logs.module';
+import { CustomersModule } from './pages/customers/customers.module';
 
 // Register the Arabic locale
 registerLocaleData(localeAr, 'ar');
@@ -117,6 +118,7 @@ export function createTranslateLoader(http: HttpClient): any {
     EmployeesModule,
     StoresModule,
     RolesModule,
+    CustomersModule,
     LogsModule,
     NotificationsModule,
     TranslateModule,
@@ -157,7 +159,7 @@ export function createTranslateLoader(http: HttpClient): any {
    // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     provideAnimationsAsync('noop'),
     //{ provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true },
-    { provide: LOCALE_ID, useValue: 'ar' } ,
+   // { provide: LOCALE_ID, useValue: 'ar' } ,
     provideNgxMask(),
     {
       provide: DROPZONE_CONFIG,

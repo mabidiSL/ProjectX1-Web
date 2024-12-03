@@ -2,9 +2,10 @@ import { Component, ElementRef, Input, ViewChild, OnInit } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Subject, Observable, takeUntil } from 'rxjs';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
-import { FormUtilService } from 'src/app/core/services/form-util.service';
+import { DatepickerConfigService } from 'src/app/core/services/date.service';
 import { selectDataLoading, selectLogById } from 'src/app/store/Log/log-selector';
 import { getLogById } from 'src/app/store/Log/log.actions';
 import { Log } from 'src/app/store/Log/log.models';
@@ -20,6 +21,7 @@ export class FormLogsComponent implements OnInit {
   formError: string | null = null;
   formSubmitted = false;
   currentRole: string = '';
+  bsConfig: Partial<BsDatepickerConfig>;
 
   private destroy$ = new Subject<void>();
   loading$: Observable<boolean>;
@@ -38,13 +40,15 @@ export class FormLogsComponent implements OnInit {
     private route: ActivatedRoute, 
     private router: Router,
     private authService: AuthenticationService, 
-    private formUtilService: FormUtilService,
+    private datepickerConfigService: DatepickerConfigService,
     public store: Store) {
      
       this.loading$ = this.store.pipe(select(selectDataLoading)); 
       this.currentRole = this.authService.currentUserValue?.role.translation_data[0].name;
      
       this.initForm();
+      this.bsConfig = this.datepickerConfigService.getConfig();
+
     } 
     private initForm() {
       this.logForm = this.formBuilder.group({
