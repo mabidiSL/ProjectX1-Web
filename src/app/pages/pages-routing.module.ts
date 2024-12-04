@@ -25,6 +25,7 @@ const routes: Routes = [
   { path: 'giftCards',loadChildren: () => import('./gift-card/gift-card.module').then(m => m.GiftCardModule), canActivate: [RoleGuard] },
   { path: 'logs',loadChildren: () => import('./logs/logs.module').then(m => m.LogsModule), canActivate: [RoleGuard] },
   { path: 'customers', loadChildren: () => import('./customers/customers.module').then(m => m.CustomersModule), canActivate: [RoleGuard] },
+  { path: 'payment', loadChildren: () => import('./payment/payment.module').then(m => m.PaymentModule), canActivate: [RoleGuard] },
 
 ];
 

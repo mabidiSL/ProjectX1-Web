@@ -1,0 +1,21 @@
+{
+    "paymentMethods": [
+      {
+        "name": "PayPal",
+        "status": "active",
+        "clientId": "your-paypal-client-id",
+        "clientSecret": "your-paypal-client-secret",
+        "paymentGatewayTitle": "PayPal",
+        "logo": "assets/images/paypal-logo.png"
+      },
+      {
+        "name": "Stripe",
+        "status": "inactive",
+        "apiKey": "your-stripe-api-key",
+        "publishedKey": "your-stripe-published-key",
+        "paymentGatewayTitle": "Stripe",
+        "logo": "assets/images/stripe-logo.png"
+      }
+    ]
+  }
+  

@@ -337,7 +337,7 @@ export const MENU: MenuItem[] = [
         label: 'MENUITEMS.PAYMENTS.TEXT',
         icon: 'bx bxl-paypal',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Payment, claimValue: [Permission.ViewAll]}],
-        link:'/pages/coming-soon',
+        link:'/private/payment',
                 
     },
     {
@@ -397,14 +397,7 @@ export const MENU: MenuItem[] = [
         link:'/pages/coming-soon',
                 
     },
-    {
-        id: 50,
-        label: 'MENUITEMS.LOGS.TEXT',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Logs, claimValue: [Permission.ViewAll]}],
-        icon:  'bx bx-error',
-        link:'/private/logs',
-                
-    },
+    
    
     // {
     //     id: 36,
@@ -430,7 +423,14 @@ export const MENU: MenuItem[] = [
         link:'/pages/coming-soon',
                 
     },
-   
+    {
+        id: 50,
+        label: 'MENUITEMS.LOGS.TEXT',
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Logs, claimValue: [Permission.ViewAll]}],
+        icon:  'bx bx-error',
+        link:'/private/logs',
+                
+    },
     
    
     

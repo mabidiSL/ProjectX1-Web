@@ -1,0 +1,219 @@
+<!-- <div id="elmLoader" class="loader" *ngIf="loading$ | async">
+    <div class="spinner-border text-primary avatar-sm" role="status">
+      <span class="visually-hidden">{{'Loading...' | translate}}</span>
+    </div>
+  </div>  -->
+  <div class="container-fluid">
+
+      <!-- <app-page-title title="{{'Payment_Methods'| translate}}" [breadcrumbItems]="breadCrumbItems"></app-page-title> -->
+    <tabset  class="nav-tabs">
+      <tab>
+        <ng-template tabHeading class="mb-2">
+          <span class="d-block d-sm-none"><i class="fas fa-home"></i></span>
+          <span class="d-none d-sm-block"><h4>{{'Digital_Payment_Method' | translate}}</h4></span>
+        </ng-template>
+        <div class="tab-page-content mt-3">
+          <div class="row">
+            <div class="col-6">
+                <div class="card">
+                  <div class="d-flex align-items-center justify-content-between me-2">
+                  <h4 class="card-header bg-transparent border-bottom text-uppercase">{{'PAYPAL' | translate}}</h4>
+                  <div class="form-check form-switch form-switch-md">
+                    <label class="form-check-label" for="SwitchCheckSizelg1">{{(paymentForm.get('status').value === 'active')? 'ON': 'OFF'}}</label>
+                    <input class="form-check-input" type="checkbox" id="SwitchCheckSizelg1" formControlName="status"  [checked]="(paymentForm.get('status').value === 'active')">
+                  </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="form-group mb-3 text-center">
+                        <img [src]="selectedFile? selectedFile: 'assets/images/dummy_image.jpg'" alt="Payment Method Logo" class="img-fluid rounded" style="max-height: 100px; max-width: 100px;">
+                      </div>
+                          <div class="form-group mb-3 ">
+                             <label for="clientId" >{{'Client_Id' | translate}} <span   class="text-danger">*</span></label>
+                              <input type="text" id="clientId"  class="form-control" formControlName="clientId"  placeholder="{{ 'Enter_the_Client_ID' | translate }}" required>
+                              <div *ngIf="paymentForm.get('clientId').touched && paymentForm.get('clientId').invalid" class="invalid-feedback d-block">
+                                  <span *ngIf="paymentForm.get('clientId').errors?.['required']">{{'ClientID is required'| translate}}.</span>
+                                </div>
+                            </div> 
+                          <div class="form-group mb-3 ">
+                             <label for="clientSecret" >{{'Client_Secret' | translate}} <span   class="text-danger">*</span></label>
+                              <input type="text" id="clientSecret"  class="form-control" formControlName="clientSecret" placeholder="{{ 'Enter_the_client_secret_key' | translate }}" required>
+                              <div *ngIf="paymentForm.get('clientSecret').touched && paymentForm.get('clientSecret').invalid" class="invalid-feedback d-block">
+                                  <span *ngIf="paymentForm.get('clientSecret').errors?.['required']">{{'Client_Secret_Key is required'| translate}}.</span>
+                                </div>
+                            </div> 
+                        
+                          <div class="form-group mb-3">
+                             <label for="payment_gateway_title" >{{'Payment_gateway_title' | translate}} <span   class="text-danger">*</span></label>
+                              <input type="text" id="payment_gateway_title"  class="form-control" formControlName="payment_gateway_title" placeholder="{{ 'Enter_payment_gateway_title' | translate }}" required>
+                              <div *ngIf="paymentForm.get('payment_gateway_title').touched && paymentForm.get('payment_gateway_title').invalid" class="invalid-feedback d-block">
+                                  <span *ngIf="paymentForm.get('payment_gateway_title').errors?.['required']">{{'payment_gateway_title is required'| translate}}.</span>
+                                </div>
+                            </div> 
+                            <div class="form-group mb-3">
+                              <label for="logo" >{{'Logo' | translate}} <span   class="text-danger">*</span></label>
+                               <input class="form-control" type="file" id="logo" formControlName="logo" placeholder="{{ 'Choose a logo' | translate }}" (change)="fileChange($event,'paypal')">
+
+                               <div *ngIf="paymentForm.get('logo').touched && paymentForm.get('logo').invalid" class="invalid-feedback d-block">
+                                   <span *ngIf="paymentForm.get('logo').errors?.['required']">{{'Choose a logo is required'| translate}}.</span>
+                                 </div>
+                             </div> 
+                        
+                            <div class="col-12  mt-4">
+                              <div class="d-flex justify-content-end">
+                                  <button type="button" class="btn btn-success" >{{ 'Save' | translate }}</button>
+                              </div>
+                            </div>
+                     </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card">
+                  <div class="d-flex align-items-center justify-content-between me-2">
+                  <h4 class="card-header bg-transparent border-bottom text-uppercase">{{'STRIPE' | translate}}</h4>
+                  <div class="form-check form-switch form-switch-md ">
+                    <label class="form-check-label" for="SwitchCheckSizelg">{{(paymentForm.get('status').value === 'active')? 'ON': 'OFF'}}</label>
+                    <input class="form-check-input" type="checkbox" id="SwitchCheckSizelg" formControlName="status" [checked]="(paymentForm.get('status').value === 'active')">
+                 </div>  
+                </div>
+                  
+                  <div class="card-body">
+                  <div class="row">
+                    <div class="form-group mb-3 text-center">
+                      <img [src]="selectedFile1? selectedFile1: 'assets/images/dummy_image.jpg'" alt="Payment Method Logo" class="img-fluid rounded" style="max-height: 100px; max-width: 100px;">
+                    </div>
+                        <div class="form-group mb-3">
+                           <label for="apiKey" >{{'API_Key' | translate}} <span   class="text-danger">*</span></label>
+                            <input type="text" id="apiKey"  class="form-control" formControlName="apiKey"  placeholder="{{ 'Enter_API_KEY' | translate }}" required>
+                            <div *ngIf="paymentForm.get('apiKey').touched && paymentForm.get('apiKey').invalid" class="invalid-feedback d-block">
+                                <span *ngIf="paymentForm.get('apiKey').errors?.['required']">{{'API Key is required'| translate}}.</span>
+                              </div>
+                          </div> 
+                     
+                        <div class="form-group mb-3">
+                           <label for="publishedKey" >{{'Publiched_Key' | translate}} <span   class="text-danger">*</span></label>
+                            <input type="text" id="publishedKey"  class="form-control" formControlName="publishedKey" placeholder="{{ 'Enter_the_publiched_key' | translate }}" required>
+                            <div *ngIf="paymentForm.get('publishedKey').touched && paymentForm.get('publishedKey').invalid" class="invalid-feedback d-block">
+                                <span *ngIf="paymentForm.get('publishedKey').errors?.['required']">{{'Published_Key is required'| translate}}.</span>
+                              </div>
+                          </div> 
+                      </div>
+                      
+                      
+                        <div class="form-group mb-3">
+                           <label for="payment_gateway_title" >{{'Payment_gateway_title' | translate}} <span   class="text-danger">*</span></label>
+                            <input type="text" id="payment_gateway_title"  class="form-control" formControlName="payment_gateway_title" placeholder="{{ 'Enter_first_name_in_arabic' | translate }}" required>
+                            <div *ngIf="paymentForm.get('payment_gateway_title').touched && paymentForm.get('payment_gateway_title').invalid" class="invalid-feedback d-block">
+                                <span *ngIf="paymentForm.get('payment_gateway_title').errors?.['required']">{{'First Name in arabic is required'| translate}}.</span>
+                              </div>
+                          </div> 
+                      
+                        <div class="form-group mb-3">
+                           <label for="logo" >{{'Logo' | translate}} <span   class="text-danger">*</span></label>
+                            <input class="form-control" type="file" id="logo" formControlName="logo" placeholder="{{ 'Choose a logo' | translate }}" (change)="fileChange($event,'stripe')">
+
+                            <div *ngIf="paymentForm.get('logo').touched && paymentForm.get('logo').invalid" class="invalid-feedback d-block">
+                                <span *ngIf="paymentForm.get('logo').errors?.['required']">{{'Choose a logo is required'| translate}}.</span>
+                              </div>
+                          </div> 
+                      
+                              
+                     
+                            
+                          <div class="col-12  mt-4">
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-success" >{{ 'Save' | translate }}</button>
+                            </div>
+                          </div>
+                   </div>
+                </div>
+            </div>
+          </div>
+          <div class="row">
+              <div class="col-6">
+                <div class="card">
+                  <div class="d-flex align-items-center justify-content-between me-2">
+                  <h4 class="card-header bg-transparent border-bottom text-uppercase">{{'FLOUCI' | translate}}</h4>
+                  <div class="form-check form-switch form-switch-md ">
+                    <label class="form-check-label" for="SwitchCheckSizelg">{{(paymentForm.get('status').value === 'active')? 'ON': 'OFF'}}</label>
+                    <input class="form-check-input" type="checkbox" id="SwitchCheckSizelg" formControlName="status" [checked]="(paymentForm.get('status').value === 'active')">
+                  </div>  
+                  </div>
+                  
+                <div class="card-body">
+                  <div class="row">
+                      <div class="form-group mb-3 text-center">
+                        <img [src]="selectedFile2? selectedFile2: 'assets/images/dummy_image.jpg'" alt="Payment Method Logo" class="img-fluid rounded" style="max-height: 100px; max-width: 100px;">
+                      </div>
+                        <div class="form-group mb-3">
+                          <label for="app_token" >{{'APP_TOken' | translate}} <span   class="text-danger">*</span></label>
+                            <input type="text" id="app_token"  class="form-control" formControlName="app_token"  placeholder="{{ 'TOKEN' | translate }}" required>
+                            <div *ngIf="paymentForm.get('app_token').touched && paymentForm.get('app_token').invalid" class="invalid-feedback d-block">
+                                <span *ngIf="paymentForm.get('app_token').errors?.['required']">{{'APP_Token is required'| translate}}.</span>
+                              </div>
+                          </div> 
+                    
+                        <div class="form-group mb-3">
+                          <label for="app_secret" >{{'APP_Secret' | translate}} <span   class="text-danger">*</span></label>
+                            <input type="text" id="app_secret"  class="form-control" formControlName="app_secret" placeholder="{{ 'Enter_the_app_secret' | translate }}" required>
+                            <div *ngIf="paymentForm.get('app_secret').touched && paymentForm.get('app_secret').invalid" class="invalid-feedback d-block">
+                                <span *ngIf="paymentForm.get('app_secret').errors?.['required']">{{'App_secret is required'| translate}}.</span>
+                              </div>
+                          </div> 
+                      </div>
+                      
+                      
+                        <div class="form-group mb-3">
+                          <label for="payment_gateway_title" >{{'Payment_gateway_title' | translate}} <span   class="text-danger">*</span></label>
+                            <input type="text" id="payment_gateway_title"  class="form-control" formControlName="payment_gateway_title" placeholder="{{ 'Enter_first_name_in_arabic' | translate }}" required>
+                            <div *ngIf="paymentForm.get('payment_gateway_title').touched && paymentForm.get('payment_gateway_title').invalid" class="invalid-feedback d-block">
+                                <span *ngIf="paymentForm.get('payment_gateway_title').errors?.['required']">{{'First Name in arabic is required'| translate}}.</span>
+                              </div>
+                          </div> 
+                      
+                        <div class="form-group mb-3">
+                          <label for="logo" >{{'Logo' | translate}} <span   class="text-danger">*</span></label>
+                            <input class="form-control" type="file" id="logo" formControlName="logo" placeholder="{{ 'Choose a logo' | translate }}" (change)="fileChange($event,'flouci')">
+
+                            <div *ngIf="paymentForm.get('logo').touched && paymentForm.get('logo').invalid" class="invalid-feedback d-block">
+                                <span *ngIf="paymentForm.get('logo').errors?.['required']">{{'Choose a logo is required'| translate}}.</span>
+                              </div>
+                          </div> 
+                      
+                          <div class="col-12  mt-4">
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-success" >{{ 'Save' | translate }}</button>
+                            </div>
+                          </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+      </div>
+        
+      
+      </tab>
+      <tab>
+        <ng-template tabHeading class="mb-2">
+          <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
+          <span class="d-none d-sm-block"><h4>{{'Offline_Payment_Method' | translate}}</h4></span>
+        </ng-template>
+        <div class="tab-page-content  mt-3">
+          <p>
+            Food truck fixie locavore, accusamus mcsweeney's marfa nulla
+            single-origin coffee squid. Exercitation +1 labore velit, blog
+            sartorial PBR leggings next level wes anderson artisan four loko
+            farm-to-table craft beer twee. Qui photo booth letterpress,
+            commodo enim craft beer mlkshk.
+          </p>
+          <p class="mb-0"> Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts
+            ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna 8-bit</p>
+        </div>
+
+      </tab>
+     
+    </tabset>
+   
+  </div>
+    

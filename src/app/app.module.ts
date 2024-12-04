@@ -70,6 +70,8 @@ import { LogsEffects } from './store/Log/log.effects';
 import { RolesModule } from './pages/roles/roles.module';
 import { LogsModule } from './pages/logs/logs.module';
 import { CustomersModule } from './pages/customers/customers.module';
+import { PaymentModule } from './pages/payment/payment.module';
+import { PaymentEffects } from './store/payment/payment.effect';
 
 // Register the Arabic locale
 registerLocaleData(localeAr, 'ar');
@@ -119,11 +121,13 @@ export function createTranslateLoader(http: HttpClient): any {
     StoresModule,
     RolesModule,
     CustomersModule,
+    PaymentModule,
     LogsModule,
     NotificationsModule,
     TranslateModule,
     AppRoutingModule,
     ExtrapagesModule,
+    TabsModule.forRoot(),
     AccordionModule.forRoot(),
     TabsModule.forRoot(),
     TooltipModule.forRoot(),
@@ -149,7 +153,8 @@ export function createTranslateLoader(http: HttpClient): any {
       RolesEffects,
       SectionEffects,
       GiftCardsEffects,
-      LogsEffects
+      LogsEffects,
+      PaymentEffects
       
     ]),
   ],
