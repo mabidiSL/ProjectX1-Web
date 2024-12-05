@@ -7,14 +7,10 @@ import { Page500Component } from './page500/page500.component';
 import { ConfirmmailComponent } from './confirmmail/confirmmail.component';
 
 import { ComingsoonComponent } from './comingsoon/comingsoon.component';
-import { HomeComponent } from './home/home.component';
 import { Page403Component } from './page403/page403.component';
 
 const routes: Routes = [
-    {
-        path: 'home',
-        component: HomeComponent
-    },
+    
     
     {
         path: 'coming-soon',

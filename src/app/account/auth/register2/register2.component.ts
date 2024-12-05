@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -21,13 +21,15 @@ import { SectionListModel } from 'src/app/store/section/section.model';
 import { UploadEvent } from 'src/app/shared/widget/image-upload/image-upload.component';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { Merchant } from 'src/app/store/merchantsList/merchantlist1.model';
+import { RandomBackgroundService } from 'src/app/core/services/setBackground.service';
+import { BackgroundService } from 'src/app/core/services/background.service';
 
 @Component({
   selector: 'app-register2',
   templateUrl: './register2.component.html',
   styleUrls: ['./register2.component.scss']
 })
-export class Register2Component implements OnInit {
+export class Register2Component implements OnInit, OnDestroy {
 
   signupForm: UntypedFormGroup;
   formError: string | null = null;
@@ -58,7 +60,9 @@ export class Register2Component implements OnInit {
  
   constructor  (
     private formBuilder: UntypedFormBuilder, 
-    private router: Router, 
+    private router: Router,
+    private randomBackgroundService: RandomBackgroundService,
+    private backgroundService: BackgroundService, 
     private formUtilService: FormUtilService,
     public store: Store) { 
 
@@ -109,6 +113,16 @@ export class Register2Component implements OnInit {
 
   ngOnInit() {
     document.body.classList.add("auth-body-bg");
+    const direction = document.documentElement.dir === 'rtl' ? 'rtl' : 'ltr';
+    this.randomBackgroundService.getRandomBackground(direction).subscribe(
+      (randomImage) => {
+        this.backgroundService.setBackground(randomImage);
+      },
+      (error) => {
+        console.error('Error setting random background:', error);
+      }
+    );
+
     this.fetchCountry();
     this.fetchAreas();
     this.fetchCities();
@@ -363,5 +377,9 @@ export class Register2Component implements OnInit {
       this.existantmerchantLogo = event.file;
       this. signupForm.controls['companyLogo'].setValue(this.existantmerchantLogo);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.backgroundService.resetBackground();
   }
 }

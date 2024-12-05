@@ -21,6 +21,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { WidgetModule } from 'src/app/shared/widget/widget.module';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ImageService } from 'src/app/core/services/image.service';
+import { LanguageService } from 'src/app/core/services/language.service';
+import { RandomBackgroundService } from 'src/app/core/services/setBackground.service';
 
 
 
@@ -42,6 +45,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     TranslateModule ,
     AuthRoutingModule,
     SlickCarouselModule
-  ]
+  ],
+  providers: [RandomBackgroundService,ImageService, LanguageService]
 })
 export class AuthModule { }

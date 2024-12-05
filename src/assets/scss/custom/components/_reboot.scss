@@ -40,6 +40,9 @@ label {
   @media (min-width: 1200px){
       max-width: 1140px;
   }
+   /* Default LTR behavior */
+   padding-left: 2rem; /* Adjust this value as needed */
+   padding-right: 1rem; /* Slightly less padding on the right */
 }
 
 // row
