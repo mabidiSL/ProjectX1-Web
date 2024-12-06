@@ -10,6 +10,7 @@ import { ViewPaymentComponent } from './view-payment/view-payment.component';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TranslateModule } from '@ngx-translate/core';
 import { UIModule } from 'src/app/shared/ui/ui.module';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { UIModule } from 'src/app/shared/ui/ui.module';
   imports: [
     CommonModule,
     TabsModule.forRoot(),
+    BsDatepickerModule,
     TranslateModule,
     UIModule,
     PaymentRoutingModule

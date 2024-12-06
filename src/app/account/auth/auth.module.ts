@@ -24,6 +24,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ImageService } from 'src/app/core/services/image.service';
 import { LanguageService } from 'src/app/core/services/language.service';
 import { RandomBackgroundService } from 'src/app/core/services/setBackground.service';
+import { NgStepperModule } from 'angular-ng-stepper';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 
 
@@ -34,6 +36,8 @@ import { RandomBackgroundService } from 'src/app/core/services/setBackground.ser
     NgSelectModule,
     MatInputModule,
     MatButtonModule,
+    CdkStepperModule,
+    NgStepperModule,
     MatFormFieldModule,
     MatIconModule,
     MatCardModule,

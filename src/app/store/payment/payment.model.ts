@@ -9,6 +9,10 @@ export interface PaymentListModel  extends PaginateModel
 export interface Payment {
     
         id?: number;
+        apiVersion?: Date;
+        prod?: string;
+        sandBox?: string;
+        api_url?: string;
         apiKey?: string;
         publishedKey?: string;
         clientId?: string;

@@ -106,6 +106,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
 
   listLang: any = [
     { text: 'English', flag: 'assets/images/flags/us.jpg', lang: 'en' },
+    { text: 'French', flag: 'assets/images/flags/french.jpg', lang: 'fr' },
     { text: 'Arabic', flag: 'assets/images/flags/ar.jpg', lang: 'ar' },
 
   ];

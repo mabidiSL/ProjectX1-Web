@@ -76,13 +76,7 @@
         </div>
       </div>
 
-      
-
-      <div class="dropdown d-none d-lg-inline-block ms-1">
-        <button type="button" class="btn header-item noti-icon waves-effect" data-bs-toggle="fullscreen" (click)="fullscreen()">
-          <i class="bx bx-fullscreen"></i>
-        </button>
-      </div>
+    
         <!--Notification's component-->
       <div class="dropdown d-inline-block" dropdown>
         <button type="button" class="btn header-item noti-icon" id="page-header-notifications-dropdown" dropdownToggle>
@@ -143,7 +137,7 @@
             {{ 'HEADER.LOGIN.COMPANY_PROFILE' | translate}}</a> -->
           <a  class="dropdown-item" routerLink="/private/contacts/company"><i class="bx bx-home-alt font-size-16 align-middle me-1"></i>
             {{ 'HEADER.LOGIN.COMPANY_PROFILE' | translate}}</a>
-          <a class="dropdown-item" routerLink="/crypto/wallet" href="javascript: void(0);"><i class="bx bx-wallet font-size-16 align-middle me-1"></i>{{ 'HEADER.LOGIN.MY_WALLET' | translate}}</a>
+          <a *ngIf="(currentUser | async)?.role.translation_data[0].name !=='Admin'" class="dropdown-item" routerLink="/private/wallet" href="javascript: void(0);"><i class="bx bx-wallet font-size-16 align-middle me-1"></i>{{ 'HEADER.LOGIN.MY_WALLET' | translate}}</a>
           <a tabindex="0" class="dropdown-item d-block" (click)="toggleRightSidebar()" (keydown.enter)="toggleRightSidebar()" (keydown.space)="toggleRightSidebar()"><i class="bx bx-cog font-size-16 align-middle me-1"></i>{{
             'HEADER.LOGIN.SETTINGS' | translate}} </a>
           <a tabindex="0" class="dropdown-item" routerLink="/pages/lock-screen-1"><i class="bx bx-lock-open font-size-16 align-middle me-1"></i>

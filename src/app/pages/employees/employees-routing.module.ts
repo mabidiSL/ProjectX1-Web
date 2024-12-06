@@ -9,7 +9,7 @@ import { ViewEmployeeComponent } from './view-employee/view-employee.component';
 
 const routes: Routes = [
   {
-  path: "",
+  path: '',
   component: EmployeesComponent,
   canActivate: [RoleGuard],
   data: {

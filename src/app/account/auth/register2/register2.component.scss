@@ -1,16 +1,10 @@
 .account-pages {
-  position: absolute; /* Covers the full viewport */
-  top: 0;
-  left: 0;
-  width: 100vw; /* Full width of the viewport */
-  height: 100vh; /* Full height of the viewport */
-  background-size: cover; /* Ensure the background image fully covers the area */
-  background-repeat: no-repeat; /* Prevent image repetition */
-  background-position: center; /* Center the background image */
-  display: flex; /* Center content */
-  align-items: center;
-  justify-content: center;
- }
+    //background-image: url('/assets/images/home2.jpg');
+    background-size: cover;
+   // background-color: #454545; 
+    //color: #FFFFFF;
+    height: auto;
+  }
   .custom-text {
     font-size: 24px; /* Example size */
     font-family: 'Arial', sans-serif; /* Example font family */
