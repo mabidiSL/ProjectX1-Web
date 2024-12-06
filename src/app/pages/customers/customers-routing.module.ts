@@ -5,7 +5,8 @@ import { RoleGuard } from 'src/app/core/guards/role.guard';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { ViewCustomerComponent } from './view-customer/view-customer.component';
 
-const routes: Routes = [{
+const routes: Routes = [
+  {
   path: '',
   canActivate: [RoleGuard],
   data: {

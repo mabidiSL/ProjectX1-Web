@@ -355,12 +355,12 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
     const role = event;
         if(role){
           this.selectedRole = this.rolelist.find(r => r.id == role.id);
-          this.isPermissionsOpen = true;
+        //  this.isPermissionsOpen = true;
 
       // Update the permission keys and module keys based on the selected role
       if (this.selectedRole) {
     
-        this.isPermissionsOpen = true;
+        //this.isPermissionsOpen = true;
         this.setPermissionsForRole();
       }
     }

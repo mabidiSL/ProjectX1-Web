@@ -37,13 +37,13 @@ export const MENU: MenuItem[] = [
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customer_Wallet, claimValue: [Permission.ViewAll]}],
         link:'/pages/coming-soon',
     }, 
-    {
-        id: 17,
-        label: 'MENUITEMS.LOYALTYPOINTS.TEXT',
-        icon: 'bx bx-bitcoin',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customer_Wallet, claimValue: [Permission.ViewAll]}],
-        link:'/pages/coming-soon',
-    }, 
+    // {
+    //     id: 17,
+    //     label: 'MENUITEMS.LOYALTYPOINTS.TEXT',
+    //     icon: 'bx bx-bitcoin',
+    //     claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customer_Wallet, claimValue: [Permission.ViewAll]}],
+    //     link:'/pages/coming-soon',
+    // }, 
     {
         id: 41,
         label: 'MENUITEMS.CUSTOMERINVOICES.TEXT',
@@ -71,25 +71,26 @@ export const MENU: MenuItem[] = [
         id: 4,
         label: 'MENUITEMS.EMPLOYEES.TEXT',
         icon: 'bxs-user-pin',
+        link: '/private/employees',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Employees, claimValue: [Permission.ViewAll,Permission.Create]}],
-        subItems: [
-            {
-                id: 3,
-                label: 'MENUITEMS.EMPLOYEES.LIST.CREATE',
-                link: '/private/employees/create',
-                icon:'bx bx-chevron-right',
-                claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Employees, claimValue: [Permission.Create]}],
-                parentId: 4
-            },
-            {
-                id: 4,
-                label: 'MENUITEMS.EMPLOYEES.LIST.EMPLOYEES',
-                link: '/private/employees',
-                icon:'bx bx-chevron-right',
-                claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Employees, claimValue: [Permission.ViewAll]}],
-                parentId: 4
-            }
-        ]
+        // subItems: [
+        //     {
+        //         id: 3,
+        //         label: 'MENUITEMS.EMPLOYEES.LIST.CREATE',
+        //         link: '/private/employees/create',
+        //         icon:'bx bx-chevron-right',
+        //         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Employees, claimValue: [Permission.Create]}],
+        //         parentId: 4
+        //     },
+        //     {
+        //         id: 4,
+        //         label: 'MENUITEMS.EMPLOYEES.LIST.EMPLOYEES',
+        //         link: '/private/employees',
+        //         icon:'bx bx-chevron-right',
+        //         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Employees, claimValue: [Permission.ViewAll]}],
+        //         parentId: 4
+        //     }
+        // ]
        
 
     },
@@ -97,25 +98,26 @@ export const MENU: MenuItem[] = [
         id: 5,
         label: 'MENUITEMS.ROLESETUP.TEXT',
         icon: 'bx-shield-quarter',
+        link: '/private/roles',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.Create, Permission.ViewAll]}],
-        subItems: [
-            {
-                id: 3,
-                label: 'MENUITEMS.ROLESETUP.LIST.CREATE',
-                link: '/private/roles/create',
-                icon:'bx bx-chevron-right',
-                claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.Create]}],
-                parentId: 5
-            },
-            {
-                id: 4,
-                label: 'MENUITEMS.ROLESETUP.LIST.ROLES',
-                link: '/private/roles',
-                icon:'bx bx-chevron-right',
-                claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.ViewAll]}],
-                parentId: 5
-            }
-        ]
+        // subItems: [
+        //     {
+        //         id: 3,
+        //         label: 'MENUITEMS.ROLESETUP.LIST.CREATE',
+        //         link: '/private/roles/create',
+        //         icon:'bx bx-chevron-right',
+        //         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.Create]}],
+        //         parentId: 5
+        //     },
+        //     {
+        //         id: 4,
+        //         label: 'MENUITEMS.ROLESETUP.LIST.ROLES',
+        //         link: '/private/roles',
+        //         icon:'bx bx-chevron-right',
+        //         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.ViewAll]}],
+        //         parentId: 5
+        //     }
+        // ]
     },
     {
         id: 3,
@@ -128,25 +130,26 @@ export const MENU: MenuItem[] = [
         id: 8,
         label: 'MENUITEMS.MERCHANTSLIST.TEXT',
         icon: 'bx bx-store',
+        link: '/private/merchants/list',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]}, {claimType: Modules.Merchants, claimValue: [Permission.ViewAll,Permission.Create]}],
-        subItems: [
-            {
-                id: 3,
-                label: 'MENUITEMS.MERCHANTSLIST.LIST.CREATE',
-                link: '/private/merchants/create',
-                icon:'bx bx-chevron-right',
-                claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Merchants, claimValue: [Permission.Create]}],
-                parentId: 8
-            },
-            {
-                id: 4,
-                label: 'MENUITEMS.MERCHANTSLIST.LIST.APPROVEDLIST',
-                link: '/private/merchants/list',
-                icon:'bx bx-chevron-right',
-                claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Merchants, claimValue: [Permission.ViewAll]}],
-                parentId: 8
-            }
-        ]
+        // subItems: [
+        //     {
+        //         id: 3,
+        //         label: 'MENUITEMS.MERCHANTSLIST.LIST.CREATE',
+        //         link: '/private/merchants/create',
+        //         icon:'bx bx-chevron-right',
+        //         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Merchants, claimValue: [Permission.Create]}],
+        //         parentId: 8
+        //     },
+        //     {
+        //         id: 4,
+        //         label: 'MENUITEMS.MERCHANTSLIST.LIST.APPROVEDLIST',
+        //         link: '/private/merchants/list',
+        //         icon:'bx bx-chevron-right',
+        //         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Merchants, claimValue: [Permission.ViewAll]}],
+        //         parentId: 8
+        //     }
+        // ]
 
         
     },
@@ -154,25 +157,26 @@ export const MENU: MenuItem[] = [
         id: 10,
         label: 'MENUITEMS.STORES.TEXT',
         icon: 'bx bx-store',
+        link: '/private/stores',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Stores, claimValue: [Permission.ViewAll, Permission.Create]}],
-        subItems: [
-            {
-                id: 3,
-                label: 'MENUITEMS.STORES.LIST.CREATE',
-                link: '/private/stores/create',
-                icon:'bx bx-chevron-right',
-                claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Stores, claimValue: [Permission.Create]}],
-                parentId: 4
-            },
-            {
-                id: 4,
-                label: 'MENUITEMS.STORES.LIST.STORES',
-                link: '/private/stores',
-                icon:'bx bx-chevron-right',
-                claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Stores, claimValue: [Permission.ViewAll]}],
-                parentId: 4
-            }
-        ],
+        // subItems: [
+        //     {
+        //         id: 3,
+        //         label: 'MENUITEMS.STORES.LIST.CREATE',
+        //         link: '/private/stores/create',
+        //         icon:'bx bx-chevron-right',
+        //         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Stores, claimValue: [Permission.Create]}],
+        //         parentId: 4
+        //     },
+        //     {
+        //         id: 4,
+        //         label: 'MENUITEMS.STORES.LIST.STORES',
+        //         link: '/private/stores',
+        //         icon:'bx bx-chevron-right',
+        //         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Stores, claimValue: [Permission.ViewAll]}],
+        //         parentId: 4
+        //     }
+        // ],
         
        
         
@@ -216,14 +220,14 @@ export const MENU: MenuItem[] = [
                 icon: 'bxs-coupon',
                 parentId: 18,
                 subItems: [
-                    {
-                    id: 21,
-                    label: 'MENUITEMS.PRODUCTMANAGEMENT.COUPONS.LIST.CREATE',
-                    icon:'bx bx-chevron-right',    
-                    link: '/private/coupons/create',
-                    claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Coupons, claimValue: [Permission.Create]}],
+                //     {
+                //     id: 21,
+                //     label: 'MENUITEMS.PRODUCTMANAGEMENT.COUPONS.LIST.CREATE',
+                //     icon:'bx bx-chevron-right',    
+                //     link: '/private/coupons/create',
+                //     claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Coupons, claimValue: [Permission.Create]}],
                    
-                   },
+                //    },
                    {
                     id: 21,
                     label: 'MENUITEMS.PRODUCTMANAGEMENT.COUPONS.LIST.COUPONS',
@@ -250,14 +254,14 @@ export const MENU: MenuItem[] = [
                 claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Gift_Cards, claimValue: [Permission.ViewAll, Permission.Create, Permission.Approve, Permission.Decline]}],
                 parentId: 18,
                 subItems: [
-                    {
-                    id: 21,
-                    label: 'MENUITEMS.PRODUCTMANAGEMENT.GIFTCARDS.LIST.CREATE',
-                    icon:'bx bx-chevron-right',    
-                    link: '/private/giftCards/create',
-                    claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Gift_Cards, claimValue: [Permission.Create]}],
+                //     {
+                //     id: 21,
+                //     label: 'MENUITEMS.PRODUCTMANAGEMENT.GIFTCARDS.LIST.CREATE',
+                //     icon:'bx bx-chevron-right',    
+                //     link: '/private/giftCards/create',
+                //     claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Gift_Cards, claimValue: [Permission.Create]}],
                    
-                   },
+                //    },
                    {
                     id: 21,
                     label: 'MENUITEMS.PRODUCTMANAGEMENT.GIFTCARDS.LIST.GIFTCARDS',

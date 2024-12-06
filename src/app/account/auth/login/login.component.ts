@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { select, Store } from '@ngrx/store';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { login } from 'src/app/store/Authentication/authentication.actions';
 import { Observable } from 'rxjs';
 import { selectDataLoading } from 'src/app/store/Authentication/authentication-selector';
+import { RandomBackgroundService } from 'src/app/core/services/setBackground.service';
+import { BackgroundService } from 'src/app/core/services/background.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +18,7 @@ import { selectDataLoading } from 'src/app/store/Authentication/authentication-s
 /**
  * Login component
  */
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   loginForm: UntypedFormGroup;
   submitted: boolean = false;
@@ -32,17 +34,30 @@ export class LoginComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
   constructor(private formBuilder: UntypedFormBuilder,
-     private route: ActivatedRoute, 
-     private router: Router, 
-     private store: Store,
+    private randomBackgroundService: RandomBackgroundService,
+    private backgroundService: BackgroundService,
+    private router: Router, 
+    private store: Store,
     ) { 
       this.loading$ = this.store.pipe(select(selectDataLoading));
-      this.route.queryParams.subscribe(params => {
-        this.userType = params['userType'];
-    });
+    //   this.route.queryParams.subscribe(params => {
+    //     this.userType = params['userType'];
+    // });
   }
 
   ngOnInit() {
+
+    const direction = document.documentElement.dir === 'rtl' ? 'rtl' : 'ltr';
+    this.randomBackgroundService.getRandomBackground(direction).subscribe(
+      (randomImage) => {
+        this.backgroundService.setBackground(randomImage);
+      },
+      (error) => {
+        console.error('Error setting random background:', error);
+      }
+    );
+
+
     
     if (localStorage.getItem('currentUser')) {
       this.router.navigate(['/private']);
@@ -64,8 +79,8 @@ export class LoginComponent implements OnInit {
    * Form submit
    */
   onSubmit() {
+    
     this.submitted = true;
-
     const email = this.f['email'].value; // Get the username from the form
     const password = this.f['password'].value; // Get the password from the form
 
@@ -81,4 +96,11 @@ export class LoginComponent implements OnInit {
   toggleFieldTextType() {
     this.fieldTextType = !this.fieldTextType;
   }
+  
+
+  ngOnDestroy(): void {
+    this.backgroundService.resetBackground();
+  }
+
+ 
 }

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { select, Store } from '@ngrx/store';
@@ -8,13 +8,15 @@ import { updatePassword } from 'src/app/store/Authentication/authentication.acti
 import { ToastrService } from 'ngx-toastr';
 import { selectDataLoading } from 'src/app/store/Authentication/authentication-selector';
 import { Observable } from 'rxjs';
+import { BackgroundService } from 'src/app/core/services/background.service';
+import { RandomBackgroundService } from 'src/app/core/services/setBackground.service';
 
 @Component({
   selector: 'app-updatepassword',
   templateUrl: './updatepassword.component.html',
   styleUrl: './updatepassword.component.scss'
 })
-export class UpdatepasswordComponent implements OnInit {
+export class UpdatepasswordComponent implements OnInit, OnDestroy {
 
   public token: string;
   updatePassForm: UntypedFormGroup;
@@ -33,6 +35,8 @@ export class UpdatepasswordComponent implements OnInit {
   constructor(private formBuilder: UntypedFormBuilder, 
     private route: ActivatedRoute,
     private store: Store,
+    private randomBackgroundService: RandomBackgroundService,
+    private backgroundService: BackgroundService,
     public toastr:ToastrService
 ) {
   this.loading$ = this.store.pipe(select(selectDataLoading));
@@ -41,6 +45,16 @@ export class UpdatepasswordComponent implements OnInit {
 
   ngOnInit() {
    
+    const direction = document.documentElement.dir === 'rtl' ? 'rtl' : 'ltr';
+    this.randomBackgroundService.getRandomBackground(direction).subscribe(
+      (randomImage) => {
+        this.backgroundService.setBackground(randomImage);
+      },
+      (error) => {
+        console.error('Error setting random background:', error);
+      }
+    );
+
    this.token = this.route.snapshot.paramMap.get('id');
    
     // form validation
@@ -91,5 +105,8 @@ export class UpdatepasswordComponent implements OnInit {
   }
   toggleConfirmFieldTextType() {
     this.confirmFieldTextType = !this.confirmFieldTextType;
+  }
+  ngOnDestroy(): void {
+    this.backgroundService.resetBackground();
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -21,13 +21,16 @@ import { SectionListModel } from 'src/app/store/section/section.model';
 import { UploadEvent } from 'src/app/shared/widget/image-upload/image-upload.component';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { Merchant } from 'src/app/store/merchantsList/merchantlist1.model';
+import { RandomBackgroundService } from 'src/app/core/services/setBackground.service';
+import { BackgroundService } from 'src/app/core/services/background.service';
+import { CdkStepper, StepperSelectionEvent } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-register2',
   templateUrl: './register2.component.html',
   styleUrls: ['./register2.component.scss']
 })
-export class Register2Component implements OnInit {
+export class Register2Component implements OnInit, OnDestroy {
 
   signupForm: UntypedFormGroup;
   formError: string | null = null;
@@ -54,11 +57,14 @@ export class Register2Component implements OnInit {
 
   filteredAreas :  Area[] = [];
   filteredCities:  City[] = [];
+  @ViewChild('cdkStepper') cdkStepper: CdkStepper;
 
  
   constructor  (
     private formBuilder: UntypedFormBuilder, 
-    private router: Router, 
+    private router: Router,
+    private randomBackgroundService: RandomBackgroundService,
+    private backgroundService: BackgroundService, 
     private formUtilService: FormUtilService,
     public store: Store) { 
 
@@ -78,27 +84,38 @@ export class Register2Component implements OnInit {
       
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+      companyEmail: ['', Validators.email],
       password: ['', Validators.required],
       confpassword: ['', Validators.required],
-      id_number: ['', Validators.required],
       phone:['',Validators.required], //Validators.pattern(/^\d{3}-\d{3}-\d{4}$/)*/],
-      country_id:[''],
-      city_id:[''],
-      area_id:[''], 
+      officeTel: [''],
+      country_id:[null, Validators.required],
+      city_id:[null, Validators.required],
+      area_id:[null, Validators.required], 
+      building_floor: [''],
+      street: [''],
+      VAT: [''],
+      bank: [''],
+      IBAN: [''],
+      SWIFT: [''],
+      registrationCode: [''],
       supervisorName: ['', Validators.required],
       supervisorName_ar: ['', Validators.required],
       supervisorPhone: ['', Validators.required],
       bankAccountNumber: [null],
       merchantName:['', Validators.required],
       merchantName_ar:['', Validators.required],
-      image: ['', Validators.required],
+      image: [''],
       companyLogo: ['', Validators.required],
-      section_id:['', Validators.required],
-      website: [null],
-      whatsup:[null],
-      facebook: [null],
-      twitter: [null],
-      instagram: [null],
+      section_id:[null, Validators.required],
+      website: [''],
+      whatsup: [null] ,
+      facebook:[null]  ,
+      twitter:  [null],
+      instagram: [null] ,
+      Snapchat: [null] ,
+      Tiktok:[null]  ,
+      LinkedIn:[null] 
 
     }, {validators: [this.passwordMatchValidator]});
   }
@@ -109,6 +126,16 @@ export class Register2Component implements OnInit {
 
   ngOnInit() {
     document.body.classList.add("auth-body-bg");
+    const direction = document.documentElement.dir === 'rtl' ? 'rtl' : 'ltr';
+    this.randomBackgroundService.getRandomBackground(direction).subscribe(
+      (randomImage) => {
+        this.backgroundService.setBackground(randomImage);
+      },
+      (error) => {
+        console.error('Error setting random background:', error);
+      }
+    );
+
     this.fetchCountry();
     this.fetchAreas();
     this.fetchCities();
@@ -245,19 +272,13 @@ export class Register2Component implements OnInit {
     this.signupForm.get('phone').setValue(phoneNumber);
   }
 
-  onSupervisorPhoneChanged(phoneNumber: string) {
-    this.signupForm.get('supervisorPhone').setValue(phoneNumber);
+  onCompanyChanged(phoneNumber: string) {
+    this.signupForm.get('officeTel').setValue(phoneNumber);
   }
   // convenience getter for easy access to form fields
   get f() { return this.signupForm.controls; }
 
-  // swiper config
-  slideConfig = {
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: false,
-    dots: true
-  };
+
   createMerchantFromForm(formValue): Merchant {
     const merchant = formValue;
     merchant.translation_data = [];
@@ -362,6 +383,50 @@ export class Register2Component implements OnInit {
       this.fileName1 = ''; // Set the file name
       this.existantmerchantLogo = event.file;
       this. signupForm.controls['companyLogo'].setValue(this.existantmerchantLogo);
+    }
+  }
+  isStepValid(stepIndex: number): boolean {
+    // Logic to validate current step fields
+    const merchantFields = ['merchantName', 'merchantName_ar', 'companyLogo', 'section_id']; // Update based on the step
+    const managerFields = ['username','email', 'password', 'confpassword', 'phone'];
+    const addressFields = ['country_id', 'area_id', 'city_id' ];
+    console.log(stepIndex);
+    if(stepIndex == 0)
+      return merchantFields.every((field) => this.signupForm.get(field)?.valid);
+    if(stepIndex == 1)
+      return managerFields.every((field) => this.signupForm.get(field)?.valid);
+    if(stepIndex == 2)
+      return addressFields.every((field) => this.signupForm.get(field)?.valid);
+  }
+  ngOnDestroy(): void {
+    this.backgroundService.resetBackground();
+  }
+  onStepChange(event: StepperSelectionEvent) {
+    const currentIndex = event.previouslySelectedIndex;
+    const nextIndex = event.selectedIndex;
+    console.log('onStepChange triggered:', {
+      currentIndex,
+      nextIndex,
+      isStepValid: this.isStepValid(currentIndex),
+    });
+
+    // Prevent navigation if the current step is not valid
+    if (!this.isStepValid(currentIndex)) {
+      this.cdkStepper.selectedIndex = currentIndex;  // Keep the user on the current step
+      return;  // Do not proceed to the next step
+    }
+
+    // Handle forward navigation
+    if (nextIndex > currentIndex) {
+      this.cdkStepper.selectedIndex = nextIndex;
+    } else {
+      // Handle backward navigation: if the user tries to go back, validate previous steps
+      // Check if the step we're going to is valid before allowing navigation
+      if (!this.isStepValid(nextIndex)) {
+        this.cdkStepper.selectedIndex = currentIndex;
+      } else {
+        this.cdkStepper.selectedIndex = nextIndex;
+      }
     }
   }
 }

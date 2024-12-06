@@ -4,9 +4,9 @@
     color: #333; /* optional: set text color to dark gray */
   }
   .btn-brown {
-    background-color: #6f6237; /* gold color */
-    border-color: #6f6237;
-    color: #333; /* optional: set text color to dark gray */
+    background-color: #eadeb6; /* gold color */
+    //border-color: #6f6237;
+    //color: #333; /* optional: set text color to dark gray */
   }
   .container {
     max-width: 1400px; /* or any other width you prefer */
@@ -17,8 +17,23 @@
     margin-bottom: 40px; /* adjust the value to your liking */
     margin-top: 20px;
   }
+  .logo-img {
+    width: 60%;  /* Take up 100% of the width of the parent */
+    max-width: 60%; /* Prevent the image from stretching beyond its natural width */
+    height: auto;   /* Maintain aspect ratio */
+    object-fit: contain;  /* Ensures the image fits inside the container without distortion */
+    border-radius: 8px;  /* Optionally, add border-radius for rounded corners */
+  }
+  
+  /* You can also adjust the size of the image for different screen sizes */
+  @media (max-width: 576px) {
+    .logo-img {
+      width: 80%;  /* For smaller screens, make the logo a bit smaller */
+      margin: 0 auto;
+    }
+}
   .card {
-    border: 5px solid #d4af37; /* add a 1px solid border with a light gray color */
+    //border: 5px solid #d4af37; /* add a 1px solid border with a light gray color */
     border-radius: 20px; /* add a 10px border radius to give it a rounded corner */
     padding: 20px; /* add some padding to create space between the border and the content */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* add a subtle box shadow to give it some depth */
@@ -29,12 +44,7 @@
     left: 0;
     width: 100vw; /* Full width of the viewport */
     height: 100vh; /* Full height of the viewport */
-    background-image: url('/assets/images/home2.jpg');
-    background-size: cover; /* Cover the entire area */
-    background-position: center center; /* Center the image */
-    background-repeat: no-repeat; /* Prevent the image from repeating */
-    background-color: #454545; /* Fallback color */
-   // color: #FFFFFF; /* Text color */
+    
     display: flex; /* Center content vertically and horizontally */
     align-items: center; /* Center content vertically */
     justify-content: center; /* Center content horizontally */
