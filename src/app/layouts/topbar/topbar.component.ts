@@ -17,6 +17,7 @@ import { fetchMyNotificationlistData, updateNotificationlist } from 'src/app/sto
 import { selectDataNotification, selectDataUnseenCount } from 'src/app/store/notification/notification-selector';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { Notification } from 'src/app/store/notification/notification.model';
+import { AuthenticationService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-topbar',
@@ -37,8 +38,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
   theme: any;
   layout: string;
   dataLayout$: Observable<string>;
-  private currentUserSubject: BehaviorSubject<_User>;
-  public currentUser: Observable<_User>;
+  public currentUser: _User;
   notifications: Notification[] = [];
   nbrNotif: number = 0 ;
   unseenNotif$: Observable<number>;
@@ -57,11 +57,16 @@ export class TopbarComponent implements OnInit, OnDestroy {
     public _cookiesService: CookieService, 
     public store: Store<RootReducerState>,
     private socketService: SocketService,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private authService: AuthenticationService
     ) {
-      
-      this.currentUserSubject = new BehaviorSubject<_User>(JSON.parse(localStorage.getItem('currentUser')));
-      this.currentUser = this.currentUserSubject.asObservable();
+      this.authService.currentUser$.subscribe(user => {
+        if (user) {
+          this.currentUser = user;
+        }
+      });
+        
+        
       
       this.fetchNotification();
       this.updateHeight();
@@ -98,10 +103,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
         }
   });  
 }        
-  public get currentUserValue(): _User {
-      return this.currentUserSubject.value;
-  }
-
+  
     
 
   listLang: any = [

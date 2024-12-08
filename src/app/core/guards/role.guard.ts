@@ -1,29 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot } from '@angular/router';
-import { BehaviorSubject, catchError, map, Observable, of, take } from 'rxjs';
-import { _User } from 'src/app/store/Authentication/auth.models';
+import {  catchError, map, Observable, of, take } from 'rxjs';
+import { AuthenticationService } from '../services/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class RoleGuard implements CanActivate {
     claims: any[] = [];
-    private currentUserSubject: BehaviorSubject<_User>;
-    public currentUser: Observable<_User>;
-    constructor( private router: Router  
+    constructor( private router: Router ,private authService: AuthenticationService 
     ) { 
-      const storedUser = localStorage.getItem('currentUser');
-      this.currentUserSubject = new BehaviorSubject<_User | null>(storedUser ? JSON.parse(storedUser) : null);
-      this.currentUser = this.currentUserSubject.asObservable();
-      
+   
     }
 
     canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
  
-         return this.currentUser.pipe(
+         return this.authService.currentUser$.pipe(
           take(1), // Take the first value of the observable and complete it
           map(user => {
               if (user) {
-                  const claims = user.role.claims;
+                  const claims = user.role?.claims || [];
+                  
+                  if (claims.length === 0) {
+                    this.router.navigate(['/pages/403']);
+                    return false; // No claims, deny access
+                  }
                   const requiredClaim = route.data?.['claim'];
 
                   if (!requiredClaim) {

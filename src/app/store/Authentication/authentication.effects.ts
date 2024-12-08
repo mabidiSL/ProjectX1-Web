@@ -2,19 +2,17 @@
 import { Injectable, Inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, catchError, exhaustMap, tap } from 'rxjs/operators';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { login, loginSuccess, loginFailure, forgetPassword, logout, logoutSuccess, Register, RegisterSuccess, RegisterFailure, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfilePassword, updateProfileSuccess, updateProfileFailure, updateProfilePasswordSuccess, updateProfilePasswordFailure, forgetPasswordSuccess, forgetPasswordFailure, verifyEmailSuccess, verifyEmail, verifyEmailFailure, updateCompanyProfile, updateCompanyProfileSuccess, updateCompanyProfileFailure, getCompanyProfile, getCompanyProfileSuccess, getCompanyProfileFailure, logoutFailure } from './authentication.actions';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { _User, User } from './auth.models';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 
 @Injectable()
 export class AuthenticationEffects {
   
-  private currentUserSubject: BehaviorSubject<_User>;
-  public currentUser: Observable<_User>;
+  
 
   constructor(
     @Inject(Actions) private actions$: Actions,
@@ -23,13 +21,10 @@ export class AuthenticationEffects {
     private formUtilService: FormUtilService,
     public toastr:ToastrService) {
 
-      this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
-      this.currentUser = this.currentUserSubject.asObservable();
+      
      }
           
-  public get currentUserValue(): User {
-      return this.currentUserSubject.value;
-  }
+ 
 
   Register$ = createEffect(() =>
     this.actions$.pipe(
@@ -86,15 +81,17 @@ export class AuthenticationEffects {
         
           return this.AuthService.login(email, password).pipe(
             map((response) => {
-                      
-                localStorage.setItem('token', response.result.accessToken);
-                localStorage.setItem('refreshToken', response.result.refreshToken);
-                localStorage.setItem('currentUser', JSON.stringify(response.result.user));
-               // console.log(response.result.user);
-                this.currentUserSubject.next(response.result.user);
-                this.router.navigate(['/private']);
-                //this.toastr.success('Login successfully!!!');
-                return loginSuccess({ user: response.result.user, token: response.result.accessToken });
+
+              const user = response.result.user;
+              const token = response.result.accessToken;
+              const refreshToken = response.result.refreshToken;
+    
+              // Delegate state update to the AuthenticationService
+              this.AuthService.setCurrentUser(user);
+              localStorage.setItem('token', token);
+              localStorage.setItem('refreshToken', refreshToken);
+              this.router.navigate(['/private']);
+              return loginSuccess({ user: user, token: token });
 
             }),
             catchError((error) => {
@@ -248,9 +245,7 @@ export class AuthenticationEffects {
             map((response: any) => {
               if (response) {
 
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('token');
-                this.currentUserSubject.next(null);
+                this.AuthService.clearSession(); // Clear local storage and subject
                 this.router.navigate(['/auth/login']);
                 this.toastr.success(response.result);
                 return logoutSuccess({message:response.result});

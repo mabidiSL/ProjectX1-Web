@@ -54,7 +54,9 @@ export class AuthInterceptor implements HttpInterceptor {
              }),
             catchError((error) => {
               // Handle refresh token failure (e.g., logout the user)
-              this.authService.logout();
+             
+              this.authService.clearSession();
+              //this.router.navigate(['/auth/login']);
               location.reload();
               return throwError(() => error);
             })
@@ -62,7 +64,8 @@ export class AuthInterceptor implements HttpInterceptor {
         }
     
         // If no refresh token, logout the user
-        this.authService.logout();
+       // this.authService.logout();
+       this.authService.clearSession();
         location.reload();
         return throwError(() => 'Refresh token not available.');
       }

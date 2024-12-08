@@ -7,9 +7,10 @@ import html2canvas from 'html2canvas';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {  Observable } from 'rxjs';
 import { _User } from 'src/app/store/Authentication/auth.models';
 import { Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/core/services/auth.service';
 
 
 @Component({
@@ -63,7 +64,6 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   @Output() onDelete? = new EventEmitter();
   @Output() onApprove? = new EventEmitter();
   
-  private currentUserSubject: BehaviorSubject<_User>;
   public currentUser: Observable<_User>;
   
    // Tracks the currently sorted column
@@ -91,13 +91,14 @@ export class CustomTableComponent implements OnInit, OnChanges  {
     private DatePipe: DatePipe, 
     private router: Router,
     private  translateService : TranslateService, 
+    private authService: AuthenticationService
+
   ) {
     
     //The retreival of arabic attribute from backendside is done in this component according to the language stored in cookie service
 
-    this.currentUserSubject = new BehaviorSubject<_User>(JSON.parse(localStorage.getItem('currentUser')));
-    this.currentUser = this.currentUserSubject.asObservable();
-    this.currentUser.subscribe(user => {
+
+    this.authService.currentUser$.subscribe(user => {
       if (user) {
       if(user.role.translation_data[0].name !== 'Admin')
       { this.isMerchant = true;}

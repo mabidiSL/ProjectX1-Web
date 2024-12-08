@@ -46,6 +46,17 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // if (localStorage.getItem('currentUser')) {
+    //   this.router.navigate(['/private']);
+    // }
+    // else
+    // {
+    // form validation
+      this.loginForm = this.formBuilder.group({
+          email: ['', [Validators.required]],
+          password: ['', [Validators.required]],
+      });
+  //}
 
     const direction = document.documentElement.dir === 'rtl' ? 'rtl' : 'ltr';
     this.randomBackgroundService.getRandomBackground(direction).subscribe(
@@ -59,17 +70,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
     
-    if (localStorage.getItem('currentUser')) {
-      this.router.navigate(['/private']);
-    }
-    else
-    {
-    // form validation
-      this.loginForm = this.formBuilder.group({
-          email: ['', [Validators.required]],
-          password: ['', [Validators.required]],
-      });
-  }
+    
   }
 
   // convenience getter for easy access to form fields
@@ -78,7 +79,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   /**
    * Form submit
    */
-  onSubmit() {
+  onSubmit() {  
     
     this.submitted = true;
     const email = this.f['email'].value; // Get the username from the form

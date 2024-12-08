@@ -5,11 +5,12 @@ import { Component } from '@angular/core';
 import { ChartType } from './profile.model';
 import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { _User } from 'src/app/store/Authentication/auth.models';
 import { updateProfile, updateProfilePassword } from 'src/app/store/Authentication/authentication.actions';
 import { TranslateService } from '@ngx-translate/core';
 import { selectDataLoading } from 'src/app/store/Authentication/authentication-selector';
+import { AuthenticationService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -41,23 +42,27 @@ export class ProfileComponent  {
   statData:any;
   submitted: any = false;
 
-  private currentUserSubject: BehaviorSubject<_User>;
-  public currentUser: Observable<_User>;
+  public currentUser: _User;
 
   constructor(
     private formBuilder: UntypedFormBuilder,
     private store: Store, 
-    public translate: TranslateService) {
+    public translate: TranslateService,
+    private authService: AuthenticationService
+  ) {
       
       this.loading$ = this.store.pipe(select(selectDataLoading));
+      this.authService.currentUser$.subscribe(user => {
+        if (user) {
+          this.currentUser = user;
+        }
+      });
 
-      this.currentUserSubject = new BehaviorSubject<_User>(JSON.parse(localStorage.getItem('currentUser')));
-      this.currentUser = this.currentUserSubject.asObservable();
       
    
 
     // fill up the form for updating the profile
-    this.currentUser.subscribe(user =>{
+    this.authService.currentUser$.subscribe(user =>{
     this.profileForm = this.formBuilder.group({
       id: [user?.id],
       // name: [this.currentUserValue.user.name, [Validators.required]],
@@ -73,12 +78,11 @@ export class ProfileComponent  {
     currentPassword: ['', [Validators.required]],      
     newPassword: ['', [Validators.required]],
     confirmpwd:['', [Validators.required]],
-  },{validators: [this.passwordMatchValidator]});}); 
+  },{validators: [this.passwordMatchValidator]});
+}); 
  
   }
-  public get currentUserValue(): _User {
-    return this.currentUserSubject.value;
-}
+  
 // get passwordMatchError() {
 //   return (
 //     this.passwordForm.getError('passwordMismatch') &&

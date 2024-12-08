@@ -111,7 +111,7 @@
                       </section>
                       }
                     </cdk-step>
-                    <cdk-step [optional]="true" [completed]="isStepValid(1)">
+                    <cdk-step [optional]="false" [editable]="isStepValid(0)" [completed]="isStepValid(1)">
                       <ng-template cdkStepLabel>
                         <span class="number">2.</span>
                         <span>{{'Manager Details' | translate}}</span>
@@ -210,7 +210,7 @@
                       </section>
                       }
                     </cdk-step>
-                    <cdk-step [optional]="true" >
+                    <cdk-step [optional]="true"  [editable]="isStepValid(1)">
                       <ng-template cdkStepLabel>
                         <span class="number">3.</span>
                         <span>{{'Merchant Address' | translate}}</span>
@@ -285,7 +285,7 @@
                       </section>
                       }
                     </cdk-step>
-                    <cdk-step [optional]="true" >
+                    <cdk-step [optional]="true"  [editable]="isStepValid(1)">
                       <ng-template cdkStepLabel>
                         <span class="number">4.</span>
                         <span>{{'Registration Details' | translate}}</span>
@@ -347,7 +347,7 @@
                       }
                     </cdk-step>
         
-                    <cdk-step [optional]="true" >
+                    <cdk-step [optional]="true"  [editable]="isStepValid(1)">
                       <ng-template cdkStepLabel>
                         <span class="number">5.</span>
                         <span>{{'Bank Details' | translate}}</span>
@@ -403,7 +403,7 @@
                         </ul>
                       </section>}
                     </cdk-step>
-                    <cdk-step [optional]="true">
+                    <cdk-step [optional]="true"  [editable]="isStepValid(1)">
                       <ng-template cdkStepLabel>
                         <span class="number">6.</span>
                         <span>{{'Social Medias' | translate}}</span>

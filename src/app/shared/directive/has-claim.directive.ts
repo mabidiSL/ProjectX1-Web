@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Directive, Input, SimpleChanges, TemplateRef, ViewContainerRef, OnChanges, OnInit  } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { _User } from 'src/app/store/Authentication/auth.models';
+import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { Claim } from 'src/app/store/Role/role.models';
 
 
@@ -15,16 +14,16 @@ export class HasClaimDirective implements OnChanges, OnInit {
   @Input('hasClaim') claim: Claim[]; // Ensure claim is of type Claim
 
   //claims$: any[];
-  private currentUserSubject: BehaviorSubject<_User>;
-  public currentUser: Observable<_User>;
+ 
+  
   public permissions: any[] = [];
   private isViewCreated = false;
 
-  constructor(  private templateRef: TemplateRef<string>,
+  constructor(  private templateRef: TemplateRef<string>,     private authService: AuthenticationService,
+
     private viewContainerRef: ViewContainerRef) {
       
-      this.currentUserSubject = new BehaviorSubject<_User>(JSON.parse(localStorage.getItem('currentUser')));
-      this.currentUser = this.currentUserSubject.asObservable();
+    
       
     }
   ngOnChanges(changes: SimpleChanges) {
@@ -61,7 +60,7 @@ private hasPermission(claim: Claim[]): boolean {
 
  
   ngOnInit() {
-    this.currentUser.subscribe(user => {
+    this.authService.currentUser$.subscribe(user => {
       if (user) {
       this.permissions = user.role.claims;
       this.checkPermissions();
