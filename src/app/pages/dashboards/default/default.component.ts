@@ -8,8 +8,8 @@ import { EventService } from '../../../core/services/event.service';
 import { ConfigService } from '../../../core/services/config.service';
 import { DashboardService } from 'src/app/core/services/dashboard.service';
 import { CustomerRatingChart, MostPaymentMethodChart } from './chart-config';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { _User } from 'src/app/store/Authentication/auth.models';
+import { AuthenticationService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-default',
@@ -32,8 +32,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
     backdrop: true,
     ignoreBackdropClick: true
   };
-  private currentUserSubject: BehaviorSubject<_User>;
-  public currentUser: Observable<_User>;
+  public currentUser: _User;
 
   isActive: string;
 
@@ -42,11 +41,12 @@ export class DefaultComponent implements OnInit, AfterViewInit {
   constructor(private modalService: BsModalService, 
     private configService: ConfigService,
      private eventService: EventService,
-    private dashboardService: DashboardService) {
+    private dashboardService: DashboardService,
+    private authService: AuthenticationService
+  ) {
 
-      this.currentUserSubject = new BehaviorSubject<_User>(JSON.parse(localStorage.getItem('currentUser')));
-      this.currentUser = this.currentUserSubject.asObservable();
-      this.currentUser.subscribe(user => {
+      
+      this.authService.currentUser$.subscribe(user => {
         if (user) {
         this.currentRole = user.role.translation_data[0].name;
       }});

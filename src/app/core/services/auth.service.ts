@@ -2,27 +2,39 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { _User, User } from 'src/app/store/Authentication/auth.models';
+import { _User } from 'src/app/store/Authentication/auth.models';
 import { environment } from 'src/environments/environment';
 //import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-    private currentUserSubject: BehaviorSubject<User>;
-    public currentUser: Observable<_User>;
+
+    private currentUserSubject = new BehaviorSubject<_User | null>(null);
+    public currentUser$: Observable<_User | null> = this.currentUserSubject.asObservable();
     
 
     constructor(private http: HttpClient) {
         
         const storedUser = localStorage.getItem('currentUser');
-        const user = storedUser ? JSON.parse(storedUser) : null;
-        this.currentUserSubject = new BehaviorSubject<_User>(user);
-        this.currentUser = this.currentUserSubject.asObservable();
-    }
-   
-    public get currentUserValue(): _User {
+        if (storedUser) {
+          this.currentUserSubject.next(JSON.parse(storedUser));
+        }
+      }
+    
+      public get currentUserValue(): _User | null {
         return this.currentUserSubject.value;
-    }
+      }
+      
+    
+      setCurrentUser(user: _User | null): void {
+        if (user) {
+          localStorage.setItem('currentUser', JSON.stringify(user));
+        } else {
+          localStorage.removeItem('currentUser');
+        }
+        this.currentUserSubject.next(user);
+      }
+
     verifyEmail(token: string){
         return this.http.post<any>(`${environment.baseURL}/auth/verify-email`, {token} );
 
@@ -67,8 +79,15 @@ export class AuthenticationService {
         return this.http.post(`${environment.baseURL}/auth/refresh`, { refreshToken: refreshToken });
     }
     logout() {
+        
         this.currentUserSubject.next(null);
         return this.http.post(`${environment.baseURL}/auth/logout`,{}) ;
         
     }
+    clearSession(): void {
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('currentUser');
+        this.currentUserSubject.next(null);
+      }
 }

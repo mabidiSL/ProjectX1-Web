@@ -23,7 +23,7 @@ import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { Merchant } from 'src/app/store/merchantsList/merchantlist1.model';
 import { RandomBackgroundService } from 'src/app/core/services/setBackground.service';
 import { BackgroundService } from 'src/app/core/services/background.service';
-import { CdkStepper, StepperSelectionEvent } from '@angular/cdk/stepper';
+import { CdkStepper } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-register2',
@@ -125,7 +125,7 @@ export class Register2Component implements OnInit, OnDestroy {
   fileName2: string = ''; 
 
   ngOnInit() {
-    document.body.classList.add("auth-body-bg");
+    //document.body.classList.add("auth-body-bg");
     const direction = document.documentElement.dir === 'rtl' ? 'rtl' : 'ltr';
     this.randomBackgroundService.getRandomBackground(direction).subscribe(
       (randomImage) => {
@@ -390,43 +390,24 @@ export class Register2Component implements OnInit, OnDestroy {
     const merchantFields = ['merchantName', 'merchantName_ar', 'companyLogo', 'section_id']; // Update based on the step
     const managerFields = ['username','email', 'password', 'confpassword', 'phone'];
     const addressFields = ['country_id', 'area_id', 'city_id' ];
-    console.log(stepIndex);
+    
+
     if(stepIndex == 0)
+    {  
       return merchantFields.every((field) => this.signupForm.get(field)?.valid);
-    if(stepIndex == 1)
+    }
+    if(stepIndex == 1){
+      
       return managerFields.every((field) => this.signupForm.get(field)?.valid);
-    if(stepIndex == 2)
+    }
+    if(stepIndex == 2){
+      
       return addressFields.every((field) => this.signupForm.get(field)?.valid);
+    }
+    return true;
   }
   ngOnDestroy(): void {
     this.backgroundService.resetBackground();
   }
-  onStepChange(event: StepperSelectionEvent) {
-    const currentIndex = event.previouslySelectedIndex;
-    const nextIndex = event.selectedIndex;
-    console.log('onStepChange triggered:', {
-      currentIndex,
-      nextIndex,
-      isStepValid: this.isStepValid(currentIndex),
-    });
 
-    // Prevent navigation if the current step is not valid
-    if (!this.isStepValid(currentIndex)) {
-      this.cdkStepper.selectedIndex = currentIndex;  // Keep the user on the current step
-      return;  // Do not proceed to the next step
-    }
-
-    // Handle forward navigation
-    if (nextIndex > currentIndex) {
-      this.cdkStepper.selectedIndex = nextIndex;
-    } else {
-      // Handle backward navigation: if the user tries to go back, validate previous steps
-      // Check if the step we're going to is valid before allowing navigation
-      if (!this.isStepValid(nextIndex)) {
-        this.cdkStepper.selectedIndex = currentIndex;
-      } else {
-        this.cdkStepper.selectedIndex = nextIndex;
-      }
-    }
-  }
 }

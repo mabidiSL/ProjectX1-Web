@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { _User } from 'src/app/store/Authentication/auth.models';
+import { BehaviorSubject } from 'rxjs';
+import { AuthenticationService } from './auth.service';
 const SOCKET_SERVER_URL = 'https://legislative-eveleen-infiniteee-d57d0fbe.koyeb.app/'; // Your Socket.IO server URL
 @Injectable({
   providedIn: 'root',
@@ -10,16 +11,14 @@ export class SocketService {
   private socket: Socket;
   currentRole : string = '';
   userId : any;
-  private currentUserSubject: BehaviorSubject<_User>;
-  public currentUser: Observable<_User>;
+ 
   private messagesSubject = new BehaviorSubject<{ userId: string; message: string }[]>([]);
   messages$ = this.messagesSubject.asObservable();
   
 
-  constructor() {
-    this.currentUserSubject = new BehaviorSubject<_User>(JSON.parse(localStorage.getItem('currentUser')));
-    this.currentUser = this.currentUserSubject.asObservable();
-    this.currentUser.subscribe(user => {
+  constructor( private authservice: AuthenticationService
+  ) {
+    this.authservice.currentUser$.subscribe(user => {
       if (user) {
       
       this.currentRole = user.role.translation_data[0].name;
