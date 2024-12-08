@@ -93,6 +93,7 @@ export class FormCustomerComponent  implements OnInit, OnDestroy{
         email: ['', [Validators.required, Validators.email]],
         phone:['',Validators.required], //Validators.pattern(/^\d{3}-\d{3}-\d{4}$/)*/],
         country_id:[null],
+        gender:[''],
         city_id:[null],
         area_id:[null], 
         image:[''],
