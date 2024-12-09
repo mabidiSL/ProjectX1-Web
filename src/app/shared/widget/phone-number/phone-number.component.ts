@@ -2,7 +2,7 @@
 import { Component, EventEmitter, Input, Output,  OnChanges, SimpleChanges, ChangeDetectorRef, OnDestroy, AfterViewChecked } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import intlTelInput from 'intl-tel-input';
- import ar from 'intl-tel-input/i18n/ar';
+import ar from 'intl-tel-input/i18n/ar';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
@@ -29,7 +29,7 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
     this.phone = this.formBuilder.control(''); // Initialize the phone control
     this.itiOptions = {
       initialCountry: 'sa', // set default country as Saudi Arabia
-      utilsScript: 'node_modules/intl-tel-input/build/js/utils.js', // for validation and formatting
+      loadUtilsOnInit: 'node_modules/intl-tel-input/build/js/utils.js', // for validation and formatting
     };
 
   }

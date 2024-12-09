@@ -82,33 +82,32 @@ export class Register2Component implements OnInit, OnDestroy {
 
     this.signupForm = this.formBuilder.group({
       
-      username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      companyEmail: ['', Validators.email],
+      username: [null, Validators.required],
+      email: [null, [Validators.required, Validators.email]],
+      companyEmail: [null],
       password: ['', Validators.required],
       confpassword: ['', Validators.required],
-      phone:['',Validators.required], //Validators.pattern(/^\d{3}-\d{3}-\d{4}$/)*/],
-      officeTel: [''],
+      phone:[null,Validators.required], //Validators.pattern(/^\d{3}-\d{3}-\d{4}$/)*/],
+      officeTel: [null],
       country_id:[null, Validators.required],
       city_id:[null, Validators.required],
       area_id:[null, Validators.required], 
-      building_floor: [''],
-      street: [''],
-      VAT: [''],
-      bank: [''],
-      IBAN: [''],
-      SWIFT: [''],
-      registrationCode: [''],
-      supervisorName: ['', Validators.required],
-      supervisorName_ar: ['', Validators.required],
-      supervisorPhone: ['', Validators.required],
-      bankAccountNumber: [null],
+      building_floor: [null],
+      street: [null],
+      VAT: [null],
+      bank: [null],
+      IBAN: [null],
+      SWIFT: [null],
+      registrationCode: [null],
+      // supervisorName: ['', Validators.required],
+      // supervisorName_ar: ['', Validators.required],
+      // supervisorPhone: ['', Validators.required],
       merchantName:['', Validators.required],
       merchantName_ar:['', Validators.required],
-      image: [''],
+      image: [null, Validators.required],
       companyLogo: ['', Validators.required],
       section_id:[null, Validators.required],
-      website: [''],
+      website: [null],
       whatsup: [null] ,
       facebook:[null]  ,
       twitter:  [null],
@@ -284,11 +283,11 @@ export class Register2Component implements OnInit, OnDestroy {
     merchant.translation_data = [];
     const enFields = [
       { field: 'merchantName', name: 'name' },
-      { field: 'supervisorName', name: 'supervisorName' }
+     // { field: 'supervisorName', name: 'supervisorName' }
     ];
     const arFields = [
       { field: 'merchantName_ar', name: 'name' },
-      { field: 'supervisorName_ar', name: 'supervisorName' }
+      //{ field: 'supervisorName_ar', name: 'supervisorName' }
     ];
    // Create the English translation if valid
     const enTranslation = this.formUtilService.createTranslation(merchant,'en', enFields );
@@ -312,8 +311,8 @@ export class Register2Component implements OnInit, OnDestroy {
 
    delete merchant.merchantName;  
    delete merchant.merchantName_ar;    
-   delete merchant.supervisorName;
-   delete merchant.supervisorName_ar;
+  //  delete merchant.supervisorName;
+  //  delete merchant.supervisorName_ar;
    delete merchant.area_id;
    delete merchant.country_id;
 
@@ -324,6 +323,7 @@ export class Register2Component implements OnInit, OnDestroy {
    */
   onSubmit() {
     this.formSubmitted = true;
+    console.log('i am on register submit');
 
     if (this.signupForm.invalid) {
       this.formError = 'Please complete all required fields.';
@@ -337,16 +337,18 @@ export class Register2Component implements OnInit, OnDestroy {
       
       
       const newData = this.signupForm.value;
-      if(this.storeLogoBase64){
-        newData.companyLogo = this.storeLogoBase64;
+      if(this.existantmerchantLogo){
+        newData.companyLogo = this.existantmerchantLogo;
       }
       if(this.merchantPictureBase64){
         newData.image = this.merchantPictureBase64;
       }
       delete newData.confpassword;
-  
+      const register = this.createMerchantFromForm(newData);
+      console.log(register);
+      
       //Dispatch Action
-      this.store.dispatch(Register({ newData: this.createMerchantFromForm(newData) }));
+      this.store.dispatch(Register({ newData: register }));
 
    
   }

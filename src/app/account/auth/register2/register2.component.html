@@ -192,11 +192,11 @@
                          
                            <div class="col-md-6 mb-3">
                             <div class="form-group">
-                              <label for="image">{{'Logo' | translate}}</label>
+                              <label for="image">{{'Logo' | translate}}<span class="text-danger">*</span></label>
                               <app-image-upload [id]="'image'" [type]="'image'" [label]="'Upload Manager Logo' | translate" [existantImage]="existantmerchantPicture" [filename]="fileName2" [alt]="'Merchant Pictutre'"  (imageUploaded)="onImageUpload($event)"></app-image-upload>
-                              <!-- <div *ngIf="signupForm.get('image').touched && signupForm.get('image').invalid" class="invalid-feedback d-block">
+                              <div *ngIf="signupForm.get('image').touched && signupForm.get('image').invalid" class="invalid-feedback d-block">
                                 <span *ngIf="signupForm.get('image').errors?.['required']">{{'Merchant Logo is required'| translate}}.</span>
-                              </div>   -->
+                              </div>  
                             </div>
                           </div>
                          
@@ -281,6 +281,12 @@
                         <ul class="list-inline wizard d-flex justify-content-end mb-0">
                           <li class="previous list-inline-item" aria-disabled="true"><button class="btn btn-primary" cdkStepperPrevious>{{'Previous' | translate}}</button></li>
                           <li class="next list-inline-item" aria-disabled="false"><button class="btn btn-primary" cdkStepperNext [disabled]="!isStepValid(2)">{{'Next' | translate}}</button></li>
+                          <li class="next list-inline-item" aria-disabled="false"><button class="btn btn-primary" [disabled]="!isStepValid(2)" (click)="onSubmit()" >{{'Finish' | translate}}</button></li>
+                          <div id="elmLoader" class="loader" *ngIf="loading$ | async">
+                            <div class="spinner-border text-primary avatar-sm" role="status">
+                              <span class="visually-hidden">{{'Loading...' | translate}}</span>
+                            </div>
+                          </div>
                         </ul>
                       </section>
                       }
@@ -299,9 +305,9 @@
                                 <div class="form-group ">
                                   <label for="VAT" >{{'VAT'| translate }}  </label>
                                   <input type="text" id="VAT" class="form-control" formControlName="VAT" placeholder="{{ 'Enter Vat Rate' | translate }}" required    >
-                                  <div *ngIf="signupForm.get('VAT').touched && signupForm.get('VAT').invalid" class="invalid-feedback d-block">
+                                  <!-- <div *ngIf="signupForm.get('VAT').touched && signupForm.get('VAT').invalid" class="invalid-feedback d-block">
                                   <span *ngIf="signupForm.get('VAT').errors?.['required']">{{'VAT Rate is required'| translate}}.</span>
-                                  </div>  
+                                  </div>   -->
                                 </div>
                               </div>
                             </div>
@@ -362,9 +368,9 @@
                                   <div class="form-group ">
                                     <label for="bank" >{{'Bank Name'| translate }}  </label>
                                     <input type="text" id="bank" class="form-control" formControlName="bank" placeholder="{{ 'Enter Bank Name' | translate }}" required    >
-                                    <div *ngIf="signupForm.get('bank').touched && signupForm.get('bank').invalid" class="invalid-feedback d-block">
+                                    <!-- <div *ngIf="signupForm.get('bank').touched && signupForm.get('bank').invalid" class="invalid-feedback d-block">
                                     <span *ngIf="signupForm.get('bank').errors?.['required']">{{'Bank Name is required'| translate}}.</span>
-                                    </div>  
+                                    </div>   -->
                                   </div>
                                 </div>
                               </div>
@@ -374,9 +380,9 @@
                                   <div class="form-group ">
                                     <label for="IBAN" >{{'IBAN'| translate }}  </label>
                                     <input type="text" id="IBAN" class="form-control" formControlName="IBAN" placeholder="{{ 'Enter IBAN Code' | translate }}" required    >
-                                    <div *ngIf="signupForm.get('IBAN').touched && signupForm.get('IBAN').invalid" class="invalid-feedback d-block">
+                                    <!-- <div *ngIf="signupForm.get('IBAN').touched && signupForm.get('IBAN').invalid" class="invalid-feedback d-block">
                                     <span *ngIf="signupForm.get('IBAN').errors?.['required']">{{'IBAN Code is required'| translate}}.</span>
-                                    </div>  
+                                    </div>   -->
                                    </div>
                                 </div>
                               </div>
@@ -385,9 +391,9 @@
                                   <div class="form-group ">
                                       <label for="SWIFT" >{{'SWIFT'| translate }}  </label>
                                       <input type="text" id="SWIFT" class="form-control" formControlName="SWIFT" placeholder="{{ 'Enter SWIFT Code' | translate }}" required    >
-                                      <div *ngIf="signupForm.get('SWIFT').touched && signupForm.get('SWIFT').invalid" class="invalid-feedback d-block">
-                                      <span *ngIf="signupForm.get('name').errors?.['required']">{{'SWIFT Code is required'| translate}}.</span>
-                                      </div>  
+                                      <!-- <div *ngIf="signupForm.get('SWIFT').touched && signupForm.get('SWIFT').invalid" class="invalid-feedback d-block">
+                                      <span *ngIf="signupForm.get('SWIFT').errors?.['required']">{{'SWIFT Code is required'| translate}}.</span>
+                                      </div>   -->
                                   </div>
                                 </div>
                               </div>
