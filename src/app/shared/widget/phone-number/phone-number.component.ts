@@ -2,6 +2,7 @@
 import { Component, EventEmitter, Input, Output,  OnChanges, SimpleChanges, ChangeDetectorRef, OnDestroy, AfterViewChecked } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import intlTelInput from 'intl-tel-input';
+import 'intl-tel-input/build/js/utils'; // Import the utils script
  import ar from 'intl-tel-input/i18n/ar';
 import { CookieService } from 'ngx-cookie-service';
 

@@ -29,7 +29,7 @@ const routes: Routes = [
         component: Page500Component
     },
     {
-        path: 'confirm-mail',
+        path: 'verify-email',
         component: ConfirmmailComponent
     }
    
