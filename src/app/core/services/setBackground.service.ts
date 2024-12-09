@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ImageService } from './image.service';
 import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RandomBackgroundService {
-  constructor(private ImageService: ImageService) {}
+  constructor(private imageService: ImageService) {}
 
   /**
    * Fetches a random background image URL based on the direction (LTR/RTL).
@@ -15,20 +14,14 @@ export class RandomBackgroundService {
    * @returns Observable<string> containing the random image URL.
    */
   getRandomBackground(direction: 'ltr' | 'rtl'): Observable<string> {
-    return this.ImageService.getImages(direction).pipe(
-      map((images) => {
-        if (images.length === 0) {
-          throw new Error('No images available');
-        }
-        const randomIndex = Math.floor(Math.random() * images.length);
-        console.log(images[randomIndex]);
-        
-        return images[randomIndex];
-      }),
-      catchError((error) => {
-        console.error('Error fetching images or selecting random image:', error);
-        return of('assets/images/home-background.jpg'); // Provide a fallback image URL
-      })
-    );
+    try {
+      // Fetch the random image URL directly from the ImageService
+      const randomImage = this.imageService.getImage(direction);
+      return of(randomImage); // Wrap the result in an Observable
+    } catch (error) {
+      console.error('Error fetching random background:', error);
+      // Return a fallback image URL wrapped in an Observable
+      return of('assets/images/home-background.jpg');
+    }
   }
 }
