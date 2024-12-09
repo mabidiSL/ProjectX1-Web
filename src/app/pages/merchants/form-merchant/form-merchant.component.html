@@ -87,15 +87,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-6 mb-3">
-                    <div class="form-group ">
-                      <label for="id_number" >{{'National ID' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                      <input type="number" id="id_number" class="form-control" formControlName="id_number" placeholder="{{ 'Enter your National ID number' | translate }}" required [readonly]="type==='view'">
-                      <div *ngIf="merchantForm.get('id_number').touched && merchantForm.get('id_number').invalid" class="invalid-feedback d-block">
-                          <span *ngIf="merchantForm.get('id_number').errors?.['required']">{{'id_number is required'| translate}}.</span>
-                        </div>
-                  </div>
-                 </div>
+               
                     
                     <div class="col-md-6 mb-3">
                       <div class="form-group">

@@ -114,7 +114,6 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
     email: ['', [Validators.required, Validators.email]],
     password: ['', this.type === 'create' ? Validators.required : null],
     confpassword: ['', this.type === 'create' ? Validators.required : null],
-    id_number: [null, Validators.required],
     phone:[null,Validators.required], //Validators.pattern(/^\d{3}-\d{3}-\d{4}$/)*/],
     country_id:[null, Validators.required],
     city_id:[null, Validators.required],

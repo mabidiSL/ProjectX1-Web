@@ -390,7 +390,7 @@ export class Register2Component implements OnInit, OnDestroy {
   isStepValid(stepIndex: number): boolean {
     // Logic to validate current step fields
     const merchantFields = ['merchantName', 'merchantName_ar', 'companyLogo', 'section_id']; // Update based on the step
-    const managerFields = ['username','email', 'password', 'confpassword', 'phone'];
+    const managerFields = ['username','email', 'password', 'confpassword', 'phone', 'image'];
     const addressFields = ['country_id', 'area_id', 'city_id' ];
     
 
