@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, EventEmitter, Input, Output,  OnChanges, SimpleChanges, ChangeDetectorRef, OnDestroy, AfterViewChecked } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-//import intlTelInput from 'intl-tel-input';
+import intlTelInput from 'intl-tel-input';
 import ar from 'intl-tel-input/i18n/ar';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -29,7 +29,7 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
     this.phone = this.formBuilder.control(''); // Initialize the phone control
     this.itiOptions = {
       initialCountry: 'sa', // set default country as Saudi Arabia
-      loadUtils: 'node_modules/intl-tel-input/build/js/utils.js', // for validation and formatting
+      loadUtilsOnInit: 'node_modules/intl-tel-input/build/js/utils.js', // for validation and formatting
     };
 
   }
@@ -64,8 +64,7 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
       this.inputElement = document.querySelector(`#${this.inputId}`) as HTMLInputElement; 
       if(this.inputElement){
       this.checkLanguageAndApplyRtl();
-      import('intl-tel-input').then(intlTelInput => { this.iti = intlTelInput.default(this.inputElement, this.itiOptions)});
-      //this.iti = intlTelInput(this.inputElement, this.itiOptions);
+      this.iti = intlTelInput(this.inputElement, this.itiOptions);
 
             if (this.initialPhoneNumber && this.initialPhoneNumber !== '') {
               this.inputElement.value = this.initialPhoneNumber;
