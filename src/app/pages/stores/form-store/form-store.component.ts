@@ -22,6 +22,7 @@ import { Merchant } from 'src/app/store/merchantsList/merchantlist1.model';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { Branch } from 'src/app/store/store/store.model';
 import * as _ from 'lodash';
+import { AuthenticationService } from 'src/app/core/services/auth.service';
 
 
 @Component({
@@ -78,14 +79,20 @@ export class FormStoreComponent implements OnInit, OnDestroy {
     private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute, 
     private router: Router,
+    private authservice: AuthenticationService,
     private formUtilService: FormUtilService,
     public store: Store) {
 
       this.getNavigationState();
       this.loading$ = this.store.pipe(select(selectDataLoading));
-
-      this.currentRole = this.getCurrentUser()?.role.translation_data[0].name;
-      this.merchantId =  this.getCurrentUser()?.merchantId;
+      
+      this.authservice.currentUser$.subscribe(user => {
+        this.currentRole = user?.role.translation_data[0].name;
+        this.merchantId =  user?.companyId;
+        console.log(this.currentRole, 'and', this.merchantId);
+        
+      } );
+      
 
       this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 100 , status: 'active'}));
       this.store.dispatch(fetchArealistData({ page: 1, itemsPerPage: 1000 , status: 'active'}));
@@ -106,19 +113,15 @@ export class FormStoreComponent implements OnInit, OnDestroy {
       description: ['', Validators.required],
       description_ar: ['', Validators.required],
       phone: ['', Validators.required ],
-      url:[''],
-      merchant_id: [null, Validators.required],
+      company_id: [null, Validators.required],
       city_id:[null, Validators.required],
       area_id:[null,  Validators.required], 
       images:[null],
+      status:['active']
        
     });
   }
-  private getCurrentUser(): _User {
-    // Replace with your actual logic to retrieve the user role
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    return currentUser;
-}
+ 
   ngOnInit() {
     
       this.fetchMerchants();
@@ -129,23 +132,26 @@ export class FormStoreComponent implements OnInit, OnDestroy {
     // Append the value of the Merchant to merchant_id
     if(this.currentRole !== 'Admin'){
      
-      this.storeForm.get('merchant_id').setValue(this.merchantId);
+      this.storeForm.get('company_id').setValue(this.merchantId);
+      this.storeForm.get('company_id').clearValidators();
+
       
       this.store.select(selectDataMerchant).subscribe(data=>{
         
-            const selectMerchant = data.find(m => m.id === this.merchantId);
+        console.log(data);
+        const selectMerchant = data.find(m => m.id === this.merchantId);
+            
             if (selectMerchant) {
                 const merchant_country_id = selectMerchant.user.city.area.country.id;
                 return this.store.select(selectDataArea).pipe(
                     map(areas => {
-                        this.filteredAreas = areas.filter(a => a.country_id === merchant_country_id);
-                        this.filteredAreas =  [...this.filteredAreas].map(area =>{
+                          this.filteredAreas =  [...areas].map(area =>{
                           const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
                           return {
                             ...area,  
                             translatedName 
                           };
-                        })
+                        }).filter(area => area.country_id === merchant_country_id)
                         .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
                         })
                  
@@ -228,7 +234,8 @@ private getNavigationState(){
     });
   }
   fetchAreas(){
-    this.store.select(selectDataArea).subscribe(data =>
+    this.store.select(selectDataArea).subscribe(data =>{
+      console.log(data)
       this.filteredAreas =  [...data].map(area =>{
       const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
       return {
@@ -237,7 +244,7 @@ private getNavigationState(){
       };
     })
     .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-    }));
+    })});
   }
   fetchCities(){
     this.store.select(selectDataCity).subscribe((data) => {
@@ -375,17 +382,19 @@ private getNavigationState(){
       let newData = this.storeForm.value;
       delete newData.area_id;
       if(this.uploadedFiles){
-        const images: any[] = [];
-        this.uploadedFiles.forEach(file => {
-          images.push(file.dataURL); // Push each Base64 string into the images array
-      });
-      newData.images =  images;
-      this.storeForm.get('images').setValue(images);
+          const images: any[] = [];
+          this.uploadedFiles.forEach(file => {
+            images.push(file.dataURL); // Push each Base64 string into the images array
+        });
+          newData.images =  images;
+          this.storeForm.get('images').setValue(images);
+        
       }
       if(!this.isEditing)
         {           
               delete newData.id;
               newData = this.createStoreFromForm(newData);
+              console.log(newData);
               //Dispatch Action
               this.store.dispatch(addStorelist({ newData }));
         }
@@ -461,10 +470,11 @@ removeFile(event: any) {
  
   toggleViewMode(){
     
-    if(this.fromPendingContext)
-      this.router.navigateByUrl('/private/stores/approve');
-    else
       this.router.navigateByUrl('/private/stores');
+
+  }
+  onChangeEventEmit(event: any){
+    console.log(event);
 
   }
 }

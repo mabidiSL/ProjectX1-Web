@@ -24,6 +24,7 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
+import { AuthenticationService } from 'src/app/core/services/auth.service';
 
 @Injectable()
 export class GiftCardsEffects {
@@ -51,15 +52,13 @@ export class GiftCardsEffects {
             mergeMap(({ newData }) =>
                 this.CrudService.addData('/gift-cards', newData).pipe(
                     map((newData) => {
-                      const userRole = this.getCurrentUserRole(); 
-                        if (userRole === 'Admin') {
+                        if (this.userRole === 'Admin') {
                             this.toastr.success('The new GiftCard has been added successfully.');
-                            this.router.navigate(['/private/giftCards']);
                         } else {
                             this.toastr.success('The new GiftCard Request has been sent to Admin.');
-                            this.router.navigate(['/private/giftCards/approve']); // Redirect to pending coupons for non-admins
                         }
-                        
+                        this.router.navigate(['/private/giftCards']);
+
                         // Dispatch the action to fetch the updated GiftCard list after adding a new GiftCard
                         return addGiftCardlistSuccess({newData});
                       }),
@@ -138,12 +137,14 @@ export class GiftCardsEffects {
         private CrudService: CrudService,
         private router: Router,
         private formUtilService: FormUtilService,
+        private authservice: AuthenticationService,
         public toastr:ToastrService
-    ) { }
-   
-    private getCurrentUserRole(): string {
-      // Replace with your actual logic to retrieve the user role
-      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      return currentUser ? currentUser.role.translation_data[0].name : '';
-    }
+    ) {
+        this.authservice.currentUser$.subscribe(user => {
+        this.userRole = user?.role.translation_data[0].name;
+        console.log(this.userRole);
+        
+      } );
+   }
+  userRole : string = null;
 }

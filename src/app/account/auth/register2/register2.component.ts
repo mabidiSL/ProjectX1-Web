@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,7 +14,7 @@ import { selectDataArea } from 'src/app/store/area/area-selector';
 import { selectDataCity } from 'src/app/store/City/city-selector';
 import { fetchSectionlistData } from 'src/app/store/section/section.action';
 import { selectDataSection } from 'src/app/store/section/section-selector';
-import { selectDataLoading } from 'src/app/store/Authentication/authentication-selector';
+import { selectDataLoading, selectRegistrationSuccess } from 'src/app/store/Authentication/authentication-selector';
 import { Country } from 'src/app/store/country/country.model';
 import { Area } from 'src/app/store/area/area.model';
 import { City } from 'src/app/store/City/city.model';
@@ -24,6 +25,8 @@ import { Merchant } from 'src/app/store/merchantsList/merchantlist1.model';
 import { RandomBackgroundService } from 'src/app/core/services/setBackground.service';
 import { BackgroundService } from 'src/app/core/services/background.service';
 import { CdkStepper } from '@angular/cdk/stepper';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { ModalsComponent } from 'src/app/shared/ui/modals/modals.component';
 
 @Component({
   selector: 'app-register2',
@@ -54,6 +57,7 @@ export class Register2Component implements OnInit, OnDestroy {
   existantmerchantPicture: string = null
 
   sectionlist:  SectionListModel[] = [];
+  modalRef?: BsModalRef;
 
   filteredAreas :  Area[] = [];
   filteredCities:  City[] = [];
@@ -65,6 +69,7 @@ export class Register2Component implements OnInit, OnDestroy {
     private router: Router,
     private randomBackgroundService: RandomBackgroundService,
     private backgroundService: BackgroundService, 
+    private modalService: BsModalService,
     private formUtilService: FormUtilService,
     public store: Store) { 
 
@@ -104,7 +109,7 @@ export class Register2Component implements OnInit, OnDestroy {
       // supervisorPhone: ['', Validators.required],
       merchantName:['', Validators.required],
       merchantName_ar:['', Validators.required],
-      image: [null, Validators.required],
+      image: [null],
       companyLogo: ['', Validators.required],
       section_id:[null, Validators.required],
       website: [null],
@@ -124,6 +129,12 @@ export class Register2Component implements OnInit, OnDestroy {
   fileName2: string = ''; 
 
   ngOnInit() {
+    this.store.pipe(select(selectRegistrationSuccess)).subscribe((success) => {
+      if (success) {
+        this.successmsg = true;
+        this.showModal();
+      }
+    });
     //document.body.classList.add("auth-body-bg");
     const direction = document.documentElement.dir === 'rtl' ? 'rtl' : 'ltr';
     this.randomBackgroundService.getRandomBackground(direction).subscribe(
@@ -389,9 +400,8 @@ export class Register2Component implements OnInit, OnDestroy {
   }
   isStepValid(stepIndex: number): boolean {
     // Logic to validate current step fields
-    const merchantFields = ['merchantName', 'merchantName_ar', 'companyLogo', 'section_id']; // Update based on the step
-    const managerFields = ['username','email', 'password', 'confpassword', 'phone', 'image'];
-    const addressFields = ['country_id', 'area_id', 'city_id' ];
+    const merchantFields = ['merchantName', 'merchantName_ar', 'companyLogo', 'section_id','country_id', 'area_id', 'city_id' ]; // Update based on the step
+    const managerFields = ['username','email', 'password', 'confpassword', 'phone'];
     
 
     if(stepIndex == 0)
@@ -402,14 +412,28 @@ export class Register2Component implements OnInit, OnDestroy {
       
       return managerFields.every((field) => this.signupForm.get(field)?.valid);
     }
-    if(stepIndex == 2){
-      
-      return addressFields.every((field) => this.signupForm.get(field)?.valid);
-    }
+   
     return true;
   }
   ngOnDestroy(): void {
     this.backgroundService.resetBackground();
   }
+         /**
+   * Open modal
+   * @param content modal content
+   */
+        openModal(content: any) {
+          this.modalRef = this.modalService.show(content);
+        } 
 
+  
+        showModal(): void {
+          this.modalRef = this.modalService.show(ModalsComponent, {
+            initialState: {
+              message: 'Registration completed. Check your inbox soon!'
+            }
+          });
+        }
+      
+        
 }

@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker/bs-datepicker.config';
 import {  Observable,  Subject, takeUntil } from 'rxjs';
+import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { DatepickerConfigService } from 'src/app/core/services/date.service';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { _User } from 'src/app/store/Authentication/auth.models';
@@ -62,14 +63,20 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
     private formBuilder: UntypedFormBuilder, 
     private router: Router,
     private datepickerConfigService: DatepickerConfigService,
+    private authservice: AuthenticationService,
+
     private formUtilService: FormUtilService,
     private route: ActivatedRoute){
       
       this.getNavigationState();
       this.loading$ = this.store.pipe(select(selectDataLoading));
 
-      this.currentRole = this.getCurrentUser()?.role.translation_data[0].name;
-      this.merchantId =  this.getCurrentUser()?.merchantId;
+      this.authservice.currentUser$.subscribe(user => {
+        this.currentRole = user?.role.translation_data[0].name;
+        this.merchantId =  user?.companyId;
+        console.log(this.currentRole, 'and', this.merchantId);
+        
+      } );
 
       if(this.currentRole !== 'Admin')
           this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,status:'', merchant_id: this.merchantId}));
@@ -112,11 +119,7 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
     }
     return null; // Valid
   }
-  private getCurrentUser(): _User {
-    // Replace with your actual logic to retrieve the user role
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-   return currentUser;
-} 
+
   private initForm() {
     this.formGiftCard = this.formBuilder.group({
       id: [null],

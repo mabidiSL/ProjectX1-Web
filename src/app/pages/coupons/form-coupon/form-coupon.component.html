@@ -9,7 +9,24 @@
           <div class="card-body">
               <form [formGroup]="formCoupon"  >
                 <div *ngIf="formError" class="alert alert-danger">{{ formError | translate }}</div>
-                  <div class="row">
+                <div class="row d-flex justify-content-end">
+                  <div class="col-12 mb-3 text-end">
+                    <div class="form-group">
+                      <ui-switch
+                        color="##343a40"
+                        [disabled]="type === 'view'"
+                        [checked]="formCoupon.get('status').value === 'active'"
+                        [uncheckedLabel]="'InActive' | translate"
+                        [checkedLabel]="'Active' | translate"
+                        size="small"
+                        class="me-1"
+                        formControlName="status"
+                        (changeEvent)="onChangeEventEmit($event)">
+                      </ui-switch>
+                  </div>
+                  </div>
+                </div>   
+                <div class="row">
                       <div class="col-md-6 mb-3">
                           <label for="name">{{'Name_coupon'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                           <input class="form-control" id="name" formControlName="name" type="text" [readonly]="type==='view'"/>
@@ -85,9 +102,9 @@
                           >
                         </ng-select>
                         <!-- <div *ngIf="isLoading" class="text-info">Loading stores...</div> -->
-                        <div *ngIf="formCoupon.get('stores').invalid && formCoupon.get('stores').touched" class="text-danger">
+                        <!-- <div *ngIf="formCoupon.get('stores').invalid && formCoupon.get('stores').touched" class="text-danger">
                           {{'Store is required'|translate}}
-                        </div>
+                        </div> -->
                       </div>
                       <div class="col-md-6 mb-3">
                         <label for="startDateCoupon">{{'Start_Date'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>

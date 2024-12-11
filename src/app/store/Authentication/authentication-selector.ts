@@ -20,6 +20,11 @@ export const selectMessage = createSelector(
   getLayoutState,
   (state: AuthenticationState) => state.message
 );
+export const selectRegistrationSuccess = createSelector(
+  getLayoutState,
+  (state: AuthenticationState) => state.success
+);
+
 export const selectDataLoading = createSelector(
     getLayoutState,
     (state: AuthenticationState) => state?.loading || false

@@ -62,7 +62,7 @@
     <thead class="table-light">
       <tr>
         <th scope="col" style="width: 40px;"></th>
-        <th scope="col" *ngFor="let column of columns" style="text-align: center;">
+        <th scope="col" *ngFor="let column of columns" >
           <div 
           (click)="sortData(column.property)" 
           style="cursor: pointer; display: flex; align-items: center; justify-content: center;"
@@ -114,7 +114,7 @@
                 <!-- Status Display -->
                 <ng-template #status >
                
-                  <ng-container *ngIf="getProperty(data, column.property) === 'approved' || getProperty(data, column.property) === 'pending' || getProperty(data, column.property) === 'delivered' || getProperty(data, column.property) === 'undelivered'; else statusSwitch">
+                  <!-- <ng-container *ngIf="getProperty(data, column.property) === 'approved' || getProperty(data, column.property) === 'pending' || getProperty(data, column.property) === 'delivered' || getProperty(data, column.property) === 'undelivered'; else statusSwitch">
                     <span class="badge"
                           [ngClass]="{
                             'bg-success': getProperty(data, column.property) === 'delivered' || getProperty(data, column.property) === 'approved',
@@ -124,7 +124,19 @@
                       {{ getProperty(data, column.property) }}
                     </span>
                   </ng-container>
-              
+               -->
+               <ng-container >
+                <span class="badge"
+                      [ngClass]="{
+                        'bg-success': getProperty(data, column.property) === 'delivered' || getProperty(data, column.property) === 'approved' || getProperty(data, column.property) === 'active',
+                        'bg-warning': getProperty(data, column.property) === 'pending',
+                        'bg-secondary': getProperty(data, column.property) === 'inActive',
+                        'bg-danger': getProperty(data, column.property) === 'undelivered'
+                      }">
+                  {{ getProperty(data, column.property) }}
+                </span>
+              </ng-container>
+          
                   <ng-template #statusSwitch  >
                     <ui-switch
                       color="##343a40"

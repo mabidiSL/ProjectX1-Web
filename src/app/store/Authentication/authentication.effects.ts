@@ -11,19 +11,19 @@ import { FormUtilService } from 'src/app/core/services/form-util.service';
 
 @Injectable()
 export class AuthenticationEffects {
-  
+
   
 
   constructor(
     @Inject(Actions) private actions$: Actions,
     private AuthService: AuthenticationService,
-    private router: Router,
+    private router: Router, 
     private formUtilService: FormUtilService,
     public toastr:ToastrService) {
 
       
      }
-          
+     
  
 
   Register$ = createEffect(() =>
@@ -34,8 +34,8 @@ export class AuthenticationEffects {
           return this.AuthService.register(newData ).pipe(
             map((user) => {
               if(user){
-              this.toastr.success('Registration completed, Check you Inbox soon!!!');
-              this.router.navigate(['/auth/login']);
+              //this.toastr.success('Registration completed, Check you Inbox soon!!!');
+              //this.router.navigate(['/auth/login']);
               return RegisterSuccess({ user })
               }
             }),

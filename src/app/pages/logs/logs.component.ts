@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { fetchLoglistData } from 'src/app/store/Log/log.actions';
 import { selectDataLoading, selectDataLog, selectDataTotalItems } from 'src/app/store/Log/log-selector';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
+import { AuthenticationService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-logs',
@@ -22,7 +23,8 @@ export class LogsComponent implements OnInit {
 
   logList$: Observable<any[]>;
   totalItems$: Observable<number>;
-  loading$: Observable<any>
+  loading$: Observable<any>;
+  currentId : number = null;
 
   isDropdownOpen : boolean = false;
   filteredArray: any[] = [];
@@ -39,7 +41,7 @@ export class LogsComponent implements OnInit {
 
   ];
 
-  constructor(private store: Store) {
+  constructor(private store: Store, private authService: AuthenticationService) {
       
       this.logList$ = this.store.pipe(select(selectDataLog)); // Observing the Log list from Log
       this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
@@ -48,11 +50,21 @@ export class LogsComponent implements OnInit {
     }
 
   ngOnInit() {
-          
+        this.authService.currentUser$.subscribe((user)=>{this.currentId = user.id; console.log(this.currentId);});
         this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,status:'' }));
         this.logList$.subscribe(data => {
-        this.originalArray = data; // Log the full Log list
+          if(this.currentId){
+
+            this.originalArray = data.filter(log =>  log.user_id == this.currentId);
+            console.log(this.originalArray);
+          }
+          else
+          {
+            this.originalArray = data; // Log the full Log list
+          }
         this.filteredArray = [...this.originalArray];
+        console.log(this.filteredArray);
+        
         document.getElementById('elmLoader')?.classList.add('d-none');
        
         });

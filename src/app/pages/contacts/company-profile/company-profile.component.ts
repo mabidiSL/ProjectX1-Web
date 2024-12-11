@@ -22,6 +22,7 @@ import { City } from 'src/app/store/City/city.model';
 import { Merchant } from 'src/app/store/merchantsList/merchantlist1.model';
 import { UploadEvent } from 'src/app/shared/widget/image-upload/image-upload.component';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
+import { AuthenticationService } from 'src/app/core/services/auth.service';
 @Component({
   selector: 'app-company-profile',
   templateUrl: './company-profile.component.html',
@@ -56,7 +57,7 @@ export class CompanyProfileComponent implements OnInit {
   loading$: Observable<boolean>;
 
   sectionlist:  any[] = [];
-  
+  ID: number;
   filteredCountries: Country[] = [];
   filteredAreas :  Area[] = [];
   filteredCities:  City[] = [];
@@ -71,12 +72,19 @@ export class CompanyProfileComponent implements OnInit {
     private route: ActivatedRoute, 
     private router: Router,
     private formUtilService: FormUtilService,
+    private authservice: AuthenticationService,
     public store: Store) {
 
       this.loading$ = this.store.pipe(select(selectDataLoading)); 
-      const ID = this.getCurrentUserId();
 
-      this.store.dispatch(getMerchantById({merchantId: ID }));
+      this.authservice.currentUser$.subscribe(user => {
+        if(user?.role.translation_data[0].name !== 'Admin'){
+          this.ID = user?.companyId;
+    }
+                
+      } );
+
+      this.store.dispatch(getMerchantById({merchantId: this.ID }));
       this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 100, status: 'active' }));
       this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 1000, status: 'active' }));
       this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 10000, status: 'active' }));
@@ -85,13 +93,7 @@ export class CompanyProfileComponent implements OnInit {
       this.initForm();
       
      }
-     private getCurrentUserId(): number {
-      // Replace with your actual logic to retrieve the user role
-      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      if(currentUser.role.translation_data[0].name !== 'Admin'){
-         return currentUser.merchantId ;
-      }
-  }
+ 
 
      get passwordMatchError() {
       return (

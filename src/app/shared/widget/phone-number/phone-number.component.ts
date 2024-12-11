@@ -29,7 +29,8 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
     this.phone = this.formBuilder.control(''); // Initialize the phone control
     this.itiOptions = {
       initialCountry: 'sa', // set default country as Saudi Arabia
-      loadUtilsOnInit: 'node_modules/intl-tel-input/build/js/utils.js', // for validation and formatting
+      //loadUtilsOnInit: 'node_modules/intl-tel-input/build/js/utils.js', // for validation and formatting
+      //loadUtilsOnInit: 'intl-tel-input/utils'
     };
 
   }
@@ -48,15 +49,18 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['initialPhoneNumber']) {
       // Reinitialize the intlTelInput if the initialPhoneNumber has changed
-      this.initializeIntlTelInput();
+      if (this.initialPhoneNumber && this.initialPhoneNumber !== '') {
+        //this.inputElement.value = this.initialPhoneNumber;
+        this.iti.setNumber( this.initialPhoneNumber);
+      }
+     
+      //this.initializeIntlTelInput();
     }
   }
   ngAfterViewChecked(): void {
     // Ensure the input element is available after the view is checked
-    
-      this.initializeIntlTelInput();
-    
-  }
+     this.initializeIntlTelInput();
+    }
 
   initializeIntlTelInput(): void {
 

@@ -144,7 +144,8 @@ export class TopbarComponent implements OnInit, OnDestroy {
    navigateToNotification(notification: any) {
     // Update Notification to be set as Seen
       notification.seen = true;
-      this.store.dispatch(updateNotificationlist({updatedData: notification}))
+      const notifcationObject = {id : notification.id, seen: true};
+      this.store.dispatch(updateNotificationlist({updatedData: notifcationObject}))
       this.fetchNotification();
     switch (notification.type) {
 

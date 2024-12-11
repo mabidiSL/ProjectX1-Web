@@ -3,12 +3,30 @@
     <span class="visually-hidden">{{'Loading...' | translate}}</span>
   </div>
 </div> 
+
 <div #formElement class="row">
     <div class="col-19">
         <div class="card">
             <div class="card-body ">
               <form  [formGroup]="storeForm"  class="m-4">
                 <div *ngIf="formError" class="alert alert-danger">{{ formError | translate }}</div>
+                <div class="row d-flex justify-content-end">
+                  <div class="col-12 mb-3 text-end">
+                    <div class="form-group">
+                      <ui-switch
+                        color="##343a40"
+                        [disabled]="type === 'view'"
+                        [checked]="storeForm.get('status').value === 'active'"
+                        [uncheckedLabel]="'InActive' | translate"
+                        [checkedLabel]="'Active' | translate"
+                        size="small"
+                        class="me-1"
+                        formControlName="status"
+                        (changeEvent)="onChangeEventEmit($event)">
+                      </ui-switch>
+                  </div>
+                  </div>
+                </div> 
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <div class="form-group ">
@@ -46,23 +64,15 @@
                               </div>
                           </div> 
                       </div>
-                      <div class="col-md-6 mb-3">
-                        <div class="form-group ">
-                           <label for="url" >{{'Store_url' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                           <input type="text" id="url" class="form-control" formControlName="url" [readonly]="type==='view'" >
-                           <!-- <div *ngIf="storeForm.get('url').touched && storeForm.get('url').invalid" class="invalid-feedback d-block">
-                                <span *ngIf="storeForm.get('url').errors?.['required']">{{'store url  is required'| translate}}.</span>
-                              </div> -->
-                          </div> 
-                      </div>
+                     
                 <div *ngIf="currentRole === 'Admin'" class="col-md-6 mb-3">
                   <div class="form-group ">
-                     <label for="merchant_id" >{{'Merchant_Name' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                     <ng-select [readonly]="type === 'view'"  id="merchant_id"  placeholder="{{'Select_the_merchant' | translate}}" [items]="merchantList" bindLabel="translatedName" 
-                     bindValue="id"  formControlName="merchant_id" (change)="onChangeMerchantSelection($event)">
+                     <label for="company_id" >{{'Merchant_Name' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                     <ng-select [readonly]="type === 'view'"  id="company_id"  placeholder="{{'Select_the_merchant' | translate}}" [items]="merchantList" bindLabel="translatedName" 
+                     bindValue="id"  formControlName="company_id" (change)="onChangeMerchantSelection($event)">
                         </ng-select>
-                        <div *ngIf="storeForm.get('merchant_id').touched && storeForm.get('merchant_id').invalid" class="invalid-feedback d-block">
-                          <span *ngIf="storeForm.get('merchant_id').errors?.['required']">{{'merchant_is_required'| translate}}.</span>
+                        <div *ngIf="storeForm.get('company_id').touched && storeForm.get('company_id').invalid" class="invalid-feedback d-block">
+                          <span *ngIf="storeForm.get('company_id').errors?.['required']">{{'merchant_is_required'| translate}}.</span>
                       </div> 
                   </div>                       
                 </div>
@@ -155,7 +165,7 @@
                         
                         </div>
                       </div>
-                     
+                       
                                  
               </div>
                 <div class="col-12  mt-4">

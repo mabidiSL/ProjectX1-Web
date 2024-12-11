@@ -1,20 +1,11 @@
 /* General container styles for the upload component */
-.image-upload-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    border-radius: 8px;
-    position: relative;
-    width: 100%;
-  }
+
   
   /* Dashed border style applied when the container has a file */
   .dashed-border {
     border: 2px dashed #8d9196;  /* Blue dashed border */
     background-color: #f4eeee;   /* Light gray background */
-    padding: 25px;
+    padding: 20px;
     margin-bottom: 20px;
     width: 100%;
   }
@@ -86,4 +77,22 @@
   .text-gray-600 {
     color: #4b5563;
   }
+
+  .image-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 8px;
+    position: relative;
+    width: 250px; /* Set a fixed width for the container */
+    height: 150px; /* Set a fixed height for the container */
+    background-color: #f5f5f5; /* Optional: background color for the container */
+  }
   
+  .image-upload-container img {
+    max-width: 100%; /* Image should not exceed container width */
+    max-height: 100%; /* Image should not exceed container height */
+    object-fit: contain; /* Ensure the image maintains its aspect ratio */
+  }

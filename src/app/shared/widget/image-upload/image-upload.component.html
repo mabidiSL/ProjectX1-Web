@@ -1,12 +1,6 @@
-<div
-
-class="image-upload-container dashed-border"
-  
+<div class="image-upload-container dashed-border " 
 >
-  <label
-    
-    class="flex-center"
-  >
+  <label class="flex-center"  >
     <input
       type="file"
       [id]="id"
@@ -16,7 +10,7 @@ class="image-upload-container dashed-border"
       <em class="fas fa-cloud-upload-alt text-gray-600 fs-30"></em>
       <div>
         <p *ngIf="selectedFile || existantImage; else defaultText" class="selected-file">
-            <img [src]="selectedFile || existantImage" [alt]="alt" class="img-fluid" width="200">
+            <img [src]="selectedFile || existantImage" [alt]="alt" class="image-upload-container img" >
         </p>
         <ng-template #defaultText>
           <p class="mt-2 text-sm font-medium fs-15">

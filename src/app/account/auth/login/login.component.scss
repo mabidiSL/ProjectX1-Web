@@ -1,53 +1,38 @@
-.btn-gold {
-    background-color: #d4af37; /* gold color */
-    border-color: #d4af37;
-    color: #333; /* optional: set text color to dark gray */
-  }
-  .btn-brown {
-    background-color: #eadeb6; /* gold color */
-    //border-color: #6f6237;
-    //color: #333; /* optional: set text color to dark gray */
-  }
-  .container {
-    max-width: 1400px; /* or any other width you prefer */
-    max-height: 800px;
-   
-  }
-  .logo-row {
-    margin-bottom: 40px; /* adjust the value to your liking */
-    margin-top: 20px;
-  }
-  .logo-img {
-    width: 60%;  /* Take up 100% of the width of the parent */
-    max-width: 60%; /* Prevent the image from stretching beyond its natural width */
-    height: auto;   /* Maintain aspect ratio */
-    object-fit: contain;  /* Ensures the image fits inside the container without distortion */
-    border-radius: 8px;  /* Optionally, add border-radius for rounded corners */
-  }
-  
-  /* You can also adjust the size of the image for different screen sizes */
-  @media (max-width: 576px) {
-    .logo-img {
-      width: 80%;  /* For smaller screens, make the logo a bit smaller */
-      margin: 0 auto;
-    }
-}
-  .card {
-    //border: 5px solid #d4af37; /* add a 1px solid border with a light gray color */
-    border-radius: 20px; /* add a 10px border radius to give it a rounded corner */
-    padding: 20px; /* add some padding to create space between the border and the content */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* add a subtle box shadow to give it some depth */
-  }
-  .account-pages {
-    position: absolute; /* Allows it to cover the full viewport */
-    top: 0;
-    left: 0;
-    width: 100vw; /* Full width of the viewport */
-    height: 100vh; /* Full height of the viewport */
-    
-    display: flex; /* Center content vertically and horizontally */
-    align-items: center; /* Center content vertically */
-    justify-content: center; /* Center content horizontally */
+
+
+.container {
+  display: flex; /* Flexbox to split the screen */
+  height: 100vh; /* Full height of the viewport */
 }
 
- 
+.left-section {
+  width: 70%; /* Adjust as needed */
+  background-color: #f0f0f0; /* Example background color */
+  padding: 20px;
+}
+
+.right-section {
+  width: 30%; /* Adjust as needed */
+  background-color: #fff; /* Example background color */
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Vertically and horizontally center the content */
+  height: 100vh; /* Make sure the right section takes full height */
+}
+
+.right-section .form-container {
+  margin-top: 30% ;
+  width: 100%; /* Adjust the form width as needed */
+}
+.btn-brown{
+  background-color:  #b49769;
+  color: white
+
+}
+.copyright-text {
+  font-size: 0.8rem; /* Smaller font size for copyright */
+  color: #6c757d;    /* Lighter gray color */
+  display: block;
+  margin-top: 50px;   /* Space from the form above */
+}

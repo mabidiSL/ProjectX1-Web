@@ -1,8 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild, Renderer2 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { select, Store } from '@ngrx/store';
-import { Router } from '@angular/router';
 import { login } from 'src/app/store/Authentication/authentication.actions';
 import { Observable } from 'rxjs';
 import { selectDataLoading } from 'src/app/store/Authentication/authentication-selector';
@@ -31,12 +30,14 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   // set the currenr year
   year: number = new Date().getFullYear();
+  @ViewChild('leftsection') leftsection: ElementRef<HTMLElement>;
+  isRtl: boolean = false;  // Default is LTR
 
   // tslint:disable-next-line: max-line-length
   constructor(private formBuilder: UntypedFormBuilder,
     private randomBackgroundService: RandomBackgroundService,
     private backgroundService: BackgroundService,
-    private router: Router, 
+    private renderer: Renderer2,
     private store: Store,
     ) { 
       this.loading$ = this.store.pipe(select(selectDataLoading));
@@ -46,12 +47,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // if (localStorage.getItem('currentUser')) {
-    //   this.router.navigate(['/private']);
-    // }
-    // else
-    // {
-    // form validation
+      this.isRtl = document.documentElement.dir === 'rtl';
       this.loginForm = this.formBuilder.group({
           email: ['', [Validators.required]],
           password: ['', [Validators.required]],
@@ -61,7 +57,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     const direction = document.documentElement.dir === 'rtl' ? 'rtl' : 'ltr';
     this.randomBackgroundService.getRandomBackground(direction).subscribe(
       (randomImage) => {
-        this.backgroundService.setBackground(randomImage);
+        this.backgroundService.setBackgroundElement(this.leftsection.nativeElement, randomImage);
       },
       (error) => {
         console.error('Error setting random background:', error);
@@ -71,6 +67,12 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     
     
+  }
+  toggleRtl(): void {
+    // Toggle between RTL and LTR
+    const newDirection = this.isRtl ? 'ltr' : 'rtl';
+    this.renderer.setAttribute(document.documentElement, 'dir', newDirection);
+    this.isRtl = newDirection === 'rtl';
   }
 
   // convenience getter for easy access to form fields
@@ -100,7 +102,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   
 
   ngOnDestroy(): void {
-    this.backgroundService.resetBackground();
+    this.backgroundService.resetBackgroundElement(this.leftsection.nativeElement);
   }
 
  

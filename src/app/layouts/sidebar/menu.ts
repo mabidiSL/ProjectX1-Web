@@ -218,33 +218,8 @@ export const MENU: MenuItem[] = [
                 label: 'MENUITEMS.PRODUCTMANAGEMENT.COUPONS.TEXT',
                 claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Coupons, claimValue: [Permission.Create, Permission.ViewAll,Permission.Approve , Permission.Decline]}],
                 icon: 'bxs-coupon',
-                parentId: 18,
-                subItems: [
-                //     {
-                //     id: 21,
-                //     label: 'MENUITEMS.PRODUCTMANAGEMENT.COUPONS.LIST.CREATE',
-                //     icon:'bx bx-chevron-right',    
-                //     link: '/private/coupons/create',
-                //     claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Coupons, claimValue: [Permission.Create]}],
-                   
-                //    },
-                   {
-                    id: 21,
-                    label: 'MENUITEMS.PRODUCTMANAGEMENT.COUPONS.LIST.COUPONS',
-                    icon:'bx bx-chevron-right',    
-                    link: '/private/coupons',
-                    claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Coupons, claimValue: [Permission.ViewAll]}],
-                   
-                   },
-                   {
-                        id: 22,
-                        label: 'MENUITEMS.PRODUCTMANAGEMENT.COUPONS.LIST.APPROVALCOUPONS',
-                        icon:'bx bx-chevron-right',    
-                        link: '/private/coupons/approve',
-                        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Coupons, claimValue: [Permission.ViewAll,Permission.Approve, Permission.Decline]}],
-                    
-                   }
-                ]
+                link: '/private/coupons',
+                
 
    },
             {
@@ -252,33 +227,8 @@ export const MENU: MenuItem[] = [
                 label: 'MENUITEMS.PRODUCTMANAGEMENT.GIFTCARDS.TEXT',
                 icon: 'bx bxs-gift',
                 claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Gift_Cards, claimValue: [Permission.ViewAll, Permission.Create, Permission.Approve, Permission.Decline]}],
-                parentId: 18,
-                subItems: [
-                //     {
-                //     id: 21,
-                //     label: 'MENUITEMS.PRODUCTMANAGEMENT.GIFTCARDS.LIST.CREATE',
-                //     icon:'bx bx-chevron-right',    
-                //     link: '/private/giftCards/create',
-                //     claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Gift_Cards, claimValue: [Permission.Create]}],
-                   
-                //    },
-                   {
-                    id: 21,
-                    label: 'MENUITEMS.PRODUCTMANAGEMENT.GIFTCARDS.LIST.GIFTCARDS',
-                    icon:'bx bx-chevron-right',    
-                    link:'/private/giftCards',
-                    claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Gift_Cards, claimValue: [Permission.ViewAll]}],
-                   
-                   },
-                   {
-                        id: 22,
-                        label: 'MENUITEMS.PRODUCTMANAGEMENT.GIFTCARDS.LIST.APPROVALGIFTCARDS',
-                        icon:'bx bx-chevron-right',    
-                        link:'/private/giftCards/approve',
-                        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Gift_Cards, claimValue: [Permission.ViewAll,Permission.Approve, Permission.Decline]}],
-                    
-                   }
-                ]
+                link:'/private/giftCards',
+               
             }
         ,
            

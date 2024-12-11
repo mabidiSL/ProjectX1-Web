@@ -10,6 +10,7 @@ import { selectDataLoading, selectRoleById } from 'src/app/store/Role/role-selec
 import { addRolelist, getRoleById, updateRolelist } from 'src/app/store/Role/role.actions';
 import { Modules, Permission, Role } from 'src/app/store/Role/role.models';
 import * as _ from 'lodash';
+import { AuthenticationService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-form-role',
@@ -42,6 +43,7 @@ export class FormRoleComponent implements OnInit, OnDestroy {
   moduleKeys: any[] = [];
   permissionKeys: any[] = [];
   originalRoleData: Role = {}; 
+  currentUser: _User = null;
   @ViewChild('formElement', { static: false }) formElement: ElementRef;
 
 
@@ -50,13 +52,21 @@ export class FormRoleComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute, 
     private router: Router,
     private formUtilService: FormUtilService,
+    private authservice: AuthenticationService,
     public store: Store) {
      
       this.loading$ = this.store.pipe(select(selectDataLoading)); 
-      this.currentRole = this.getCurrentUser()?.role.translation_data[0].name;
+
+      this.authservice.currentUser$.subscribe(user => {
+        this.currentRole = user?.role.translation_data[0].name;
+        this.currentUser =  user;
+        console.log(this.currentRole);
+        
+      } );
+      
       if(this.currentRole !== 'Admin'){
         //Modify moduleskeys and permissions key when a merchant or an employee is logged in
-         this.merchantClaims = this.getCurrentUser()?.role.claims;
+         this.merchantClaims = this.currentUser?.role.claims;
          this.mapClaimsToEnums(this.merchantClaims);
         }
       else
@@ -89,11 +99,7 @@ export class FormRoleComponent implements OnInit, OnDestroy {
 
   
   }
-     private getCurrentUser(): _User {
-      // Replace with your actual logic to retrieve the user role
-      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      return currentUser;
-  } 
+ 
  
 
   ngOnInit() {

@@ -24,6 +24,7 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
+import { AuthenticationService } from 'src/app/core/services/auth.service';
 
 @Injectable()
 export class CouponslistEffects {
@@ -50,14 +51,13 @@ export class CouponslistEffects {
             mergeMap(({ newData }) =>
                 this.CrudService.addData('/coupons', newData).pipe(
                     map((newData) => {
-                      const userRole = this.getCurrentUserRole(); 
-                          if (userRole === 'Admin') {
+                          if (this.userRole === 'Admin') {
                               this.toastr.success('The new Coupon has been added successfully.');
-                              this.router.navigate(['/private/coupons']);
+                              
                           } else {
                               this.toastr.success('The new Coupon Request has been sent to Admin.');
-                              this.router.navigate(['/private/coupons/approve']); 
                           }
+                          this.router.navigate(['/private/coupons']);
                         // Dispatch the action to fetch the updated Coupon list after adding a new Coupon
                         return addCouponlistSuccess({newData});
                       }),
@@ -135,12 +135,14 @@ export class CouponslistEffects {
         private CrudService: CrudService,
         private router: Router,
         private formUtilService: FormUtilService,
+        private authservice: AuthenticationService,
         public toastr:ToastrService
-    ) { }
+    ) {
+        this.authservice.currentUser$.subscribe(user => {
+          this.userRole = user?.role.translation_data[0].name;
+          console.log(this.userRole);
+        } );
+     }
+    userRole : string = null;
    
-    private getCurrentUserRole(): string {
-      // Replace with your actual logic to retrieve the user role
-      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      return currentUser ? currentUser.role.translation_data[0].name : '';
-    }
 }

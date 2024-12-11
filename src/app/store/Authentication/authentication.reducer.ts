@@ -8,6 +8,7 @@ export interface AuthenticationState {
     loading: boolean,
     user: _User | null;
     message: string;
+    success: boolean;
     company: any | null;
     token: string |null;
     error: string | null;
@@ -17,6 +18,7 @@ const initialState: AuthenticationState = {
     isLoggedIn: false,
     loading: false,
     message: null,
+    success: false,
     company: null,
     user: null,
     token: null,
@@ -26,7 +28,7 @@ const initialState: AuthenticationState = {
 export const authenticationReducer = createReducer(
     initialState,
     on(Register, (state) => ({ ...state, loading: true, error: null })),
-    on(RegisterSuccess, (state, { user }) => ({ ...state, loading: false, isLoggedIn: false, user, error: null, })),
+    on(RegisterSuccess, (state, { user }) => ({ ...state, loading: false, isLoggedIn: false, user,success: true, error: null, })),
     on(RegisterFailure, (state, { error }) => ({ ...state, loading: false, error })),
 
     on(verifyEmail, (state) => ({ ...state, loading: true, error: null })),

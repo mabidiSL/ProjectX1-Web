@@ -53,14 +53,10 @@ export class PaymentEffects {
             mergeMap(({ newData }) =>
                 this.CrudService.addData('/payment', newData).pipe(
                     map((newData) => {
-                      const userRole = this.getCurrentUserRole(); 
-                          if (userRole === 'Admin') {
+                     
                               this.toastr.success('The new Payment has been added successfully.');
-                              this.router.navigate(['/private/coupons']);
-                          } else {
-                              this.toastr.success('The new Payment Request has been sent to Admin.');
-                              this.router.navigate(['/private/coupons/approve']); 
-                          }
+                              this.router.navigate(['/private/payment']);
+                          
                         // Dispatch the action to fetch the updated Payment list after adding a new Payment
                         return addPaymentlistSuccess({newData});
                       }),
@@ -142,9 +138,5 @@ export class PaymentEffects {
         public toastr:ToastrService
     ) { }
    
-    private getCurrentUserRole(): string {
-      // Replace with your actual logic to retrieve the user role
-      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      return currentUser ? currentUser.role.translation_data[0].name : '';
-    }
+  
 }
