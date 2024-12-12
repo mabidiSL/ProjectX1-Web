@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { selectDataLoading } from 'src/app/store/Authentication/authentication-selector';
 import { RandomBackgroundService } from 'src/app/core/services/setBackground.service';
 import { BackgroundService } from 'src/app/core/services/background.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -30,7 +31,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   // set the currenr year
   year: number = new Date().getFullYear();
-  @ViewChild('leftsection') leftsection: ElementRef<HTMLElement>;
+  @ViewChild('rightsection') rightsection: ElementRef<HTMLElement>;
   isRtl: boolean = false;  // Default is LTR
 
   // tslint:disable-next-line: max-line-length
@@ -38,6 +39,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private randomBackgroundService: RandomBackgroundService,
     private backgroundService: BackgroundService,
     private renderer: Renderer2,
+    private router: Router,
     private store: Store,
     ) { 
       this.loading$ = this.store.pipe(select(selectDataLoading));
@@ -48,16 +50,21 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
       this.isRtl = document.documentElement.dir === 'rtl';
+      if (localStorage.getItem('currentUser')) {
+        this.router.navigate(['/private']);
+      }
+      else
+      {
       this.loginForm = this.formBuilder.group({
           email: ['', [Validators.required]],
           password: ['', [Validators.required]],
       });
-  //}
-
+   }
     const direction = document.documentElement.dir === 'rtl' ? 'rtl' : 'ltr';
+    console.log(direction);
     this.randomBackgroundService.getRandomBackground(direction).subscribe(
       (randomImage) => {
-        this.backgroundService.setBackgroundElement(this.leftsection.nativeElement, randomImage);
+        this.backgroundService.setBackgroundElement(this.rightsection.nativeElement, randomImage);
       },
       (error) => {
         console.error('Error setting random background:', error);
@@ -102,7 +109,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   
 
   ngOnDestroy(): void {
-    this.backgroundService.resetBackgroundElement(this.leftsection.nativeElement);
+    this.backgroundService.resetBackgroundElement(this.rightsection.nativeElement);
   }
 
  

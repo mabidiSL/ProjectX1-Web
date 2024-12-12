@@ -36,11 +36,9 @@
                       </div>
                      
                       <div class="col-md-6 mb-3">
-                          <label for="name_ar">{{'Name_coupon_arabic'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                          <label for="name_ar">{{'Name_coupon_arabic'|translate}}</label>
                           <input class="form-control" id="name_ar" formControlName="name_ar" type="text" [readonly]="type==='view'"/>
-                          <div *ngIf="formCoupon.get('name_ar').invalid && formCoupon.get('name_ar').touched" class="text-danger">
-                              {{'Translated name is required'|translate}}
-                          </div>
+                          
                       </div>
 
                       <div class="col-md-6 mb-3">
@@ -52,11 +50,9 @@
                       </div>
 
                       <div class="col-md-6 mb-3">
-                          <label for="termsAndConditions_ar">{{'Terms and Conditions in arabic'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                          <label for="termsAndConditions_ar">{{'Terms and Conditions in arabic'|translate}}</label>
                           <textarea class="form-control" id="termsAndConditions_ar" formControlName="termsAndConditions_ar" rows="5" [readonly]="type==='view'"></textarea>
-                          <div *ngIf="formCoupon.get('termsAndConditions_ar').invalid && formCoupon.get('termsAndConditions_ar').touched" class="text-danger">
-                              {{'Translated Terms and Conditions in arabic are required'|translate}}
-                          </div>
+                          
                       </div>
                       <div class="col-md-6 mb-3">
                         <label for="description">{{'Description'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
@@ -66,11 +62,9 @@
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
-                      <label for="description_ar">{{'Description in arabic'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                      <label for="description_ar">{{'Description in arabic'|translate}}</label>
                       <textarea class="form-control" id="description_ar" formControlName="description_ar" rows="5" [readonly]="type==='view'"></textarea>
-                      <div *ngIf="formCoupon.get('description_ar').invalid && formCoupon.get('description_ar').touched" class="text-danger">
-                          {{'Description in arabic is required'|translate}}
-                      </div>
+                      
                   </div>
                    
                        <div *ngIf="type === 'edit'" class="col-md-6 mb-3">
@@ -79,17 +73,17 @@
                       </div> 
                     
                       <div *ngIf="currentRole === 'Admin'" class="col-md-6 mb-3">
-                        <label for="merchant_id">{{'Merchant_Name'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                        <ng-select [readonly]="type === 'view'" id="merchant_id"  placeholder="{{'Select_the_merchant' |translate}}" [items]="merchantList" bindLabel="translatedName" 
-                        bindValue="id"  formControlName="merchant_id" (change)="onChangeMerchantSelection($event)">
+                        <label for="company_id">{{'Merchant_Name'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                        <ng-select [readonly]="type === 'view'" id="company_id"  placeholder="{{'Select_the_merchant' |translate}}" [items]="merchantList" bindLabel="translatedName" 
+                        bindValue="id"  formControlName="company_id" (change)="onChangeMerchantSelection($event)">
                         </ng-select>
-                        <div *ngIf="formCoupon.get('merchant_id').invalid && formCoupon.get('merchant_id').touched" class="text-danger">
+                        <div *ngIf="formCoupon.get('company_id').invalid && formCoupon.get('company_id').touched" class="text-danger">
                           {{'Merchant Name is required'|translate}}
                         </div>
                       </div>
                     
                       <div class="col-md-6 mb-3">
-                        <label for="stores">{{'Stores'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                        <label for="stores">{{'Stores'|translate}}</label>
                         <ng-select
                           [readonly]="type === 'view'"
                           id="stores"
@@ -134,13 +128,7 @@
                     {{'Quantity is required'|translate}}
                   </div>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <label for="nbr_of_use">{{'Number Of Use for Customer'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                  <input class="form-control" id="nbr_of_use" formControlName="nbr_of_use" type="number" [readonly]="type==='view'"/>
-                  <div *ngIf="formCoupon.get('nbr_of_use').invalid && formCoupon.get('nbr_of_use').touched" class="text-danger">
-                    {{'Number of use is required'|translate}}
-                  </div>
-                </div>
+                
                 <div *ngIf="currentRole === 'Admin'" class="col-md-6 mb-3">
                   <label for="contractRepName">{{'Contract Representative Name'|translate}}</label>
                   <input class="form-control" id="contractRepName" formControlName="contractRepName" type="text" [readonly]="type==='view'"/>

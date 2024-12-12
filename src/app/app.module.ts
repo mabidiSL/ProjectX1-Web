@@ -72,6 +72,10 @@ import { LogsModule } from './pages/logs/logs.module';
 import { CustomersModule } from './pages/customers/customers.module';
 import { PaymentModule } from './pages/payment/payment.module';
 import { PaymentEffects } from './store/payment/payment.effect';
+import { AccountModule } from './account/account.module';
+import { APP_INITIALIZER } from '@angular/core';
+import { LanguageInitService } from './core/services/initLanguage.service';
+
 
 // Register the Arabic locale
 registerLocaleData(localeAr, 'ar');
@@ -110,6 +114,7 @@ export function createTranslateLoader(http: HttpClient): any {
         deps: [HttpClient]
       }
     }),
+    
     LayoutsModule,
     MerchantsModule,
     CouponsModule,
@@ -126,6 +131,7 @@ export function createTranslateLoader(http: HttpClient): any {
     NotificationsModule,
     TranslateModule,
     AppRoutingModule,
+    AccountModule,
     ExtrapagesModule,
     TabsModule.forRoot(),
     AccordionModule.forRoot(),
@@ -162,7 +168,13 @@ export function createTranslateLoader(http: HttpClient): any {
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
    // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    provideAnimationsAsync('noop'),
+   {
+    provide: APP_INITIALIZER,
+    useFactory: (languageInitService: LanguageInitService) => () => languageInitService.initializeLanguage(),
+    deps: [LanguageInitService],
+    multi: true,
+  }, 
+   provideAnimationsAsync('noop'),
     //{ provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true },
    // { provide: LOCALE_ID, useValue: 'ar' } ,
     provideNgxMask(),

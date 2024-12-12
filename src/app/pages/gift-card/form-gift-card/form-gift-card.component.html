@@ -19,15 +19,13 @@
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="name_ar">{{'Name_in_arabic'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                            <label for="name_ar">{{'Name_in_arabic'|translate}}</label>
                             <input class="form-control" id="name_ar" formControlName="name_ar" type="text" [readonly]="type==='view'"/>
-                            <div *ngIf="formGiftCard.get('name_ar').invalid && formGiftCard.get('name_ar').touched" class="text-danger">
-                                {{'Name in arabic is required'|translate}}
-                            </div>
+                            
                         </div>
                         
                         <div class="col-md-6 mb-3">
-                            <label for="termsAndConditions">{{'Terms and Conditions'|translate}}</label>
+                            <label for="termsAndConditions">{{'Terms and Conditions'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                             <textarea class="form-control" id="termsAndConditions" formControlName="termsAndConditions" rows="5"[readonly]="type==='view'"></textarea>
                             <div *ngIf="formGiftCard.get('termsAndConditions').invalid && formGiftCard.get('termsAndConditions').touched" class="text-danger">
                                 {{'Terms and Conditions are required'|translate}}
@@ -36,9 +34,7 @@
                         <div class="col-md-6 mb-3">
                             <label for="termsAndConditions_ar">{{'Terms and Conditions in arabic'|translate}}</label>
                             <textarea class="form-control" id="termsAndConditions_ar" formControlName="termsAndConditions_ar" rows="5" [readonly]="type==='view'"></textarea>
-                            <div *ngIf="formGiftCard.get('termsAndConditions_ar').invalid && formGiftCard.get('termsAndConditions_ar').touched" class="text-danger">
-                                {{'Terms and Conditions in arabic are required'|translate}}
-                            </div>
+                            
                         </div>
   
                        
@@ -50,24 +46,22 @@
                           </div>
                       </div>
                       <div class="col-md-6 mb-3">
-                        <label for="description_ar">{{'Description in arabic'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                        <label for="description_ar">{{'Description in arabic'|translate}}</label>
                         <textarea class="form-control" id="description_ar" formControlName="description_ar" rows="5" [readonly]="type==='view'"></textarea>
-                        <div *ngIf="formGiftCard.get('description_ar').invalid && formGiftCard.get('description_ar').touched" class="text-danger">
-                            {{'Description in arabic is required'|translate}}
-                        </div>
+                       
                      </div>
                       
                         <div *ngIf="currentRole === 'Admin'" class="col-md-6 mb-3">
-                          <label for="merchant_id">{{'Merchant Name'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <ng-select [readonly]="type === 'view'" id="merchant_id"  placeholder="{{'Select_the_merchant' |translate}}" [items]="merchantList" bindLabel="translatedName" 
-                          bindValue="id"  formControlName="merchant_id" (change)="onChangeMerchantSelection($event)" >
+                          <label for="company_id">{{'Merchant Name'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                          <ng-select [readonly]="type === 'view'" id="company_id"  placeholder="{{'Select_the_merchant' |translate}}" [items]="merchantList" bindLabel="translatedName" 
+                          bindValue="id"  formControlName="company_id" (change)="onChangeMerchantSelection($event)" >
                           </ng-select>
-                          <div *ngIf="formGiftCard.get('merchant_id').invalid && formGiftCard.get('merchant_id').touched">
+                          <div *ngIf="formGiftCard.get('company_id').invalid && formGiftCard.get('company_id').touched">
                             {{'Merchant Name is required'|translate}}
                           </div>
                         </div>
                         <div class="col-md-6 mb-3">
-                          <label for="stores">{{'Stores'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                          <label for="stores">{{'Stores'|translate}}</label>
                           <ng-select 
                           [readonly]="type === 'view'" 
                           id="stores" 
@@ -80,9 +74,7 @@
                           >
                           </ng-select>
                           <!-- <div *ngIf="isLoading" class="text-info">Loading stores...</div> -->
-                          <div *ngIf="formGiftCard.get('stores').invalid && formGiftCard.get('stores').touched">
-                            {{'Store is required'|translate}}
-                          </div>
+                          
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="quantity">{{'Quantity'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
@@ -157,14 +149,14 @@
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
                       <label for="sectionOrderAppearance">{{'Section_Order_Appearance'| translate}}</label>
-                      <input class="form-control" id="sectionOrderAppearance" formControlName="sectionOrderAppearance" type="number" [readonly]="type==='view'"/>
+                      <input class="form-control" id="sectionOrderAppearance" formControlName="sectionOrderAppearance" type="text" [readonly]="type==='view'"/>
 
                      </div>
                   </div>
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
                       <label for="categoryOrderAppearance">{{'Category_Order_Appearance'| translate}}</label>
-                      <input class="form-control" id="categoryOrderAppearance" formControlName="categoryOrderAppearance" type="number" [readonly]="type==='view'"/>
+                      <input class="form-control" id="categoryOrderAppearance" formControlName="categoryOrderAppearance" type="text" [readonly]="type==='view'"/>
 
                       
                      </div>
@@ -179,7 +171,7 @@
                   </div>
                 
                   <div class="col-md-6 mb-3">
-                    <label for="discount">{{'Discount'|translate}}</label>
+                    <label for="discount">{{'Discount'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                     <input class="form-control" id="discount" formControlName="discount" type="number" />
                     <div *ngIf="formGiftCard.get('discount').invalid && formGiftCard.get('discount').touched">
                       {{'Discount is required'|translate}}

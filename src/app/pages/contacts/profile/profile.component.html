@@ -18,7 +18,7 @@
                 <div class="col-lg-4">
                 </div>
                 <div class="col-lg-8">
-                  <form class="form-horizontal" [formGroup]="profileForm" >
+                  <form #formElement class="form-horizontal" [formGroup]="profileForm" >
                     <!-- <div class="row mb-4">
                       <label for="name" class="col-sm-3 col-form-label">Name</label>
                       <div class="col-sm-9">
@@ -26,13 +26,21 @@
                       </div>
                   </div> -->
                   <div class="row mb-4">
-                    <label for="username" class="col-sm-3 col-form-label">{{'Username'| translate}}</label>
+                    <label for="f_name" class="col-sm-3 col-form-label">{{'First_Name'| translate}}</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control"formControlName="username" id="username" placeholder="Enter Your UserName">
-                        <div class="invalid-feedback">{{'Please enter your username'  | translate}}.</div>
+                        <input type="text" class="form-control"formControlName="f_name" id="f_name" placeholder="Enter Your First Name">
+                        <div *ngIf="profileForm.get('f_name').touched && profileForm.get('f_name').invalid" class="invalid-feedback d-block">
+                          <span *ngIf="profileForm.get('f_name').errors?.['required']">{{'Please enter your First Name'| translate}}.</span>
+                        </div>
                     </div>
                 </div>
-               
+                  <div class="row mb-4">
+                    <label for="l_name" class="col-sm-3 col-form-label">{{'Last_Name'| translate}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" formControlName="l_name" id="l_name" placeholder="Enter Your Last Name">
+                        <div class="invalid-feedback">{{'Please enter your Last Name'  | translate}}.</div>
+                    </div>
+                </div>
                   <div class="row mb-4">
                       <label for="horizontal-email-input" class="col-sm-3 col-form-label">{{'Email'| translate}}</label>
                       <div class="col-sm-6">
@@ -43,9 +51,16 @@
                   <div class="row mb-4">
                     <label for="phone" class="col-sm-3 col-form-label">{{'Phone'| translate}}</label>
                     <div class="col-sm-6">
-                        <input class="form-control" formControlName="phone" type="tel" value="1-(555)-555-5555" id="phone" placeholder="{{'Enter Your Phone'| translate}}">
-                        <div class="invalid-feedback">{{'Please enter your  phone number'  | translate}}.</div>
-
+                        <app-phone-number
+                        [initialPhoneNumber]="profileForm.get('phone').value"
+                        *ngIf="profileForm"
+                        [inputId]="'phone'"
+                        [placeholder]="'Enter your Phone' | translate"
+                         (phoneNumberChanged)="onPhoneNumberChanged($event)" >
+                       </app-phone-number>
+                        <!-- <div *ngIf="profileForm.get('phone').touched && profileForm.get('phone').invalid" class="invalid-feedback d-block">
+                         <span *ngIf="profileForm.get('phone').errors?.['required']">{{'Phone Number is required'| translate}}.</span>
+                       </div>    -->
                       </div>
                   </div>
                

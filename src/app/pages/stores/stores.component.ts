@@ -37,9 +37,8 @@ export class StoresComponent implements OnInit {
 
   columns : any[]= [
     { property: 'translation_data[0].name', label: 'Store_Name' },
-    { property: 'merchant.translation_data[0].name', label: 'Merchant' },
+    { property: 'company.translation_data[0].name', label: 'Merchant' },
     { property: 'city.translation_data[0].name', label: 'City' },
-    { property: 'totalOffres', label: 'Total Offers' },
     { property: 'status', label: 'Status' },
   ];
 
@@ -53,7 +52,7 @@ export class StoresComponent implements OnInit {
 
   ngOnInit() {
           
-        this.store.dispatch(fetchStorelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, status:'', merchant_id:null}));
+        this.store.dispatch(fetchStorelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, status:'', company_id:null}));
         this.storeList$.subscribe(data => {
         this.originalArray = data; // Store the full Store list
         this.filteredArray = [...this.originalArray];
@@ -67,12 +66,12 @@ export class StoresComponent implements OnInit {
    }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchStorelistData({ page: this.currentPage, itemsPerPage: totalItems,status:'', merchant_id:null}));
+    this.store.dispatch(fetchStorelistData({ page: this.currentPage, itemsPerPage: totalItems,status:'', company_id:null}));
    }
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchStorelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,status:'', merchant_id:null}));
+    this.store.dispatch(fetchStorelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,status:'', company_id:null}));
     
   }
 

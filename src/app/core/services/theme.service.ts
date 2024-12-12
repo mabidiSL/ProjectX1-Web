@@ -11,6 +11,7 @@ export class ThemeService {
   loadRtlStyles() {
     this.removeStylesheet(this.rtlStylesheetId); // Ensure no duplicate RTL stylesheets
     document.body.classList.add('rtl');
+    document.documentElement.dir = 'rtl';         // Set the direction (dir) of HTML to RTL
     this.addStylesheet('assets/scss/rtl.scss', this.rtlStylesheetId); // Adjust the path as necessary
   }
 
@@ -18,6 +19,7 @@ export class ThemeService {
   loadLtrStyles() {
     this.removeStylesheet(this.rtlStylesheetId);
     document.body.classList.remove('rtl');
+    document.documentElement.dir = 'ltr';
     }
 
 

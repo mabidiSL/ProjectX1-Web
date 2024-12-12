@@ -1,373 +1,194 @@
 
-  <div class="container mt-2">
-      <div class="row justify-content-center">
-        <!-- <div class="col-md-8 col-lg-6 col-xl-5"> -->
-          <div #formElement class="card overflow-hidden">
-              <!-- <div class="row logo-row" >
-                       
-                  <div class="col-12 my-5 text-center">
-                      <img src="assets/images/blank.svg" alt="" class="img-fluid">
-                    </div>
-              </div> -->
-              <div class="row m-5">
-                  <div class="col-12 text-center">
-                    <p class=" custom-text bg-primary text-white py-2">{{'Merchant Registration' | translate}}</p>
-                  </div>
-              </div>
-            <div *ngIf="formError" class="alert alert-danger">{{ formError | translate}}</div>
-              
-                <div id="basic-example">
-                  <ng-stepper #cdkStepper [linear]="true" class="wizard" >
-                    <cdk-step [optional]="false"[completed]="isStepValid(0)" >
-                      <ng-template cdkStepLabel>
-                        <span class="number">1.</span>
-                        <span>{{'Merchant Details' | translate}}</span>
-                      </ng-template>
-                      @if(cdkStepper.selectedIndex === 0){
-                      <section>
-                        <form [formGroup]="signupForm">
-                          <div class="row"> 
-                            <div class="col-md-6 mb-3">
-                              <div class="form-group ">
-                              <label for="merchantName" >{{'Merchant Name'| translate}} <span class="text-danger">*</span></label>
-                              <input type="text" id="merchantName" class="form-control" formControlName="merchantName" placeholder="{{ 'Enter merchant name' | translate }}" required>
-                              <div *ngIf="signupForm.get('merchantName').touched && signupForm.get('merchantName').invalid" class="invalid-feedback d-block">
-                                <span *ngIf="signupForm.get('merchantName').errors?.['required']">{{'Merchant Name is required'| translate}}.</span>
-                              </div>  
-                            </div>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                              <div class="form-group ">
-                              <label for="merchantName_ar" >{{'Merchant Name in arabic' | translate}} <span  class="text-danger">*</span></label>
-                              <input type="text" dir="rtl" id="merchantName_ar" class="form-control" formControlName="merchantName_ar" placeholder="{{ 'Enter merchant name in arabic' | translate }}" required  >
-                              <div *ngIf="signupForm.get('merchantName_ar').touched && signupForm.get('merchantName_ar').invalid" class="invalid-feedback d-block">
-                                <span *ngIf="signupForm.get('merchantName_ar').errors?.['required']">{{'Arabic Merchant Name is required'| translate}}.</span>
-                              </div>  
-                            </div>
-                            </div>
-                            
-                            <div class="col-md-6 mb-3">
-                                  <div class="form-group ">
-                                    <label for="companyEmail">{{'Merchant Email' | translate}} </label>
-                                    <input type="email" id="companyEmail" class="form-control" formControlName="companyEmail" placeholder="{{ 'Enter the company email' | translate }}" required>
-                                    <!-- <div *ngIf="signupForm.get('companyEmail').touched && signupForm.get('companyEmail').invalid" class="invalid-feedback d-block">
-                                      <span *ngIf="signupForm.get('companyEmail').errors?.['required']">{{'Company Email is required'| translate}}.</span>
-                                    </div> -->
-                                  </div>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                  <div class="form-group ">
-                                    <label for="website">{{'Merchant WebSite' | translate}}</label>
-                                    <input type="text" class="form-control" id="website" formControlName="website" placeholder="{{'Enter Company Email' | translate}}">
-                                  </div>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                  <div class="form-group">
-                                    <label for="officeTel" >{{'Merchant Phone Number' |  translate}} </label><br>
-                                   <app-phone-number
-                                   [initialPhoneNumber]="signupForm.get('officeTel').value"
-                                   *ngIf="signupForm"
-                                   [inputId]="'officeTel'"
-                                   [placeholder]="'Enter company phone' | translate"
-                                    (phoneNumberChanged)="onCompanyChanged($event)" >
-                                  </app-phone-number>
-                                   <!-- <div *ngIf="signupForm.get('officeTel').touched && signupForm.get('officeTel').invalid" class="invalid-feedback d-block">
-                                    <span *ngIf="signupForm.get('officeTel').errors?.['required']">{{'Company Phone Number is required'| translate}}.</span>
-                                  </div>    -->
-                                  </div>
-                                </div>
-                                                             
-                                <div class="col-md-6 mb-3">
-                                  <div class="form-group">
-                                    <label for="section_id">{{'Merchant Section' | translate}}<span  class="text-danger">*</span></label>
-                                    <ng-select  placeholder="{{'Select a section' | translate}}" [items]="sectionlist" bindLabel="translatedName" 
-                                    bindValue="id" id="section_id"  formControlName="section_id">
-                                    </ng-select>
-                                    <div *ngIf=" signupForm.get('section_id').touched &&  signupForm.get('section_id').invalid" class="invalid-feedback d-block">
-                                      <span *ngIf=" signupForm.get('section_id').errors?.['required']">{{'Section is required'| translate}}.</span>
-                                    </div>   
-                                  </div>
-                                </div>
-                                <div class="col-md-6 mb-3 ">
-                                  <div class="form-group ">
-                                    <label for="companyLogo">{{ 'Merchant Logo' | translate }}<span class="text-danger">*</span></label>
-                                    <div class="d-flex justify-content-center">
-                                    <app-image-upload [id]="'companyLogo'" [type]="'logo'" [label]="'Upload Merchant Logo' | translate" [existantImage]="existantmerchantLogo" [filename]="fileName1" [alt]="'Merchant Logo'"  (logoUploaded)="onLogoUpload($event)"></app-image-upload>
-                                    <div *ngIf="signupForm.get('companyLogo').touched && signupForm.get('companyLogo').invalid" class="invalid-feedback d-block">
-                                      <span *ngIf="signupForm.get('companyLogo').errors?.['required']">{{'Merchant Logo is required'| translate}}.</span>
-                                    </div>   
-                                  </div>
-                                   
-                                  </div>
-                                </div>
-                              
-                             
-                                  <div class="col-md-6 mb-3">
-                                    <div class="form-group ">
-                                        <label for="building_floor" >{{'Building/Floor'| translate }}  </label>
-                                        <input type="text" id="building_floor" class="form-control" formControlName="building_floor" placeholder="{{ 'Enter the building and the floor of the company' | translate }}"     >
-                                        <!-- <div *ngIf="signupForm.get('building_floor').touched && signupForm.get('building_floor').invalid" class="invalid-feedback d-block">
-                                        <span *ngIf="signupForm.get('building_floor').errors?.['required']">{{'building/floor is required'| translate}}.</span>
-                                        </div>   -->
-                                      </div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                      <div class="form-group ">
-                                        <label for="street" >{{'Street'| translate }}  </label>
-                                        <input type="text" id="street" class="form-control" formControlName="street" placeholder="{{ 'Enter the street of the company' | translate }}"     >
-                                        <!-- <div *ngIf="signupForm.get('registrationCode').touched && signupForm.get('bank').invalid" class="invalid-feedback d-block">
-                                        <span *ngIf="signupForm.get('registrationCode').errors?.['required']">{{'Registration Code is required'| translate}}.</span>
-                                        </div>   -->
-                                        </div>
-                                  </div>
-                                  
-                                  <div class="col-md-6 mb-3">
-                                    <div class="form-group ">
-                                          <label for="country_id" >{{'Country' | translate}} <span class="text-danger">*</span></label>
-                                          <ng-select   id="country_id" placeholder="{{'Select_the_Country' | translate}}" [items]="countrylist" bindLabel="translatedName" 
-                                          bindValue="id" formControlName="country_id" (change)="onChangeCountrySelection($event)" >
-                                         </ng-select>  
-                                          <div *ngIf="signupForm.get('country_id').touched && signupForm.get('country_id').invalid" class="invalid-feedback d-block">
-                                            <span *ngIf="signupForm.get('country_id').errors?.['required']">{{'Country is required'| translate}}.</span>
-                                          </div>   
-                                        </div>
-                                  </div>
-                                  <div class="col-md-6 mb-3">
-                                    <div class="form-group ">
-                                       <label for="area_id">{{'area' | translate}} <span class="text-danger">*</span></label>
-                                         <ng-select    id="area_id" placeholder="{{'Select_the_Area' | translate}}" [items]="filteredAreas" bindLabel="translatedName" 
-                                            bindValue="id" formControlName="area_id" (change)="onChangeAreaSelection($event)" >
-                                          </ng-select> 
-                                            <div *ngIf="signupForm.get('area_id').touched && signupForm.get('area_id').invalid" class="invalid-feedback d-block">
-                                              <span *ngIf="signupForm.get('area_id').errors?.['required']">{{'Area is required'| translate}}.</span>
-                                            </div>                           
-                                      </div>
-                                   </div>
-                                   <div class="col-md-6 mb-3">
-                                    <div class="form-group ">
-                                          <label for="city_id" >{{'City' | translate}} <span class="text-danger">*</span></label>
-                                          <ng-select   id="city_id" placeholder="{{'Select_the_City' | translate}}" [items]="filteredCities" bindLabel="translatedName" 
-                                          bindValue="id" formControlName="city_id"  >
-                                          </ng-select>  
-                                          <div *ngIf="signupForm.get('city_id').touched && signupForm.get('city_id').invalid" class="invalid-feedback d-block">
-                                            <span *ngIf="signupForm.get('city_id').errors?.['required']">{{'City is required'| translate}}.</span>
-                                          </div>                         
-                                        </div>
-                                      </div>
-                                    
-                                    </div>
-                        </form>
-                        <ul class="list-inline wizard d-flex justify-content-end mb-0">
-                          <li class="next list-inline-item" aria-disabled="false"><button class="btn btn-primary" cdkStepperNext [disabled]="!isStepValid(0)">{{'Next' | translate}}</button></li>
-                        </ul>
-                      </section>
-                      }
-                    </cdk-step>
-                    <cdk-step [optional]="true"  [editable]="isStepValid(0)">
-                      <ng-template cdkStepLabel>
-                        <span class="number">2.</span>
-                        <span>{{'Registration Details' | translate}}</span>
-                      </ng-template>
-                      @if(cdkStepper.selectedIndex === 1){
-                      <section>
-                        <form [formGroup]="signupForm">
-                          <div class="row">
-                            <div class="col-lg-6">
-                              <div class="mb-3">
-                                <div class="form-group ">
-                                  <label for="VAT" >{{'VAT'| translate }}  </label>
-                                  <input type="text" id="VAT" class="form-control" formControlName="VAT" placeholder="{{ 'Enter Vat Rate' | translate }}" required    >
-                                  <!-- <div *ngIf="signupForm.get('VAT').touched && signupForm.get('VAT').invalid" class="invalid-feedback d-block">
-                                  <span *ngIf="signupForm.get('VAT').errors?.['required']">{{'VAT Rate is required'| translate}}.</span>
-                                  </div>   -->
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-lg-6">
-                              <div class="mb-3">
-                                <div class="form-group ">
-                                  <label for="registrationCode" >{{'Registration Code'| translate }}  </label>
-                                  <input type="text" id="registrationCode" class="form-control" formControlName="registrationCode" placeholder="{{ 'Enter Registration Name' | translate }}" required    >
-                                  <!-- <div *ngIf="signupForm.get('registrationCode').touched && signupForm.get('bank').invalid" class="invalid-feedback d-block">
-                                  <span *ngIf="signupForm.get('registrationCode').errors?.['required']">{{'Registration Code is required'| translate}}.</span>
-                                  </div>   -->
-                                  </div>
-                            </div>
-                            </div>
-                            
-                            <!-- <div class="col-lg-6">
-                              <div class="mb-3">
-                                <label for="registrationFile">{{'Upload Registration File'|translate}} </label>
-                                <app-image-upload 
-                                  [id]="'registrationFile'" 
-                                  [type]="'logo'" 
-                                  [label]="'Upload Registration File' | translate" 
-                                  [existantImage]="existantRegistrationFile" 
-                                  [filename]="fileName1" 
-                                  [alt]="'Registration File'" 
-                                  (logoUploaded)="uploadFileRegistration($event)">
-                                </app-image-upload>
-                                   <div *ngIf="signupForm.get('registrationFile').invalid && signupForm.get('registrationFile').touched" class="text-danger">
-                                    {{'Registration File is required'|translate}}
-                                  </div> -->
-                              <!--                       
-                                </div>
-                              </div> -->
-                            </div>
-                                       
-                        </form>
-        
-                        <ul class="list-inline wizard d-flex justify-content-end mb-0">
-                          <li class="previous list-inline-item" aria-disabled="true"><button class="btn btn-primary" cdkStepperPrevious>{{'Previous' | translate}}</button></li>
-                          <li class="next list-inline-item" aria-disabled="false"><button class="btn btn-primary" cdkStepperNext>{{'Next' | translate}}</button></li>
-                        </ul>
-                      </section>
-                      }
-                    </cdk-step>
-        
-                    <cdk-step [optional]="false" [editable]="isStepValid(0)" [completed]="isStepValid(2)">
-                      <ng-template cdkStepLabel>
-                        <span class="number">3.</span>
-                        <span>{{'Manager Details' | translate}}</span>
-                      </ng-template>
-                      @if(cdkStepper.selectedIndex === 2){
-                      <section>
-                        <form [formGroup]="signupForm">
-                          <div class="row">
-                            <div class="col-md-6 mb-3">
-                              <div class="form-group ">
-                                 
-                                  <label for="username" >{{'Username' | translate}} <span class="text-danger">*</span></label>
-                                  <input type="text" id="username" class="form-control" formControlName="username" placeholder="{{ 'Enter username' | translate }}" required>
-                                  <div *ngIf="signupForm.get('username').touched && signupForm.get('username').invalid" class="invalid-feedback d-block">
-                                      <span *ngIf="signupForm.get('username').errors?.['required']">{{'Username is required'| translate}}.</span>
-                                    </div>
-                                </div> 
-                            </div>
-                            <div class="col-md-6 mb-3">
-                              <div class="form-group ">
-                                <label for="email">{{'Email' | translate}} <span class="text-danger">*</span></label>
-                                <input type="email" id="email" class="form-control" formControlName="email" placeholder="{{ 'Enter the email' | translate }}" required>
-                                <div *ngIf="signupForm.get('email').touched && signupForm.get('email').invalid" class="invalid-feedback d-block">
-                                  <span *ngIf="signupForm.get('email').errors?.['required']">{{'Email is required'| translate}}.</span>
-                                </div>
-                              </div>
-                            </div>
-                         
-                                                                  
-                      
-                              <div class="col-md-6 mb-3">
-                                  <div class="form-group ">
-                                  <label for="password" >{{'Password' | translate}} <span class="text-danger">*</span></label>
-                                  <div class="input-group auth-pass-inputgroup">
-                                  <input [type]="fieldTextType ? 'text' : 'password'" id="password" class="form-control" placeholder="{{ 'Enter the Password' | translate }}" formControlName="password" required>
-                                  <button class="btn btn-light ms-0" type="button" id="password-addon">
-                                    <i tabindex="0" class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()" (keydown.enter)="toggleFieldTextType()" 
-                                    (keydown.space)="toggleFieldTextType()"></i>
-                                  </button>
-                                  <div *ngIf="signupForm.get('password').touched && signupForm.get('password').invalid" class="invalid-feedback d-block">
-                                    <span *ngIf="signupForm.get('password').errors?.['required']">{{'Password is required'| translate}}.</span>
-                                  </div>
-                                  </div>
-                                  </div>
-                              </div>
-                              <div class="col-md-6 mb-3">
-                                  <div class="form-group ">
-                                  <label for="confpassword" >{{'Confirm Password' | translate}} <span class="text-danger">*</span></label>
-                                  <div class="input-group auth-pass-inputgroup">
-                                  <input [type]="confirmFieldTextType ? 'text' : 'password'" id="confpassword" class="form-control" placeholder="{{ 'Confirm Your New Password' | translate }}" formControlName="confpassword" required>
-                                  <button class="btn btn-light ms-0" type="button" id="password-addon">
-                                    <i tabindex="0" class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !confirmFieldTextType, 'mdi-eye-outline': confirmFieldTextType}" (click)="toggleConfirmFieldTextType()" (keydown.enter)="toggleConfirmFieldTextType()" 
-                                    (keydown.space)="toggleConfirmFieldTextType()"></i>
-                                  </button>
-                                  <div *ngIf="signupForm.get('confpassword').touched && signupForm.get('confpassword').invalid" class="invalid-feedback d-block">
-                                    <span *ngIf="signupForm.get('confpassword').errors?.['required']">{{'Confirm password is required.' | translate}}</span>
-                                    <div *ngIf="passwordMatchError">{{ 'confirm_password_does_not_matched' | translate }}</div>
-                                  </div>
-                                  </div>
-                                </div>
-                              </div>
-                                                 
-                              <div class="col-md-6 mb-3">
-                                <div class="form-group">
-                                  <label for="phone" >{{'Manager Phone Number' |  translate}} <span class="text-danger">*</span></label><br>
-                                 <app-phone-number
-                                 [initialPhoneNumber]="signupForm.get('phone').value"
-                                 *ngIf="signupForm"
-                                 [inputId]="'phone'"
-                                 [placeholder]="'Enter merchant phone' | translate"
-                                  (phoneNumberChanged)="onPhoneNumberChanged($event)" >
-                                </app-phone-number>
-                                 <div *ngIf="signupForm.get('phone').touched && signupForm.get('phone').invalid" class="invalid-feedback d-block">
-                                  <span *ngIf="signupForm.get('phone').errors?.['required']">{{'Manager Phone Number is required'| translate}}.</span>
-                                </div>   
-                                </div>
-                              </div>
-                         
-                           <div class="col-md-6 mb-3">
-                            <div class="form-group">
-                              <label for="image">{{'Logo' | translate}}</label>
-                              <app-image-upload [id]="'image'" [type]="'image'" [label]="'Upload Manager Logo' | translate" [existantImage]="existantmerchantPicture" [filename]="fileName2" [alt]="'Merchant Pictutre'"  (imageUploaded)="onImageUpload($event)"></app-image-upload>
-                              <!-- <div *ngIf="signupForm.get('image').touched && signupForm.get('image').invalid" class="invalid-feedback d-block">
-                                <span *ngIf="signupForm.get('image').errors?.['required']">{{'Merchant Logo is required'| translate}}.</span>
-                              </div>   -->
-                            </div>
-                          </div>
-                         
-                        </div>
-                        </form>
-        
-                        <ul class="list-inline wizard d-flex justify-content-end mb-0">
-                          <li class="previous list-inline-item" aria-disabled="true"><button class="btn btn-primary" cdkStepperPrevious>{{'Previous' | translate}}</button></li>
-                          <li class="next list-inline-item" aria-disabled="false"><button class="btn btn-primary" cdkStepperNext [disabled]="!isStepValid(2)" >{{'Next' | translate}}</button></li>
-                        </ul>
-                      </section>
-                      }
-                    </cdk-step>
-                    <cdk-step [optional]="true">
-                      <ng-template cdkStepLabel>
-                        <span class="number">4.</span>
-                        <span>{{'Confirm Detail' | translate}}</span>
-                      </ng-template>
-                      @if(cdkStepper.selectedIndex === 3){
-                      <section>
-                        <div class="row justify-content-center">
-                          <div class="col-lg-6">
-                            <div class="text-center">
-                              <div class="mb-4">
-                                <i class="mdi mdi-check-circle-outline text-success display-4"></i>
-                              </div>
-                              <div>
-                                <h5>{{'Confirm Detail'| translate}}</h5>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-        
-                        <ul class="list-inline wizard d-flex justify-content-end mb-0">
-                          <li class="previous list-inline-item" aria-disabled="true"><button class="btn btn-primary" cdkStepperPrevious>{{'Previous' | translate}}</button></li>
-                          <li class="next list-inline-item" aria-disabled="false">
-                          <button class="btn btn-primary" (click)="onSubmit()" >{{'Finish' | translate}}</button></li>
-                          <div id="elmLoader" class="loader" *ngIf="loading$ | async">
-                            <div class="spinner-border text-primary avatar-sm" role="status">
-                              <span class="visually-hidden">{{'Loading...' | translate}}</span>
-                            </div>
-                          </div>
-                        </ul>
-                      </section>
-                      }
-                    </cdk-step>
-        
-                  </ng-stepper>
-                </div>
-        
-                <div class="mt-5 text-center" style="font-size: 0.8rem; color: #6c757d; margin-top: 50px;">
-                  <span>
-                    {{'Copyright' | translate}} © {{year}} {{'Project X1. All rights reserved.' | translate}}
-                  </span>
-                </div>
-          </div>
-           
+  <div class="auth-container-fluid d-flex">
+    <!-- Left Section (Background) -->
+    <div  class="left-section">
+      <div #formElement class="card overflow-hidden">
+       
+        <div class="row m-5">
+            <div class="col-12 text-center">
+              <p class=" custom-text bg-primary text-white py-2">{{'Merchant Registration' | translate}}</p>
+            </div>
         </div>
+          <div *ngIf="formError" class="alert alert-danger">{{ formError | translate}}</div>
+          <div id="basic-example">
+            <ng-stepper #cdkStepper [linear]="true" class="wizard" >
+              <cdk-step [optional]="false"[completed]="isStepValid(0)" >
+                <ng-template cdkStepLabel>
+                  <span class="number">1.</span>
+                  <span>{{'About Your Company' | translate}}</span>
+                </ng-template>
+                @if(cdkStepper.selectedIndex === 0){
+                <section>
+                  <form [formGroup]="signupForm">
+                    <div class="row"> 
+                      <div class="col-md-6 mb-3">
+                        <div class="form-group ">
+                        <label for="merchantName" >{{'Merchant Name'| translate}} <span class="text-danger">*</span></label>
+                        <input type="text" id="merchantName" class="form-control" formControlName="merchantName" placeholder="{{ 'Enter merchant name' | translate }}" required>
+                        <div *ngIf="signupForm.get('merchantName').touched && signupForm.get('merchantName').invalid" class="invalid-feedback d-block">
+                          <span *ngIf="signupForm.get('merchantName').errors?.['required']">{{'Merchant Name is required'| translate}}.</span>
+                        </div>  
+                      </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <div class="form-group">
+                          <label for="section_id">{{'Merchant Section' | translate}}<span  class="text-danger">*</span></label>
+                          <ng-select  placeholder="{{'Select a section' | translate}}" [items]="sectionlist" bindLabel="translatedName" 
+                          bindValue="id" id="section_id"  formControlName="section_id">
+                          </ng-select>
+                          <div *ngIf=" signupForm.get('section_id').touched &&  signupForm.get('section_id').invalid" class="invalid-feedback d-block">
+                            <span *ngIf=" signupForm.get('section_id').errors?.['required']">{{'Section is required'| translate}}.</span>
+                          </div>   
+                        </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <div class="form-group ">
+                              <label for="country_id" >{{'Country' | translate}} <span class="text-danger">*</span></label>
+                              <ng-select   id="country_id" placeholder="{{'Select_the_Country' | translate}}" [items]="countrylist" bindLabel="translatedName" 
+                              bindValue="id" formControlName="country_id"  >
+                             </ng-select>  
+                              <div *ngIf="signupForm.get('country_id').touched && signupForm.get('country_id').invalid" class="invalid-feedback d-block">
+                                <span *ngIf="signupForm.get('country_id').errors?.['required']">{{'Country is required'| translate}}.</span>
+                              </div>   
+                            </div>
+                          </div>
+                      <div class="col-md-6 mb-3">
+                        <div class="form-group ">
+                          <label for="website">{{'Merchant WebSite' | translate}}</label>
+                          <input type="text" class="form-control" id="website" formControlName="website" placeholder="{{'Enter Company Email' | translate}}">
+                        </div>
+                      </div>
+                      </div>
+                                
+                  </form>
+                  <ul class="list-inline wizard d-flex justify-content-end mb-2">
+                    <li class="next list-inline-item" aria-disabled="false"><button class="btn btn-primary" cdkStepperNext [disabled]="!isStepValid(0)">{{'Next' | translate}}</button></li>
+                  </ul>
+                </section>
+                }
+              </cdk-step>
+           
+              <cdk-step [optional]="false" [editable]="isStepValid(0)" [completed]="isStepValid(1)">
+                <ng-template cdkStepLabel>
+                  <span class="number">2.</span>
+                  <span>{{'About You' | translate}}</span>
+                </ng-template>
+                @if(cdkStepper.selectedIndex === 1){
+                <section>
+                  <form [formGroup]="signupForm">
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <div class="form-group ">
+                            <label for="f_name" >{{'First_Name' | translate}} <span class="text-danger">*</span></label>
+                            <input type="text" id="f_name" class="form-control" formControlName="f_name" placeholder="{{ 'Enter your First Name' | translate }}" required>
+                            <div *ngIf="signupForm.get('f_name').touched && signupForm.get('f_name').invalid" class="invalid-feedback d-block">
+                                <span *ngIf="signupForm.get('f_name').errors?.['required']">{{'First Name is required'| translate}}.</span>
+                              </div>
+                          </div>  
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <div class="form-group ">
+                            <label for="l_name" >{{'Last_Name' | translate}} <span class="text-danger">*</span></label>
+                            <input type="text" id="l_name" class="form-control" formControlName="l_name" placeholder="{{ 'Enter your Last Name ' | translate }}" required>
+                            <div *ngIf="signupForm.get('f_name').touched && signupForm.get('f_name').invalid" class="invalid-feedback d-block">
+                                <span *ngIf="signupForm.get('f_name').errors?.['required']">{{'Last formControlName="control" is required'| translate}}.</span>
+                              </div>
+                          </div> 
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <div class="form-group ">
+                            <label for="jobTitle" >{{'Job Title' | translate}} </label>
+                            <input type="text" id="jobTitle" class="form-control" formControlName="jobTitle" placeholder="{{ 'Enter your Job Title ' | translate }}" required>
+                       </div>
+                      </div>        
+                      <div class="col-md-6 mb-3">
+                        <div class="form-group ">
+                          <label for="email">{{'Email' | translate}} <span class="text-danger">*</span></label>
+                          <input type="email" id="email" class="form-control" formControlName="email" placeholder="{{ 'Enter the email' | translate }}" required>
+                          <div *ngIf="signupForm.get('email').touched && signupForm.get('email').invalid" class="invalid-feedback d-block">
+                            <span *ngIf="signupForm.get('email').errors?.['required']">{{'Email is required'| translate}}.</span>
+                          </div>
+                        </div>
+                      </div>
+                   
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group ">
+                            <label for="password" >{{'Password' | translate}} <span class="text-danger">*</span></label>
+                            <div class="input-group auth-pass-inputgroup">
+                            <input [type]="fieldTextType ? 'text' : 'password'" id="password" class="form-control" placeholder="{{ 'Enter the Password' | translate }}" formControlName="password" required>
+                            <button class="btn btn-light ms-0" type="button" id="password-addon">
+                              <i tabindex="0" class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()" (keydown.enter)="toggleFieldTextType()" 
+                              (keydown.space)="toggleFieldTextType()"></i>
+                            </button>
+                            <div *ngIf="signupForm.get('password').touched && signupForm.get('password').invalid" class="invalid-feedback d-block">
+                              <span *ngIf="signupForm.get('password').errors?.['required']">{{'Password is required'| translate}}.</span>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group ">
+                            <label for="confpassword" >{{'Confirm Password' | translate}} <span class="text-danger">*</span></label>
+                            <div class="input-group auth-pass-inputgroup">
+                            <input [type]="confirmFieldTextType ? 'text' : 'password'" id="confpassword" class="form-control" placeholder="{{ 'Confirm Your New Password' | translate }}" formControlName="confpassword" required>
+                            <button class="btn btn-light ms-0" type="button" id="password-addon">
+                              <i tabindex="0" class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !confirmFieldTextType, 'mdi-eye-outline': confirmFieldTextType}" (click)="toggleConfirmFieldTextType()" (keydown.enter)="toggleConfirmFieldTextType()" 
+                              (keydown.space)="toggleConfirmFieldTextType()"></i>
+                            </button>
+                            <div *ngIf="signupForm.get('confpassword').touched && signupForm.get('confpassword').invalid" class="invalid-feedback d-block">
+                              <span *ngIf="signupForm.get('confpassword').errors?.['required']">{{'Confirm password is required.' | translate}}</span>
+                              <div *ngIf="passwordMatchError">{{ 'confirm_password_does_not_matched' | translate }}</div>
+                            </div>
+                            </div>
+                          </div>
+                        </div>
+                              
+                        <div class="col-md-6 mb-3">
+                          <div class="form-group">
+                            <label for="phone" >{{'Manager Phone Number' |  translate}} <span class="text-danger">*</span></label><br>
+                           <app-phone-number
+                           [initialPhoneNumber]="signupForm.get('phone').value"
+                           *ngIf="signupForm"
+                           [inputId]="'phone'"
+                           [placeholder]="'Enter Manager Phone' | translate"
+                            (phoneNumberChanged)="onPhoneNumberChanged($event)" >
+                          </app-phone-number>
+                           <div *ngIf="signupForm.get('phone').touched && signupForm.get('phone').invalid" class="invalid-feedback d-block">
+                            <span *ngIf="signupForm.get('phone').errors?.['required']">{{'Manager Phone Number is required'| translate}}.</span>
+                          </div>   
+                          </div>
+                        </div>
+
+                  </div>
+                  </form>
+  
+                  <ul class="list-inline wizard d-flex justify-content-end mb-2">
+                    <li class="previous list-inline-item" aria-disabled="true"><button class="btn btn-primary" cdkStepperPrevious>{{'Previous' | translate}}</button></li>
+                    <!-- <li class="next list-inline-item" aria-disabled="false"><button class="btn btn-primary" cdkStepperNext [disabled]="!isStepValid(1)" >{{'Finish' | translate}}</button></li> -->
+                    <li class="next list-inline-item" aria-disabled="false">
+                      <button class="btn btn-primary" [disabled]="!isStepValid(1)" (click)="onSubmit()" >{{'Finish' | translate}}</button></li>
+                      <div id="elmLoader" class="loader" *ngIf="loading$ | async">
+                        <div class="spinner-border text-primary avatar-sm" role="status">
+                          <span class="visually-hidden">{{'Loading...' | translate}}</span>
+                        </div>
+                      </div>
+                  </ul>
+                </section>
+                }
+              </cdk-step>
+            </ng-stepper>
+          </div>
+          <div class="text-center" style="font-size: 0.8rem; color: #6c757d; margin-top: 110px; margin-bottom: 20px">
+            <span>
+              {{'Copyright' | translate}} © {{year}} {{'Project X1. All rights reserved.' | translate}}
+            </span>
+          </div>
     </div>
+  </div>
+  
+    <!-- Right Section (Form) -->
+    <div #rightsection class="right-section">
+      
+    </div>
+  </div>
   

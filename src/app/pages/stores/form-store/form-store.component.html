@@ -16,7 +16,7 @@
                       <ui-switch
                         color="##343a40"
                         [disabled]="type === 'view'"
-                        [checked]="storeForm.get('status').value === 'active'"
+                        [checked]="storeForm.get('status')?.value === 'active'"
                         [uncheckedLabel]="'InActive' | translate"
                         [checkedLabel]="'Active' | translate"
                         size="small"
@@ -39,11 +39,9 @@
                       </div>
                       <div class="col-md-6 mb-3">
                         <div class="form-group ">
-                           <label for="name_ar" >{{'Store_Name in arabic' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                           <label for="name_ar" >{{'Store_Name in arabic' | translate}} </label>
                             <input type="text" id="name_ar" class="form-control" formControlName="name_ar" [readonly]="type==='view'" >
-                            <div *ngIf="storeForm.get('name_ar').touched && storeForm.get('name_ar').invalid" class="invalid-feedback d-block">
-                                <span *ngIf="storeForm.get('name_ar').errors?.['required']">{{'arabic store Name is required'| translate}}.</span>
-                              </div>
+                           
                           </div> 
                       </div>
                       <div class="col-md-6 mb-3">
@@ -57,11 +55,9 @@
                       </div>
                       <div class="col-md-6 mb-3">
                         <div class="form-group ">
-                           <label for="description_ar" >{{'Description in arabic' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                           <label for="description_ar" >{{'Description in arabic' | translate}} </label>
                            <textarea class="form-control" id="description_ar" formControlName="description_ar" rows="3"[readonly]="type === 'view'" ></textarea>
-                           <div *ngIf="storeForm.get('description_ar').touched && storeForm.get('description_ar').invalid" class="invalid-feedback d-block">
-                                <span *ngIf="storeForm.get('description_ar').errors?.['required']">{{'Description in arabic is required'| translate}}.</span>
-                              </div>
+                           
                           </div> 
                       </div>
                      
@@ -76,17 +72,7 @@
                       </div> 
                   </div>                       
                 </div>
-                <div class="col-md-6 mb-3">
-                  <div class="form-group">
-                    <label for="area_id">{{'area'| translate}}</label>
-                    <ng-select [readonly]="type === 'view'" placeholder="{{'Select_the_Area' | translate}}" [items]="filteredAreas" bindLabel="translatedName" 
-                    bindValue="id"  id="area_id"  formControlName="area_id" (change)="onChangeAreaSelection($event)" >
-                    </ng-select>  
-                     <div *ngIf="storeForm.get('area_id').touched && storeForm.get('area_id').invalid" class="invalid-feedback d-block">
-                        <span *ngIf="storeForm.get('area_id').errors?.['required']">{{'area_is_required'| translate}}.</span>
-                    </div>   
-                   </div>
-                </div>
+                
                 <div class="col-md-6 mb-3">
                   <div class="form-group ">
                     <label for="city_id" >{{'City' | translate}}</label>

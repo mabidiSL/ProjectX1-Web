@@ -5,7 +5,7 @@
 </div>
 <div class="container-fluid">
     <app-page-title title="{{'Company Profile Details' | translate}}" [breadcrumbItems]="breadCrumbItems"></app-page-title>
-<div class="row">
+<div #formElement class="row">
   <div class="col-lg-12">
     <div class="card">
       <div class="card-body">
@@ -220,7 +220,7 @@
                         <div class="form-group">
                             <label for="country_id" >{{'Country' | translate}} </label>
                             <ng-select   id="country_id" placeholder="{{'Select_the_Country' | translate}}" [items]="filteredCountries" bindLabel="translatedName" 
-                            bindValue="id" formControlName="country_id" (change)="onChangeCountrySelection($event)" >
+                            bindValue="id" formControlName="country_id"  >
                            </ng-select>  
                             <!-- <div *ngIf="adminForm.get('country_id').touched && adminForm.get('country_id').invalid" class="invalid-feedback d-block">
                               <span *ngIf="adminForm.get('country_id').errors?.['required']">{{'Country is required'| translate}}.</span>
@@ -228,34 +228,22 @@
                           </div>
                         </div>
                     </div>    
-                    <div class="col-lg-6">
-                      <div class="mb-3">
-                        <div class="form-group">
-                         <label for="area_id">{{'area' | translate}} </label>
-                           <ng-select    id="area_id" placeholder="{{'Select_the_Area' | translate}}" [items]="filteredAreas" bindLabel="translatedName" 
-                              bindValue="id" formControlName="area_id" (change)="onChangeAreaSelection($event)" >
-                            </ng-select> 
-                              <!-- <div *ngIf="adminForm.get('area_id').touched && adminForm.get('area_id').invalid" class="invalid-feedback d-block">
-                                <span *ngIf="adminForm.get('area_id').errors?.['required']">{{'Area is required'| translate}}.</span>
-                              </div>                            -->
-                        </div>
-                     </div>
-                     </div>
+                
                      
-                      <div class="col-lg-6">
+                      <!-- <div class="col-lg-6">
                         <div class="mb-3">
                           <div class="form-group ">
                             <label for="city_id" >{{'City' | translate}} </label>
                             <ng-select   id="city_id" placeholder="{{'Select_the_City' | translate}}" [items]="filteredCities" bindLabel="translatedName" 
                             bindValue="id" formControlName="city_id"  >
                             </ng-select>  
-                            <!-- <div *ngIf="adminForm.get('city_id').touched && adminForm.get('city_id').invalid" class="invalid-feedback d-block">
+                            <div *ngIf="adminForm.get('city_id').touched && adminForm.get('city_id').invalid" class="invalid-feedback d-block">
                               <span *ngIf="adminForm.get('city_id').errors?.['required']">{{'City is required'| translate}}.</span>
                             </div>                          -->
-                          </div>
+                          <!-- </div>
                         </div>
                         
-                        </div>
+                        </div> --> 
                       </div>
                       
                  
@@ -493,11 +481,11 @@
                   <li class="previous list-inline-item" aria-disabled="true"><button class="btn btn-primary" cdkStepperPrevious>{{'Previous' | translate}}</button></li>
                   <li class="next list-inline-item" aria-disabled="false">
                   <button class="btn btn-primary" (click)="onSubmit()" >{{'Finish' | translate}}</button></li>
-                  <div id="elmLoader" class="loader" *ngIf="loading$ | async">
+                  <!-- <div id="elmLoader" class="loader" *ngIf="loading$ | async">
                     <div class="spinner-border text-primary avatar-sm" role="status">
                       <span class="visually-hidden">{{'Loading...' | translate}}</span>
                     </div>
-                  </div>
+                  </div> -->
                 </ul>
               </section>
               }

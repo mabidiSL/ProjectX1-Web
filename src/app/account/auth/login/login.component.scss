@@ -5,14 +5,14 @@
   height: 100vh; /* Full height of the viewport */
 }
 
-.left-section {
-  width: 70%; /* Adjust as needed */
+.right-section {
+  width: 60%; /* Adjust as needed */
   background-color: #f0f0f0; /* Example background color */
   padding: 20px;
 }
 
-.right-section {
-  width: 30%; /* Adjust as needed */
+.left-section {
+  width: 40%; /* Adjust as needed */
   background-color: #fff; /* Example background color */
   padding: 20px;
   display: flex;
@@ -21,8 +21,9 @@
   height: 100vh; /* Make sure the right section takes full height */
 }
 
-.right-section .form-container {
-  margin-top: 30% ;
+.left-section .form-container {
+  margin-top: 20% ;
+  padding:10%;
   width: 100%; /* Adjust the form width as needed */
 }
 .btn-brown{
@@ -32,6 +33,7 @@
 }
 .copyright-text {
   font-size: 0.8rem; /* Smaller font size for copyright */
+  margin-bottom: 10px;
   color: #6c757d;    /* Lighter gray color */
   display: block;
   margin-top: 50px;   /* Space from the form above */

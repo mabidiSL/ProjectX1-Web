@@ -12,7 +12,7 @@ export interface Branch {
      translation_data?: Translation[];    
      phone?: string;
      url?: string;
-     merchant_id?: number;
+     company_id?: number;
      merchant ?:   Merchant;
      city_id?: number;
      city? :  City ;

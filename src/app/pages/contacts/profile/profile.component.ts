@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 
-
+import _ from 'lodash';
 import { ChartType } from './profile.model';
 import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
@@ -11,6 +11,7 @@ import { updateProfile, updateProfilePassword } from 'src/app/store/Authenticati
 import { TranslateService } from '@ngx-translate/core';
 import { selectDataLoading } from 'src/app/store/Authentication/authentication-selector';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
+import { FormUtilService } from 'src/app/core/services/form-util.service';
 
 @Component({
   selector: 'app-profile',
@@ -33,7 +34,7 @@ export class ProfileComponent  {
   fieldTextType1!: boolean;
 
   fieldTextType2!: boolean;
-
+  originalProfileData: any = null;
   passwordMatchError: boolean = false;
 
 
@@ -43,42 +44,40 @@ export class ProfileComponent  {
   submitted: any = false;
 
   public currentUser: _User;
+  @ViewChild('formElement', { static: false }) formElement: ElementRef;
 
   constructor(
     private formBuilder: UntypedFormBuilder,
     private store: Store, 
     public translate: TranslateService,
+    private formUtilService: FormUtilService,
     private authService: AuthenticationService
   ) {
       
-      this.loading$ = this.store.pipe(select(selectDataLoading));
-      this.authService.currentUser$.subscribe(user => {
-        if (user) {
-          this.currentUser = user;
-        }
-      });
-
-      
-   
-
+    this.loading$ = this.store.pipe(select(selectDataLoading));
+  
     // fill up the form for updating the profile
     this.authService.currentUser$.subscribe(user =>{
-    this.profileForm = this.formBuilder.group({
-      id: [user?.id],
-      // name: [this.currentUserValue.user.name, [Validators.required]],
-      username: [user?.username, [Validators.required]],
-      email: [user?.email, [Validators.required, Validators.email]],
-      phone:  [user?.phone, [Validators.required]],
-      logo:[user?.logo]
-    });
-    
+      console.log(user);
+      this.currentUser = user;
+      this.originalProfileData = _.cloneDeep(user);
 
-  this.passwordForm = this.formBuilder.group({
-    id: [user?.id],
-    currentPassword: ['', [Validators.required]],      
-    newPassword: ['', [Validators.required]],
-    confirmpwd:['', [Validators.required]],
-  },{validators: [this.passwordMatchValidator]});
+      this.profileForm = this.formBuilder.group({
+        id: [user?.id],
+        // name: [this.currentUserValue.user.name, [Validators.required]],
+        f_name: [user?.translation_data[0].f_name, Validators.required],
+        l_name: [user?.translation_data[0].l_name, Validators.required],
+        email: [user?.email, [Validators.required, Validators.email]],
+        phone:  [user?.phone, Validators.required],
+        logo:[user?.logo]
+      });
+      
+    this.passwordForm = this.formBuilder.group({
+      id: [user?.id],
+      currentPassword: ['', [Validators.required]],      
+      newPassword: ['', [Validators.required]],
+      confirmpwd:['', [Validators.required]],
+    },{validators: [this.passwordMatchValidator]});
 }); 
  
   }
@@ -89,6 +88,9 @@ export class ProfileComponent  {
 //     this.passwordForm.get('confirmpwd')?.touched
 //   );
 // }
+onPhoneNumberChanged(phoneNumber: string) {
+  this.profileForm.get('phone').setValue(phoneNumber);
+}
 checkPasswordMatch() {
   const password = this.passwordForm.get('newPassword').value;
   const confirmPassword = this.passwordForm.get('confirmpwd').value;
@@ -124,6 +126,36 @@ passwordMatchValidator(formGroup: FormGroup) {
       this.fieldTextType2 = !this.fieldTextType2;
     }
   
+  createProfileFromForm(formValue): any {
+    const profile = formValue;
+    profile.translation_data = [];
+    const enFields = [
+      { field: 'f_name', name: 'f_name' },
+      { field: 'l_name', name: 'l_name' },
+
+
+    ];
+    
+   // Create the English translation if valid
+    const enTranslation = this.formUtilService.createTranslation(profile,'en', enFields );
+    if (enTranslation) {
+      profile.translation_data.push(enTranslation);
+    }
+   
+    
+    if(profile.translation_data.length <= 0)
+      delete profile.translation_data;
+    // Dynamically remove properties that are undefined or null at the top level of city object
+    Object.keys(profile).forEach(key => {
+      if (profile[key] === undefined || profile[key] === null) {
+          delete profile[key];  // Delete property if it's undefined or null
+       }
+    });
+
+   delete profile.f_name;  
+   delete profile.l_name;  
+   return profile;
+}
   onSubmit() {
     this.formSubmitted = true;
 
@@ -137,13 +169,21 @@ passwordMatchValidator(formGroup: FormGroup) {
       }
 
       this.formError = null;
-
-      const updatedUser =  this.profileForm.value;
-      delete updatedUser.logo;
-      delete updatedUser.email;
-
-      this.store.dispatch(updateProfile({ user: updatedUser }));
-
+      const updatedDta = this.formUtilService.detectChanges(this.profileForm, this.originalProfileData);
+      if (Object.keys(updatedDta).length > 0) {
+        const changedData =  this.createProfileFromForm(this.profileForm.value);
+        delete changedData.logo;
+        delete changedData.email;  
+        console.log(changedData);
+        this.store.dispatch(updateProfile({ user: changedData }));
+      }
+      else
+      {
+        this.formError = 'Nothing has been changed!!!';
+        this.formUtilService.scrollToTopOfForm(this.formElement);
+      }
+      
+      
    
   }
 private focusOnFirstInvalid() {

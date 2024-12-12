@@ -22,8 +22,10 @@
 }
 
 .auth-body-bg{
-    background-color: var(--#{$prefix}secondary-bg);
-    min-height: 100vh;
+   // background-color: var(--#{$prefix}secondary-bg);
+     min-height: 100vh; 
+     display: flex; 
+     flex-direction: column;
 }
 
 

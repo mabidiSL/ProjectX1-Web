@@ -37,8 +37,8 @@ label {
 // container
 
 .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl{
-  @media (min-width: 1200px){
-      max-width: 1140px;
+  @media (min-width: 720px){
+      max-width: 800px;
   }
    /* Default LTR behavior */
    padding-left: 2rem; /* Adjust this value as needed */

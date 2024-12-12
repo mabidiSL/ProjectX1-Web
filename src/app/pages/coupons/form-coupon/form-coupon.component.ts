@@ -87,14 +87,44 @@ export class FormCouponComponent implements OnInit, OnDestroy{
       
 
       if(this.currentRole !== 'Admin')
-          this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,status:'', merchant_id: this.merchantId}));
+          this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,status:'', company_id: this.merchantId}));
       else
-          this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,status:'', merchant_id: null}));
+          this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,status:'', company_id: null}));
 
       this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 100 , status: 'active'})); 
       
       this.initForm();
       this.bsConfig = this.datepickerConfigService.getConfig();
+      this.merchantList$ = this.store.pipe(select(selectDataMerchant)); // Observing the merchant list from store
+    
+      this.merchantList$.subscribe(data => {
+        this.merchantList = [...data].map(country =>{
+        const translatedName = country.translation_data && country.translation_data[0]?.name || 'No name available';
+        return {
+          ...country,  
+          translatedName 
+        };
+      }).sort((a, b) => {
+        // Sort by translatedName
+        return a.translatedName.localeCompare(b.translatedName);
+      });
+      });
+      this.store.pipe(select(selectData)).subscribe(data => {
+        if(data && data.length > 0){
+          this.storeList = [...data].map(store =>{
+          const translatedName = store.translation_data && store.translation_data[0]?.name || 'No name available';
+          return {
+            ...store,  
+            translatedName 
+          };
+        })
+        .sort((a, b) => {
+          // Sort by translatedName
+          return a.translatedName.localeCompare(b.translatedName);
+        })
+       }
+       
+      });
          
   }
 
@@ -133,15 +163,14 @@ export class FormCouponComponent implements OnInit, OnDestroy{
     this.formCoupon = this.formBuilder.group({
       id: [null],
       name: ['', Validators.required],
-      name_ar: ['', Validators.required],
+      name_ar: [''],
       description: ['', Validators.required],
-      description_ar: ['', Validators.required],
+      description_ar: [''],
       termsAndConditions: ['', Validators.required],
-      termsAndConditions_ar: ['', Validators.required],
+      termsAndConditions_ar: [''],
       codeCoupon: ['COUP123'],
       quantity: [null, Validators.required],
-      nbr_of_use:[null, Validators.required],
-      merchant_id: [null, Validators.required],
+      company_id: [null, Validators.required],
       stores: [[]],
       managerName: [''],
       managerName_ar: [''],
@@ -173,38 +202,11 @@ export class FormCouponComponent implements OnInit, OnDestroy{
         allowSearchFilter: true
       };
     
-    this.merchantList$ = this.store.pipe(select(selectDataMerchant)); // Observing the merchant list from store
     
-    this.merchantList$.subscribe(data => {
-      this.merchantList = [...data].map(country =>{
-      const translatedName = country.translation_data && country.translation_data[0]?.name || 'No name available';
-      return {
-        ...country,  
-        translatedName 
-      };
-    }).sort((a, b) => {
-      // Sort by translatedName
-      return a.translatedName.localeCompare(b.translatedName);
-    });
-    });
-    this.store.pipe(select(selectData)).subscribe(data => {
-      if(data && data.length > 0){
-        this.storeList = [...data].map(store =>{
-        const translatedName = store.translation_data && store.translation_data[0]?.name || 'No name available';
-        return {
-          ...store,  
-          translatedName 
-        };
-      })
-      .sort((a, b) => {
-        // Sort by translatedName
-        return a.translatedName.localeCompare(b.translatedName);
-      })
-     }
-     
-    });
     if(this.currentRole !== 'Admin'){
-      this.formCoupon.get('merchant_id').setValue(this.merchantId);
+      console.log(this.merchantId);
+      this.formCoupon.get('company_id').setValue(this.merchantId);
+      this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000, status:'', company_id: this.merchantId}));
       this.isLoading = true;
       
     }
@@ -219,10 +221,7 @@ export class FormCouponComponent implements OnInit, OnDestroy{
         .subscribe(coupon => {
           if (coupon) {
           
-            if(this.currentRole === 'Admin'){
-              this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000, status:'', merchant_id: coupon.merchant_id}));
-              //this.fetchStore(coupon.merchant_id);
-            }
+            
             this.existantcouponLogo = coupon.couponLogo;
             if(coupon.couponLogo){
               this.fileName = coupon.couponLogo.split('/').pop();
@@ -239,14 +238,15 @@ export class FormCouponComponent implements OnInit, OnDestroy{
 }
 patchValueForm(coupon: Coupon){
   this.formCoupon.patchValue(coupon);
+  this.formCoupon.get('company_id').setValue(coupon.offre.company_id);
   this.formCoupon.get('stores').setValue(coupon.stores.map(store => store.id));
   this.formCoupon.patchValue({
     name: coupon.translation_data[0].name,
-    name_ar: coupon.translation_data[1].name,
+    name_ar: coupon.translation_data[1]?.name,
     description: coupon.translation_data[0].description,
-    description_ar: coupon.translation_data[1].description,
+    description_ar: coupon.translation_data[1]?.description,
     termsAndConditions: coupon.translation_data[0].termsAndConditions,
-    termsAndConditions_ar: coupon.translation_data[1].termsAndConditions,
+    termsAndConditions_ar: coupon.translation_data[1]?.termsAndConditions,
   });
 
 }
@@ -276,7 +276,7 @@ fetchStore(id: number){
         translatedName 
       };
     })
-    .filter(store => store.merchant_id === id)
+    .filter(store => store.company_id === id)
     .sort((a, b) => {
       // Sort by translatedName
       return a.translatedName.localeCompare(b.translatedName);
@@ -300,7 +300,7 @@ onChangeMerchantSelection(event: Merchant){
         translatedName 
       };
     })
-    .filter(store => store.merchant_id === merchant.id)
+    .filter(store => store.company_id === merchant.id)
     .sort((a, b) => {
       // Sort by translatedName
       return a.translatedName.localeCompare(b.translatedName);

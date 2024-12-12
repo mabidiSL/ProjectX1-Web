@@ -6,6 +6,10 @@ import { _User } from './auth.models';
 export const Register = createAction('[Authentication] Register', props<{ newData : any }>());
 export const RegisterSuccess = createAction('[Authentication] Register Success', props<{ user: any }>());
 export const RegisterFailure = createAction('[Authentication] Register Failure', props<{ error: string }>());
+
+//modal Register Success
+export const modalRegisterSuccess = createAction('[Authentication] modal Register Success');
+
 // Email verification action
 export const verifyEmail = createAction('[Authentication] verifyEmail', props<{ token : string }>());
 export const verifyEmailSuccess = createAction('[Authentication] verifyEmail Success', props<{ message: string }>());

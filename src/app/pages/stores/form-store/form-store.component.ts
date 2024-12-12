@@ -11,12 +11,9 @@ import { selectDataLoading, selectStoreById } from 'src/app/store/store/store-se
 import { addStorelist, getStoreById, updateStorelist } from 'src/app/store/store/store.action';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { fetchMerchantlistData } from 'src/app/store/merchantsList/merchantlist1.action';
-import { fetchArealistData } from 'src/app/store/area/area.action';
 import { fetchCitylistData } from 'src/app/store/City/city.action';
 import { selectDataMerchant } from 'src/app/store/merchantsList/merchantlist1-selector';
-import { selectDataArea } from 'src/app/store/area/area-selector';
 import { selectDataCity } from 'src/app/store/City/city-selector';
-import { Area } from 'src/app/store/area/area.model';
 import { City } from 'src/app/store/City/city.model';
 import { Merchant } from 'src/app/store/merchantsList/merchantlist1.model';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
@@ -38,18 +35,15 @@ export class FormStoreComponent implements OnInit, OnDestroy {
   formSubmitted = false;
   
   private destroy$ = new Subject<void>();
-  
-  public currentUser: Observable<_User>;
+    public currentUser: Observable<_User>;
 
   merchantlist$: Observable<Merchant[]>;
-  arealist$: Observable<Area[]>;
   citylist$: Observable<City[]>;
   loading$: Observable<boolean>;
 
   merchantList: Merchant[] = [];
 
   merchantId: number =  null;
-  filteredAreas : Area[];
   filteredCities: City[];
   currentRole: string = '';
   submitted: boolean = false;
@@ -95,7 +89,6 @@ export class FormStoreComponent implements OnInit, OnDestroy {
       
 
       this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 100 , status: 'active'}));
-      this.store.dispatch(fetchArealistData({ page: 1, itemsPerPage: 1000 , status: 'active'}));
       this.store.dispatch(fetchCitylistData({ page: 1, itemsPerPage: 10000 , status: 'active'}));
       
       this.initForm();
@@ -109,13 +102,12 @@ export class FormStoreComponent implements OnInit, OnDestroy {
       
       id: [null],
       name: ['', Validators.required],
-      name_ar: ['', Validators.required],
+      name_ar: [''],
       description: ['', Validators.required],
-      description_ar: ['', Validators.required],
+      description_ar: [''],
       phone: ['', Validators.required ],
       company_id: [null, Validators.required],
       city_id:[null, Validators.required],
-      area_id:[null,  Validators.required], 
       images:[null],
       status:['active']
        
@@ -125,11 +117,10 @@ export class FormStoreComponent implements OnInit, OnDestroy {
   ngOnInit() {
     
       this.fetchMerchants();
-      this.fetchAreas();
       this.fetchCities();
      
    
-    // Append the value of the Merchant to merchant_id
+    // Append the value of the Merchant to company_id
     if(this.currentRole !== 'Admin'){
      
       this.storeForm.get('company_id').setValue(this.merchantId);
@@ -142,23 +133,23 @@ export class FormStoreComponent implements OnInit, OnDestroy {
         const selectMerchant = data.find(m => m.id === this.merchantId);
             
             if (selectMerchant) {
-                const merchant_country_id = selectMerchant.user.city.area.country.id;
-                return this.store.select(selectDataArea).pipe(
-                    map(areas => {
-                          this.filteredAreas =  [...areas].map(area =>{
-                          const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
+                const merchant_country_id = selectMerchant.user.country.id;
+                return this.store.select(selectDataCity).pipe(
+                    map(cities => {
+                          this.filteredCities =  [...cities].map(city =>{
+                          const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
                           return {
-                            ...area,  
+                            ...city,  
                             translatedName 
                           };
-                        }).filter(area => area.country_id === merchant_country_id)
+                        }).filter(city => city.country_id === merchant_country_id)
                         .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
                         })
                  
                     })
                 );
             } else {
-                this.filteredAreas = [];
+                this.filteredCities = [];
                 return EMPTY; // Return an empty observable
             }
         
@@ -176,12 +167,11 @@ export class FormStoreComponent implements OnInit, OnDestroy {
         .subscribe(Store => {
           if (Store) {
             this.uploadedFiles = Store.images;
-            const areaId = Store.city.area_id;
          
-            this.storeForm.get('area_id').setValue(areaId); 
-            this.storeForm.get('city_id').setValue(Store.city_id); 
-            this.storeForm.get('images').setValue(Store.images); 
-            this.storeForm.get('phone').setValue(Store.phone);
+            // this.storeForm.get('city_id').setValue(Store.city_id); 
+            // this.storeForm.get('images').setValue(Store.images); 
+            // this.storeForm.get('phone').setValue(Store.phone);
+            // this.storeForm.get('status').setValue(Store.status);
             this.patchValueForm(Store);
             this.originalStoreData = _.cloneDeep(Store);
 
@@ -233,19 +223,7 @@ private getNavigationState(){
       });
     });
   }
-  fetchAreas(){
-    this.store.select(selectDataArea).subscribe(data =>{
-      console.log(data)
-      this.filteredAreas =  [...data].map(area =>{
-      const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
-      return {
-        ...area,  
-        translatedName 
-      };
-    })
-    .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-    })});
-  }
+ 
   fetchCities(){
     this.store.select(selectDataCity).subscribe((data) => {
       this.filteredCities = [...data].map(city =>{
@@ -262,49 +240,27 @@ private getNavigationState(){
   }
   onChangeMerchantSelection(event: Merchant){
     const selectMerchant = event;
-    this.filteredAreas = [];
-    this.filteredCities = [];
-    this.storeForm.get('area_id').setValue(null);
-    this.storeForm.get('city_id').setValue(null);
+       
     if(selectMerchant){
-    
-      const country_id = selectMerchant.user.city.area.country.id;
-      this.store.select(selectDataArea).subscribe(data =>
-        this.filteredAreas =  [...data].map(area =>{
-        const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
+      this.filteredCities = [];
+      this.storeForm.get('city_id').setValue(null);
+      const country_id = selectMerchant.user.country_id;
+      
+      this.store.select(selectDataCity).subscribe(data =>
+        this.filteredCities =  [...data].map(city =>{
+        const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
         return {
-          ...area,  
+          ...city,  
           translatedName 
         };
       })
-      .filter(area => area.country_id === country_id)
+      .filter(city => city.country_id === country_id)
       .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
       }));
     }
     
   }
-  onChangeAreaSelection(event: Area){
-    const area = event;
-    this.filteredCities = [];
-    this.storeForm.get('city_id').setValue(null);
-    if(area){
-      this.store.select(selectDataCity).subscribe((data) => {
-        this.filteredCities = [...data].map(city =>{
-         const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
-     
-         return {
-           ...city,  
-           translatedName 
-         };
-       })
-       .filter(city => city.area_id === area.id)
-       .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-       });
-     });
-    }
-    
-    
-  }
+
   // convenience getter for easy access to form fields
   get f() { return this.storeForm.controls; }
 
@@ -395,6 +351,8 @@ private getNavigationState(){
               delete newData.id;
               newData = this.createStoreFromForm(newData);
               console.log(newData);
+
+              delete newData.status;
               //Dispatch Action
               this.store.dispatch(addStorelist({ newData }));
         }
@@ -410,6 +368,7 @@ private getNavigationState(){
             if(this.uploadedFiles)
               changedData.images = this.parseImages(this.uploadedFiles);
             changedData.id = this.storeForm.value.id;
+            delete changedData.status;
             this.store.dispatch(updateStorelist({ updatedData: changedData }));
           }
           else{

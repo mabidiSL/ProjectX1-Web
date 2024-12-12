@@ -7,22 +7,23 @@ import * as _ from 'lodash';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
-import { fetchArealistData } from 'src/app/store/area/area.action';
-import { fetchCitylistData } from 'src/app/store/City/city.action';
+// import { fetchArealistData } from 'src/app/store/area/area.action';
+// import { fetchCitylistData } from 'src/app/store/City/city.action';
 import { fetchSectionlistData } from 'src/app/store/section/section.action';
 import { selectDataCountry } from 'src/app/store/country/country-selector';
-import { selectDataArea } from 'src/app/store/area/area-selector';
+//import { selectDataArea } from 'src/app/store/area/area-selector';
 import { selectDataSection } from 'src/app/store/section/section-selector';
-import { selectDataCity } from 'src/app/store/City/city-selector';
+//import { selectDataCity } from 'src/app/store/City/city-selector';
 import { Country } from 'src/app/store/country/country.model';
-import { Area } from 'src/app/store/area/area.model';
-import { City } from 'src/app/store/City/city.model';
+// import { Area } from 'src/app/store/area/area.model';
+// import { City } from 'src/app/store/City/city.model';
 import { UploadEvent } from 'src/app/shared/widget/image-upload/image-upload.component';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { selectCompany, selectDataLoading } from 'src/app/store/Authentication/authentication-selector';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { _User } from 'src/app/store/Authentication/auth.models';
 import { getCompanyProfile, updateCompanyProfile } from 'src/app/store/Authentication/authentication.actions';
+
 @Component({
   selector: 'app-admin-company-profile',
   templateUrl: './admin-company-profile.component.html',
@@ -43,8 +44,8 @@ export class AdminCompanyProfileComponent implements OnInit{
   sectionlist:  any[] = [];
   
   filteredCountries: Country[] = [];
-  filteredAreas :  Area[] = [];
-  filteredCities:  City[] = [];
+  // filteredAreas :  Area[] = [];
+  // filteredCities:  City[] = [];
   originalCompanyData: any = {}; 
 
   @ViewChild('formElement', { static: false }) formElement: ElementRef;
@@ -58,9 +59,11 @@ export class AdminCompanyProfileComponent implements OnInit{
     private formUtilService: FormUtilService,
     public store: Store) {
       
-     
-      this.currentUser = this.authService.currentUserValue;
+      this.authService.currentUser$.subscribe(user =>{
+        this.currentUser = user;
+      });
       console.log(this.currentUser.companyId);
+     
      
       console.log('***********');
       this.loading$ = this.store.pipe(select(selectDataLoading));
@@ -68,8 +71,6 @@ export class AdminCompanyProfileComponent implements OnInit{
  
       this.store.dispatch(getCompanyProfile({companyId: this.currentUser.companyId}))
       this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 100, status: 'active' }));
-      this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 1000, status: 'active' }));
-      this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 10000, status: 'active' }));
       this.store.dispatch(fetchSectionlistData({page: 1, itemsPerPage: 100, status: 'active' }));
      
       this.initForm();
@@ -85,7 +86,7 @@ export class AdminCompanyProfileComponent implements OnInit{
     description_ar: [''],
     supervisorName: [''],
     supervisorName_ar: [''],
-    companyEmail: [''],
+    companyEmail: [null],
     website: [''],
     VAT: [''],
     registrationCode: [''],
@@ -95,10 +96,9 @@ export class AdminCompanyProfileComponent implements OnInit{
     officeTel: [null],
     supervisorPhone: [null],
     building_floor: [''],
-    street: [''],
+    street: [null],
     country_id:[null],
-    city_id:[null],
-    area_id:[null], 
+    
     bank: [''],
     IBAN: [''],
     SWIFT: [''],
@@ -118,14 +118,15 @@ export class AdminCompanyProfileComponent implements OnInit{
 
   ngOnInit() {
     this.fetchCountry();
-    this.fetchAreas();
-    this.fetchCities();
+    // this.fetchAreas();
+    // this.fetchCities();
     this.fetchSection();
    
     this.store
           .pipe(select(selectCompany), takeUntil(this.destroy$))
           .subscribe(company => {
             if (company) {
+              console.log(company);
               
               this.existantcompanyLogo = company.companyLogo;
               this.patchValueForm(company);
@@ -137,18 +138,18 @@ export class AdminCompanyProfileComponent implements OnInit{
     }
    
     patchValueForm(company: any){
+      this.adminForm.controls['country_id'].setValue(company.user?.country_id);
       this.adminForm.patchValue(company);
-  
-      this.adminForm.controls['country_id'].setValue(company.user.city.area.country_id);
-      this.adminForm.controls['area_id'].setValue(company.user.city.area_id);
-      this.adminForm.controls['city_id'].setValue(company.user.city_id);
+      //this.adminForm.controls['country_id'].setValue(company.user.country_id);
+      // this.adminForm.controls['area_id'].setValue(company.user.city.area_id);
+      // this.adminForm.controls['city_id'].setValue(company.user.city_id);
       this.adminForm.patchValue({
         name: company.translation_data[0].name,
-        name_ar: company.translation_data[1].name,
+        name_ar: company.translation_data[1]?.name,
         description: company.translation_data[0].description,
-        description_ar: company.translation_data[1].description,
+        description_ar: company.translation_data[1]?.description,
         supervisorName: company.translation_data[0].supervisorName,
-        supervisorName_ar: company.translation_data[1].supervisorName,
+        supervisorName_ar: company.translation_data[1]?.supervisorName,
 
         
       });
@@ -186,78 +187,78 @@ export class AdminCompanyProfileComponent implements OnInit{
       });
   
     }
-    fetchAreas(){
-      this.store.select(selectDataArea).subscribe(data =>
-        this.filteredAreas =  [...data].map(area =>{
-        const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
-        return {
-          ...area,  
-          translatedName 
-        };
-      })
-      .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-      }));
-    }
-    fetchCities(){
-      this.store.select(selectDataCity).subscribe((data) => {
-        this.filteredCities = [...data].map(city =>{
-         const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
+    // fetchAreas(){
+    //   this.store.select(selectDataArea).subscribe(data =>
+    //     this.filteredAreas =  [...data].map(area =>{
+    //     const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
+    //     return {
+    //       ...area,  
+    //       translatedName 
+    //     };
+    //   })
+    //   .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
+    //   }));
+    // }
+    // fetchCities(){
+    //   this.store.select(selectDataCity).subscribe((data) => {
+    //     this.filteredCities = [...data].map(city =>{
+    //      const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
      
-         return {
-           ...city,  
-           translatedName 
-         };
-       })
-       .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-       });
-     });
-    }
+    //      return {
+    //        ...city,  
+    //        translatedName 
+    //      };
+    //    })
+    //    .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
+    //    });
+    //  });
+    // }
 
-    onChangeCountrySelection(event: Country){
-      const country = event;
-      this.adminForm.get('area_id').setValue(null);
-      this.adminForm.get('city_id').setValue(null);
-      this.filteredAreas = [];
-      this.filteredCities = [];
+    // onChangeCountrySelection(event: Country){
+    //   const country = event;
+    //   this.adminForm.get('area_id').setValue(null);
+    //   this.adminForm.get('city_id').setValue(null);
+    //   this.filteredAreas = [];
+    //   this.filteredCities = [];
   
-      if(country){
-        this.store.select(selectDataArea).subscribe(data =>
-          this.filteredAreas =  [...data].map(area =>{
-          const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
-          return {
-            ...area,  
-            translatedName 
-          };
-        })
-        .filter(area => area.country_id === country.id)
-        .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-        }));
-      }
+    //   if(country){
+    //     this.store.select(selectDataArea).subscribe(data =>
+    //       this.filteredAreas =  [...data].map(area =>{
+    //       const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
+    //       return {
+    //         ...area,  
+    //         translatedName 
+    //       };
+    //     })
+    //     .filter(area => area.country_id === country.id)
+    //     .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
+    //     }));
+    //   }
      
       
-    }
-    onChangeAreaSelection(event: Area){
-      const area = event;
-      this.filteredCities = [];
-      this.adminForm.get('city_id').setValue(null);
+    // }
+    // onChangeAreaSelection(event: Area){
+    //   const area = event;
+    //   this.filteredCities = [];
+    //   this.adminForm.get('city_id').setValue(null);
   
-      if(area){
-        this.store.select(selectDataCity).subscribe((data) => {
-          this.filteredCities = [...data].map(city =>{
-           const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
+    //   if(area){
+    //     this.store.select(selectDataCity).subscribe((data) => {
+    //       this.filteredCities = [...data].map(city =>{
+    //        const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
        
-           return {
-             ...city,  
-             translatedName 
-           };
-         })
-         .filter(city => city.area_id === area.id)
-         .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-         });
-       });
-      }
+    //        return {
+    //          ...city,  
+    //          translatedName 
+    //        };
+    //      })
+    //      .filter(city => city.area_id === area.id)
+    //      .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
+    //      });
+    //    });
+    //   }
         
-    }
+    // }
   
   onPhoneNumberChanged(phoneNumber: string) {
     this.adminForm.get('officeTel').setValue(phoneNumber);
@@ -308,8 +309,8 @@ export class AdminCompanyProfileComponent implements OnInit{
    delete company.description_ar;  
    delete company.supervisorName; 
    delete company.supervisorName_ar;    
-   delete company.area_id;
-   delete company.country_id;
+   //delete company.area_id;
+  // delete company.country_id;
 
    return company;
 }

@@ -79,9 +79,9 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
       } );
 
       if(this.currentRole !== 'Admin')
-          this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,status:'', merchant_id: this.merchantId}));
+          this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,status:'', company_id: this.merchantId}));
       else
-          this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,status:'', merchant_id: null}));
+          this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,status:'', company_id: null}));
 
  
       this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 100 , status: 'active'})); 
@@ -123,15 +123,15 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
   private initForm() {
     this.formGiftCard = this.formBuilder.group({
       id: [null],
-      name_ar: ['', Validators.required],
+      name_ar: [''],
       name: ['', Validators.required],
-      description_ar: ['', Validators.required],
+      description_ar: [''],
       description: ['', Validators.required],
-      termsAndConditions_ar: ['', Validators.required],
+      termsAndConditions_ar: [''],
       termsAndConditions: ['', Validators.required],
       quantity: [null, Validators.required],
-      merchant_id: [null, Validators.required],
-      stores: [[], Validators.required],
+      company_id: [null, Validators.required],
+      stores: [[]],
       managerName: [''],
       managerName_ar: [''],
       managerPhone: [''],
@@ -141,7 +141,7 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
       categoryOrderAppearance: [null],
       giftCardImage: ['',Validators.required],
       giftCardValue: ['',Validators.required],
-      discount:[null]
+      discount:[null, Validators.required]
       
 
     }, { validators: this.dateValidator });
@@ -186,7 +186,9 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
      
 
     if(this.currentRole !== 'Admin'){
-      this.formGiftCard.get('merchant_id').setValue(this.merchantId);
+      this.formGiftCard.get('company_id').setValue(this.merchantId);
+      this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000, status:'', company_id: this.merchantId}));
+
       this.isLoading = true;
       }
     const GiftCardId = this.route.snapshot.params['id'];
@@ -199,9 +201,7 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
         .subscribe(GiftCard => {
           if (GiftCard) {
             
-            if(this.currentRole === 'Admin'){
-              this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000, status:'', merchant_id: GiftCard.merchant_id}));
-            }
+           
             //this.storeList$ = this.store.pipe(select(selectData));
             // Patch the form with GiftCard data
             this.existantGiftCardLogo = GiftCard.giftCardImage;
@@ -221,13 +221,16 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
 }
 patchValueForm(giftCard: GiftCard){
   this.formGiftCard.patchValue(giftCard);
+  this.formGiftCard.get('company_id').setValue(giftCard.offre.company_id);
+  this.formGiftCard.get('stores').setValue(giftCard.stores.map(store => store.id));
+
   this.formGiftCard.patchValue({
     name: giftCard.translation_data[0].name,
-    name_ar: giftCard.translation_data[1].name,
+    name_ar: giftCard.translation_data[1]?.name,
     description: giftCard.translation_data[0].description,
-    description_ar: giftCard.translation_data[1].description,
+    description_ar: giftCard.translation_data[1]?.description,
     termsAndConditions: giftCard.translation_data[0].termsAndConditions,
-    termsAndConditions_ar: giftCard.translation_data[1].termsAndConditions,
+    termsAndConditions_ar: giftCard.translation_data[1]?.termsAndConditions,
   });
 
 }
@@ -264,7 +267,7 @@ onChangeMerchantSelection(event: Merchant){
           translatedName 
         };
       })
-      .filter(store => store.merchant_id === merchant.id)
+      .filter(store => store.company_id === merchant.id)
       .sort((a, b) => {
         // Sort by translatedName
         return a.translatedName.localeCompare(b.translatedName);
@@ -321,6 +324,9 @@ createGiftCardFromForm(formValue): GiftCard{
     delete giftCard.description_ar;
     delete giftCard.termsAndConditions;
     delete giftCard.termsAndConditions_ar;
+    delete giftCard.managerName;
+    delete giftCard.managerName_ar;
+
   console.log(giftCard);
   return giftCard;
 
@@ -339,8 +345,8 @@ onSubmit(){
       }
       this.formError = null;
       let newData = this.formGiftCard.value;
-           
-      newData.stores = this.formGiftCard.get('stores').value.map((store) =>(store.id ) );
+      if(this.formGiftCard.get('stores').value !== null)  
+        newData.stores = this.formGiftCard.get('stores').value.map((store) =>(store.id ) );
       if(!this.isEditing)
       {         
           //Dispatch Action

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createReducer, on } from '@ngrx/store';
-import { Register, RegisterFailure, RegisterSuccess, forgetPassword, forgetPasswordFailure, forgetPasswordSuccess, getCompanyProfile, getCompanyProfileFailure, getCompanyProfileSuccess, login, loginFailure, loginSuccess, logout, logoutFailure, logoutSuccess, updateCompanyProfile, updateCompanyProfileFailure, updateCompanyProfileSuccess, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfileFailure, updateProfilePassword, updateProfilePasswordFailure, updateProfilePasswordSuccess, updateProfileSuccess, verifyEmail, verifyEmailFailure, verifyEmailSuccess } from './authentication.actions';
+import { Register, RegisterFailure, RegisterSuccess, forgetPassword, forgetPasswordFailure, forgetPasswordSuccess, getCompanyProfile, getCompanyProfileFailure, getCompanyProfileSuccess, login, loginFailure, loginSuccess, logout, logoutFailure, logoutSuccess, modalRegisterSuccess, updateCompanyProfile, updateCompanyProfileFailure, updateCompanyProfileSuccess, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfileFailure, updateProfilePassword, updateProfilePasswordFailure, updateProfilePasswordSuccess, updateProfileSuccess, verifyEmail, verifyEmailFailure, verifyEmailSuccess } from './authentication.actions';
 import { _User } from './auth.models';
 
 export interface AuthenticationState {
@@ -30,6 +30,7 @@ export const authenticationReducer = createReducer(
     on(Register, (state) => ({ ...state, loading: true, error: null })),
     on(RegisterSuccess, (state, { user }) => ({ ...state, loading: false, isLoggedIn: false, user,success: true, error: null, })),
     on(RegisterFailure, (state, { error }) => ({ ...state, loading: false, error })),
+    on(modalRegisterSuccess, (state) => ({ ...state, loading: false, success: false, error: null, })),
 
     on(verifyEmail, (state) => ({ ...state, loading: true, error: null })),
     on(verifyEmailSuccess, (state, {message}) => ({ ...state, loading: false, isLoggedIn: false,message,  error: null, })),

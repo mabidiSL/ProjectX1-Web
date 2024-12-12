@@ -1,15 +1,15 @@
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <div class="auth-container-fluid d-flex">
   <!-- Left Section (Background) -->
-  <div #leftsection class="left-section">
+  <div  class="left-section d-flex flex-column">
     <!-- This can be an image, color, or any content you want on the left side -->
-  </div>
-
-  <!-- Right Section (Form) -->
-  <div class="right-section d-flex flex-column">
-    <!-- Button to toggle language direction for testing -->
-    <button class="btn btn-primary" (click)="toggleRtl()">Toggle RTL/LTR</button>
-    <div class="form-container flex-grow-0">
+    <!-- <button class="btn btn-primary  rounded" (click)="toggleRtl()">Toggle RTL/LTR</button> -->
+    <div class="form-container">
+        <div class="row">
+          <!-- <div class="col-12 text-center mb-3">
+            <p class="py-2">{{'LoginIn' | translate}}</p>
+          </div> -->
+      </div>
       <form class="form-horizontal" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         @if(error){
         <alert type="danger" [dismissible]="false">{{ error | translate }}</alert>
@@ -74,5 +74,11 @@
     <div class="mt-auto text-center">
       <span class="copyright-text">{{'Copyright' | translate}} © {{year}} {{'Project X1. All rights reserved.' | translate}} </span>
   </div>
+  </div>
+
+  <!-- Right Section (Form) -->
+  <div #rightsection class="right-section">
+    <!-- Button to toggle language direction for testing -->
+   
   </div>
 </div>

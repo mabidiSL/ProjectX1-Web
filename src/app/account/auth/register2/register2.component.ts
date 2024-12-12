@@ -1,17 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { select, Store } from '@ngrx/store';
 import { Register } from 'src/app/store/Authentication/authentication.actions';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
-import { fetchArealistData } from 'src/app/store/area/area.action';
-import { fetchCitylistData } from 'src/app/store/City/city.action';
 import { Observable } from 'rxjs';
 import { selectDataCountry } from 'src/app/store/country/country-selector';
-import { selectDataArea } from 'src/app/store/area/area-selector';
-import { selectDataCity } from 'src/app/store/City/city-selector';
 import { fetchSectionlistData } from 'src/app/store/section/section.action';
 import { selectDataSection } from 'src/app/store/section/section-selector';
 import { selectDataLoading, selectRegistrationSuccess } from 'src/app/store/Authentication/authentication-selector';
@@ -19,7 +15,6 @@ import { Country } from 'src/app/store/country/country.model';
 import { Area } from 'src/app/store/area/area.model';
 import { City } from 'src/app/store/City/city.model';
 import { SectionListModel } from 'src/app/store/section/section.model';
-import { UploadEvent } from 'src/app/shared/widget/image-upload/image-upload.component';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { Merchant } from 'src/app/store/merchantsList/merchantlist1.model';
 import { RandomBackgroundService } from 'src/app/core/services/setBackground.service';
@@ -62,6 +57,7 @@ export class Register2Component implements OnInit, OnDestroy {
   filteredAreas :  Area[] = [];
   filteredCities:  City[] = [];
   @ViewChild('cdkStepper') cdkStepper: CdkStepper;
+  @ViewChild('rightsection') rightsection: ElementRef<HTMLElement>;
 
  
   constructor  (
@@ -75,8 +71,6 @@ export class Register2Component implements OnInit, OnDestroy {
 
       this.loading$ = this.store.pipe(select(selectDataLoading));
       this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 100, status: 'active' }));
-      this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 1000, status: 'active' }));
-      this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 10000, status: 'active' }));
       this.store.dispatch(fetchSectionlistData({page: 1, itemsPerPage: 100, status: 'active' }));
       this.initForm();
 
@@ -87,39 +81,18 @@ export class Register2Component implements OnInit, OnDestroy {
 
     this.signupForm = this.formBuilder.group({
       
-      username: [null, Validators.required],
+      f_name: [null, Validators.required],
+      l_name: [null, Validators.required],
       email: [null, [Validators.required, Validators.email]],
-      companyEmail: [null],
       password: ['', Validators.required],
       confpassword: ['', Validators.required],
       phone:[null,Validators.required], //Validators.pattern(/^\d{3}-\d{3}-\d{4}$/)*/],
-      officeTel: [null],
-      country_id:[null, Validators.required],
-      city_id:[null, Validators.required],
-      area_id:[null, Validators.required], 
-      building_floor: [null],
-      street: [null],
-      VAT: [null],
-      bank: [null],
-      IBAN: [null],
-      SWIFT: [null],
-      registrationCode: [null],
-      // supervisorName: ['', Validators.required],
-      // supervisorName_ar: ['', Validators.required],
-      // supervisorPhone: ['', Validators.required],
+      jobTitle: [null],
+      country_id:[null, Validators.required],   
       merchantName:['', Validators.required],
-      merchantName_ar:['', Validators.required],
-      image: [null],
-      companyLogo: ['', Validators.required],
       section_id:[null, Validators.required],
       website: [null],
-      whatsup: [null] ,
-      facebook:[null]  ,
-      twitter:  [null],
-      instagram: [null] ,
-      Snapchat: [null] ,
-      Tiktok:[null]  ,
-      LinkedIn:[null] 
+      
 
     }, {validators: [this.passwordMatchValidator]});
   }
@@ -129,17 +102,18 @@ export class Register2Component implements OnInit, OnDestroy {
   fileName2: string = ''; 
 
   ngOnInit() {
+    document.body.classList.add("auth-body-bg");
+
     this.store.pipe(select(selectRegistrationSuccess)).subscribe((success) => {
       if (success) {
         this.successmsg = true;
         this.showModal();
       }
     });
-    //document.body.classList.add("auth-body-bg");
     const direction = document.documentElement.dir === 'rtl' ? 'rtl' : 'ltr';
     this.randomBackgroundService.getRandomBackground(direction).subscribe(
       (randomImage) => {
-        this.backgroundService.setBackground(randomImage);
+        this.backgroundService.setBackgroundElement(this.rightsection.nativeElement, randomImage);
       },
       (error) => {
         console.error('Error setting random background:', error);
@@ -147,8 +121,7 @@ export class Register2Component implements OnInit, OnDestroy {
     );
 
     this.fetchCountry();
-    this.fetchAreas();
-    this.fetchCities();
+    
     this.fetchSection();
     
   }
@@ -184,32 +157,8 @@ export class Register2Component implements OnInit, OnDestroy {
     });
 
   }
-  fetchAreas(){
-    this.store.select(selectDataArea).subscribe(data =>
-      this.filteredAreas =  [...data].map(area =>{
-      const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
-      return {
-        ...area,  
-        translatedName 
-      };
-    })
-    .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-    }));
-  }
-  fetchCities(){
-    this.store.select(selectDataCity).subscribe((data) => {
-      this.filteredCities = [...data].map(city =>{
-       const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
-   
-       return {
-         ...city,  
-         translatedName 
-       };
-     })
-     .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-     });
-   });
-  }
+ 
+
   get passwordMatchError() {
     return (
       this.signupForm.getError('passwordMismatch') &&
@@ -233,58 +182,12 @@ export class Register2Component implements OnInit, OnDestroy {
     return null; // Return null if valid
   }
   
-  onChangeCountrySelection(event: Country){
-    const country = event;
-    this. signupForm.get('area_id').setValue(null);
-    this. signupForm.get('city_id').setValue(null);
-    this.filteredAreas = [];
-    this.filteredCities = [];
-
-    if(country){
-      this.store.select(selectDataArea).subscribe(data =>
-        this.filteredAreas =  [...data].map(area =>{
-        const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
-        return {
-          ...area,  
-          translatedName 
-        };
-      })
-      .filter(area => area.country_id === country.id)
-      .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-      }));
-    }
-   
-    
-  }
-  onChangeAreaSelection(event: Area){
-    const area = event;
-    this.filteredCities = [];
-    this. signupForm.get('city_id').setValue(null);
-
-    if(area){
-      this.store.select(selectDataCity).subscribe((data) => {
-        this.filteredCities = [...data].map(city =>{
-         const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
-     
-         return {
-           ...city,  
-           translatedName 
-         };
-       })
-       .filter(city => city.area_id === area.id)
-       .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-       });
-     });
-    }
-      
-  }
+ 
   onPhoneNumberChanged(phoneNumber: string) {
     this.signupForm.get('phone').setValue(phoneNumber);
   }
 
-  onCompanyChanged(phoneNumber: string) {
-    this.signupForm.get('officeTel').setValue(phoneNumber);
-  }
+ 
   // convenience getter for easy access to form fields
   get f() { return this.signupForm.controls; }
 
@@ -294,23 +197,23 @@ export class Register2Component implements OnInit, OnDestroy {
     merchant.translation_data = [];
     const enFields = [
       { field: 'merchantName', name: 'name' },
-     // { field: 'supervisorName', name: 'supervisorName' }
+      { field: 'f_name', name: 'f_name' },
+      { field: 'l_name', name: 'l_name' },
+
+
     ];
-    const arFields = [
-      { field: 'merchantName_ar', name: 'name' },
-      //{ field: 'supervisorName_ar', name: 'supervisorName' }
-    ];
+    
    // Create the English translation if valid
     const enTranslation = this.formUtilService.createTranslation(merchant,'en', enFields );
     if (enTranslation) {
       merchant.translation_data.push(enTranslation);
     }
    
-    // Create the Arabic translation if valid
-    const arTranslation = this.formUtilService.createTranslation(merchant,'ar', arFields );
-    if (arTranslation) {
-      merchant.translation_data.push(arTranslation);
-    }
+    // // Create the Arabic translation if valid
+    // const arTranslation = this.formUtilService.createTranslation(merchant,'ar', arFields );
+    // if (arTranslation) {
+    //   merchant.translation_data.push(arTranslation);
+    // }
     if(merchant.translation_data.length <= 0)
       delete merchant.translation_data;
     // Dynamically remove properties that are undefined or null at the top level of city object
@@ -321,12 +224,8 @@ export class Register2Component implements OnInit, OnDestroy {
     });
 
    delete merchant.merchantName;  
-   delete merchant.merchantName_ar;    
-  //  delete merchant.supervisorName;
-  //  delete merchant.supervisorName_ar;
-   delete merchant.area_id;
-   delete merchant.country_id;
-
+   delete merchant.l_name;
+   delete merchant.f_name;
    return merchant;
 }
   /**
@@ -348,12 +247,6 @@ export class Register2Component implements OnInit, OnDestroy {
       
       
       const newData = this.signupForm.value;
-      if(this.existantmerchantLogo){
-        newData.companyLogo = this.existantmerchantLogo;
-      }
-      if(this.merchantPictureBase64){
-        newData.image = this.merchantPictureBase64;
-      }
       delete newData.confpassword;
       const register = this.createMerchantFromForm(newData);
       console.log(register);
@@ -379,29 +272,13 @@ export class Register2Component implements OnInit, OnDestroy {
       this.confirmFieldTextType = !this.confirmFieldTextType;
     }
   
-  onImageUpload(event: UploadEvent): void {
-    if (event.type === 'image') {
-      // Handle Merchant Picture Upload
-      this.merchantPictureBase64 = event.file;
-      this.fileName2 = ''; // Set the file name
-      this.existantmerchantPicture = event.file;
-      this. signupForm.controls['image'].setValue(this.existantmerchantPicture);
-    }
-  }
+
   
-  onLogoUpload(event: UploadEvent): void {
-    if (event.type === 'logo') {
-      // Handle Logo Upload
-      this.storeLogoBase64 = event.file;
-      this.fileName1 = ''; // Set the file name
-      this.existantmerchantLogo = event.file;
-      this. signupForm.controls['companyLogo'].setValue(this.existantmerchantLogo);
-    }
-  }
+ 
   isStepValid(stepIndex: number): boolean {
     // Logic to validate current step fields
-    const merchantFields = ['merchantName', 'merchantName_ar', 'companyLogo', 'section_id','country_id', 'area_id', 'city_id' ]; // Update based on the step
-    const managerFields = ['username','email', 'password', 'confpassword', 'phone'];
+    const merchantFields = ['merchantName','section_id','country_id', 'website' ]; // Update based on the step
+    const managerFields = ['f_name','l_name','email', 'password', 'confpassword', 'phone'];
     
 
     if(stepIndex == 0)
@@ -418,7 +295,7 @@ export class Register2Component implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.backgroundService.resetBackground();
   }
-         /**
+  /**
    * Open modal
    * @param content modal content
    */

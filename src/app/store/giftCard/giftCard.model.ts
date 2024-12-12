@@ -19,13 +19,14 @@ export interface GiftCard {
         area?:  Area;
         city?:  City;
         quantity?: number;
-        merchant_id?: number;
+        //company_id?: number;
         merchant?: Merchant;
-        store?: any;//Store;
+        stores?: any;//Store;
         managerName?: string;
         managerPhone?: string;
         startDateGiftCard?: Date;
         endDateGiftCard?: Date;
+        offre?: any;
         contractRepName?: string;
         sectionOrderAppearnance?: string;
         categoryOrderAppearnce?: string;

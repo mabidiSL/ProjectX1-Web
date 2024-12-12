@@ -26,7 +26,8 @@ export interface Coupon {
         endDateCoupon?: Date;
         contractRepName?: string;
         sectionOrderAppearnance?: string;
-        merchant_id?: number;
+        company_id?: number;
+        offre?: any;
         categoryOrderAppearnce?: string;
         merchantLogo?: string;
         couponLogo?: string;

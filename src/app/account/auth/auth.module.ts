@@ -12,7 +12,7 @@ import { Register2Component } from './register2/register2.component';
 import { AuthRoutingModule } from './auth-routing';
 import { PasswordresetComponent } from './passwordreset/passwordreset.component';
 import { UpdatepasswordComponent } from './updatepassword/updatepassword.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,6 +26,7 @@ import { LanguageService } from 'src/app/core/services/language.service';
 import { RandomBackgroundService } from 'src/app/core/services/setBackground.service';
 import { NgStepperModule } from 'angular-ng-stepper';
 import { CdkStepperModule } from '@angular/cdk/stepper';
+import { ThemeService } from 'src/app/core/services/theme.service';
 
 
 
@@ -52,4 +53,21 @@ import { CdkStepperModule } from '@angular/cdk/stepper';
   ],
   providers: [RandomBackgroundService,ImageService, LanguageService]
 })
-export class AuthModule { }
+export class AuthModule { 
+constructor(
+  private themeService: ThemeService,
+  public translate: TranslateService,  
+) {}
+
+initializeLanguage(): Promise<void> {
+  return new Promise<void>((resolve) => {
+    const browserLang = this.translate.getBrowserLang();
+    if (browserLang === 'ar') {
+      this.themeService.loadRtlStyles(); // RTL for Arabic
+    } else {
+      this.themeService.loadLtrStyles(); // LTR for English
+    }
+    resolve();
+  });
+}
+}

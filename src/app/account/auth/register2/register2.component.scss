@@ -1,3 +1,8 @@
+// html, body{
+//   height: 100%; 
+//   margin: 0;
+//    padding: 0;
+// }
 .account-pages {
     //background-image: url('/assets/images/home2.jpg');
     background-size: cover;
@@ -9,4 +14,19 @@
     font-size: 24px; /* Example size */
     font-family: 'Arial', sans-serif; /* Example font family */
     font-weight: bold; /* Make the text bold */
+  }
+  .right-section {
+    width: 55%; /* Adjust as needed */
+    background-color: #f0f0f0; /* Example background color */
+    padding: 20px;
+  }
+  
+  .left-section {
+    width: 45%; /* Adjust as needed */
+    background-color: #fff; /* Example background color */
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Vertically and horizontally center the content */
+    height: 100vh; /* Make sure the right section takes full height */
   }

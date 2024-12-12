@@ -34,14 +34,23 @@
                   <div class="col-md-6 mb-3">
                     <div class="form-group ">
                        
-                        <label for="username" >{{'Username' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                        <input type="text" id="username" class="form-control" formControlName="username" placeholder="{{ 'Enter username' | translate }}" required [readonly]="type==='view'">
-                        <div *ngIf="merchantForm.get('username').touched && merchantForm.get('username').invalid" class="invalid-feedback d-block">
-                            <span *ngIf="merchantForm.get('username').errors?.['required']">{{'Please enter the username'| translate}}.</span>
+                        <label for="f_name" >{{'First_Name' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                        <input type="text" id="f_name" class="form-control" formControlName="f_name" placeholder="{{ 'Enter the first name' | translate }}" required [readonly]="type==='view'">
+                        <div *ngIf="merchantForm.get('f_name').touched && merchantForm.get('f_name').invalid" class="invalid-feedback d-block">
+                            <span *ngIf="merchantForm.get('f_name').errors?.['required']">{{'Please enter the first Name'| translate}}.</span>
                           </div>
                       </div> 
                   </div>
-
+                  <div class="col-md-6 mb-3">
+                    <div class="form-group ">
+                       
+                        <label for="l_name" >{{'Last_Name' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                        <input type="text" id="l_name" class="form-control" formControlName="l_name" placeholder="{{ 'Enter the last name' | translate }}" required [readonly]="type==='view'">
+                        <div *ngIf="merchantForm.get('l_name').touched && merchantForm.get('l_name').invalid" class="invalid-feedback d-block">
+                            <span *ngIf="merchantForm.get('l_name').errors?.['required']">{{'Please enter the last name'| translate}}.</span>
+                          </div>
+                      </div> 
+                  </div>
                   <div class="col-md-6 mb-3">
                     <div class="form-group ">
                       <label for="email">{{'Email' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
@@ -219,17 +228,7 @@
                     </div>
                   </div>
                   
-                    <div class="col-md-6 mb-3">
-                      <div class="form-group">
-                        <label for="area_id">{{'area' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                        <ng-select  [readonly]="type === 'view'" id="area_id" placeholder="{{'Select_the_Area' | translate}}" [items]="filteredAreas" bindLabel="translatedName" 
-                        bindValue="id" formControlName="area_id" (change)="onChangeAreaSelection($event)" >
-                        </ng-select> 
-                        <div *ngIf="merchantForm.get('area_id').touched && merchantForm.get('area_id').invalid" class="invalid-feedback d-block">
-                          <span *ngIf="merchantForm.get('area_id').errors?.['required']">{{'Area is required'| translate}}.</span>
-                        </div>                           
-                      </div>
-                    </div>
+                   
 
                   <div class="col-md-6 mb-3">
                     <div class="form-group ">

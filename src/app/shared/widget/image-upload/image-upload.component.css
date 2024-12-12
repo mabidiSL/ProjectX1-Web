@@ -5,7 +5,7 @@
   .dashed-border {
     border: 2px dashed #8d9196;  /* Blue dashed border */
     background-color: #f4eeee;   /* Light gray background */
-    padding: 20px;
+    padding: 25px;
     margin-bottom: 20px;
     width: 100%;
   }
@@ -86,13 +86,13 @@
     padding: 10px;
     border-radius: 8px;
     position: relative;
-    width: 250px; /* Set a fixed width for the container */
-    height: 150px; /* Set a fixed height for the container */
+    width: 100%; /* Set a fixed width for the container */
+    height: 100%; /* Set a fixed height for the container */
     background-color: #f5f5f5; /* Optional: background color for the container */
   }
   
   .image-upload-container img {
-    max-width: 100%; /* Image should not exceed container width */
-    max-height: 100%; /* Image should not exceed container height */
+    max-width: 250px; /* Image should not exceed container width */
+    max-height: 150px; /* Image should not exceed container height */
     object-fit: contain; /* Ensure the image maintains its aspect ratio */
   }

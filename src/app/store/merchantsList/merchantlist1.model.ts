@@ -31,7 +31,8 @@ interface User{
 }
 export interface Merchant{
 id?: number;
-username?: string;
+f_name?: string;
+l_name?: string;
 email?: string;
 password?: string;
 phone?: string;
