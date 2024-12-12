@@ -46,9 +46,8 @@ export class MerchantListComponent implements OnInit {
     { property: 'qrCode', label: 'Qr Merchant' },
     { property: 'activationCode', label: 'Activation Code' },
     { property: 'translation_data[0].name', label: 'Merchant_Name' },
-    { property: 'user.city.translation_data[0].name', label: 'City' },
-    { property: 'totalOffres', label: 'Total Offers' },
-    { property: 'totalStores', label: 'Total Stores' },
+    { property: 'user.country.translation_data[0].name', label: 'Country' },
+    
     { property: 'user.status', label: 'Status' },
   ];
 

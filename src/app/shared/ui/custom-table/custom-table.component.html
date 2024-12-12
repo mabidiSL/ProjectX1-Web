@@ -65,7 +65,7 @@
         <th scope="col" *ngFor="let column of columns" >
           <div 
           (click)="sortData(column.property)" 
-          style="cursor: pointer; display: flex; align-items: center; justify-content: center;"
+          style="cursor: pointer; display: flex; "
         >
           {{ column.label | translate }}
           <span 
@@ -90,7 +90,7 @@
               </div>
             </td>
             <ng-container *ngFor="let column of columns">
-                <td class="text-center">
+                <td >
                 <ng-container *ngIf="column.property !== 'status' && column.property !== 'user.status'; else  status">
                   <!-- Check if column.property is 'flag' -->
                   <ng-container *ngIf="column.property === 'flag' || column.property.includes('Logo')||column.property.includes('qr'); else showData">

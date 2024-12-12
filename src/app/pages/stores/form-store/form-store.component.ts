@@ -133,7 +133,7 @@ export class FormStoreComponent implements OnInit, OnDestroy {
         const selectMerchant = data.find(m => m.id === this.merchantId);
             
             if (selectMerchant) {
-                const merchant_country_id = selectMerchant.user.country.id;
+                const merchant_country_id = selectMerchant.user.country_id;
                 return this.store.select(selectDataCity).pipe(
                     map(cities => {
                           this.filteredCities =  [...cities].map(city =>{
@@ -166,6 +166,7 @@ export class FormStoreComponent implements OnInit, OnDestroy {
         .pipe(select(selectStoreById), takeUntil(this.destroy$))
         .subscribe(Store => {
           if (Store) {
+            console.log(Store);
             this.uploadedFiles = Store.images;
          
             // this.storeForm.get('city_id').setValue(Store.city_id); 
@@ -186,9 +187,9 @@ patchValueForm(store: Branch){
   this.storeForm.patchValue(store);
   this.storeForm.patchValue({
     name: store.translation_data[0].name,
-    name_ar: store.translation_data[1].name,
+    name_ar: store.translation_data[1]?.name,
     description: store.translation_data[0].description,
-    description_ar: store.translation_data[1].description,
+    description_ar: store.translation_data[1]?.description,
     
   });
 
