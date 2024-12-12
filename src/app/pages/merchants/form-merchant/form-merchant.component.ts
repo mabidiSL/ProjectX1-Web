@@ -323,6 +323,8 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
       });
 
      delete merchant.merchantName;  
+     delete merchant.f_name;
+     delete merchant.l_name;
      delete merchant.merchantName_ar;    
      delete merchant.supervisorName;
      delete merchant.supervisorName_ar;

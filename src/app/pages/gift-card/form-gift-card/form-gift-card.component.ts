@@ -221,7 +221,7 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
 }
 patchValueForm(giftCard: GiftCard){
   this.formGiftCard.patchValue(giftCard);
-  this.formGiftCard.get('company_id').setValue(giftCard.offre.company_id);
+  this.formGiftCard.get('company_id').setValue(giftCard.offer.company_id);
   this.formGiftCard.get('stores').setValue(giftCard.stores.map(store => store.id));
 
   this.formGiftCard.patchValue({

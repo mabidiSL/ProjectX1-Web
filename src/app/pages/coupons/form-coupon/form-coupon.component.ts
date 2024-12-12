@@ -238,7 +238,7 @@ export class FormCouponComponent implements OnInit, OnDestroy{
 }
 patchValueForm(coupon: Coupon){
   this.formCoupon.patchValue(coupon);
-  this.formCoupon.get('company_id').setValue(coupon.offre.company_id);
+  this.formCoupon.get('company_id').setValue(coupon.offer.company_id);
   this.formCoupon.get('stores').setValue(coupon.stores.map(store => store.id));
   this.formCoupon.patchValue({
     name: coupon.translation_data[0].name,

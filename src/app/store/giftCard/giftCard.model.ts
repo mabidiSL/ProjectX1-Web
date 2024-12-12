@@ -26,7 +26,7 @@ export interface GiftCard {
         managerPhone?: string;
         startDateGiftCard?: Date;
         endDateGiftCard?: Date;
-        offre?: any;
+        offer?: any;
         contractRepName?: string;
         sectionOrderAppearnance?: string;
         categoryOrderAppearnce?: string;
