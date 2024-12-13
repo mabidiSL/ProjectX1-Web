@@ -20,7 +20,7 @@ import { FormCouponComponent } from './form-coupon/form-coupon.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { CouponApprovalComponent } from './coupon-approval/coupon-approval.component';
+//import { CouponApprovalComponent } from './coupon-approval/coupon-approval.component';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ViewCouponComponent } from './view-coupon/view-coupon.component';
@@ -33,7 +33,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     EditCouponComponent,
     CreateCouponComponent,
     FormCouponComponent,
-    CouponApprovalComponent,
+    //CouponApprovalComponent,
     ViewCouponComponent
   ],
   imports: [

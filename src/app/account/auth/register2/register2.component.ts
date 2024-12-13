@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -17,7 +17,7 @@ import { City } from 'src/app/store/City/city.model';
 import { SectionListModel } from 'src/app/store/section/section.model';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { Merchant } from 'src/app/store/merchantsList/merchantlist1.model';
-import { RandomBackgroundService } from 'src/app/core/services/setBackground.service';
+import { RandomBackgroundService } from 'src/app/core/services/setBackgroundEx.service';
 import { BackgroundService } from 'src/app/core/services/background.service';
 import { CdkStepper } from '@angular/cdk/stepper';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
@@ -28,7 +28,7 @@ import { ModalsComponent } from 'src/app/shared/ui/modals/modals.component';
   templateUrl: './register2.component.html',
   styleUrls: ['./register2.component.scss']
 })
-export class Register2Component implements OnInit, OnDestroy {
+export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
 
   signupForm: UntypedFormGroup;
   formError: string | null = null;
@@ -70,7 +70,7 @@ export class Register2Component implements OnInit, OnDestroy {
     public store: Store) { 
 
       this.loading$ = this.store.pipe(select(selectDataLoading));
-      this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 100, status: 'active' }));
+      this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 100, query:'', status: 'active' }));
       this.store.dispatch(fetchSectionlistData({page: 1, itemsPerPage: 100, status: 'active' }));
       this.initForm();
 
@@ -110,20 +110,25 @@ export class Register2Component implements OnInit, OnDestroy {
         this.showModal();
       }
     });
-    const direction = document.documentElement.dir === 'rtl' ? 'rtl' : 'ltr';
-    this.randomBackgroundService.getRandomBackground(direction).subscribe(
-      (randomImage) => {
-        this.backgroundService.setBackgroundElement(this.rightsection.nativeElement, randomImage);
-      },
-      (error) => {
-        console.error('Error setting random background:', error);
-      }
-    );
+   
 
     this.fetchCountry();
     
     this.fetchSection();
     
+  }
+  ngAfterViewInit() {
+    const direction = document.documentElement.dir === 'rtl' ? 'rtl' : 'ltr';
+    if (this.rightsection) {
+      this.randomBackgroundService.getRandomBackground(direction).subscribe(
+        (randomImage) => {
+          this.backgroundService.setBackgroundElement(this.rightsection.nativeElement, randomImage);
+        },
+        (error) => {
+          console.error('Error setting random background:', error);
+        }
+      );
+    }
   }
   fetchCountry(){
     this.store.select(selectDataCountry).subscribe((data) =>{

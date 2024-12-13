@@ -31,8 +31,8 @@ export class RolesEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchRolelistData),
-            mergeMap(({ page, itemsPerPage, status }) =>
-                this.CrudService.fetchData('/roles/me',{ limit: itemsPerPage, page: page,status: status}).pipe(
+            mergeMap(({ page, itemsPerPage, query,status }) =>
+                this.CrudService.fetchData('/roles/me',{ limit: itemsPerPage, page: page,query: query,status: status}).pipe(
                     map((response: any) => fetchRolelistSuccess({ RoleListdata : response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);

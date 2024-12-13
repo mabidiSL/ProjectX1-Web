@@ -33,8 +33,8 @@ export class MerchantslistEffects1 {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchMerchantlistData),
-            mergeMap(({ page, itemsPerPage, status }) => 
-                  this.CrudService.fetchData('/merchants',{ limit: itemsPerPage, page: page, status: status}).pipe(
+            mergeMap(({ page, itemsPerPage,query, status }) => 
+                  this.CrudService.fetchData('/merchants',{ limit: itemsPerPage, page: page,query: query, status: status}).pipe(
                     map((response: any) => {return fetchMerchantlistSuccess({ MerchantListdata: response.result })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);

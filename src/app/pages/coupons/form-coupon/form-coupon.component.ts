@@ -87,11 +87,11 @@ export class FormCouponComponent implements OnInit, OnDestroy{
       
 
       if(this.currentRole !== 'Admin')
-          this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,status:'', company_id: this.merchantId}));
+          this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,query:'',status:'', company_id: this.merchantId}));
       else
-          this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,status:'', company_id: null}));
+          this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,query:'',status:'', company_id: null}));
 
-      this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 100 , status: 'active'})); 
+      this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 100 ,query:'', status: 'active'})); 
       
       this.initForm();
       this.bsConfig = this.datepickerConfigService.getConfig();
@@ -170,11 +170,9 @@ export class FormCouponComponent implements OnInit, OnDestroy{
       termsAndConditions_ar: [''],
       codeCoupon: ['COUP123'],
       quantity: [null, Validators.required],
+      //nbr_of_use: [null, Validators.required],
       company_id: [null, Validators.required],
       stores: [[]],
-      managerName: [''],
-      managerName_ar: [''],
-      managerPhone: [''],
       startDateCoupon: ['', Validators.required],
       endDateCoupon: ['', Validators.required],
       contractRepName: [''],
@@ -205,8 +203,9 @@ export class FormCouponComponent implements OnInit, OnDestroy{
     
     if(this.currentRole !== 'Admin'){
       console.log(this.merchantId);
-     // this.formCoupon.get('company_id').setValue(this.merchantId);
-      this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000, status:'', company_id: this.merchantId}));
+      this.formCoupon.get('company_id').setValue(this.merchantId);
+      this.formCoupon.get('company_id').clearValidators()
+      this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000,query:'', status:'', company_id: this.merchantId}));
       this.isLoading = true;
       
     }
@@ -317,14 +316,12 @@ createCouponFromForm(formValue): Coupon{
     { field: 'name', name: 'name' },
     { field: 'description', name: 'description' },
     { field: 'termsAndConditions', name: 'termsAndConditions' },
-    { field: 'managerName', name: 'managerName' }
 
   ];
   const arFields = [
     { field: 'name_ar', name: 'name' },
     { field: 'description_ar', name: 'description' },
     { field: 'termsAndConditions_ar', name: 'termsAndConditions' },
-    { field: 'managerName_ar', name: 'managerName' }
 
 
   ];
@@ -355,8 +352,8 @@ createCouponFromForm(formValue): Coupon{
     delete coupon.description_ar;
     delete coupon.termsAndConditions;
     delete coupon.termsAndConditions_ar;
-    delete coupon.managerName;
-    delete coupon.managerName_ar;
+
+    
 
   return coupon;
 
@@ -417,10 +414,15 @@ createCouponFromForm(formValue): Coupon{
     this.formCoupon.controls['couponLogo'].setValue(this.existantcouponLogo);
   }
 }
+onToggle(event: any){
+  console.log(event.target.value);
+  if(event){
+    this.formCoupon.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
 
-onPhoneNumberChanged(phoneNumber: string) {
-  this.formCoupon.get('managerPhone').setValue(phoneNumber);
+  }
 }
+
+
   onCancel(){
     this.formCoupon.reset();
     this.router.navigateByUrl('/private/coupons');

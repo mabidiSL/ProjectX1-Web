@@ -130,7 +130,7 @@
                       [ngClass]="{
                         'bg-success': getProperty(data, column.property) === 'delivered' || getProperty(data, column.property) === 'approved' || getProperty(data, column.property) === 'active',
                         'bg-warning': getProperty(data, column.property) === 'pending',
-                        'bg-secondary': getProperty(data, column.property) === 'inActive',
+                        'bg-secondary': getProperty(data, column.property) === 'inactive',
                         'bg-danger': getProperty(data, column.property) === 'undelivered'
                       }">
                   {{ getProperty(data, column.property) }}

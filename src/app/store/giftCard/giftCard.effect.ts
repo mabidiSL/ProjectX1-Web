@@ -32,8 +32,8 @@ export class GiftCardsEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchGiftCardlistData),
-            mergeMap(({ page, itemsPerPage, status }) =>
-                this.CrudService.fetchData('/gift-cards',{ limit: itemsPerPage, page: page, status: status}).pipe(
+            mergeMap(({ page, itemsPerPage, query, status }) =>
+                this.CrudService.fetchData('/gift-cards',{ limit: itemsPerPage, page: page, query: query, status: status}).pipe(
                     map((response: any) => fetchGiftCardlistSuccess({ GiftCardListdata : response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);

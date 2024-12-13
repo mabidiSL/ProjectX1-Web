@@ -25,6 +25,7 @@ export class GiftCardComponent implements OnInit {
   giftCardList$: Observable<GiftCard[]>;
   totalItems$: Observable<number>;
   loading$: Observable<boolean>;
+  searchTerm: string = '';
 
   isDropdownOpen : boolean = false;
   filteredArray: GiftCard[] = [];
@@ -54,7 +55,7 @@ export class GiftCardComponent implements OnInit {
 
   ngOnInit() {
    
-    this.store.dispatch(fetchGiftCardlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, status: '' }));
+    this.store.dispatch(fetchGiftCardlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:'', status: '' }));
     this.giftCardList$.subscribe(data => {
       this.originalArray = data; // giftCard the full giftCard list
       this.filteredArray = [...this.originalArray];
@@ -66,15 +67,20 @@ export class GiftCardComponent implements OnInit {
   }
   onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchGiftCardlistData({ page: this.currentPage, itemsPerPage: totalItems, status:'' }));
+    this.store.dispatch(fetchGiftCardlistData({ page: this.currentPage, itemsPerPage: totalItems,  query:  this.searchTerm, status:'' }));
    }
    // pagechanged
    onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchGiftCardlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage }));
+    this.store.dispatch(fetchGiftCardlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:  this.searchTerm, status:'' }));
     
   }
+  onSearchEvent(event: any){
+    console.log(event);
+    this.searchTerm = event;
+    this.store.dispatch(fetchGiftCardlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:'' }));
 
+   }
   // Delete Store
   onDelete(id: number) {
     this.store.dispatch(deleteGiftCardlist({ GiftCardId: id }));

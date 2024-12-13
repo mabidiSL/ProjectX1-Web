@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { selectDataLoading } from 'src/app/store/Authentication/authentication-selector';
 import { Observable } from 'rxjs';
 import { BackgroundService } from 'src/app/core/services/background.service';
-import { RandomBackgroundService } from 'src/app/core/services/setBackground.service';
+import { RandomBackgroundService } from 'src/app/core/services/setBackgroundEx.service';
 
 @Component({
   selector: 'app-updatepassword',

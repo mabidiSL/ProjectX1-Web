@@ -67,6 +67,7 @@ export class ProfileComponent  {
         // name: [this.currentUserValue.user.name, [Validators.required]],
         f_name: [user?.translation_data[0].f_name, Validators.required],
         l_name: [user?.translation_data[0].l_name, Validators.required],
+        jobTitle: [user?.jobTitle],
         email: [user?.email, [Validators.required, Validators.email]],
         phone:  [user?.phone, Validators.required],
         logo:[user?.logo]

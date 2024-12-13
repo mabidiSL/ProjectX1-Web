@@ -27,6 +27,7 @@ export class CountryComponent implements OnInit {
   countriesList$: Observable<Country[]>;
   totalItems$: Observable<number>;
   loading$: Observable<boolean>
+  searchTerm: string = '';
 
   isDropdownOpen : boolean = false;
   filteredArray: Country[] = [];
@@ -53,7 +54,7 @@ export class CountryComponent implements OnInit {
 
   ngOnInit() {
    
-    this.store.dispatch(fetchCountrylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, status:'' }));
+    this.store.dispatch(fetchCountrylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm, status:'' }));
     this.countriesList$.subscribe(data => {
       this.originalArray = data; // Country the full Country list
       this.filteredArray = [...this.originalArray];
@@ -63,14 +64,20 @@ export class CountryComponent implements OnInit {
     });
        
   }
+  onSearchEvent(event: any){
+    console.log(event);
+    this.searchTerm = event;
+    this.store.dispatch(fetchCountrylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:''}));
+
+   }
   onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchCountrylistData({ page: this.currentPage, itemsPerPage: totalItems, status:'' }));
+    this.store.dispatch(fetchCountrylistData({ page: this.currentPage, itemsPerPage: totalItems,query: this.searchTerm, status:'' }));
    }
    // pagechanged
    onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchCountrylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, status: '' }));
+    this.store.dispatch(fetchCountrylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm, status: '' }));
     
   }
 

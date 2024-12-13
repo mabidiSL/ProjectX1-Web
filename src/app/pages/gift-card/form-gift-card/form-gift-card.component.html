@@ -10,7 +10,15 @@
             <div class="card-body">
                 <form #formElement [formGroup]="formGiftCard" >
                   <div *ngIf="formError" class="alert alert-danger">{{ formError | translate }}</div>
-                    <div class="row">
+                  <div class="d-flex align-items-center justify-content-between mb-2">                 
+                              
+                    <div class="form-check form-switch form-switch-md ms-auto">
+                      <label class="form-check-label" for="SwitchCheckSizelg1">{{(formGiftCard.get('status')?.value === 'active')? 'Active': 'InActive'}}</label>
+                      <input class="form-check-input" type="checkbox" id="SwitchCheckSizelg1" formControlName="status"  [checked]="(formGiftCard.get('status').value === 'active')" (change)="onToggle($event)">
+                    </div>
+                 
+                  </div>     
+                  <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="name">{{'Name'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                             <input class="form-control" id="name" formControlName="name" type="text" [readonly]="type==='view'"/>
@@ -76,6 +84,7 @@
                           <!-- <div *ngIf="isLoading" class="text-info">Loading stores...</div> -->
                           
                         </div>
+                        
                         <div class="col-md-6 mb-3">
                             <label for="quantity">{{'Quantity'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                             <input class="form-control" id="quantity" formControlName="quantity" type="number" [readonly]="type==='view'"/>
@@ -104,47 +113,7 @@
                           <div *ngIf="formGiftCard.errors?.dateMismatch">
                             {{'Start Date must be before End Date'|translate}}.
                           </div>
-                        </div>
-                             
-                
-                  <div class="col-md-6 mb-3">
-                    <label for="managerName">{{'Manager Name'|translate}}</label>
-                    <input class="form-control" id="managerName" formControlName="managerName" type="text" [readonly]="type==='view'"/>
-                    <!-- <div *ngIf="formGiftCard.get('managerName').invalid && formGiftCard.get('managerName').touched">
-                      {{'Manager Name is required'|translate}}
-                    </div> -->
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="managerName_ar">{{'Manager Name in Arabic'|translate}}</label>
-                    <input class="form-control" id="managerName_ar" formControlName="managerName_ar" type="text" [readonly]="type==='view'"/>
-                    <!-- <div *ngIf="formGiftCard.get('managerName').invalid && formGiftCard.get('managerName').touched">
-                      {{'Manager Name is required'|translate}}
-                    </div> -->
-                  </div>
-                               
-                  <div class="col-md-6 mb-3">
-                    <label for="managerPhone">{{'Manager Phone'|translate}}</label><br>
-                    <app-phone-number
-                    *ngIf="formGiftCard"
-                     [disabled]="type === 'view'"
-                     [placeholder]="'Enter manager phone' | translate"
-                     [inputId]="'managerPhone'"
-                     [initialPhoneNumber]="formGiftCard.get('managerPhone').value"
-                     (phoneNumberChanged)="onPhoneNumberChanged($event)" >
-                    </app-phone-number>
-                    <!-- <div *ngIf="formGiftCard.get('managerPhone').invalid && formGiftCard.get('managerPhone').touched">
-                      {{'Manager Phone is required'|translate}}
-                    </div> -->
-                  </div>
-                    
-                   <div class="col-md-6 mb-3">
-                    <label for="giftCardImage">{{'Upload Gift Card Image'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                   <app-image-upload [id]="'giftCardImage'" [type]="'logo'" [label]="'Upload GiftCard Image' | translate" [existantImage]="existantGiftCardLogo" [filename]="fileName" [alt]="'GiftCard Image'" [disabled]="type ==='view'" (logoUploaded)="uploadGiftCardLogo($event)"></app-image-upload>
-                    <div *ngIf="formGiftCard.get('giftCardImage').invalid && formGiftCard.get('giftCardImage').touched">
-                      {{'Gift Card Image is required'|translate}}
-                    </div> 
-                                
-                  </div> 
+                        </div>     
                         
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
@@ -157,7 +126,6 @@
                     <div class="form-group">
                       <label for="categoryOrderAppearance">{{'Category_Order_Appearance'| translate}}</label>
                       <input class="form-control" id="categoryOrderAppearance" formControlName="categoryOrderAppearance" type="text" [readonly]="type==='view'"/>
-
                       
                      </div>
                   </div>
@@ -177,8 +145,15 @@
                       {{'Discount is required'|translate}}
                     </div>
                   </div>
-                
-                  
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="giftCardImage">{{'Upload Gift Card Image'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                   <app-image-upload [id]="'giftCardImage'" [type]="'logo'" [label]="'Upload GiftCard Image' | translate" [existantImage]="existantGiftCardLogo" [filename]="fileName" [alt]="'GiftCard Image'" [disabled]="type ==='view'" (logoUploaded)="uploadGiftCardLogo($event)"></app-image-upload>
+                    <div *ngIf="formGiftCard.get('giftCardImage').invalid && formGiftCard.get('giftCardImage').touched">
+                      {{'Gift Card Image is required'|translate}}
+                    </div> 
+                  </div>              
+                  </div> 
                   <div class="col-12  mt-4">
                     <div class="d-flex justify-content-end">
                       <ng-container *ngIf="type ==='view'; else editModeButtons">

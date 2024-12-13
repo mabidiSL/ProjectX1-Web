@@ -25,6 +25,7 @@ export class LogsComponent implements OnInit {
   totalItems$: Observable<number>;
   loading$: Observable<any>;
   currentId : number = null;
+  searchTerm: string = '';
 
   isDropdownOpen : boolean = false;
   filteredArray: any[] = [];
@@ -51,34 +52,30 @@ export class LogsComponent implements OnInit {
 
   ngOnInit() {
         this.authService.currentUser$.subscribe((user)=>{this.currentId = user.id; console.log(this.currentId);});
-        this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,status:'' }));
+        this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:this.searchTerm }));
         this.logList$.subscribe(data => {
-          if(this.currentId){
-
-            this.originalArray = data.filter(log =>  log.user_id == this.currentId);
-            console.log(this.originalArray);
-          }
-          else
-          {
-            this.originalArray = data; // Log the full Log list
-          }
-        this.filteredArray = [...this.originalArray];
-        console.log(this.filteredArray);
-        
-        document.getElementById('elmLoader')?.classList.add('d-none');
+              this.originalArray = data; // Log the full Log list
+              this.filteredArray = [...this.originalArray];
+              console.log(this.filteredArray);
+               document.getElementById('elmLoader')?.classList.add('d-none');    
        
         });
    }
+   onSearchEvent(event: any){
+    console.log(event);
+    this.searchTerm = event;
+    this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm }));
 
+   }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: totalItems }));
+    this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: totalItems,query: this.searchTerm }));
    }
  
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage }));
+    this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm }));
     
   }
 

@@ -23,6 +23,7 @@ export class _User {
 id?: number;
 username?: string;
 translation_data?: Translation[];
+jobTitle?: string;
 merchantId?: number;
 email?: string;
 password?: string;

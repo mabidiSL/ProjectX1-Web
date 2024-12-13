@@ -31,8 +31,8 @@ export class countrieslistEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchCountrylistData),
-            mergeMap(({ page, itemsPerPage }) =>
-                this.CrudService.fetchData('/countries',{ limit: itemsPerPage, page: page}).pipe(
+            mergeMap(({ page, itemsPerPage, query,status }) =>
+                this.CrudService.fetchData('/countries',{ limit: itemsPerPage, page: page, query: query,status: status}).pipe(
                     map((response: any) => fetchCountrylistSuccess({ CountryListdata: response.result })),
                     catchError((error) =>{
                         const errorMessage = this.formUtilService.getErrorMessage(error);

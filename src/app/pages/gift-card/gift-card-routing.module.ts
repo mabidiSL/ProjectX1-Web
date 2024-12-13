@@ -5,7 +5,7 @@ import { RoleGuard } from 'src/app/core/guards/role.guard';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { EditGiftCardComponent } from './edit-gift-card/edit-gift-card.component';
 import { CreateGiftCardComponent } from './create-gift-card/create-gift-card.component';
-import { ApproveGiftCardComponent } from './approve-gift-card/approve-gift-card.component';
+//import { ApproveGiftCardComponent } from './approve-gift-card/approve-gift-card.component';
 import { ViewGiftCardComponent } from './view-gift-card/view-gift-card.component';
 
 const routes: Routes = [
@@ -45,15 +45,15 @@ const routes: Routes = [
   
      }
   },
-  {
-    path: "approve",
-    component: ApproveGiftCardComponent,
-    canActivate: [RoleGuard],
-    data: {
-      claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Gift_Cards, claimValue:[Permission.ViewAll,Permission.Approve,Permission.Decline]}]
+  // {
+  //   path: "approve",
+  //   component: ApproveGiftCardComponent,
+  //   canActivate: [RoleGuard],
+  //   data: {
+  //     claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Gift_Cards, claimValue:[Permission.ViewAll,Permission.Approve,Permission.Decline]}]
   
-    }
-  },
+  //   }
+  // },
   ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

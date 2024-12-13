@@ -8,24 +8,15 @@
     <div class="col-19">
         <div class="card">
             <div class="card-body ">
-              <form  [formGroup]="storeForm"  class="m-4">
+              <form  [formGroup]="storeForm"  >
                 <div *ngIf="formError" class="alert alert-danger">{{ formError | translate }}</div>
-                <div class="row d-flex justify-content-end">
-                  <div class="col-12 mb-3 text-end">
-                    <div class="form-group">
-                      <ui-switch
-                        color="##343a40"
-                        [disabled]="type === 'view'"
-                        [checked]="storeForm.get('status')?.value === 'active'"
-                        [uncheckedLabel]="'InActive' | translate"
-                        [checkedLabel]="'Active' | translate"
-                        size="small"
-                        class="me-1"
-                        formControlName="status"
-                        (changeEvent)="onChangeEventEmit($event)">
-                      </ui-switch>
+                <div class="d-flex align-items-center justify-content-between mb-2">                 
+                              
+                  <div class="form-check form-switch form-switch-md ms-auto">
+                    <label class="form-check-label" for="SwitchCheckSizelg1">{{(storeForm.get('status')?.value === 'active')? 'Active': 'InActive'}}</label>
+                    <input class="form-check-input" type="checkbox" id="SwitchCheckSizelg1" formControlName="status"  [checked]="(storeForm.get('status').value === 'active')" (change)="onToggle($event)">
                   </div>
-                  </div>
+               
                 </div> 
                 <div class="row">
                     <div class="col-md-6 mb-3">

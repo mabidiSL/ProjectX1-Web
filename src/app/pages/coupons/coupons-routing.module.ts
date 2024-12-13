@@ -5,7 +5,7 @@ import { CreateCouponComponent } from './create-coupon/create-coupon.component';
 import { EditCouponComponent } from './edit-coupon/edit-coupon.component';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { RoleGuard } from 'src/app/core/guards/role.guard';
-import { CouponApprovalComponent } from './coupon-approval/coupon-approval.component';
+//import { CouponApprovalComponent } from './coupon-approval/coupon-approval.component';
 import { ViewCouponComponent } from './view-coupon/view-coupon.component';
 
 const routes: Routes = [
@@ -45,15 +45,15 @@ const routes: Routes = [
 
    }
 },
-{
-  path: "approve",
-  component: CouponApprovalComponent,
-  canActivate: [RoleGuard],
-  data: {
-    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Coupons, claimValue:[Permission.ViewAll,Permission.Approve,Permission.Decline]}]
+// {
+//   path: "approve",
+//   component: CouponApprovalComponent,
+//   canActivate: [RoleGuard],
+//   data: {
+//     claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Coupons, claimValue:[Permission.ViewAll,Permission.Approve,Permission.Decline]}]
 
-  }
-},
+//   }
+// },
 ];
 
 @NgModule({

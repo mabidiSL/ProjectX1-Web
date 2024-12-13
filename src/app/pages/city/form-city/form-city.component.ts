@@ -53,7 +53,7 @@ export class FormCityComponent  implements OnInit, OnDestroy {
       public store: Store) {
         
         this.loading$ = this.store.pipe(select(selectDataLoading)); 
-        this.store.dispatch(fetchCountrylistData({ page: 1, itemsPerPage: 1000, status:'active' }));
+        this.store.dispatch(fetchCountrylistData({ page: 1, itemsPerPage: 1000,query:'', status:'active' }));
         this.store.dispatch(fetchArealistData({ page: 1, itemsPerPage: 10000, status:'active' }));
         
         this.cityForm = this.formBuilder.group({

@@ -38,3 +38,18 @@
   display: block;
   margin-top: 50px;   /* Space from the form above */
 }
+.sign-in-title {
+  font-family: 'Poppins', sans-serif;  /* Using Google Font Poppins */
+  font-size: 3rem; /* Adjust size as necessary */
+  color: #b49769;  /* Change to any color */
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: 40px;
+}
+
+/* If you're using FontAwesome icons */
+.sign-in-title i {
+  margin-right: 10px;  /* Space between the icon and text */
+  font-size: 2.5rem;  /* Adjust icon size */
+  color: #b49769; /* Icon color */
+}

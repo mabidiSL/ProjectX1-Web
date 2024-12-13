@@ -19,9 +19,9 @@ export interface Coupon {
         area?: Area;
         city?:  City;
         quantity?: number;
+       // nbr_of_use?: number;
         merchant?: Merchant;
         stores?: any;//Store;
-        managerPhone?: string;
         startDateCoupon?: Date;
         endDateCoupon?: Date;
         contractRepName?: string;

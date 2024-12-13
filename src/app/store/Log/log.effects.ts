@@ -22,8 +22,8 @@ export class LogsEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchLoglistData),
-            mergeMap(({ page, itemsPerPage, status }) =>
-                this.CrudService.fetchData('/actions',{ limit: itemsPerPage, page: page,status: status}).pipe(
+            mergeMap(({ page, itemsPerPage,query }) =>
+                this.CrudService.fetchData('/actions',{ limit: itemsPerPage, page: page,query: query}).pipe(
                     map((response: any) => fetchLoglistSuccess({ LogListdata : response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);

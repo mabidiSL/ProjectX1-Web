@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { Log, LogListModel } from './log.models';
 
 // fetch all list
-export const fetchLoglistData = createAction('[Data] fetch Loglist',props<{ page?: number; itemsPerPage?: number , status?: string}>());
+export const fetchLoglistData = createAction('[Data] fetch Loglist',props<{ page?: number; itemsPerPage?: number , query?: string}>());
 export const fetchLoglistSuccess = createAction('[Data] fetch Loglist success', props<{ LogListdata: LogListModel }>())
 export const fetchLoglistFail = createAction('[Data fetch Loglist failed]', props<{ error: string }>())
 

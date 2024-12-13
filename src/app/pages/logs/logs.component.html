@@ -7,6 +7,7 @@
       [viewButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.View]}]"
       [ArrayData]="originalArray"
       [totalItems]="(totalItems$ | async)"
+      (onsearch)="onSearchEvent($event)"
       (onPageSizeChanged)="onPageSizeChanged($event)"
       (pageChanged)="onPageChanged($event)"
       >

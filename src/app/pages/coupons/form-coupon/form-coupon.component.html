@@ -9,22 +9,13 @@
           <div class="card-body">
               <form [formGroup]="formCoupon"  >
                 <div *ngIf="formError" class="alert alert-danger">{{ formError | translate }}</div>
-                <div class="row d-flex justify-content-end">
-                  <div class="col-12 mb-3 text-end">
-                    <div *ngIf="formCoupon" class="form-group">
-                      <ui-switch
-                        color="##343a40"
-                        [disabled]="type === 'view'"
-                        [checked]="formCoupon.get('status')?.value === 'active'"
-                        [uncheckedLabel]="'InActive' | translate"
-                        [checkedLabel]="'Active' | translate"
-                        size="small"
-                        class="me-1"
-                        formControlName="status"
-                        (changeEvent)="onChangeEventEmit($event)">
-                      </ui-switch>
+                <div class="d-flex align-items-center justify-content-between mb-2">                 
+                              
+                  <div class="form-check form-switch form-switch-md ms-auto">
+                    <label class="form-check-label" for="SwitchCheckSizelg1">{{(formCoupon.get('status')?.value === 'active')? 'Active': 'InActive'}}</label>
+                    <input class="form-check-input" type="checkbox" id="SwitchCheckSizelg1" formControlName="status"  [checked]="(formCoupon.get('status').value === 'active')" (change)="onToggle($event)">
                   </div>
-                  </div>
+               
                 </div>   
                 <div class="row">
                       <div class="col-md-6 mb-3">
@@ -101,6 +92,24 @@
                         </div> -->
                       </div>
                       <div class="col-md-6 mb-3">
+                        <label for="stores">{{'Inline Branches'|translate}}</label>
+                        <ng-select
+                          [readonly]="type === 'view'"
+                          id="stores"
+                          [placeholder]="'Select_Stores'| translate"
+                          [items]="storeList"
+                          bindLabel="translatedName" 
+                          bindValue="id"
+                          formControlName="stores"
+                          [multiple] = "true"
+                          >
+                        </ng-select>
+                        <!-- <div *ngIf="isLoading" class="text-info">Loading stores...</div> -->
+                        <!-- <div *ngIf="formCoupon.get('stores').invalid && formCoupon.get('stores').touched" class="text-danger">
+                          {{'Store is required'|translate}}
+                        </div> -->
+                      </div>
+                      <div class="col-md-6 mb-3">
                         <label for="startDateCoupon">{{'Start_Date'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                         <input bsDatepicker class="form-control" id="startDateCoupon" placeholder="yyyy-mm-dd" formControlName="startDateCoupon" [bsConfig]="bsConfig"  [readonly]="type==='view'"/>
                         <div *ngIf="formCoupon.get('startDateCoupon').invalid && formCoupon.get('startDateCoupon').touched" class="text-danger">
@@ -128,7 +137,13 @@
                     {{'Quantity is required'|translate}}
                   </div>
                 </div>
-                
+                <!-- <div class="col-md-6 mb-3">
+                  <label for="nbr_of_use">{{'Number Of Use for Customer'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                  <input class="form-control" id="nbr_of_use" formControlName="nbr_of_use" type="number" [readonly]="type==='view'"/>
+                  <div *ngIf="formCoupon.get('nbr_of_use').invalid && formCoupon.get('nbr_of_use').touched" class="text-danger">
+                    {{'Number of use is required'|translate}}
+                  </div>
+                </div> -->
                 <div *ngIf="currentRole === 'Admin'" class="col-md-6 mb-3">
                   <label for="contractRepName">{{'Contract Representative Name'|translate}}</label>
                   <input class="form-control" id="contractRepName" formControlName="contractRepName" type="text" [readonly]="type==='view'"/>
@@ -136,50 +151,7 @@
                     {{'Contract Representative Name is required'|translate}}
                   </div> -->
                 </div>
-              
-                <div class="col-md-6 mb-3">
-                  <label for="managerName">{{'Manager Name'|translate}}</label>
-                  <input class="form-control" id="managerName" formControlName="managerName" type="text" [readonly]="type==='view'"/>
-                  <!-- <div *ngIf="formCoupon.get('managerName').invalid && formCoupon.get('managerName').touched">
-                    {{'Manager Name is required'|translate}}
-                  </div> -->
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="managerName_ar">{{'Manager Name in Arabic'|translate}}</label>
-                  <input class="form-control" id="managerName_ar" formControlName="managerName_ar" type="text" [readonly]="type==='view'"/>
-                  <!-- <div *ngIf="formCoupon.get('managerName').invalid && formCoupon.get('managerName').touched">
-                    {{'Manager Name is required'|translate}}
-                  </div> -->
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="managerPhone">{{'Manager Phone'|translate}}</label><br>
-                  <app-phone-number
-                     *ngIf="formCoupon"
-                     [disabled]="type === 'view'"
-                     [inputId]="'managerPhone'"
-                     [initialPhoneNumber]="formCoupon.get('managerPhone').value"
-                     [placeholder]="'Enter manager phone' | translate"
-                     (phoneNumberChanged)="onPhoneNumberChanged($event)" >
-                    </app-phone-number>
-                  <!-- <div *ngIf="formCoupon.get('managerPhone').invalid && formCoupon.get('managerPhone').touched">
-                    {{'Manager Phone is required'|translate}}
-                  </div> -->
-                </div>
-              
-                
-              
-                 <div class="col-md-6 mb-3">
-                  <label for="couponLogo">{{'Upload Coupon Logo'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-               
-                  <app-image-upload [id]="'couponLogo'" [type]="'logo'" [label]="'Upload Coupon Logo' | translate" [existantImage]="existantcouponLogo" [filename]="fileName" [alt]="'Coupon Logo'" [disabled]="type ==='view'" (logoUploaded)="uploadCouponLogo($event)"></app-image-upload>
-
-                  <div *ngIf="formCoupon.get('couponLogo').invalid && formCoupon.get('couponLogo').touched" class="text-danger">
-                    {{'Coupon Logo is required'|translate}}
-                  </div>
-                  
-                
-                </div> 
-                
+                          
               
                 <div class="col-md-12 mb-3">
                   <label for="couponType">{{'Coupon Type'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
@@ -252,7 +224,16 @@
                     {{'Payment Discount Rate is required'|translate}}
                   </div> -->
                 </div>
-               
+                <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="couponLogo">{{'Upload Coupon Logo'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                  <app-image-upload [id]="'couponLogo'" [type]="'logo'" [label]="'Upload Coupon Logo' | translate" [existantImage]="existantcouponLogo" [filename]="fileName" [alt]="'Coupon Logo'" [disabled]="type ==='view'" (logoUploaded)="uploadCouponLogo($event)"></app-image-upload>
+                  <div *ngIf="formCoupon.get('couponLogo').invalid && formCoupon.get('couponLogo').touched" class="text-danger">
+                    {{'Coupon Logo is required'|translate}}
+                  </div>
+                </div>
+                
+                </div>
                 <div class="col-12  mt-4">
                   <div class="d-flex justify-content-end">
                     <ng-container *ngIf="type ==='view'; else editModeButtons">

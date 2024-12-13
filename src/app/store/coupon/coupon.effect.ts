@@ -32,8 +32,8 @@ export class CouponslistEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchCouponlistData),
-            mergeMap(({ page, itemsPerPage, status }) =>
-                this.CrudService.fetchData('/coupons',{ limit: itemsPerPage, page: page, status: status}).pipe(
+            mergeMap(({ page, itemsPerPage,query, status }) =>
+                this.CrudService.fetchData('/coupons',{ limit: itemsPerPage, page: page,query: query, status: status}).pipe(
                     map((response: any) => fetchCouponlistSuccess({ CouponListdata : response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);

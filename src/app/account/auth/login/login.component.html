@@ -5,10 +5,10 @@
     <!-- This can be an image, color, or any content you want on the left side -->
     <!-- <button class="btn btn-primary  rounded" (click)="toggleRtl()">Toggle RTL/LTR</button> -->
     <div class="form-container">
-        <div class="row">
-          <!-- <div class="col-12 text-center mb-3">
-            <p class="py-2">{{'LoginIn' | translate}}</p>
-          </div> -->
+      <div class="text-center">
+        <h2 class="sign-in-title">
+          <i class="fas fa-user-lock"></i> {{ 'Sign In' | translate }}
+        </h2>
       </div>
       <form class="form-horizontal" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         @if(error){

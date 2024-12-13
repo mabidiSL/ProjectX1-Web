@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
@@ -88,8 +89,8 @@ export class FormStoreComponent implements OnInit, OnDestroy {
       } );
       
 
-      this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 100 , status: 'active'}));
-      this.store.dispatch(fetchCitylistData({ page: 1, itemsPerPage: 10000 , status: 'active'}));
+      this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 100 ,query:'', status: 'active'}));
+      this.store.dispatch(fetchCitylistData({ page: 1, itemsPerPage: 10000 , query:'',status: 'active'}));
       
       this.initForm();
 
@@ -281,7 +282,8 @@ private getNavigationState(){
   }
   createStoreFromForm(formValue): Branch {
     const branch = formValue;
- 
+     console.log(branch);
+  
     branch.translation_data = [];
     const enFields = [
       { field: 'name', name: 'name' },
@@ -317,6 +319,7 @@ private getNavigationState(){
     delete branch.description;
     delete branch.description_ar;
     delete branch.area_id;
+    console.log(branch);
 
    return branch;
 }
@@ -368,8 +371,8 @@ private getNavigationState(){
             const changedData = this.createStoreFromForm(updatedDta);
             if(this.uploadedFiles)
               changedData.images = this.parseImages(this.uploadedFiles);
+            changedData.status = changedData.status && changedData.status=== 'true'? 'active': 'inactive';
             changedData.id = this.storeForm.value.id;
-            delete changedData.status;
             this.store.dispatch(updateStorelist({ updatedData: changedData }));
           }
           else{
@@ -411,7 +414,13 @@ onUploadSuccess(event: any) {
     
   }, 100);
 }
+onToggle(event: any){
+  console.log(event.target.value);
+  if(event){
+    this.storeForm.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
 
+  }
+}
 // File Remove
 removeFile(event: any) {
   this.uploadedFiles.splice(this.uploadedFiles.indexOf(event), 1);

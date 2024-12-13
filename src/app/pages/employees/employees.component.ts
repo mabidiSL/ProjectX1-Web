@@ -23,6 +23,7 @@ export class EmployeesComponent implements OnInit {
   EmployeeList$: Observable<Employee[]>;
   totalItems$: Observable<number>;
   loading$: Observable<boolean>;
+  searchTerm: string = '';
 
 
   isDropdownOpen : boolean = false;
@@ -50,7 +51,7 @@ export class EmployeesComponent implements OnInit {
 
   ngOnInit() {
           
-        this.store.dispatch(fetchEmployeelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, role:4}));
+        this.store.dispatch(fetchEmployeelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm, role:4}));
         this.EmployeeList$.subscribe(data => {
         this.originalArray = data; // Employee the full Employee list
         this.filteredArray = [...this.originalArray];
@@ -59,15 +60,20 @@ export class EmployeesComponent implements OnInit {
     
         });
    }
+   onSearchEvent(event: any){
+    console.log(event);
+    this.searchTerm = event;
+    this.store.dispatch(fetchEmployeelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, role:4}));
 
+   }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchEmployeelistData({ page: this.currentPage, itemsPerPage: totalItems }));
+    this.store.dispatch(fetchEmployeelistData({ page: this.currentPage, itemsPerPage: totalItems,query: this.searchTerm , role:4}));
    }
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchEmployeelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage }));
+    this.store.dispatch(fetchEmployeelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm , role:4}));
     
   }
 

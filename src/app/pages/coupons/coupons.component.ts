@@ -23,6 +23,7 @@ export class CouponsComponent  implements OnInit {
   couponList$: Observable<Coupon[]>;
   totalItems$: Observable<number>;
   loading$: Observable<boolean>
+  searchTerm: string = '';
 
 
   isDropdownOpen : boolean = false;
@@ -52,7 +53,7 @@ export class CouponsComponent  implements OnInit {
 
   ngOnInit() {
    
-    this.store.dispatch(fetchCouponlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, status:'' }));
+    this.store.dispatch(fetchCouponlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:'',status:'' }));
     this.couponList$.subscribe(data => {
       this.originalArray = data; // Coupon the full Coupon list
       this.filteredArray = [...this.originalArray];
@@ -62,14 +63,20 @@ export class CouponsComponent  implements OnInit {
     });
        
   }
+  onSearchEvent(event: any){
+    console.log(event);
+    this.searchTerm = event;
+    this.store.dispatch(fetchCouponlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:'' }));
+
+   }
   onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchCouponlistData({ page: this.currentPage, itemsPerPage: totalItems}));
+    this.store.dispatch(fetchCouponlistData({ page: this.currentPage, itemsPerPage: totalItems, query:  this.searchTerm, status:''}));
    }
    // pagechanged
    onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchCouponlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage }));
+    this.store.dispatch(fetchCouponlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage ,query:  this.searchTerm, status:''}));
     
   }
 

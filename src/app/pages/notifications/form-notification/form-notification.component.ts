@@ -56,7 +56,7 @@ export class FormNotificationComponent implements OnInit {
     private formUtilService: FormUtilService,
     public store: Store) {
       this.loading$ = this.store.pipe(select(selectDataLoading)); 
-      this.store.dispatch(fetchCustomerlistData({page: 1, itemsPerPage: 1000, role: 3 }));
+      this.store.dispatch(fetchCustomerlistData({page: 1, itemsPerPage: 1000,query:'', role: 3 }));
       this.notifForm = this.formBuilder.group({
         id: [null],
         title: ['', Validators.required],

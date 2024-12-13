@@ -79,12 +79,12 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
       } );
 
       if(this.currentRole !== 'Admin')
-          this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,status:'', company_id: this.merchantId}));
+          this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,query:'',status:'', company_id: this.merchantId}));
       else
-          this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,status:'', company_id: null}));
+          this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,query:'',status:'', company_id: null}));
 
  
-      this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 100 , status: 'active'})); 
+      this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 100 ,query:'', status: 'active'})); 
     
     this.initForm();
     this.bsConfig = this.datepickerConfigService.getConfig();
@@ -132,17 +132,16 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
       quantity: [null, Validators.required],
       company_id: [null, Validators.required],
       stores: [[]],
-      managerName: [null],
-      managerName_ar: [null],
-      managerPhone: [null],
+    
       startDateGiftCard: [null, Validators.required],
       endDateGiftCard: [null, Validators.required],
       sectionOrderAppearance: [null],
       categoryOrderAppearance: [null],
       giftCardImage: [null,Validators.required],
       giftCardValue: ['',Validators.required],
-      discount:[null, Validators.required]
-      
+      discount:[null, Validators.required],
+      status:['active']
+
 
     }, { validators: this.dateValidator });
   }
@@ -187,7 +186,8 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
 
     if(this.currentRole !== 'Admin'){
       this.formGiftCard.get('company_id').setValue(this.merchantId);
-      this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000, status:'', company_id: this.merchantId}));
+      this.formGiftCard.get('company_id').clearValidators()
+      this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000,query:'', status:'', company_id: this.merchantId}));
 
       this.isLoading = true;
       }
@@ -280,10 +280,7 @@ onChangeMerchantSelection(event: Merchant){
   }
    
 }
-onPhoneNumberChanged(phoneNumber: string) {
-  if(phoneNumber!== '')
-  this.formGiftCard.get('managerPhone').setValue(phoneNumber);
-}
+
 createGiftCardFromForm(formValue): GiftCard{
   const giftCard = formValue;
   giftCard.translation_data= [];
@@ -291,13 +288,11 @@ createGiftCardFromForm(formValue): GiftCard{
     { field: 'name', name: 'name' },
     { field: 'description', name: 'description' },
     { field: 'termsAndConditions', name: 'termsAndConditions' },
-    { field: 'managerName', name: 'managerName' }
   ];
   const arFields = [
     { field: 'name_ar', name: 'name' },
     { field: 'description_ar', name: 'description' },
     { field: 'termsAndConditions_ar', name: 'termsAndConditions' },
-    { field: 'managerName_ar', name: 'managerName' }
 
 
   ];
@@ -327,8 +322,7 @@ createGiftCardFromForm(formValue): GiftCard{
     delete giftCard.description_ar;
     delete giftCard.termsAndConditions;
     delete giftCard.termsAndConditions_ar;
-    delete giftCard.managerName;
-    delete giftCard.managerName_ar;
+ 
 
   console.log(giftCard);
   return giftCard;
@@ -381,6 +375,13 @@ async uploadGiftCardLogo(event: any){
     this.existantGiftCardLogo = event.file;
     this.formGiftCard.controls['giftCardImage'].setValue(event.file);
   } 
+}
+onToggle(event: any){
+  console.log(event.target.value);
+  if(event){
+    this.formGiftCard.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
+
+  }
 }
   onCancel(){
     this.formGiftCard.reset();

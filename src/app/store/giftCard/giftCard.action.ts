@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { GiftCard, GiftCardListModel } from './giftCard.model';
 
 // fetch all list
-export const fetchGiftCardlistData = createAction('[Data] fetch GiftCardlist',props<{ page: number; itemsPerPage: number, status?: string }>());
+export const fetchGiftCardlistData = createAction('[Data] fetch GiftCardlist',props<{ page: number; itemsPerPage: number,query: string, status?: string }>());
 export const fetchGiftCardlistSuccess = createAction('[Data] fetch GiftCardlist success', props<{ GiftCardListdata: GiftCardListModel }>())
 export const fetchGiftCardlistFail = createAction('[Data fetch GiftCardlist failed]', props<{ error: string }>())
 

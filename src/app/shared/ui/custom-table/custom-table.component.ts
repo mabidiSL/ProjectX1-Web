@@ -121,8 +121,8 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   
   ngOnChanges(changes: SimpleChanges) {
     if (changes.ArrayData) {
-      this.filteredArray = changes.ArrayData.currentValue; // Reset filtered data when ArrayData changes
-     // this.searchEvent(); // Reapply search filter if there's a term
+       this.filteredArray = changes.ArrayData.currentValue; // Reset filtered data when ArrayData changes
+      //this.searchEvent(); // Reapply search filter if there's a term
     }
   }
   
@@ -209,21 +209,21 @@ sortData(column: string): void {
   });
 }
 
-  searchEvent() {
-    if (this.searchTerm) {
-      this.filteredArray = this.ArrayData.filter(item => 
-        this.columns.some(column => 
-          this.getProperty(item, column.property)?.toString().toLowerCase().includes(this.searchTerm.toLowerCase())
-        )
-      );
-    } else {
-      this.filteredArray = this.ArrayData; 
-    }
-  }
-    
-  // searchEvent(){
-  //   this.onsearch.emit(this.searchTerm)
+  // searchEvent() {
+  //   if (this.searchTerm) {
+  //     this.filteredArray = this.ArrayData.filter(item => 
+  //       this.columns.some(column => 
+  //         this.getProperty(item, column.property)?.toString().toLowerCase().includes(this.searchTerm.toLowerCase())
+  //       )
+  //     );
+  //   } else {
+  //     this.filteredArray = this.ArrayData; 
+  //   }
   // }
+    
+  searchEvent(){
+    this.onsearch.emit(this.searchTerm)
+  }
 
   toggleDropdownEvent() {
     this.isDropdownOpen = !this.isDropdownOpen ;

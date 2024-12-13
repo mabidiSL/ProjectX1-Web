@@ -10,6 +10,11 @@
     //color: #FFFFFF;
     height: auto;
   }
+  .auth-container-fluid {
+  display: flex;
+  flex-direction: row;
+  height: 100vh; /* Make sure the container takes up the full height of the viewport */
+}
   .custom-text {
     font-size: 24px; /* Example size */
     font-family: 'Arial', sans-serif; /* Example font family */
@@ -30,3 +35,23 @@
     align-items: center; /* Vertically and horizontally center the content */
     height: 100vh; /* Make sure the right section takes full height */
   }
+  .merchant-registration-title {
+    font-family: 'Poppins', sans-serif;  /* Using Google Font Poppins */
+    font-size: 2rem; /* Adjust size as necessary */
+    color: #b49769;  /* Change to any color */
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+  
+  /* If you're using FontAwesome icons */
+  .merchant-registration-title i {
+    margin-right: 10px;  /* Space between the icon and text */
+    font-size: 1.5rem;  /* Adjust icon size */
+    color: #d4af37; /* Icon color for merchant registration */
+  }
+  .wizard {
+  height: 600px; /* Increase the width of the wizard */
+  max-width: 1200px; /* Set a max-width to prevent it from stretching too far */
+  margin: 0 auto; /* Center the stepper horizontally */
+}

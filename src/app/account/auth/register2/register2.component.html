@@ -1,16 +1,15 @@
 
   <div class="auth-container-fluid d-flex">
-    <!-- Left Section (Background) -->
     <div  class="left-section">
-      <div #formElement class="card overflow-hidden">
+      <div #formElement class="d-flex flex-column justify-content-between" style="min-height: 100vh;">
        
-        <div class="row m-5">
-            <div class="col-12 text-center">
-              <p class=" custom-text bg-primary text-white py-2">{{'Merchant Registration' | translate}}</p>
-            </div>
+        <div class="text-center my-5">
+          <h2 class="merchant-registration-title">
+            <i class="fas fa-store"></i> {{ 'Merchant Registration' | translate }}
+          </h2>
         </div>
           <div *ngIf="formError" class="alert alert-danger">{{ formError | translate}}</div>
-          <div id="basic-example">
+    
             <ng-stepper #cdkStepper [linear]="true" class="wizard" >
               <cdk-step [optional]="false"[completed]="isStepValid(0)" >
                 <ng-template cdkStepLabel>
@@ -177,8 +176,8 @@
                 }
               </cdk-step>
             </ng-stepper>
-          </div>
-          <div class="text-center" style="font-size: 0.8rem; color: #6c757d; margin-top: 110px; margin-bottom: 20px">
+       
+          <div class="text-center  mt-auto" style="font-size: 0.8rem; color: #6c757d;margin-bottom: 20px; ">
             <span>
               {{'Copyright' | translate}} © {{year}} {{'Project X1. All rights reserved.' | translate}}
             </span>

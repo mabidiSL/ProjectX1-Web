@@ -28,6 +28,7 @@ export class CityComponent  implements OnInit {
   citiesList$: Observable<City[]>;
   totalItems$: Observable<number>;
   loading$: Observable<boolean>;
+  searchTerm: string = '';
 
   isDropdownOpen : boolean = false;
   filteredArray: City[] = [];
@@ -38,7 +39,7 @@ export class CityComponent  implements OnInit {
   
   columns : any[]= [
     { property: 'translation_data[0].name', label: 'Name' },
-    { property: 'area.translation_data[0].name', label: 'area' },
+    { property: 'country.translation_data[0].name', label: 'Country' },
     { property: 'status', label: 'Status' },
   ];
   
@@ -53,7 +54,7 @@ export class CityComponent  implements OnInit {
 
   ngOnInit() {
    
-    this.store.dispatch(fetchCitylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, status:'' }));
+    this.store.dispatch(fetchCitylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:'' }));
     this.citiesList$.subscribe(data => {
       this.originalArray = data; // City the full City list
       this.filteredArray = [...this.originalArray];
@@ -63,14 +64,20 @@ export class CityComponent  implements OnInit {
     });
        
   }
+  onSearchEvent(event: any){
+    console.log(event);
+    this.searchTerm = event;
+    this.store.dispatch(fetchCitylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:''}));
+
+   }
   onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchCitylistData({ page: this.currentPage, itemsPerPage: totalItems, status:'' }));
+    this.store.dispatch(fetchCitylistData({ page: this.currentPage, itemsPerPage: totalItems, query: this.searchTerm, status:'' }));
    }
    // pagechanged
    onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchCitylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, status: '' }));
+    this.store.dispatch(fetchCitylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status: '' }));
     
   }
 

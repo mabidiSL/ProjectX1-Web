@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "concurrently \"node set-env.ts && ng serve\" \"ts-node server.ts\"",
+    "start": "concurrently \"node set-env.ts && ng serve\"",
     "build": "node set-env.ts && ng build",
     "test": "ng test",
     "lint": "ng lint",

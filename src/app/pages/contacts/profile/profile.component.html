@@ -49,6 +49,13 @@
                         </div>
                   </div>
                   <div class="row mb-4">
+                    <label for="jobTitle" class="col-sm-3 col-form-label">{{'Job Title'| translate}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" formControlName="jobTitle" id="jobTitle" placeholder="Enter Your Job Title">
+                        <div class="invalid-feedback">{{'Please enter your Job Title'  | translate}}.</div>
+                    </div>
+                </div>
+                  <div class="row mb-4">
                     <label for="phone" class="col-sm-3 col-form-label">{{'Phone'| translate}}</label>
                     <div class="col-sm-6">
                         <app-phone-number

@@ -31,6 +31,7 @@ export class MerchantListComponent implements OnInit {
   MerchantList$: Observable<Merchant[]>;
   totalItems$: Observable<number>;
   loading$: Observable<boolean>
+  searchTerm: string = '';
 
   isDropdownOpen : boolean = false;
   filteredArray: Merchant[] = [];
@@ -61,7 +62,7 @@ export class MerchantListComponent implements OnInit {
 
   ngOnInit() {
           
-        this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, status: ''  }));
+        this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: '', status: ''  }));
         this.MerchantList$.subscribe(data => {
         this.originalArray = data; // Merchant the full Merchant list
         this.filteredArray = [...this.originalArray];
@@ -69,9 +70,15 @@ export class MerchantListComponent implements OnInit {
        
         });
    }
+   onSearchEvent(event: any){
+    console.log(event);
+    this.searchTerm = event;
+    this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status: '' }));
+
+   }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: totalItems, status:'' }));
+    this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: totalItems,query: this.searchTerm, status:'' }));
    }
  
   // pagechanged

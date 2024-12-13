@@ -11,7 +11,7 @@
 }
 
 .wizard {
-
+ 
   // step
   .stepper-header {
     >ol {
@@ -144,6 +144,9 @@
 
   .stepper-body{ 
     margin-bottom: 0 !important;
+  }
+  .dropdown-menu {
+    z-index: 9999; /* Make sure dropdowns are above other content */
   }
 }
 

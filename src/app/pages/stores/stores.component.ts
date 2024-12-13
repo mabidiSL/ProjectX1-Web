@@ -27,6 +27,7 @@ export class StoresComponent implements OnInit {
   storeList$: Observable<Branch[]>;
   totalItems$: Observable<number>;
   loading$: Observable<boolean>;
+  searchTerm: string = '';
 
   isDropdownOpen : boolean = false;
   filteredArray: Branch[] = [];
@@ -52,7 +53,7 @@ export class StoresComponent implements OnInit {
 
   ngOnInit() {
           
-        this.store.dispatch(fetchStorelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, status:'', company_id:null}));
+        this.store.dispatch(fetchStorelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query:'', status:'', company_id:null}));
         this.storeList$.subscribe(data => {
         this.originalArray = data; // Store the full Store list
         this.filteredArray = [...this.originalArray];
@@ -61,17 +62,19 @@ export class StoresComponent implements OnInit {
         });
    }
    onSearchEvent(event: any){
-    this.store.dispatch(fetchStorelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: event.target.value }));
+    console.log(event);
+    this.searchTerm = event;
+    this.store.dispatch(fetchStorelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:'', company_id:null }));
 
    }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchStorelistData({ page: this.currentPage, itemsPerPage: totalItems,status:'', company_id:null}));
+    this.store.dispatch(fetchStorelistData({ page: this.currentPage, itemsPerPage: totalItems, query:this.searchTerm,status:'', company_id:null}));
    }
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchStorelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,status:'', company_id:null}));
+    this.store.dispatch(fetchStorelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:this.searchTerm,status:'', company_id:null}));
     
   }
 
@@ -80,7 +83,6 @@ export class StoresComponent implements OnInit {
     this.store.dispatch(deleteStorelist({ storeId: id }));
   }
 
- 
   onChangeEvent( event: any) {
     const newStatus = event.event.checked ? 'active' : 'inactive'; 
     const updatedData = {id:event.data.id, status: newStatus}

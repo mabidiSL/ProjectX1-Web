@@ -77,10 +77,10 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
       
       this.loading$ = this.store.pipe(select(selectDataLoading)); 
 
-      this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 100, status: 'active' }));
+      this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 100,query:'', status: 'active' }));
       this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 1000, status: 'active' }));
-      this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 1000, status: 'active' }));
-      this.store.dispatch(fetchRolelistData({page: 1, itemsPerPage: 100, status: 'active' }));
+      this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 1000,query:'', status: 'active' }));
+      this.store.dispatch(fetchRolelistData({page: 1, itemsPerPage: 100, query:'',status: 'active' }));
 
       this.initForm();
 

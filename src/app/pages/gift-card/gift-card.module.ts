@@ -6,7 +6,7 @@ import { GiftCardComponent } from './gift-card.component';
 import { CreateGiftCardComponent } from './create-gift-card/create-gift-card.component';
 import { EditGiftCardComponent } from './edit-gift-card/edit-gift-card.component';
 import { FormGiftCardComponent } from './form-gift-card/form-gift-card.component';
-import { ApproveGiftCardComponent } from './approve-gift-card/approve-gift-card.component';
+//import { ApproveGiftCardComponent } from './approve-gift-card/approve-gift-card.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { UIModule } from 'src/app/shared/ui/ui.module';
@@ -24,7 +24,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     CreateGiftCardComponent,
     EditGiftCardComponent,
     FormGiftCardComponent,
-    ApproveGiftCardComponent,
+    //ApproveGiftCardComponent,
     ViewGiftCardComponent
   ],
   imports: [

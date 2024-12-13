@@ -23,7 +23,7 @@ export class NotificationsComponent implements OnInit{
   notificationList$: Observable<Notification[]>;
   totalItems$: Observable<number>;
   loading$: Observable<boolean>
-
+  searchTerm: string = '';
 
   isDropdownOpen : boolean = false;
   filteredArray: Notification[] = [];
@@ -48,7 +48,7 @@ export class NotificationsComponent implements OnInit{
 
   ngOnInit() {
           
-        this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage }));
+        this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:'' }));
         this.notificationList$.subscribe(data => {
         this.originalArray = data; // Notification the full Notification list
         this.filteredArray = [...this.originalArray];
@@ -58,16 +58,22 @@ export class NotificationsComponent implements OnInit{
    }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: totalItems }));
+    this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: totalItems, query: this.searchTerm }));
    }
  
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage }));
+    this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm }));
     
   }
 
+  onSearchEvent(event: any){
+    console.log(event);
+    this.searchTerm = event;
+    this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm }));
+
+   }
   // Delete Notification
   onDelete(id: any) {
     this.store.dispatch(deleteNotificationlist({ notificationId: id }));

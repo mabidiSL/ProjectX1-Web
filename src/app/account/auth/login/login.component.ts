@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild, Renderer2 } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild, Renderer2, AfterViewInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { select, Store } from '@ngrx/store';
 import { login } from 'src/app/store/Authentication/authentication.actions';
 import { Observable } from 'rxjs';
 import { selectDataLoading } from 'src/app/store/Authentication/authentication-selector';
-import { RandomBackgroundService } from 'src/app/core/services/setBackground.service';
+import { RandomBackgroundService } from 'src/app/core/services/setBackgroundEx.service';
 import { BackgroundService } from 'src/app/core/services/background.service';
 import { Router } from '@angular/router';
 
@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 /**
  * Login component
  */
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   loginForm: UntypedFormGroup;
   submitted: boolean = false;
@@ -60,20 +60,20 @@ export class LoginComponent implements OnInit, OnDestroy {
           password: ['', [Validators.required]],
       });
    }
+        
+  }
+  ngAfterViewInit() {
     const direction = document.documentElement.dir === 'rtl' ? 'rtl' : 'ltr';
-    console.log(direction);
-    this.randomBackgroundService.getRandomBackground(direction).subscribe(
-      (randomImage) => {
-        this.backgroundService.setBackgroundElement(this.rightsection.nativeElement, randomImage);
-      },
-      (error) => {
-        console.error('Error setting random background:', error);
-      }
-    );
-
-
-    
-    
+    if (this.rightsection) {
+      this.randomBackgroundService.getRandomBackground(direction).subscribe(
+        (randomImage) => {
+          this.backgroundService.setBackgroundElement(this.rightsection.nativeElement, randomImage);
+        },
+        (error) => {
+          console.error('Error setting random background:', error);
+        }
+      );
+    }
   }
   toggleRtl(): void {
     // Toggle between RTL and LTR

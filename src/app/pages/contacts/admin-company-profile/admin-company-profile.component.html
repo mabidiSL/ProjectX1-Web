@@ -27,20 +27,18 @@
                          <div class="form-group ">
                         <label for="name" >{{'Company Name'| translate }}  <span class="text-danger">*</span></label>
                         <input type="text" id="name" class="form-control" formControlName="name" placeholder="{{ 'Enter Company Name' | translate }}" required    >
-                        <!-- <div *ngIf="adminForm.get('name').touched && adminForm.get('name').invalid" class="invalid-feedback d-block">
+                        <div *ngIf="adminForm.get('name').touched && adminForm.get('name').invalid" class="invalid-feedback d-block">
                         <span *ngIf="adminForm.get('name').errors?.['required']">{{'Company Name is required'| translate}}.</span>
-                        </div>   -->
+                        </div>  
                         </div>
                       </div>
                     </div>
                     <div class="col-lg-6">
                       <div class="mb-3">
                         <div class="form-group ">
-                          <label for="name_ar" >{{'Company Name in arabic' | translate}}  <span class="text-danger">*</span></label>
-                          <input type="text" dir ="rtl" id="name_ar" class="form-control" formControlName="name_ar" placeholder="{{ 'Enter Company Name in Arabic' | translate }}" required  >
-                          <!-- <div *ngIf="adminForm.get('name_ar').touched && adminForm.get('name_ar').invalid" class="invalid-feedback d-block">
-                            <span *ngIf="adminForm.get('name_ar').errors?.['required']">{{'Arabic Company Name is required'| translate}}.</span>
-                          </div>   -->
+                          <label for="name_ar" >{{'Company Name in arabic' | translate}}  </label>
+                          <input type="text" dir ="rtl" id="name_ar" class="form-control" formControlName="name_ar" placeholder="{{ 'Enter Company Name in Arabic' | translate }}"   >
+                          
                         </div>
                       </div>
                     </div>
@@ -49,39 +47,31 @@
                       <div class="mb-3">
                       <label for="description">{{'Company Description'|translate}} </label>
                       <textarea class="form-control" id="description" formControlName="description" rows="5" placeholder="{{ 'Enter Company Description ' | translate }}" ></textarea>
-                      <!-- <div *ngIf="adminForm.get('description').invalid && adminForm.get('description').touched" class="text-danger">
-                          {{'Description is required'|translate}}
-                      </div> -->
+                     
                     </div>
                 </div>
                 <div class="col-lg-6">
                   <div class="mb-3">
                     <label for="description_ar">{{'Company Description in arabic'|translate}} </label>
                     <textarea dir ="rtl" class="form-control" id="description_ar" formControlName="description_ar" rows="5" placeholder="{{ 'Enter Company Description in Arabic ' | translate }}" ></textarea>
-                    <!-- <div *ngIf="adminForm.get('description_ar').invalid && adminForm.get('description_ar').touched" class="text-danger">
-                        {{'Company Description in arabic is required'|translate}}
-                    </div> -->
+                   
                  </div>
                </div>
                <div class="col-lg-6">
                 <div class="mb-3">
                    <div class="form-group ">
-                  <label for="supervisorName" >{{'Supervisor Name'| translate }}  <span class="text-danger">*</span></label>
-                  <input type="text" id="supervisorName" class="form-control" formControlName="supervisorName" placeholder="{{ 'Enter Supervisor Name' | translate }}" required    >
-                  <!-- <div *ngIf="adminForm.get('name').touched && adminForm.get('name').invalid" class="invalid-feedback d-block">
-                  <span *ngIf="adminForm.get('name').errors?.['required']">{{'Company Name is required'| translate}}.</span>
-                  </div>   -->
+                  <label for="supervisorName" >{{'Supervisor Name'| translate }}  </label>
+                  <input type="text" id="supervisorName" class="form-control" formControlName="supervisorName" placeholder="{{ 'Enter Supervisor Name' | translate }}"     >
+                  
                   </div>
                 </div>
               </div>
               <div class="col-lg-6">
                 <div class="mb-3">
                   <div class="form-group ">
-                    <label for="supervisorName_ar" >{{'Supervisor Name in arabic' | translate}}  <span class="text-danger">*</span></label>
+                    <label for="supervisorName_ar" >{{'Supervisor Name in arabic' | translate}}  </label>
                     <input type="text" dir ="rtl" id="supervisorName_ar" class="form-control" formControlName="supervisorName_ar" placeholder="{{ 'Enter Supervisor Name in Arabic' | translate }}" required  >
-                    <!-- <div *ngIf="adminForm.get('name_ar').touched && adminForm.get('name_ar').invalid" class="invalid-feedback d-block">
-                      <span *ngIf="adminForm.get('name_ar').errors?.['required']">{{'Arabic Company Name is required'| translate}}.</span>
-                    </div>   -->
+                    
                   </div>
                 </div>
               </div>
@@ -97,9 +87,7 @@
                           [placeholder]="'Enter Company Phone' | translate"
                           (phoneNumberChanged)="onPhoneNumberChanged($event)" >
                          </app-phone-number> 
-                          <!-- <div *ngIf="adminForm.get('officeTel').touched && adminForm.get('officeTel').invalid" class="invalid-feedback d-block">
-                            <span *ngIf="adminForm.get('officeTel').errors?.['required']">{{'Company Phone is required'| translate}}.</span>
-                          </div>                       -->
+                          
                         </div>
                       </div>
                     </div>
@@ -114,22 +102,20 @@
                           [placeholder]="'Enter Supervisor Phone' | translate"
                           (phoneNumberChanged)="onSupervisorPhoneChanged($event)" >
                          </app-phone-number> 
-                          <!-- <div *ngIf="adminForm.get('officeTel').touched && adminForm.get('officeTel').invalid" class="invalid-feedback d-block">
-                            <span *ngIf="adminForm.get('officeTel').errors?.['required']">{{'Company Phone is required'| translate}}.</span>
-                          </div>                       -->
+                          
                         </div>
                       </div>
                     </div>
                     <ng-template *ngIf="currentUser.role.translation_data[0].name !=='Admin'" class="col-lg-6">
                       <div class="mb-3">
                         <div class="form-group">
-                          <label for="section_id">{{'Company Section' | translate}} </label>
+                          <label for="section_id">{{'Company Section' | translate}}<span class="text-danger">*</span> </label>
                           <ng-select   placeholder="{{'Select a section' | translate}}" [items]="sectionlist" bindLabel="translatedName" 
                           bindValue="id" id="section_id"  formControlName="section_id">
                           </ng-select>
-                          <!-- <div *ngIf="adminForm.get('section_id').touched && adminForm.get('section_id').invalid" class="invalid-feedback d-block">
+                          <div *ngIf="adminForm.get('section_id').touched && adminForm.get('section_id').invalid" class="invalid-feedback d-block">
                             <span *ngIf="adminForm.get('section_id').errors?.['required']">{{'Section is required'| translate}}.</span>
-                          </div>    -->
+                          </div>   
                         </div>
                       </div>
                     </ng-template>
@@ -166,9 +152,9 @@
                           (logoUploaded)="onLogoUpload($event)">
                         </app-image-upload>
                       
-                          <div *ngIf="adminForm.get('companyLogo').touched && adminForm.get('companyLogo').invalid" class="invalid-feedback d-block">
+                          <!-- <div *ngIf="adminForm.get('companyLogo').touched && adminForm.get('companyLogo').invalid" class="invalid-feedback d-block">
                             <span *ngIf="adminForm.get('companyLogo').errors?.['required']">{{'Company Logo is required'| translate}}.</span>
-                          </div>   
+                          </div>    -->
                         </div>
                       </div>
                       </div>
@@ -197,9 +183,7 @@
                         <div class="form-group ">
                           <label for="building_floor" >{{'Building/Floor'| translate }}  </label>
                           <input type="text" id="building_floor" class="form-control" formControlName="building_floor" placeholder="{{ 'Enter the building and the floor of the company' | translate }}"     >
-                          <!-- <div *ngIf="adminForm.get('building_floor').touched && adminForm.get('building_floor').invalid" class="invalid-feedback d-block">
-                          <span *ngIf="adminForm.get('building_floor').errors?.['required']">{{'building/floor is required'| translate}}.</span>
-                          </div>   -->
+                          
                         </div>
                       </div>
                     </div>
@@ -218,32 +202,29 @@
                     <div class="col-lg-6">
                       <div class="mb-3">
                         <div class="form-group">
-                            <label for="country_id" >{{'Country' | translate}} </label>
+                            <label for="country_id" >{{'Country' | translate}} <span class="text-danger">*</span></label>
                             <ng-select   id="country_id" placeholder="{{'Select_the_Country' | translate}}" [items]="filteredCountries" bindLabel="translatedName" 
                             bindValue="id" formControlName="country_id"  >
                            </ng-select>  
-                            <!-- <div *ngIf="adminForm.get('country_id').touched && adminForm.get('country_id').invalid" class="invalid-feedback d-block">
+                             <div *ngIf="adminForm.get('country_id').touched && adminForm.get('country_id').invalid" class="invalid-feedback d-block">
                               <span *ngIf="adminForm.get('country_id').errors?.['required']">{{'Country is required'| translate}}.</span>
-                            </div>    -->
+                            </div>  
                           </div>
                         </div>
                     </div>    
                 
-                     
-                      <!-- <div class="col-lg-6">
-                        <div class="mb-3">
-                          <div class="form-group ">
-                            <label for="city_id" >{{'City' | translate}} </label>
-                            <ng-select   id="city_id" placeholder="{{'Select_the_City' | translate}}" [items]="filteredCities" bindLabel="translatedName" 
-                            bindValue="id" formControlName="city_id"  >
-                            </ng-select>  
-                            <div *ngIf="adminForm.get('city_id').touched && adminForm.get('city_id').invalid" class="invalid-feedback d-block">
-                              <span *ngIf="adminForm.get('city_id').errors?.['required']">{{'City is required'| translate}}.</span>
-                            </div>                          -->
-                          <!-- </div>
-                        </div>
-                        
-                        </div> --> 
+                    <div class="col-lg-6">
+                      <div class="mb-3">
+                        <div class="form-group ">
+                          <label for="city" >{{'City'| translate }}  </label>
+                          <input type="text" id="city" class="form-control" formControlName="city" placeholder="{{ 'Enter the city of the company' | translate }}"     >
+                          <!-- <div *ngIf="adminForm.get('registrationCode').touched && adminForm.get('bank').invalid" class="invalid-feedback d-block">
+                          <span *ngIf="adminForm.get('registrationCode').errors?.['required']">{{'Registration Code is required'| translate}}.</span>
+                          </div>   -->
+                          </div>
+                    </div>
+                    </div>
+                    
                       </div>
                       
                  
@@ -253,6 +234,8 @@
                 <ul class="list-inline wizard d-flex justify-content-end mb-0">
                   <li class="previous list-inline-item" aria-disabled="true"><button class="btn btn-primary" cdkStepperPrevious>{{'Previous' | translate}}</button></li>
                   <li class="next list-inline-item" aria-disabled="false"><button class="btn btn-primary" cdkStepperNext>{{'Next' | translate}}</button></li>
+                  <li class="next list-inline-item" aria-disabled="false">
+                    <button class="btn btn-primary" (click)="onSubmit()" >{{'Finish' | translate}}</button></li>
                 </ul>
               </section>
               }
@@ -270,10 +253,10 @@
                       <div class="mb-3">
                         <div class="form-group ">
                           <label for="VAT" >{{'VAT'| translate }}  </label>
-                          <input type="text" id="VAT" class="form-control" formControlName="VAT" placeholder="{{ 'Enter Vat Rate' | translate }}" required    >
-                          <div *ngIf="adminForm.get('VAT').touched && adminForm.get('VAT').invalid" class="invalid-feedback d-block">
+                          <input type="text" id="VAT" class="form-control" formControlName="VAT" placeholder="{{ 'Enter Vat Rate' | translate }}"     >
+                          <!-- <div *ngIf="adminForm.get('VAT').touched && adminForm.get('VAT').invalid" class="invalid-feedback d-block">
                           <span *ngIf="adminForm.get('VAT').errors?.['required']">{{'VAT Rate is required'| translate}}.</span>
-                          </div>  
+                          </div>   -->
                         </div>
                       </div>
                     </div>
@@ -281,7 +264,7 @@
                       <div class="mb-3">
                         <div class="form-group ">
                           <label for="registrationCode" >{{'Registration Code'| translate }}  </label>
-                          <input type="text" id="registrationCode" class="form-control" formControlName="registrationCode" placeholder="{{ 'Enter Registration Name' | translate }}" required    >
+                          <input type="text" id="registrationCode" class="form-control" formControlName="registrationCode" placeholder="{{ 'Enter Registration Name' | translate }}"     >
                           <!-- <div *ngIf="adminForm.get('registrationCode').touched && adminForm.get('bank').invalid" class="invalid-feedback d-block">
                           <span *ngIf="adminForm.get('registrationCode').errors?.['required']">{{'Registration Code is required'| translate}}.</span>
                           </div>   -->
@@ -314,6 +297,8 @@
                 <ul class="list-inline wizard d-flex justify-content-end mb-0">
                   <li class="previous list-inline-item" aria-disabled="true"><button class="btn btn-primary" cdkStepperPrevious>{{'Previous' | translate}}</button></li>
                   <li class="next list-inline-item" aria-disabled="false"><button class="btn btn-primary" cdkStepperNext>{{'Next' | translate}}</button></li>
+                  <li class="next list-inline-item" aria-disabled="false">
+                    <button class="btn btn-primary" (click)="onSubmit()" >{{'Finish' | translate}}</button></li>
                 </ul>
               </section>
               }
@@ -333,10 +318,10 @@
                         <div class="mb-3">
                           <div class="form-group ">
                             <label for="bank" >{{'Bank Name'| translate }}  </label>
-                            <input type="text" id="bank" class="form-control" formControlName="bank" placeholder="{{ 'Enter Bank Name' | translate }}" required    >
-                            <div *ngIf="adminForm.get('bank').touched && adminForm.get('bank').invalid" class="invalid-feedback d-block">
+                            <input type="text" id="bank" class="form-control" formControlName="bank" placeholder="{{ 'Enter Bank Name' | translate }}"     >
+                            <!-- <div *ngIf="adminForm.get('bank').touched && adminForm.get('bank').invalid" class="invalid-feedback d-block">
                             <span *ngIf="adminForm.get('bank').errors?.['required']">{{'Bank Name is required'| translate}}.</span>
-                            </div>  
+                            </div>   -->
                           </div>
                         </div>
                       </div>
@@ -345,10 +330,10 @@
                         <div class="mb-3">
                           <div class="form-group ">
                             <label for="IBAN" >{{'IBAN'| translate }}  </label>
-                            <input type="text" id="IBAN" class="form-control" formControlName="IBAN" placeholder="{{ 'Enter IBAN Code' | translate }}" required    >
-                            <div *ngIf="adminForm.get('IBAN').touched && adminForm.get('IBAN').invalid" class="invalid-feedback d-block">
+                            <input type="text" id="IBAN" class="form-control" formControlName="IBAN" placeholder="{{ 'Enter IBAN Code' | translate }}"     >
+                            <!-- <div *ngIf="adminForm.get('IBAN').touched && adminForm.get('IBAN').invalid" class="invalid-feedback d-block">
                             <span *ngIf="adminForm.get('IBAN').errors?.['required']">{{'IBAN Code is required'| translate}}.</span>
-                            </div>  
+                            </div>   -->
                            </div>
                         </div>
                       </div>
@@ -356,10 +341,10 @@
                         <div class="mb-3">
                           <div class="form-group ">
                               <label for="SWIFT" >{{'SWIFT'| translate }}  </label>
-                              <input type="text" id="SWIFT" class="form-control" formControlName="SWIFT" placeholder="{{ 'Enter SWIFT Code' | translate }}" required    >
-                              <div *ngIf="adminForm.get('SWIFT').touched && adminForm.get('SWIFT').invalid" class="invalid-feedback d-block">
+                              <input type="text" id="SWIFT" class="form-control" formControlName="SWIFT" placeholder="{{ 'Enter SWIFT Code' | translate }}"     >
+                              <!-- <div *ngIf="adminForm.get('SWIFT').touched && adminForm.get('SWIFT').invalid" class="invalid-feedback d-block">
                               <span *ngIf="adminForm.get('name').errors?.['required']">{{'SWIFT Code is required'| translate}}.</span>
-                              </div>  
+                              </div>   -->
                           </div>
                         </div>
                       </div>
@@ -372,6 +357,8 @@
                 <ul class="list-inline wizard d-flex justify-content-end mb-0">
                   <li class="previous list-inline-item" aria-disabled="true"><button class="btn btn-primary" cdkStepperPrevious>{{'Previous' | translate}}</button></li>
                   <li class="next list-inline-item" aria-disabled="false"><button class="btn btn-primary" cdkStepperNext>{{'Next' | translate}}</button></li>
+                  <li class="next list-inline-item" aria-disabled="false">
+                    <button class="btn btn-primary" (click)="onSubmit()" >{{'Finish' | translate}}</button></li>
                 </ul>
               </section>}
             </cdk-step>
@@ -413,6 +400,14 @@
                       <div class="col-lg-6">
                         <div class="mb-3">
                             <div class="form-group">
+                              <label for="Pinterest">{{'Pinterest' | translate}}</label>
+                              <input type="text" id="Pinterest" class="form-control" formControlName="Pinterest" placeholder="pinterst.com/add/yourusername"  >
+                            </div>
+                          </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="mb-3">
+                            <div class="form-group">
                               <label for="Snapchat">{{'Snapchat' | translate}}</label>
                               <input type="text" id="Snapchat" class="form-control" formControlName="Snapchat" placeholder="snapchat.com/add/yourusername"  >
                             </div>
@@ -445,6 +440,14 @@
                               </div>
                             </div>
                         </div>
+                        <div class="col-lg-6">
+                          <div class="mb-3">
+                              <div class="form-group">
+                                <label for="youtube">{{'Youtube' | translate}}</label>
+                                <input type="text" id="youtube" class="form-control" formControlName="youtube" placeholder="youtube/"  >
+                              </div>
+                            </div>
+                        </div>
                       </div>
                               
                    
@@ -453,43 +456,12 @@
 
                 <ul class="list-inline wizard d-flex justify-content-end mb-0">
                   <li class="previous list-inline-item" aria-disabled="true"><button class="btn btn-primary" cdkStepperPrevious>{{'Previous' | translate}}</button></li>
-                  <li class="next list-inline-item" aria-disabled="false"><button class="btn btn-primary" cdkStepperNext>{{'Next' | translate}}</button></li>
-                </ul>
+                  <li class="next list-inline-item" aria-disabled="false">
+                    <button class="btn btn-primary" (click)="onSubmit()" >{{'Finish' | translate}}</button></li>
+                  </ul>
               </section>}
             </cdk-step>
-            <cdk-step [optional]="true">
-              <ng-template cdkStepLabel>
-                <span class="number">6.</span>
-                <span>{{'Confirm Detail' | translate}}</span>
-              </ng-template>
-              @if(cdkStepper.selectedIndex === 5){
-              <section>
-                <div class="row justify-content-center">
-                  <div class="col-lg-6">
-                    <div class="text-center">
-                      <div class="mb-4">
-                        <i class="mdi mdi-check-circle-outline text-success display-4"></i>
-                      </div>
-                      <div>
-                        <h5>{{'Confirm Detail'| translate}}</h5>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <ul class="list-inline wizard d-flex justify-content-end mb-0">
-                  <li class="previous list-inline-item" aria-disabled="true"><button class="btn btn-primary" cdkStepperPrevious>{{'Previous' | translate}}</button></li>
-                  <li class="next list-inline-item" aria-disabled="false">
-                  <button class="btn btn-primary" (click)="onSubmit()" >{{'Finish' | translate}}</button></li>
-                  <!-- <div id="elmLoader" class="loader" *ngIf="loading$ | async">
-                    <div class="spinner-border text-primary avatar-sm" role="status">
-                      <span class="visually-hidden">{{'Loading...' | translate}}</span>
-                    </div>
-                  </div> -->
-                </ul>
-              </section>
-              }
-            </cdk-step>
+         
 
           </ng-stepper>
         </div>
