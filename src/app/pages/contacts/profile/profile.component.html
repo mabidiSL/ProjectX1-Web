@@ -119,6 +119,7 @@
                       </button>
                       <div *ngIf="passwordForm.get('newPassword').touched && passwordForm.get('newPassword').invalid" class="invalid-feedback d-block">
                         <span *ngIf="passwordForm.get('newPassword').errors?.['required']">{{'Please enter your current password.'| translate}}.</span>
+                        <span *ngIf="passwordForm.get('newPassword').errors?.['passwordStrength']">{{ 'Password must be at least 10 characters long, contain 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.' | translate }}</span>
                       </div>
                     </div>
                   </div>

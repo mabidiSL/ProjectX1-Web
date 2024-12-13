@@ -12,6 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { selectDataLoading } from 'src/app/store/Authentication/authentication-selector';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
+import { passwordValidator } from 'src/app/shared/validator/passwordValidator';
 
 @Component({
   selector: 'app-profile',
@@ -76,7 +77,7 @@ export class ProfileComponent  {
     this.passwordForm = this.formBuilder.group({
       id: [user?.id],
       currentPassword: ['', [Validators.required]],      
-      newPassword: ['', [Validators.required]],
+      newPassword: ['', [Validators.required,passwordValidator()]],
       confirmpwd:['', [Validators.required]],
     },{validators: [this.passwordMatchValidator]});
 }); 

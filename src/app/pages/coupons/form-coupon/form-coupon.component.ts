@@ -362,6 +362,7 @@ createCouponFromForm(formValue): Coupon{
   onSubmit(){
 
     this.formSubmitted = true;
+    console.log(this.formCoupon.value);
 
     if (this.formCoupon.invalid) {
       this.formError = 'Please complete all required fields.';

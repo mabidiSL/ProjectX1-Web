@@ -22,6 +22,7 @@ import { BackgroundService } from 'src/app/core/services/background.service';
 import { CdkStepper } from '@angular/cdk/stepper';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ModalsComponent } from 'src/app/shared/ui/modals/modals.component';
+import { passwordValidator } from 'src/app/shared/validator/passwordValidator';
 
 @Component({
   selector: 'app-register2',
@@ -84,7 +85,7 @@ export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
       f_name: [null, Validators.required],
       l_name: [null, Validators.required],
       email: [null, [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required,passwordValidator()]],
       confpassword: ['', Validators.required],
       phone:[null,Validators.required], //Validators.pattern(/^\d{3}-\d{3}-\d{4}$/)*/],
       jobTitle: [null],
