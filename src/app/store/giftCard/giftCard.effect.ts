@@ -99,10 +99,10 @@ export class GiftCardsEffects {
       mergeMap(({ GiftCardId }) => {
         // Use the selector to get the GiftCard from the store
         return this.CrudService.getDataById('/gift-cards', GiftCardId).pipe(
-          map(GiftCard => {
+          map((GiftCard: any) => {
             if (GiftCard) {
               // Dispatch success action with the GiftCard data
-              return getGiftCardByIdSuccess({ GiftCard });
+              return getGiftCardByIdSuccess({ GiftCard: GiftCard.result  });
             } else {
               //this.toastr.error('GiftCard not found.')
               return getGiftCardByIdFailure({ error: 'GiftCard not found' }); // or handle it differently

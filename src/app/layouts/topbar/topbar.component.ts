@@ -58,7 +58,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
     public store: Store<RootReducerState>,
     private socketService: SocketService,
     private loaderService: LoaderService,
-    private authService: AuthenticationService
+    public authService: AuthenticationService
     ) {
       this.authService.currentUser$.subscribe(user => {
         if (user) {

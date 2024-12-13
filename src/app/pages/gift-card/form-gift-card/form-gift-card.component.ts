@@ -123,23 +123,23 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
   private initForm() {
     this.formGiftCard = this.formBuilder.group({
       id: [null],
-      name_ar: [''],
-      name: ['', Validators.required],
-      description_ar: [''],
-      description: ['', Validators.required],
-      termsAndConditions_ar: [''],
-      termsAndConditions: ['', Validators.required],
+      name_ar: [null],
+      name: [null, Validators.required],
+      description_ar: [null],
+      description: [null, Validators.required],
+      termsAndConditions_ar: [null],
+      termsAndConditions: [null, Validators.required],
       quantity: [null, Validators.required],
       company_id: [null, Validators.required],
       stores: [[]],
-      managerName: [''],
-      managerName_ar: [''],
-      managerPhone: [''],
-      startDateGiftCard: ['', Validators.required],
-      endDateGiftCard: ['', Validators.required],
+      managerName: [null],
+      managerName_ar: [null],
+      managerPhone: [null],
+      startDateGiftCard: [null, Validators.required],
+      endDateGiftCard: [null, Validators.required],
       sectionOrderAppearance: [null],
       categoryOrderAppearance: [null],
-      giftCardImage: ['',Validators.required],
+      giftCardImage: [null,Validators.required],
       giftCardValue: ['',Validators.required],
       discount:[null, Validators.required]
       
@@ -210,6 +210,8 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
             }
             //GiftCard.startDateGiftCard = this.formatDate(GiftCard.startDateGiftCard);
             //GiftCard.endDateGiftCard = this.formatDate(GiftCard.endDateGiftCard);
+            console.log(GiftCard);
+            
             this.patchValueForm(GiftCard);
             this.originalGiftCardData = { ...GiftCard };
             this.isEditing = true;
@@ -221,7 +223,7 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
 }
 patchValueForm(giftCard: GiftCard){
   this.formGiftCard.patchValue(giftCard);
-  this.formGiftCard.get('company_id').setValue(giftCard.offer.company_id);
+  this.formGiftCard.get('company_id').setValue(giftCard.offer[0].company_id);
   this.formGiftCard.get('stores').setValue(giftCard.stores.map(store => store.id));
 
   this.formGiftCard.patchValue({
@@ -279,6 +281,7 @@ onChangeMerchantSelection(event: Merchant){
    
 }
 onPhoneNumberChanged(phoneNumber: string) {
+  if(phoneNumber!== '')
   this.formGiftCard.get('managerPhone').setValue(phoneNumber);
 }
 createGiftCardFromForm(formValue): GiftCard{

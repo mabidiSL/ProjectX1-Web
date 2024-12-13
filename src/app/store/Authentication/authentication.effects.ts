@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable, Inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -151,11 +152,14 @@ export class AuthenticationEffects {
     ofType(updateProfile),
     exhaustMap((user : any ) => {
       return this.AuthService.updateProfile(user.user).pipe(
-        map(() => {
-             localStorage.setItem('currentUser', JSON.stringify(user.user));
+        map((response:any) => {
+          console.log(user.user);
+          
+          this.AuthService.setCurrentUser(response.result);
+             //localStorage.setItem('currentUser', JSON.stringify(user.user));
             this.toastr.success('The profile was updated successfully.');
             this.router.navigate(['/private/dashboard']);
-            return updateProfileSuccess({user:user.user});
+            return updateProfileSuccess({user:response.result});
           }
          
         ),

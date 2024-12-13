@@ -205,7 +205,7 @@ export class FormCouponComponent implements OnInit, OnDestroy{
     
     if(this.currentRole !== 'Admin'){
       console.log(this.merchantId);
-      this.formCoupon.get('company_id').setValue(this.merchantId);
+     // this.formCoupon.get('company_id').setValue(this.merchantId);
       this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000, status:'', company_id: this.merchantId}));
       this.isLoading = true;
       
@@ -238,7 +238,7 @@ export class FormCouponComponent implements OnInit, OnDestroy{
 }
 patchValueForm(coupon: Coupon){
   this.formCoupon.patchValue(coupon);
-  this.formCoupon.get('company_id').setValue(coupon.offer.company_id);
+  this.formCoupon.get('company_id').setValue(coupon.offer[0].company_id);
   this.formCoupon.get('stores').setValue(coupon.stores.map(store => store.id));
   this.formCoupon.patchValue({
     name: coupon.translation_data[0].name,

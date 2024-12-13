@@ -35,7 +35,7 @@ export class GiftCardComponent implements OnInit {
   
   columns : any[]= [
     { property: 'translation_data[0].name', label: 'Title' },
-    { property: 'offer.company.translation_data[0].name', label: 'Merchant_Name' },
+    { property: 'offer[0].company.translation_data[0].name', label: 'Merchant_Name' },
     { property: 'startDateGiftCard', label: 'Start_Date' },
     { property: 'endDateGiftCard', label: 'End_Date' },
     { property: 'status', label: 'Status' },

@@ -11,11 +11,11 @@
                 <div *ngIf="formError" class="alert alert-danger">{{ formError | translate }}</div>
                 <div class="row d-flex justify-content-end">
                   <div class="col-12 mb-3 text-end">
-                    <div class="form-group">
+                    <div *ngIf="formCoupon" class="form-group">
                       <ui-switch
                         color="##343a40"
                         [disabled]="type === 'view'"
-                        [checked]="formCoupon.get('status').value === 'active'"
+                        [checked]="formCoupon.get('status')?.value === 'active'"
                         [uncheckedLabel]="'InActive' | translate"
                         [checkedLabel]="'Active' | translate"
                         size="small"

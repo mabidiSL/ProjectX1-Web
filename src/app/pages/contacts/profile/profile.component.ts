@@ -169,20 +169,12 @@ passwordMatchValidator(formGroup: FormGroup) {
       }
 
       this.formError = null;
-      const updatedDta = this.formUtilService.detectChanges(this.profileForm, this.originalProfileData);
-      if (Object.keys(updatedDta).length > 0) {
         const changedData =  this.createProfileFromForm(this.profileForm.value);
         delete changedData.logo;
         delete changedData.email;  
         console.log(changedData);
         this.store.dispatch(updateProfile({ user: changedData }));
-      }
-      else
-      {
-        this.formError = 'Nothing has been changed!!!';
-        this.formUtilService.scrollToTopOfForm(this.formElement);
-      }
-      
+         
       
    
   }
