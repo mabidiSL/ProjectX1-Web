@@ -212,10 +212,10 @@ createCountryFromForm(formValue): Country{
     onCancel(){
      
       this.countryForm.reset();
-      this.router.navigateByUrl('/private/countries');
+      this.router.navigateByUrl('/private/countries/list');
     }
     toggleViewMode(){
-          this.router.navigateByUrl('/private/countries');
+          this.router.navigateByUrl('/private/countries/list');
 
     }
   

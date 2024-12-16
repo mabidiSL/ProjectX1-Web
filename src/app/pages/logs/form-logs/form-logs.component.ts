@@ -92,7 +92,7 @@ patchValueForm(log: Log){
 
 }
   toggleViewMode(){
-          this.router.navigateByUrl('/private/logs');
+          this.router.navigateByUrl('/private/logs/list');
     }   
 
 }

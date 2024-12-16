@@ -26,7 +26,7 @@ export const MENU: MenuItem[] = [
         id: 6,
         label: 'MENUITEMS.CUSTOMERS.TEXT',
         icon: 'bxs-user-detail',
-        link:'/private/customers',
+        link:'/private/customers/list',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customers, claimValue: [Permission.ViewAll, Permission.Create]}]
 
     },
@@ -71,7 +71,7 @@ export const MENU: MenuItem[] = [
         id: 4,
         label: 'MENUITEMS.EMPLOYEES.TEXT',
         icon: 'bxs-user-pin',
-        link: '/private/employees',
+        link: '/private/employees/list',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Employees, claimValue: [Permission.ViewAll,Permission.Create]}],
         // subItems: [
         //     {
@@ -98,7 +98,7 @@ export const MENU: MenuItem[] = [
         id: 5,
         label: 'MENUITEMS.ROLESETUP.TEXT',
         icon: 'bx-shield-quarter',
-        link: '/private/roles',
+        link: '/private/roles/list',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.Create, Permission.ViewAll]}],
         // subItems: [
         //     {
@@ -157,7 +157,7 @@ export const MENU: MenuItem[] = [
         id: 10,
         label: 'MENUITEMS.STORES.TEXT',
         icon: 'bx bx-store',
-        link: '/private/stores',
+        link: '/private/stores/list',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Stores, claimValue: [Permission.ViewAll, Permission.Create]}],
         // subItems: [
         //     {
@@ -218,7 +218,7 @@ export const MENU: MenuItem[] = [
                 label: 'MENUITEMS.PRODUCTMANAGEMENT.COUPONS.TEXT',
                 claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Coupons, claimValue: [Permission.Create, Permission.ViewAll,Permission.Approve , Permission.Decline]}],
                 icon: 'bxs-coupon',
-                link: '/private/coupons',
+                link: '/private/coupons/list',
                 
 
    },
@@ -227,7 +227,7 @@ export const MENU: MenuItem[] = [
                 label: 'MENUITEMS.PRODUCTMANAGEMENT.GIFTCARDS.TEXT',
                 icon: 'bx bxs-gift',
                 claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Gift_Cards, claimValue: [Permission.ViewAll, Permission.Create, Permission.Approve, Permission.Decline]}],
-                link:'/private/giftCards',
+                link:'/private/giftCards/list',
                
             }
         ,
@@ -274,7 +274,7 @@ export const MENU: MenuItem[] = [
         label: 'MENUITEMS.APPNOTIFICATION.TEXT',
         icon: 'bx bxs-bell-ring',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Notification_Management, claimValue: [Permission.ViewAll]}],
-        link: '/private/notifications'
+        link: '/private/notifications/list'
         
           
     },
@@ -291,7 +291,7 @@ export const MENU: MenuItem[] = [
         label: 'MENUITEMS.PAYMENTS.TEXT',
         icon: 'bx bxl-paypal',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Payment, claimValue: [Permission.ViewAll]}],
-        link:'/private/payment',
+        link:'/private/payment/list',
                 
     },
     {
@@ -306,7 +306,7 @@ export const MENU: MenuItem[] = [
         label: 'MENUITEMS.COUNTRIES.TEXT',
         icon: 'bx bx-globe',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}],
-        link: '/private/countries',
+        link: '/private/countries/list',
                
     },
     {
@@ -314,7 +314,7 @@ export const MENU: MenuItem[] = [
         label: 'MENUITEMS.AREAS.TEXT',
         icon: 'dripicons-map',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}],
-        link: '/private/areas'
+        link: '/private/areas/list'
                
     },
     
@@ -323,7 +323,7 @@ export const MENU: MenuItem[] = [
         label: 'MENUITEMS.CITIES.TEXT',
         icon: 'bx bxs-city',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}],
-        link: '/private/cities'
+        link: '/private/cities/list'
                
     },
    
@@ -382,7 +382,7 @@ export const MENU: MenuItem[] = [
         label: 'MENUITEMS.LOGS.TEXT',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Logs, claimValue: [Permission.ViewAll]}],
         icon:  'bx bx-error',
-        link:'/private/logs',
+        link:'/private/logs/list',
                 
     },
     

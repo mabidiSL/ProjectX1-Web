@@ -24,7 +24,7 @@ export const getNotificationByIdFailure = createAction('[Data] get Notification 
 // Update Data
 export const updateNotificationlist = createAction(
     '[Data] Update Notificationlist',
-    props<{ updatedData: Notification }>()
+    props<{ updatedData: Notification, route?: string }>()
 );
 export const updateNotificationlistSuccess = createAction(
     '[Data] Update Notificationlist Success',

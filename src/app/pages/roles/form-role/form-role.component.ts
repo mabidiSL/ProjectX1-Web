@@ -410,10 +410,10 @@ toggleModule(moduleKey: string, event: any): void {
   onCancel(){
     
     this.roleForm.reset();
-    this.router.navigateByUrl('/private/roles');
+    this.router.navigateByUrl('/private/roles/list');
   }
   toggleViewMode(){
-    this.router.navigateByUrl('/private/roles');
+    this.router.navigateByUrl('/private/roles/list');
 }
 }
 

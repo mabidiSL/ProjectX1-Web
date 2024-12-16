@@ -11,7 +11,7 @@ import { ViewGiftCardComponent } from './view-gift-card/view-gift-card.component
 const routes: Routes = [
   
   {
-    path: '',
+    path: 'list',
     component: GiftCardComponent,
     canActivate: [RoleGuard],
     data: {

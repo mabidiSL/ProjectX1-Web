@@ -32,6 +32,8 @@ body[data-layout-size="boxed"] {
     .footer {
         margin: 0 auto;
         max-width: calc(#{$boxed-layout-width} - #{$sidebar-width});
+        position: relative;            // Ensures it behaves as a block-level element
+
         [dir="rtl"] & {
             // RTL styles for boxed layout
             margin-left: auto;

@@ -37,7 +37,7 @@ export class EmployeeslistEffects {
                 this.CrudService.addData('/users', newData).pipe(
                     map((newData) => {
                         this.toastr.success('The new Employee has been added successfully.');
-                        this.router.navigate(['/private/employees']);
+                        this.router.navigate(['/private/employees/list']);
                         // Dispatch the action to fetch the updated Employee list after adding a new Employee
                         return addEmployeelistSuccess({newData});
                       }),
@@ -56,7 +56,7 @@ export class EmployeeslistEffects {
             this.CrudService.updateData(`/users/${updatedData.id}`, updatedData).pipe(
               map(() => {
                 this.toastr.success('The Employee has been updated successfully.');
-                this.router.navigate(['/private/employees']);
+                this.router.navigate(['/private/employees/list']);
                 return updateEmployeelistSuccess({ updatedData }); // Make sure to return the action
               }),
               catchError((error) =>{

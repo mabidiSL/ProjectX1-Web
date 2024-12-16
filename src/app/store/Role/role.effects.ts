@@ -52,7 +52,7 @@ export class RolesEffects {
                     map((newData) => {
                         
                         this.toastr.success('The new Role has been added successfully.');
-                        this.router.navigate(['/private/roles']);
+                        this.router.navigate(['/private/roles/list']);
                         // Dispatch the action to fetch the updated Role list after adding a new Role
                         return addRolelistSuccess({newData});
                       }),
@@ -71,7 +71,7 @@ export class RolesEffects {
             this.CrudService.updateData(`/roles/${updatedData.id}`, updatedData).pipe(
               map(() => {
                 this.toastr.success('The Role has been updated successfully.');
-                this.router.navigate(['/private/roles']);
+                this.router.navigate(['/private/roles/list']);
                 return updateRolelistSuccess({ updatedData }); // Make sure to return the action
               }),
               catchError((error) =>{

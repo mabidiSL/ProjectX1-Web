@@ -51,7 +51,7 @@ export class AreaEffects {
                 this.CrudService.addData('/areas', newData).pipe(
                     map((response) => {
                         this.toastr.success('The new Area has been added successfully.');
-                        this.router.navigate(['/private/areas']);
+                        this.router.navigate(['/private/areas/list']);
                         // Dispatch the action to fetch the updated Area list after adding a new Area
                         return addArealistSuccess({newData: response});
                       }),
@@ -90,7 +90,7 @@ export class AreaEffects {
                     map((response : any) =>
                     {
                         this.toastr.success('The Area has been updated successfully.');
-                        this.router.navigate(['/private/areas']);
+                        this.router.navigate(['/private/areas/list']);
                         return updateArealistSuccess({ updatedData : response.result})
                     }),
                     catchError((error) =>{

@@ -52,7 +52,7 @@ export class StoreslistEffects {
                     map((response: any) => {
                       
                       this.toastr.success('The new Store has been added successfully.');
-                      this.router.navigate(['/private/stores']);
+                      this.router.navigate(['/private/stores/list']);
                         
                         // Dispatch the action to fetch the updated Store list after adding a new Store
                         return addStorelistSuccess({newData: response.result});
@@ -92,7 +92,7 @@ export class StoreslistEffects {
             this.CrudService.updateData(`/stores/${updatedData.id}`, updatedData).pipe(
                 map((response: any) =>{
                 this.toastr.success('The Store has been updated successfully.');
-                this.router.navigate(['/private/stores']);
+                this.router.navigate(['/private/stores/list']);
                 return  updateStorelistSuccess({ updatedData: response.result })}),
                 catchError((error) =>{
                   const errorMessage = this.formUtilService.getErrorMessage(error);

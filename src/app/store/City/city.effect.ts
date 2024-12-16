@@ -51,7 +51,7 @@ export class CityEffects {
                 this.CrudService.addData('/cities', newData).pipe(
                     map((response) => {
                         this.toastr.success('The new City has been added successfully.');
-                        this.router.navigate(['/private/cities']);
+                        this.router.navigate(['/private/cities/list']);
                         // Dispatch the action to fetch the updated City list after adding a new City
                         return addCitylistSuccess({newData: response});
                       }),
@@ -91,7 +91,7 @@ export class CityEffects {
                     map((response : any) => 
                     {
                         this.toastr.success('The City has been updated successfully.');
-                        this.router.navigate(['/private/cities']); 
+                        this.router.navigate(['/private/cities/list']); 
                         return updateCitylistSuccess({ updatedData : response.result})
                     }),
                     catchError((error) =>{

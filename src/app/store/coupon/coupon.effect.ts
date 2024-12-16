@@ -57,7 +57,7 @@ export class CouponslistEffects {
                           } else {
                               this.toastr.success('The new Coupon Request has been sent to Admin.');
                           }
-                          this.router.navigate(['/private/coupons']);
+                          this.router.navigate(['/private/coupons/list']);
                         // Dispatch the action to fetch the updated Coupon list after adding a new Coupon
                         return addCouponlistSuccess({newData});
                       }),
@@ -78,7 +78,7 @@ export class CouponslistEffects {
               map(() => {
               
                 this.toastr.success('The Coupon has been updated successfully.');
-                this.router.navigate(['/private/coupons']);
+                this.router.navigate(['/private/coupons/list']);
                 return updateCouponlistSuccess({ updatedData }); // Make sure to return the action
               }),
               catchError((error) =>{

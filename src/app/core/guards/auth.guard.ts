@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Router, CanActivate } from '@angular/router';
 
 // Auth Services
 import { AuthenticationService } from '../services/auth.service';
+import { of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
@@ -11,24 +12,21 @@ export class AuthGuard implements CanActivate {
         private authservice: AuthenticationService
     ) { }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    canActivate() {
 
-            // if (state.url === '/') {
-            //     return true; // Allow access to home
-            // }
-            const currentUser = this.authservice.currentUserValue;
-            console.log('i am in authGuard',currentUser);
-            if (currentUser) {
-                // logged in so return true
-                return true;
-            }
-            // check if user data is in storage is logged in via API.
-            if (localStorage.getItem('currentUser')) {
-                return true;
-            }
+        const currentUser = this.authservice.currentUserValue || localStorage.getItem('currentUser');
         
-        // not logged in so redirect to login page with the return url
-        this.router.navigate(['/auth/login'], { queryParams: { returnUrl: state.url } });
-        return false;
+        // If user is logged in, navigate directly to the protected route
+        if (currentUser) {
+            return of(true);
+        }
+
+        // User is not logged in, so immediately navigate to login without showing it
+        // You can also add a timeout for a smooth transition (e.g., 200ms delay)
+        setTimeout(() => {
+            this.router.navigate(['/auth/login']);
+        }, 0);  // We use a 0ms delay for immediate redirection
+        
+        return of(false);
     }
 }

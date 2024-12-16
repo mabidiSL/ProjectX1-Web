@@ -55,7 +55,7 @@ export class PaymentEffects {
                     map((newData) => {
                      
                               this.toastr.success('The new Payment has been added successfully.');
-                              this.router.navigate(['/private/payment']);
+                              this.router.navigate(['/private/payment/list']);
                           
                         // Dispatch the action to fetch the updated Payment list after adding a new Payment
                         return addPaymentlistSuccess({newData});
@@ -77,7 +77,7 @@ export class PaymentEffects {
               map(() => {
               
                 this.toastr.success('The Payment has been updated successfully.');
-                this.router.navigate(['/private/payment']);
+                this.router.navigate(['/private/payment/list']);
                 return updatePaymentlistSuccess({ updatedData }); // Make sure to return the action
               }),
               catchError((error) =>{

@@ -385,7 +385,7 @@ onToggle(event: any){
 }
   onCancel(){
     this.formGiftCard.reset();
-    this.router.navigateByUrl('/private/giftCards');
+    this.router.navigateByUrl('/private/giftCards/list');
   }
   ngOnDestroy() {
     this.destroy$.next();
@@ -394,10 +394,8 @@ onToggle(event: any){
   
   toggleViewMode(){
 
-    if(this.fromPendingContext)
-      this.router.navigateByUrl('/private/giftCards/approve');
-    else
-      this.router.navigateByUrl('/private/giftCards');
+    
+      this.router.navigateByUrl('/private/giftCards/list');
 
   }
 

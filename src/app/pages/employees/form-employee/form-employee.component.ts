@@ -427,10 +427,10 @@ hasPermission(module: string, permission: string): boolean {
   }
   onCancel(){
     this.employeeForm.reset();
-    this.router.navigateByUrl('/private/employees');
+    this.router.navigateByUrl('/private/employees/list');
   }
   toggleViewMode(){
-    this.router.navigateByUrl('/private/employees');
+    this.router.navigateByUrl('/private/employees/list');
 }
 
 }

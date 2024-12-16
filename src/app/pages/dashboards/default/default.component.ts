@@ -102,13 +102,13 @@ export class DefaultComponent implements OnInit, AfterViewInit {
       {
         icon: "bx bx-store",
         title: "Merchant Branches",
-        link: "/private/stores",
+        link: "/private/stores/list",
         value: this.rateStatics.totalStores
       },
       {
         icon: "bx bxs-coupon",
         title: "Coupons",
-        link: "/private/coupons",
+        link: "/private/coupons/list",
         value: this.rateStatics.totalCoupons
       },
             {
@@ -129,20 +129,20 @@ export class DefaultComponent implements OnInit, AfterViewInit {
       {
         icon: "bx bx-store",
         title: "Merchant Branches",
-        link: "/private/stores",
+        link: "/private/stores/list",
         value: this.rateStatics.totalStores
       },
       {
         icon: "bx bxs-coupon",
         title: "Coupons",
-        link: "/private/coupons",
+        link: "/private/coupons/list",
         value: this.rateStatics.totalCoupons
       },
       
       {
         icon: "bxs-user-detail",
         title: "Employees",
-        link: "/private/employees",
+        link: "/private/employees/list",
         value: this.rateStatics.totalEmployees
       }
      

@@ -57,7 +57,7 @@ export class GiftCardsEffects {
                         } else {
                             this.toastr.success('The new GiftCard Request has been sent to Admin.');
                         }
-                        this.router.navigate(['/private/giftCards']);
+                        this.router.navigate(['/private/giftCards/list']);
 
                         // Dispatch the action to fetch the updated GiftCard list after adding a new GiftCard
                         return addGiftCardlistSuccess({newData});
@@ -80,7 +80,7 @@ export class GiftCardsEffects {
               map(() => {
                 
                 this.toastr.success('The GiftCard has been updated successfully.');
-                this.router.navigate(['/private/giftCards']);
+                this.router.navigate(['/private/giftCards/list']);
                 return updateGiftCardlistSuccess({ updatedData }); // Make sure to return the action
               }),
               catchError((error) => {

@@ -342,10 +342,10 @@ onLogoUpload(event: UploadEvent): void {
   }
   onCancel(){
     this.customerForm.reset();
-    this.router.navigateByUrl('/private/customers');
+    this.router.navigateByUrl('/private/customers/list');
   }
   toggleViewMode(){
-    this.router.navigateByUrl('/private/customers');
+    this.router.navigateByUrl('/private/customers/list');
 }
 
 }

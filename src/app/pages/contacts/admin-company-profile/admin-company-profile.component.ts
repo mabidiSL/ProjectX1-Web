@@ -70,7 +70,7 @@ export class AdminCompanyProfileComponent implements OnInit{
       console.log('***********');
  
       this.store.dispatch(getCompanyProfile({companyId: this.currentUser.companyId}))
-      this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 100, status: 'active' }));
+      this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 100, query:'', status: 'active' }));
       this.store.dispatch(fetchSectionlistData({page: 1, itemsPerPage: 100, status: 'active' }));
      
       this.initForm();
@@ -84,8 +84,6 @@ export class AdminCompanyProfileComponent implements OnInit{
     name_ar: [null],
     description: [null],
     description_ar: [null],
-    supervisorName: [null],
-    supervisorName_ar: [null],
     companyEmail: [null],
     website: [null],
     VAT: [null],
@@ -94,7 +92,6 @@ export class AdminCompanyProfileComponent implements OnInit{
     section_id:[null, Validators.required],
     companyLogo: [null],
     officeTel: [null],
-    supervisorPhone: [null],
     building_floor: [null],
     street: [null],
     city:[null],
@@ -151,8 +148,7 @@ export class AdminCompanyProfileComponent implements OnInit{
         name_ar: company.translation_data[1]?.name,
         description: company.translation_data[0].description,
         description_ar: company.translation_data[1]?.description,
-        supervisorName: company.translation_data[0].supervisorName,
-        supervisorName_ar: company.translation_data[1]?.supervisorName,
+      
 
         
       });
@@ -266,23 +262,19 @@ export class AdminCompanyProfileComponent implements OnInit{
   onPhoneNumberChanged(phoneNumber: string) {
     this.adminForm.get('officeTel').setValue(phoneNumber);
   }
-  onSupervisorPhoneChanged(phoneNumber: string) {
-    this.adminForm.get('supervisorPhone').setValue(phoneNumber);
-  }
+ 
   createProfileFromForm(formValue): any {
     const company = formValue;
     company.translation_data = [];
     const enFields = [
       { field: 'name', name: 'name' },
       { field: 'description', name: 'description' },
-      { field: 'supervisorName', name: 'supervisorName' },
 
 
     ];
     const arFields = [
       { field: 'name_ar', name: 'name' },
       { field: 'description_ar', name: 'description' },
-      { field: 'supervisorName_ar', name: 'supervisorName' },
 
 
     ];
@@ -310,8 +302,7 @@ export class AdminCompanyProfileComponent implements OnInit{
    delete company.name_ar; 
    delete company.description;  
    delete company.description_ar;  
-   delete company.supervisorName; 
-   delete company.supervisorName_ar;    
+  
    //delete company.area_id;
   // delete company.country_id;
 

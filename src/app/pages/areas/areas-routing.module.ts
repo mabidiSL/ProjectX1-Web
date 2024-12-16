@@ -9,7 +9,7 @@ import { ViewAreaComponent } from './view-area/view-area.component';
 
 const routes: Routes = [
   {
-  path: '',
+  path: 'list',
   canActivate: [RoleGuard],
   data: {
     claim : [{claimType: Modules.All, claimValue: [Permission.All]}, {claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}]

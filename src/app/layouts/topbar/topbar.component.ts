@@ -142,38 +142,30 @@ export class TopbarComponent implements OnInit, OnDestroy {
       
    
   }
+  getNotificationRoute(notification: any): string {
+    // Map notification types to routes
+    switch (notification.type) {
+      case 'merchant-registration':
+        return 'private/merchants/list';
+      case 'coupon-approved':
+        return 'private/coupons/list';
+      case 'giftCard-approved':
+        return 'private/giftCards/list';
+      case 'store-approval-request':
+        return 'private/stores/list';
+    //   default:
+    //     return 'private/notifications/list'; // Default route if no match
+    // }
+  }
+}
    navigateToNotification(notification: any) {
     // Update Notification to be set as Seen
       notification.seen = true;
       const notifcationObject = {id : notification.id, seen: true};
-      this.store.dispatch(updateNotificationlist({updatedData: notifcationObject}))
+      const route = this.getNotificationRoute(notification); // Get the route dynamically
+      this.store.dispatch(updateNotificationlist({updatedData: notifcationObject, route:route}))
       this.fetchNotification();
-    switch (notification.type) {
-
-      case 'merchant-registration':
-        this.router.navigate(['private/merchants']); 
-        break;
-      case 'coupon-approval-request':
-       this.router.navigate(['private/coupons/approve']); 
-       break;
-      case 'coupon-approved':
-        this.router.navigate(['private/coupons']); 
-        break;
-      case 'gift-card-approval-request':
-        this.router.navigate(['private/giftCards/approve']); 
-        break;
-      case 'giftCard-approved':
-        this.router.navigate(['private/giftCards']); 
-        break;  
-      case 'store-approval-request':
-        this.router.navigate(['private/stores']); 
-        break;
-      // case 'store-approved':
-      //   this.router.navigate(['private/stores']); 
-      //   break;
-      // // Add other cases for different notification types
-      default:
-    }
+    
    }
 
   setLanguage(text: string, lang: string, flag: string) {

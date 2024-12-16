@@ -50,7 +50,7 @@ export class countrieslistEffects {
                 this.CrudService.addData('/countries', newData).pipe(
                     map((response) => {
                         this.toastr.success('The new Country has been added successfully.');
-                        this.router.navigate(['/private/countries']);
+                        this.router.navigate(['/private/countries/list']);
                         // Dispatch the action to fetch the updated Country list after adding a new Country
                         return addCountrylistSuccess({newData: response});
                       }),
@@ -87,7 +87,7 @@ export class countrieslistEffects {
                 return this.CrudService.updateData(`/countries/${updatedData.id}`, updatedData).pipe(
                     map((response : any) => {
                         this.toastr.success('The Country has been updated successfully.');
-                        this.router.navigate(['/private/countries']);
+                        this.router.navigate(['/private/countries/list']);
                         return updateCountrylistSuccess({ updatedData : response.result})}),
                         catchError((error) =>{
                             const errorMessage = this.formUtilService.getErrorMessage(error);

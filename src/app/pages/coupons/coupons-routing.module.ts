@@ -11,12 +11,13 @@ import { ViewCouponComponent } from './view-coupon/view-coupon.component';
 const routes: Routes = [
   
 {
-  path: '',
-  component: CouponsComponent,
+  path: 'list',
   canActivate: [RoleGuard],
   data: {
     claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Coupons, claimValue:[Permission.ViewAll]}]
-}
+},
+component: CouponsComponent
+
 },
 {
   path: "create",

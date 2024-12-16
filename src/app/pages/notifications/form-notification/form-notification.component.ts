@@ -186,7 +186,7 @@ createNotificationFromForm(formValue): Notification{
 
           if (Object.keys(updatedDta).length > 0) {
             updatedDta.id = this.notifForm.value.id;
-            this.store.dispatch(updateNotificationlist({ updatedData: this.createNotificationFromForm(updatedDta) }));
+            this.store.dispatch(updateNotificationlist({ updatedData: this.createNotificationFromForm(updatedDta), route:'' }));
           }
           else{
             this.formError = 'Nothing has been changed!!!';
@@ -207,10 +207,10 @@ createNotificationFromForm(formValue): Notification{
   onCancel(){
    
     this.notifForm.reset();
-    this.router.navigateByUrl('/private/notifications');
+    this.router.navigateByUrl('/private/notifications/list');
   }
   toggleViewMode(){
-    this.router.navigateByUrl('/private/notifications');
+    this.router.navigateByUrl('/private/notifications/list');
 }
 
 }

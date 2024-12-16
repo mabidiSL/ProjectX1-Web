@@ -186,13 +186,13 @@ export class FormAreaComponent implements OnInit, OnDestroy {
   onCancel(){
     
     this.areaForm.reset();
-    this.router.navigateByUrl('/private/areas');
+    this.router.navigateByUrl('/private/areas/list');
   }
   getCountryName(id: number){
     return this.countries.find(country => country.id === id)?.translation_data[0].name ;
   }
   toggleViewMode(){
-    this.router.navigateByUrl('/private/areas');
+    this.router.navigateByUrl('/private/areas/list');
 
 }
 }

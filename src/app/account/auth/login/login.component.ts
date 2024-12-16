@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   year: number = new Date().getFullYear();
   @ViewChild('rightsection') rightsection: ElementRef<HTMLElement>;
   isRtl: boolean = false;  // Default is LTR
-
+  isloading: boolean = true;
   // tslint:disable-next-line: max-line-length
   constructor(private formBuilder: UntypedFormBuilder,
     private randomBackgroundService: RandomBackgroundService,
@@ -43,6 +43,12 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     private store: Store,
     ) { 
       this.loading$ = this.store.pipe(select(selectDataLoading));
+      if (localStorage.getItem('currentUser')) {
+        this.router.navigate(['/private']).then(() => {
+          this.isloading = false; // Stop loading once redirected
+        });
+    
+    }
     //   this.route.queryParams.subscribe(params => {
     //     this.userType = params['userType'];
     // });
@@ -50,19 +56,20 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
       this.isRtl = document.documentElement.dir === 'rtl';
-      if (localStorage.getItem('currentUser')) {
-        this.router.navigate(['/private']);
-      }
-      else
-      {
+      
+      this.isloading = false;
       this.loginForm = this.formBuilder.group({
           email: ['', [Validators.required]],
           password: ['', [Validators.required]],
       });
-   }
+   
         
   }
   ngAfterViewInit() {
+    const currentUser = localStorage.getItem('currentUser');
+
+  // Only execute if no user is logged in
+  if (!currentUser) {
     const direction = document.documentElement.dir === 'rtl' ? 'rtl' : 'ltr';
     if (this.rightsection) {
       this.randomBackgroundService.getRandomBackground(direction).subscribe(
@@ -74,6 +81,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       );
     }
+  }
   }
   toggleRtl(): void {
     // Toggle between RTL and LTR
@@ -109,7 +117,9 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   
 
   ngOnDestroy(): void {
-    this.backgroundService.resetBackgroundElement(this.rightsection.nativeElement);
+    if (this.rightsection && this.rightsection.nativeElement) {
+        this.backgroundService.resetBackgroundElement(this.rightsection.nativeElement);
+    }
   }
 
  

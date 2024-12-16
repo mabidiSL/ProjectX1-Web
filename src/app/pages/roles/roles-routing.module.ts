@@ -9,7 +9,7 @@ import { ViewRoleComponent } from './view-role/view-role.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'list',
     canActivate: [RoleGuard],
     data: {
       claim : [{claimType: Modules.All, claimValue: [Permission.All]}, {claimType: Modules.Role, claimValue: [Permission.ViewAll]}]

@@ -91,24 +91,7 @@
                           {{'Store is required'|translate}}
                         </div> -->
                       </div>
-                      <div class="col-md-6 mb-3">
-                        <label for="stores">{{'Inline Branches'|translate}}</label>
-                        <ng-select
-                          [readonly]="type === 'view'"
-                          id="stores"
-                          [placeholder]="'Select_Stores'| translate"
-                          [items]="storeList"
-                          bindLabel="translatedName" 
-                          bindValue="id"
-                          formControlName="stores"
-                          [multiple] = "true"
-                          >
-                        </ng-select>
-                        <!-- <div *ngIf="isLoading" class="text-info">Loading stores...</div> -->
-                        <!-- <div *ngIf="formCoupon.get('stores').invalid && formCoupon.get('stores').touched" class="text-danger">
-                          {{'Store is required'|translate}}
-                        </div> -->
-                      </div>
+             
                       <div class="col-md-6 mb-3">
                         <label for="startDateCoupon">{{'Start_Date'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                         <input bsDatepicker class="form-control" id="startDateCoupon" placeholder="yyyy-mm-dd" formControlName="startDateCoupon" [bsConfig]="bsConfig"  [readonly]="type==='view'"/>

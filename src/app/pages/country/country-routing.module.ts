@@ -9,7 +9,7 @@ import { ViewCountryComponent } from './view-country/view-country.component';
 
 const routes: Routes = [
   {
-  path: '',
+  path: 'list',
   canActivate: [RoleGuard],
   data: {
     claim : [{claimType: Modules.All, claimValue: [Permission.All]}, {claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}]

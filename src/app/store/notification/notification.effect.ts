@@ -69,7 +69,7 @@ export class NotificationsEffects {
                 this.CrudService.addData('/notifications/mobile', newData).pipe(
                     map((newData) => {
                         
-                        this.router.navigate(['/private/notifications']);
+                        this.router.navigate(['/private/notifications/list']);
                         this.toastr.success('The new Notification has been added .');
                         // Dispatch the action to fetch the updated Notification list after adding a new Notification
                         return addNotificationlistSuccess({newData});
@@ -86,10 +86,16 @@ export class NotificationsEffects {
     updateData$ = createEffect(() =>
         this.actions$.pipe(
           ofType(updateNotificationlist),
-          mergeMap(({ updatedData }) =>
+          mergeMap(({ updatedData, route }) =>
             this.CrudService.updateData(`/notifications/${updatedData.id}`, updatedData).pipe(
               map(() => {
-                this.router.navigate(['/private/notifications']);
+                if(route !== ''){
+                  this.router.navigate([route]);
+
+                }else
+                {
+                  this.router.navigate(['/private/notifications/list']);
+                }
                 this.toastr.success('The Notification has been updated successfully.');
                 return updateNotificationlistSuccess({ updatedData }); // Make sure to return the action
               }),

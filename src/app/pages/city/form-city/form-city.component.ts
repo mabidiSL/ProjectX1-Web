@@ -227,10 +227,10 @@ export class FormCityComponent  implements OnInit, OnDestroy {
     onCancel(){
      
       this.cityForm.reset();
-      this.router.navigateByUrl('/private/cities');
+      this.router.navigateByUrl('/private/cities/list');
     }
     toggleViewMode(){
-      this.router.navigateByUrl('/private/cities');
+      this.router.navigateByUrl('/private/cities/list');
 }
   
   }

@@ -9,7 +9,7 @@ import { ViewNotificationComponent } from './view-notification/view-notification
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'list',
     canActivate: [RoleGuard],
     data: {
       claim : [{claimType: Modules.All, claimValue: [Permission.All]}, {claimType: Modules.Notification_Management, claimValue: [Permission.ViewAll]}]

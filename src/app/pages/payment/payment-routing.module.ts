@@ -6,7 +6,7 @@ import { Modules, Permission } from 'src/app/store/Role/role.models';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'list',
     canActivate: [RoleGuard],
     data: {
       claim : [{claimType: Modules.All, claimValue: [Permission.All]}, {claimType: Modules.Payment, claimValue: [Permission.ViewAll]}]

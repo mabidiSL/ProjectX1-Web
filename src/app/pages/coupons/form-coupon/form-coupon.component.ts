@@ -426,7 +426,7 @@ onToggle(event: any){
 
   onCancel(){
     this.formCoupon.reset();
-    this.router.navigateByUrl('/private/coupons');
+    this.router.navigateByUrl('/private/coupons/list');
   }
   ngOnDestroy() {
     this.destroy$.next();
@@ -435,12 +435,8 @@ onToggle(event: any){
  
   toggleViewMode(){
     
-    if(this.fromPendingContext){
-      this.router.navigateByUrl('/private/coupons/approve');
-    }
-    else{
-      this.router.navigateByUrl('/private/coupons');
-    }
+
+    this.router.navigateByUrl('/private/coupons/list');
 
   }
   onChangeEventEmit(event: any){

@@ -434,12 +434,12 @@ removeFile(event: any) {
   onCancel(){
 
     this.storeForm.reset();
-    this.router.navigateByUrl('/private/stores');
+    this.router.navigateByUrl('/private/stores/list');
   }
  
   toggleViewMode(){
     
-      this.router.navigateByUrl('/private/stores');
+      this.router.navigateByUrl('/private/stores/list');
 
   }
   onChangeEventEmit(event: any){

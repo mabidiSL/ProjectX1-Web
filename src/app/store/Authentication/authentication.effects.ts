@@ -5,7 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, catchError, exhaustMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { login, loginSuccess, loginFailure, forgetPassword, logout, logoutSuccess, Register, RegisterSuccess, RegisterFailure, updatePassword, updatePasswordFailure, updatePasswordSuccess, updateProfile, updateProfilePassword, updateProfileSuccess, updateProfileFailure, updateProfilePasswordSuccess, updateProfilePasswordFailure, forgetPasswordSuccess, forgetPasswordFailure, verifyEmailSuccess, verifyEmail, verifyEmailFailure, updateCompanyProfile, updateCompanyProfileSuccess, updateCompanyProfileFailure, getCompanyProfile, getCompanyProfileSuccess, getCompanyProfileFailure, logoutFailure } from './authentication.actions';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
@@ -19,6 +19,7 @@ export class AuthenticationEffects {
     @Inject(Actions) private actions$: Actions,
     private AuthService: AuthenticationService,
     private router: Router, 
+    private route: ActivatedRoute,
     private formUtilService: FormUtilService,
     public toastr:ToastrService) {
 
@@ -91,7 +92,9 @@ export class AuthenticationEffects {
               this.AuthService.setCurrentUser(user);
               localStorage.setItem('token', token);
               localStorage.setItem('refreshToken', refreshToken);
-              this.router.navigate(['/private']);
+              const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/private';
+              this.router.navigate([returnUrl]);
+              //this.router.navigate(['/private']);
               return loginSuccess({ user: user, token: token });
 
             }),

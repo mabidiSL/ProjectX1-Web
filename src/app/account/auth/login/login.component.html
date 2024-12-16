@@ -1,4 +1,9 @@
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<div id="elmLoader" class="loader" *ngIf="isloading">
+  <div class="spinner-border text-primary avatar-sm" role="status">
+    <span class="visually-hidden">{{'Loading...' | translate}}</span>
+  </div>
+</div> 
 <div class="auth-container-fluid d-flex">
   <!-- Left Section (Background) -->
   <div  class="left-section d-flex flex-column">
@@ -17,12 +22,12 @@
 
         <div class="mb-3">
           <label for="email">{{'Email'| translate}}</label>
-          <input type="email" formControlName="email" class="form-control" id="email" placeholder="{{'Email'| translate}}" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-          @if(submitted && f.email.errors){
+          <input type="email" formControlName="email" class="form-control" id="email" placeholder="{{'Email'| translate}}" [ngClass]="{ 'is-invalid': submitted && f?.email.errors }" />
+          @if(submitted && f?.email.errors){
           <div class="invalid-feedback">
-            @if(f.email.errors.required){
+            @if(f?.email.errors.required){
             <div>{{'Email is required'| translate}}</div>
-            }@if(f.email.errors.email){
+            }@if(f?.email.errors.email){
             <div>{{'Email must be a valid email address'| translate}}</div>
             }
           </div>
@@ -32,14 +37,14 @@
         <div class="mb-3">
           <label for="password">{{'Password'| translate}}</label>
           <div class="input-group auth-pass-inputgroup">
-            <input [type]="fieldTextType ? 'text' : 'password'" class="form-control" formControlName="password" placeholder="{{'Enter the Password'|translate}}" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+            <input [type]="fieldTextType ? 'text' : 'password'" class="form-control" formControlName="password" placeholder="{{'Enter the Password'|translate}}" [ngClass]="{ 'is-invalid': submitted && f?.password.errors }">
 
             <button class="btn btn-light ms-0" type="button" id="password-addon">
               <i tabindex="0" class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()"></i>
             </button>
-            @if(submitted && f.password.errors){
+            @if(submitted && f?.password.errors){
             <div class="invalid-feedback">
-              @if(f.password.errors.required){
+              @if(f?.password.errors.required){
               <span>{{'Password is required'| translate}}</span>
               }
             </div>}
@@ -56,8 +61,8 @@
        
         
         <div class="mt-5 d-grid">
-          <button class="btn btn-gold mb-2" type="submit">{{'Log In'| translate}}</button>
-          <button routerLink="/auth/register" class="btn btn-brown ">{{'Merchant Registration'| translate}}</button>
+          <button class="btn btn-gold mb-2" type="submit">{{'Sign In'| translate}}</button>
+          <button routerLink="/auth/register" class="btn btn-brown ">{{'Merchant SignUp'| translate}}</button>
           <div id="elmLoader" class="loader" *ngIf="loading$ | async">
             <div class="spinner-border text-primary avatar-sm" role="status">
               <span class="visually-hidden">{{'Loading...' | translate}}</span>

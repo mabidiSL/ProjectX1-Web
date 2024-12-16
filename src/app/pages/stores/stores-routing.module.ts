@@ -9,7 +9,7 @@ import { ViewStoreComponent } from './view-store/view-store.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'list',
     canActivate: [RoleGuard],
     data: {
       claim : [{claimType: Modules.All, claimValue: [Permission.All]}, {claimType: Modules.Stores, claimValue: [Permission.ViewAll]}]
