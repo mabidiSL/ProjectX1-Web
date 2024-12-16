@@ -6,14 +6,11 @@
   import {  Observable, Subject, takeUntil } from 'rxjs';
   import { fetchCountrylistData } from 'src/app/store/country/country.action';
   import { selectDataCountry } from 'src/app/store/country/country-selector';
-  import { selectDataArea } from 'src/app/store/area/area-selector';
 
-import { fetchArealistData } from 'src/app/store/area/area.action';
 import { selectedCity, selectDataLoading } from 'src/app/store/City/city-selector';
 import { addCitylist, getCityById, updateCitylist } from 'src/app/store/City/city.action';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { City } from 'src/app/store/City/city.model';
-import { Area } from 'src/app/store/area/area.model';
 import { Country } from 'src/app/store/country/country.model';
   
 @Component({
@@ -37,8 +34,7 @@ export class FormCityComponent  implements OnInit, OnDestroy {
     imageURL: string | undefined;
     isEditing: boolean = false;
     countries : Country[];
-    areas : Area[];
-    filteredAreas: Area[];
+   
 
     originalCityData: City = {}; 
     @ViewChild('formElement', { static: false }) formElement: ElementRef;
@@ -54,14 +50,11 @@ export class FormCityComponent  implements OnInit, OnDestroy {
         
         this.loading$ = this.store.pipe(select(selectDataLoading)); 
         this.store.dispatch(fetchCountrylistData({ page: 1, itemsPerPage: 1000,query:'', status:'active' }));
-        this.store.dispatch(fetchArealistData({ page: 1, itemsPerPage: 10000, status:'active' }));
         
         this.cityForm = this.formBuilder.group({
           id:[null],
           name: ['', Validators.required],
-          name_ar: ['', Validators.required],
           country_id:[null, Validators.required],
-          area_id:[null, Validators.required],
           longitude: ['long'],
           latitude: ['lat']
                      
@@ -82,22 +75,10 @@ export class FormCityComponent  implements OnInit, OnDestroy {
           });
         });
       }
-       fetchAreas(){
-        this.store.select(selectDataArea).subscribe(data =>
-          this.filteredAreas =  [...data].map(area =>{
-          const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
-          return {
-            ...area,  
-            translatedName 
-          };
-        })
-        .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-        }));
-      }
+      
      
     ngOnInit() {
       this.fetchCountry();
-      this.fetchAreas();
   
       const CityId = this.route.snapshot.params['id'];
       if (CityId) {
@@ -109,7 +90,7 @@ export class FormCityComponent  implements OnInit, OnDestroy {
           .pipe(select(selectedCity), takeUntil(this.destroy$))
           .subscribe(city => {
             if (city) {
-              this.cityForm.controls['country_id'].setValue(city.area.country_id);
+              this.cityForm.controls['country_id'].setValue(city.country_id);
               this.patchValueForm(city);
               this.originalCityData = { ...city };
 
@@ -123,8 +104,6 @@ export class FormCityComponent  implements OnInit, OnDestroy {
       this.cityForm.patchValue({
         id: city.id,
         name: city.translation_data[0].name,
-        name_ar: city.translation_data[1].name,
-        area_id: city.area_id,
         longitude: city.latitude,
         latitude: city.longitude
 
@@ -140,21 +119,14 @@ export class FormCityComponent  implements OnInit, OnDestroy {
         { field: 'name', name: 'name' },
            
       ];
-      const arFields = [
-        { field: 'name_ar', name: 'name' },
-            ];
-      
+     
       // Create the English translation if valid
       const enTranslation = this.formUtilService.createTranslation(city,'en', enFields);
       if (enTranslation) {
         city.translation_data.push(enTranslation);
       }
 
-      // Create the Arabic translation if valid
-      const arTranslation = this.formUtilService.createTranslation(city,'ar', arFields);
-      if (arTranslation) {
-        city.translation_data.push(arTranslation);
-      }
+     
       if(city.translation_data.length <= 0)
         delete city.translation_data;
          
@@ -164,7 +136,7 @@ export class FormCityComponent  implements OnInit, OnDestroy {
             delete city[key];  // Delete property if it's undefined or null
           }
         });
-      
+      delete city.name;
       console.log(city);
       return city;
      
@@ -206,20 +178,7 @@ export class FormCityComponent  implements OnInit, OnDestroy {
           }
     
     }
-   
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onChangeCountrySelection(event : any){
-      const country = event.id;
-      if(country){
-        this.filteredAreas = this.areas.filter(area => area.country_id == country);
-      }
-      else
-      {
-        this.filteredAreas = [];
 
-      }
-      
-    }
     ngOnDestroy() {
       this.destroy$.next();
       this.destroy$.complete();
