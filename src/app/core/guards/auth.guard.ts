@@ -18,6 +18,7 @@ export class AuthGuard implements CanActivate {
         
         // If user is logged in, navigate directly to the protected route
         if (currentUser) {
+            //this.router.navigate(['/private']);
             return of(true);
         }
 
