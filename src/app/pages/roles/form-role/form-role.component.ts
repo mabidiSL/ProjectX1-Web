@@ -67,6 +67,8 @@ export class FormRoleComponent implements OnInit, OnDestroy {
       if(this.currentRole !== 'Admin'){
         //Modify moduleskeys and permissions key when a merchant or an employee is logged in
          this.merchantClaims = this.currentUser?.role.claims;
+         console.log(this.merchantClaims);
+         
          this.mapClaimsToEnums(this.merchantClaims);
         }
       else
