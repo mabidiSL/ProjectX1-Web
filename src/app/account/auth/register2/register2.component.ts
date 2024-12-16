@@ -38,8 +38,8 @@ export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
   submitted: boolean = false;
   error: string = '';
   successmsg: boolean = false;
-  fieldTextType!: boolean;
-  confirmFieldTextType: boolean = false;
+  fieldTextType: boolean = true;
+  confirmFieldTextType: boolean = true;
 
   imageURL: string | undefined;
   merchantPictureBase64: string = null;

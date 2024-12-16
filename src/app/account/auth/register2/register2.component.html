@@ -114,16 +114,33 @@
                             <div class="form-group ">
                             <label for="password" >{{'Password' | translate}} <span class="text-danger">*</span></label>
                             <div class="input-group auth-pass-inputgroup">
-                            <input [type]="fieldTextType ? 'text' : 'password'" id="password" class="form-control" placeholder="{{ 'Enter the Password' | translate }}" formControlName="password" required>
-                            <button class="btn btn-light ms-0" type="button" id="password-addon">
-                              <i tabindex="0" class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()" (keydown.enter)="toggleFieldTextType()" 
-                              (keydown.space)="toggleFieldTextType()"></i>
-                            </button>
-                            <div *ngIf="signupForm.get('password').touched && signupForm.get('password').invalid" class="invalid-feedback d-block">
-                              <span *ngIf="signupForm.get('password').errors?.['required']">{{'Password is required'| translate}}.</span>
-                              <span *ngIf="signupForm.get('password').errors?.['passwordStrength']">{{ 'Password must be at least 10 characters long, contain 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.' | translate }}</span>
-                            </div>
-                            
+                              <!-- Input Field -->
+                              <input 
+                                [type]="!fieldTextType ? 'text' : 'password'" 
+                                id="password" 
+                                class="form-control" 
+                                placeholder="{{ 'Enter the Password' | translate }}" 
+                                formControlName="password" 
+                                required 
+                              />
+                        
+                              <!-- Toggle Password Button -->
+                              <button 
+                                class="btn btn-light ms-0" 
+                                type="button" 
+                                id="password-addon" 
+                                (click)="toggleFieldTextType()" 
+                                (keydown.enter)="toggleFieldTextType()" 
+                                (keydown.space)="toggleFieldTextType()"
+                              >
+                                <i 
+                                  class="mdi" 
+                                  [ngClass]="{
+                                    'mdi-eye-outline': !fieldTextType, 
+                                    'mdi-eye-off-outline': fieldTextType
+                                  }"
+                                ></i>
+                              </button>
                             </div>
                             </div>
                         </div>
@@ -131,11 +148,37 @@
                             <div class="form-group ">
                             <label for="confpassword" >{{'Confirm Password' | translate}} <span class="text-danger">*</span></label>
                             <div class="input-group auth-pass-inputgroup">
-                            <input [type]="confirmFieldTextType ? 'text' : 'password'" id="confpassword" class="form-control" placeholder="{{ 'Confirm Your New Password' | translate }}" formControlName="confpassword" required>
+                              <input 
+                              [type]="!confirmFieldTextType ? 'text' : 'password'" 
+                              id="confpassword" 
+                              class="form-control" 
+                              placeholder="{{ 'Confirm Your New Password' | translate }}" 
+                              formControlName="confpassword" 
+                              required 
+                            />
+                      
+                            <!-- Toggle Password Button -->
+                            <button 
+                              class="btn btn-light ms-0" 
+                              type="button" 
+                              id="password-addon" 
+                              (click)="toggleConfirmFieldTextType()" 
+                              (keydown.enter)="toggleConfirmFieldTextType()" 
+                              (keydown.space)="toggleConfirmFieldTextType()"
+                            >
+                              <i 
+                                class="mdi" 
+                                [ngClass]="{
+                                  'mdi-eye-outline': !confirmFieldTextType, 
+                                  'mdi-eye-off-outline': confirmFieldTextType
+                                }"
+                              ></i>
+                            </button>
+                            <!-- <input [type]="!confirmFieldTextType ? 'text' : 'password'" id="confpassword" class="form-control" placeholder="{{ 'Confirm Your New Password' | translate }}" formControlName="confpassword" required>
                             <button class="btn btn-light ms-0" type="button" id="password-addon">
                               <i tabindex="0" class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !confirmFieldTextType, 'mdi-eye-outline': confirmFieldTextType}" (click)="toggleConfirmFieldTextType()" (keydown.enter)="toggleConfirmFieldTextType()" 
                               (keydown.space)="toggleConfirmFieldTextType()"></i>
-                            </button>
+                            </button> -->
                             <div *ngIf="signupForm.get('confpassword').touched && signupForm.get('confpassword').invalid" class="invalid-feedback d-block">
                               <span *ngIf="signupForm.get('confpassword').errors?.['required']">{{'Confirm password is required.' | translate}}</span>
                               <div *ngIf="passwordMatchError">{{ 'confirm_password_does_not_matched' | translate }}</div>
