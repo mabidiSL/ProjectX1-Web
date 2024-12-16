@@ -54,7 +54,7 @@
         this.countryForm = this.formBuilder.group({
           id:[null],
           name: ['', Validators.required],
-          name_ar: ['', Validators.required],
+          //name_ar: [''],
           phoneCode: ['', Validators.required ],
           flag:[null, Validators.required],
                      
@@ -64,7 +64,7 @@
         this.countryForm.patchValue({
           id: country.id,
           name: country.translation_data[0].name,
-          name_ar: country.translation_data[1].name,
+          //name_ar: country.translation_data[1].name,
           phoneCode: country.phoneCode,
           flag: country.flag,
   
@@ -99,9 +99,9 @@ createCountryFromForm(formValue): Country{
         { field: 'name', name: 'name' },
            
       ];
-      const arFields = [
-        { field: 'name_ar', name: 'name' },
-            ];
+      // const arFields = [
+      //   { field: 'name_ar', name: 'name' },
+      //       ];
  // Create the English translation if valid
   const enTranslation = this.formUtilService.createTranslation(country,'en', enFields);
   if (enTranslation) {
@@ -109,10 +109,10 @@ createCountryFromForm(formValue): Country{
   }
 
   // Create the Arabic translation if valid
-  const arTranslation = this.formUtilService.createTranslation(country,'ar', arFields);
-  if (arTranslation) {
-    country.translation_data.push(arTranslation);
-  }
+  // const arTranslation = this.formUtilService.createTranslation(country,'ar', arFields);
+  // if (arTranslation) {
+  //   country.translation_data.push(arTranslation);
+  // }
   if(country.translation_data.length <= 0)
     delete country.translation_data;
 
@@ -122,7 +122,8 @@ createCountryFromForm(formValue): Country{
             delete country[key];  // Delete property if it's undefined or null
           }
         });
-      
+      delete country.name;
+      delete country.name_ar;
       console.log(country);
       return country;
 
@@ -196,7 +197,7 @@ createCountryFromForm(formValue): Country{
         document.querySelectorAll('#projectlogo-img').forEach((element: any) => {
           element.src = this.imageURL;
         });
-        //this.CountryForm.controls['CountryLogo'].setValue(imageURL);
+        this.countryForm.controls['flag'].setValue(this.imageURL);
          this.CountryFlagBase64 = this.imageURL;
       } catch (error: any) {
         console.error('Error reading file:', error);
