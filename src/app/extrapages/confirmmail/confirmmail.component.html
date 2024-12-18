@@ -5,9 +5,9 @@
             <div class="col-lg-12">
                 <div class="text-center mb-5 text-muted">
                        
-                        <div class="col-12 text-center">
+                        <!-- <div class="col-12 text-center">
                             <img src="assets/images/LogoInfinite/logo.svg" alt="" class="img-fluid">
-                          </div>
+                          </div> -->
                         
                 </div>
             </div>
@@ -36,7 +36,7 @@
                                 <div class="p-2 mt-4">
                                     <h2>{{(message | async)}} !</h2>
                                     <div class="mt-4">
-                                        <a routerLink="/home" class="btn btn-gold me-2">{{'Back to Home'| translate}}</a>
+                                        <a routerLink="/auth/login" class="btn btn-gold me-2">{{'Back to Login'| translate}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -44,12 +44,13 @@
     
                     </div>
                 </div>
-                <div class="mt-5 text-center">
-            
-                    <p class="text-white">© {{year}} Infinite. </p>
-                  </div>
+                
 
             </div>
         </div>
+        <div class=" text-center">
+            <span class="copyright-text text-white mb-5 ">{{'Copyright' | translate}} © {{year}} {{'Project X1. All rights reserved.' | translate}} </span>
+        </div>
     </div>
+    
 </div>

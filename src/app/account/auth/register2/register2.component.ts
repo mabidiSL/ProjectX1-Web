@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
@@ -59,7 +60,7 @@ export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
   filteredCities:  City[] = [];
   @ViewChild('cdkStepper') cdkStepper: CdkStepper;
   @ViewChild('rightsection') rightsection: ElementRef<HTMLElement>;
-
+  phoneCode!: string;
  
   constructor  (
     private formBuilder: UntypedFormBuilder, 
@@ -192,7 +193,24 @@ export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
   onPhoneNumberChanged(phoneNumber: string) {
     this.signupForm.get('phone').setValue(phoneNumber);
   }
-
+  getCountryCode(country_id: number): string {
+    console.log(country_id);
+    console.log(this.countrylist);
+    
+    const country = this.countrylist.find(c => c.id === country_id);
+    console.log(country);
+    
+    return country ? country.phoneCode : ''; // Return countryCode or an empty string if not found
+  }
+  onChangeCountrySelection(event: Country){
+    if(event){
+      console.log(event);
+      
+      this.phoneCode = this.getCountryCode(event.id);
+      console.log(this.phoneCode);
+      
+    }
+  }
  
   // convenience getter for easy access to form fields
   get f() { return this.signupForm.controls; }

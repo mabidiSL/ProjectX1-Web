@@ -16,6 +16,8 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
   @Input() initialPhoneNumber: string;
   @Input() disabled: boolean = false;
   @Input() inputId: string ;
+  @Input() phoneCode?: string = null;
+
   
   @Input() placeholder: string;
   inputElement: HTMLInputElement;
@@ -29,7 +31,7 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
     this.phone = this.formBuilder.control(''); // Initialize the phone control
     this.itiOptions = {
       initialCountry: 'sa', // set default country as Saudi Arabia
-      //loadUtilsOnInit: 'node_modules/intl-tel-input/build/js/utils.js', // for validation and formatting
+      loadUtilsOnInit: 'node_modules/intl-tel-input/build/js/utils.js', // for validation and formatting
       //loadUtilsOnInit: 'intl-tel-input/utils'
     };
 
@@ -47,16 +49,17 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
     }
   }
   ngOnChanges(changes: SimpleChanges): void {
+
     if (changes['initialPhoneNumber']) {
       // Reinitialize the intlTelInput if the initialPhoneNumber has changed
       if (this.initialPhoneNumber && this.initialPhoneNumber !== '') {
         //this.inputElement.value = this.initialPhoneNumber;
         this.iti.setNumber( this.initialPhoneNumber);
       }
-     
-      //this.initializeIntlTelInput();
+           //this.initializeIntlTelInput();
     }
   }
+  
   ngAfterViewChecked(): void {
     // Ensure the input element is available after the view is checked
      this.initializeIntlTelInput();
@@ -69,10 +72,18 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
       if(this.inputElement){
       this.checkLanguageAndApplyRtl();
       this.iti = intlTelInput(this.inputElement, this.itiOptions);
+      //console.log('Country data:', this.iti.getCountryData()); // Log the available country data
 
             if (this.initialPhoneNumber && this.initialPhoneNumber !== '') {
               this.inputElement.value = this.initialPhoneNumber;
               this.iti.setNumber( this.initialPhoneNumber);
+            }
+            // 
+            if (this.phoneCode && this.phoneCode !== '') {
+              console.log('Phone Code changed:', this.phoneCode);
+              const phoneCode = '+'+this.phoneCode;
+              this.iti.setCountry(phoneCode); // Update the country code
+              
             }
             this.inputElement.addEventListener('input', () => {
               const phoneNumber = this.inputElement.value;

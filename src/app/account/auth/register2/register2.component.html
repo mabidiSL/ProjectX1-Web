@@ -44,7 +44,7 @@
                         <div class="form-group ">
                               <label for="country_id" >{{'Country' | translate}} <span class="text-danger">*</span></label>
                               <ng-select   id="country_id" placeholder="{{'Select_the_Country' | translate}}" [items]="countrylist" bindLabel="translatedName" 
-                              bindValue="id" formControlName="country_id"  >
+                              bindValue="id" formControlName="country_id" (change)="onChangeCountrySelection($event)" >
                              </ng-select>  
                               <div *ngIf="signupForm.get('country_id').touched && signupForm.get('country_id').invalid" class="invalid-feedback d-block">
                                 <span *ngIf="signupForm.get('country_id').errors?.['required']">{{'Country is required'| translate}}.</span>
@@ -76,18 +76,18 @@
                 <section>
                   <form [formGroup]="signupForm">
                     <div class="row">
-                      <div class="col-md-6 mb-3">
+                      <div class="col-md-3 mb-3">
                         <div class="form-group ">
-                            <label for="f_name" >{{'First_Name' | translate}} <span class="text-danger">*</span></label>
+                            <label for="f_name" >{{'First Name' | translate}} <span class="text-danger">*</span></label>
                             <input type="text" id="f_name" class="form-control" formControlName="f_name" placeholder="{{ 'Enter your First Name' | translate }}" required>
                             <div *ngIf="signupForm.get('f_name').touched && signupForm.get('f_name').invalid" class="invalid-feedback d-block">
                                 <span *ngIf="signupForm.get('f_name').errors?.['required']">{{'First Name is required'| translate}}.</span>
                               </div>
                           </div>  
                       </div>
-                      <div class="col-md-6 mb-3">
+                      <div class="col-md-3 mb-3">
                         <div class="form-group ">
-                            <label for="l_name" >{{'Last_Name' | translate}} <span class="text-danger">*</span></label>
+                            <label for="l_name" >{{'Last Name' | translate}} <span class="text-danger">*</span></label>
                             <input type="text" id="l_name" class="form-control" formControlName="l_name" placeholder="{{ 'Enter your Last Name ' | translate }}" required>
                             <div *ngIf="signupForm.get('f_name').touched && signupForm.get('f_name').invalid" class="invalid-feedback d-block">
                                 <span *ngIf="signupForm.get('f_name').errors?.['required']">{{'Last formControlName="control" is required'| translate}}.</span>
@@ -95,11 +95,22 @@
                           </div> 
                       </div>
                       <div class="col-md-6 mb-3">
-                        <div class="form-group ">
-                            <label for="jobTitle" >{{'Job Title' | translate}} </label>
-                            <input type="text" id="jobTitle" class="form-control" formControlName="jobTitle" placeholder="{{ 'Enter your Job Title ' | translate }}" required>
-                       </div>
-                      </div>        
+                        <div class="form-group">
+                          <label for="phone" >{{'Phone Number' |  translate}} <span class="text-danger">*</span></label><br>
+                         <app-phone-number
+                         [initialPhoneNumber]="signupForm.get('phone').value"
+                         *ngIf="signupForm"
+                         [phoneCode]="phoneCode"
+                         [inputId]="'phone'"
+                         [placeholder]="'Enter Manager Phone' | translate"
+                          (phoneNumberChanged)="onPhoneNumberChanged($event)" >
+                        </app-phone-number>
+                         <div *ngIf="signupForm.get('phone').touched && signupForm.get('phone').invalid" class="invalid-feedback d-block">
+                          <span *ngIf="signupForm.get('phone').errors?.['required']">{{'Manager Phone Number is required'| translate}}.</span>
+                        </div>   
+                        </div>
+                      </div>
+                        
                       <div class="col-md-6 mb-3">
                         <div class="form-group ">
                           <label for="email">{{'Email' | translate}} <span class="text-danger">*</span></label>
@@ -109,7 +120,12 @@
                           </div>
                         </div>
                       </div>
-                   
+                      <div class="col-md-6 mb-3">
+                        <div class="form-group ">
+                            <label for="jobTitle" >{{'Job Title' | translate}} </label>
+                            <input type="text" id="jobTitle" class="form-control" formControlName="jobTitle" placeholder="{{ 'Enter your Job Title ' | translate }}" required>
+                       </div>
+                      </div>    
                         <div class="col-md-6 mb-3">
                             <div class="form-group ">
                             <label for="password" >{{'Password' | translate}} <span class="text-danger">*</span></label>
@@ -187,21 +203,7 @@
                           </div>
                         </div>
                               
-                        <div class="col-md-6 mb-3">
-                          <div class="form-group">
-                            <label for="phone" >{{'Manager Phone Number' |  translate}} <span class="text-danger">*</span></label><br>
-                           <app-phone-number
-                           [initialPhoneNumber]="signupForm.get('phone').value"
-                           *ngIf="signupForm"
-                           [inputId]="'phone'"
-                           [placeholder]="'Enter Manager Phone' | translate"
-                            (phoneNumberChanged)="onPhoneNumberChanged($event)" >
-                          </app-phone-number>
-                           <div *ngIf="signupForm.get('phone').touched && signupForm.get('phone').invalid" class="invalid-feedback d-block">
-                            <span *ngIf="signupForm.get('phone').errors?.['required']">{{'Manager Phone Number is required'| translate}}.</span>
-                          </div>   
-                          </div>
-                        </div>
+                         
 
                   </div>
                   </form>
