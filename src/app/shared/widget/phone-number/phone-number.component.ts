@@ -81,8 +81,8 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
             // 
             if (this.phoneCode && this.phoneCode !== '') {
               console.log('Phone Code changed:', this.phoneCode);
-              const phoneCode = '+'+this.phoneCode;
-              this.iti.setCountry(phoneCode); // Update the country code
+             
+              this.iti.setCountry(this.phoneCode); // Update the country code
               
             }
             this.inputElement.addEventListener('input', () => {

@@ -27,6 +27,7 @@ import { RandomBackgroundService } from 'src/app/core/services/setBackgroundEx.s
 import { NgStepperModule } from 'angular-ng-stepper';
 import { CdkStepperModule } from '@angular/cdk/stepper';
 import { ThemeService } from 'src/app/core/services/theme.service';
+import { CountryService } from 'src/app/core/services/country-code.service';
 
 
 
@@ -51,7 +52,7 @@ import { ThemeService } from 'src/app/core/services/theme.service';
     AuthRoutingModule,
     SlickCarouselModule
   ],
-  providers: [RandomBackgroundService,ImageService, LanguageService]
+  providers: [RandomBackgroundService,ImageService, LanguageService, CountryService]
 })
 export class AuthModule { 
 constructor(

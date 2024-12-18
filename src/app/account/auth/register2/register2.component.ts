@@ -24,6 +24,7 @@ import { CdkStepper } from '@angular/cdk/stepper';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ModalsComponent } from 'src/app/shared/ui/modals/modals.component';
 import { passwordValidator } from 'src/app/shared/validator/passwordValidator';
+import { CountryService } from 'src/app/core/services/country-code.service';
 
 @Component({
   selector: 'app-register2',
@@ -68,6 +69,7 @@ export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
     private randomBackgroundService: RandomBackgroundService,
     private backgroundService: BackgroundService, 
     private modalService: BsModalService,
+    private countrCodeService: CountryService,
     private formUtilService: FormUtilService,
     public store: Store) { 
 
@@ -193,22 +195,23 @@ export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
   onPhoneNumberChanged(phoneNumber: string) {
     this.signupForm.get('phone').setValue(phoneNumber);
   }
-  getCountryCode(country_id: number): string {
+  async getCountryCode(country_id: number) {
     console.log(country_id);
     console.log(this.countrylist);
     
     const country = this.countrylist.find(c => c.id === country_id);
-    console.log(country);
+    console.log(country?.phoneCode);
     
-    return country ? country.phoneCode : ''; // Return countryCode or an empty string if not found
+    try {
+      this.phoneCode = await this.countrCodeService.getCountryByCodeOrIso(country?.phoneCode);
+      console.log(this.phoneCode);
+    } catch (error) {
+      console.error('Error fetching country code:', error);
+    }
   }
   onChangeCountrySelection(event: Country){
-    if(event){
-      console.log(event);
-      
-      this.phoneCode = this.getCountryCode(event.id);
-      console.log(this.phoneCode);
-      
+    if(event){  
+    this.getCountryCode(event.id);  
     }
   }
  
