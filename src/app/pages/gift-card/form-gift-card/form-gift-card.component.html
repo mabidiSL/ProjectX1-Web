@@ -88,15 +88,15 @@
                         <div class="col-md-6 mb-3">
                             <label for="quantity">{{'Quantity'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                             <input class="form-control" id="quantity" formControlName="quantity" type="number" [readonly]="type==='view'"/>
-                            <div *ngIf="formGiftCard.get('quantity').invalid && formGiftCard.get('quantity').touched">
+                            <div *ngIf="formGiftCard.get('quantity').invalid && formGiftCard.get('quantity').touched" class="text-danger">
                               {{'Quantity is required'|translate}}
                             </div>
                           </div>
-                       
+                       <div class="row">
                         <div class="col-md-6 mb-3">
                           <label for="startDateGiftCard">{{'Start Date'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                           <input bsDatepicker class="form-control" id="startDateGiftCard" placeholder="yyyy-mm-dd" formControlName="startDateGiftCard"  [readonly]="type==='view'"/>
-                          <div *ngIf="formGiftCard.get('startDateGiftCard').invalid && formGiftCard.get('startDateGiftCard').touched">
+                          <div *ngIf="formGiftCard.get('startDateGiftCard').invalid && formGiftCard.get('startDateGiftCard').touched" class="text-danger">
                             {{'Start Date is required'|translate}}
                           </div>
                         </div>
@@ -107,20 +107,20 @@
                           <div *ngIf="formGiftCard.get('endDateGiftCard').invalid && formGiftCard.get('endDateGiftCard').touched">
                             {{'End Date is required'|translate}}
                           </div>
-                          <div *ngIf="formGiftCard.errors?.invalidDate">
+                          <div *ngIf="formGiftCard.errors?.invalidDate" class="text-danger">
                             {{'Both dates must be greater than or equal to the current date'|translate}}.
                           </div>
-                          <div *ngIf="formGiftCard.errors?.dateMismatch">
+                          <div *ngIf="formGiftCard.errors?.dateMismatch" class="text-danger">
                             {{'Start Date must be before End Date'|translate}}.
                           </div>
                         </div>     
                         
-                 
+                      </div>
                 
                   <div class="col-md-6 mb-3">
                     <label for="giftCardValue">{{'Value'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                     <input  class="form-control" id="giftCardValue" formControlName="giftCardValue" type="number" />
-                     <div *ngIf="formGiftCard.get('giftCardValue').invalid && formGiftCard.get('giftCardValue').touched">
+                     <div *ngIf="formGiftCard.get('giftCardValue').invalid && formGiftCard.get('giftCardValue').touched" class="text-danger">
                       {{'Gift Card Value  is required'|translate}}
                     </div> 
                   </div>
@@ -128,7 +128,7 @@
                   <div class="col-md-6 mb-3">
                     <label for="discount">{{'Discount'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                     <input class="form-control" id="discount" formControlName="discount" type="number" />
-                    <div *ngIf="formGiftCard.get('discount').invalid && formGiftCard.get('discount').touched">
+                    <div *ngIf="formGiftCard.get('discount').invalid && formGiftCard.get('discount').touched" class="text-danger">
                       {{'Discount is required'|translate}}
                     </div>
                   </div>
@@ -136,7 +136,7 @@
                   <div class="col-md-6 mb-3">
                     <label for="giftCardImage">{{'Upload Gift Card Image'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                    <app-image-upload [id]="'giftCardImage'" [type]="'logo'" [label]="'Upload GiftCard Image' | translate" [existantImage]="existantGiftCardLogo" [filename]="fileName" [alt]="'GiftCard Image'" [disabled]="type ==='view'" (logoUploaded)="uploadGiftCardLogo($event)"></app-image-upload>
-                    <div *ngIf="formGiftCard.get('giftCardImage').invalid && formGiftCard.get('giftCardImage').touched">
+                    <div *ngIf="formGiftCard.get('giftCardImage').invalid && formGiftCard.get('giftCardImage').touched" class="text-danger">
                       {{'Gift Card Image is required'|translate}}
                     </div> 
                   </div>              
