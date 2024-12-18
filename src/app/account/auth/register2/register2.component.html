@@ -157,6 +157,10 @@
                                   }"
                                 ></i>
                               </button>
+                              <div *ngIf="signupForm.get('password').touched && signupForm.get('password').invalid" class="invalid-feedback d-block">
+                                <span *ngIf="signupForm.get('password').errors?.['required']">{{'Password is required'| translate}}.</span>
+                                <span *ngIf="signupForm.get('password').errors?.['passwordStrength']">{{ 'Password must be at least 10 characters long, contain 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.' | translate }}</span>
+                              </div>
                             </div>
                             </div>
                         </div>

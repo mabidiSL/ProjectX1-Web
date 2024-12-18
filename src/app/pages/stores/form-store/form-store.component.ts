@@ -3,7 +3,7 @@
 import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EMPTY,  map } from 'rxjs';
+import { EMPTY,  map, switchMap } from 'rxjs';
 import { _User } from 'src/app/store/Authentication/auth.models';
 
 import { select, Store } from '@ngrx/store';
@@ -21,6 +21,7 @@ import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { Branch } from 'src/app/store/store/store.model';
 import * as _ from 'lodash';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
+import { CountryService } from 'src/app/core/services/country-code.service';
 
 
 @Component({
@@ -43,6 +44,7 @@ export class FormStoreComponent implements OnInit, OnDestroy {
   loading$: Observable<boolean>;
 
   merchantList: Merchant[] = [];
+  phoneCode!: string;
 
   merchantId: number =  null;
   filteredCities: City[];
@@ -75,6 +77,7 @@ export class FormStoreComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute, 
     private router: Router,
     private authservice: AuthenticationService,
+    private countrCodeService: CountryService,
     private formUtilService: FormUtilService,
     public store: Store) {
 
@@ -128,34 +131,43 @@ export class FormStoreComponent implements OnInit, OnDestroy {
       this.storeForm.get('company_id').clearValidators();
 
       
-      this.store.select(selectDataMerchant).subscribe(data=>{
-        
-        console.log(data);
-        const selectMerchant = data.find(m => m.id === this.merchantId);
+      this.store.select(selectDataMerchant).pipe(
+        switchMap(data => {
+          const selectMerchant = data.find(m => m.id === this.merchantId);
+          if (selectMerchant) {
+            const merchant_country_id = selectMerchant.user.country_id;
+            //Set the country Code for phone number
+            this.setPhoneCode(selectMerchant);
+            console.log('Merchant country ID:', merchant_country_id);
             
-            if (selectMerchant) {
-                const merchant_country_id = selectMerchant.user.country_id;
-                return this.store.select(selectDataCity).pipe(
-                    map(cities => {
-                          this.filteredCities =  [...cities].map(city =>{
-                          const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
-                          return {
-                            ...city,  
-                            translatedName 
-                          };
-                        }).filter(city => city.country_id === merchant_country_id)
-                        .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-                        })
-                 
-                    })
-                );
-            } else {
-                this.filteredCities = [];
-                return EMPTY; // Return an empty observable
-            }
-        
+            // Return the observable for cities filtered by merchant's country
+            return this.store.select(selectDataCity).pipe(
+              map(cities => {
+                this.filteredCities = cities
+                  .map(city => {
+                    const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
+                    return {
+                      ...city,  
+                      translatedName 
+                    };
+                  })
+                  .filter(city => city.country_id === merchant_country_id)
+                  .sort((a, b) => a.translatedName.localeCompare(b.translatedName)); // Sorting the cities alphabetically
+    
+                return this.filteredCities; // Ensure the observable returns the filtered list
+              })
+            );
+          } else {
+            this.filteredCities = []; // Clear the filtered cities if merchant is not found
+            return EMPTY; // Return empty observable in case no merchant is found
+          }
+        })
+      ).subscribe(filteredCities => {
+        // Log filteredCities after the observable stream completes
+        console.log('Filtered cities (in subscribe):', filteredCities);
       });
-  }
+    }
+  
 
     const StoreId = this.route.snapshot.params['id'];
     if (StoreId) {
@@ -183,6 +195,14 @@ export class FormStoreComponent implements OnInit, OnDestroy {
         });
     }
    
+}
+  async setPhoneCode(merchant: Merchant){
+  try {
+    this.phoneCode = await this.countrCodeService.getCountryByCodeOrIso(merchant?.user.country.phoneCode);
+    console.log(this.phoneCode);
+  } catch (error) {
+    console.error('Error fetching country code:', error);
+  }
 }
 patchValueForm(store: Branch){
   this.storeForm.patchValue(store);

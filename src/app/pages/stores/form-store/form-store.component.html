@@ -84,6 +84,7 @@
                      [disabled]="type === 'view'"
                      *ngIf="storeForm"
                      [placeholder]="'Enter store phone' | translate"
+                     [phoneCode]="phoneCode"
                      [inputId]="'phone'"
                      [initialPhoneNumber]="storeForm.get('phone').value"
                      (phoneNumberChanged)="onPhoneNumberChanged($event)" >

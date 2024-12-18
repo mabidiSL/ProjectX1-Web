@@ -309,14 +309,14 @@ export const MENU: MenuItem[] = [
         link: '/private/countries/list',
                
     },
-    {
-        id: 34,
-        label: 'MENUITEMS.AREAS.TEXT',
-        icon: 'dripicons-map',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}],
-        link: '/private/areas/list'
+    // {
+    //     id: 34,
+    //     label: 'MENUITEMS.AREAS.TEXT',
+    //     icon: 'dripicons-map',
+    //     claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}],
+    //     link: '/private/areas/list'
                
-    },
+    // },
     
     {
         id: 35,
