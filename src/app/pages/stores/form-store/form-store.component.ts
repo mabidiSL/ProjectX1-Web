@@ -267,7 +267,8 @@ private getNavigationState(){
       this.filteredCities = [];
       this.storeForm.get('city_id').setValue(null);
       const country_id = selectMerchant.user.country_id;
-      
+      console.log(selectMerchant);
+      this.setPhoneCode(selectMerchant);
       this.store.select(selectDataCity).subscribe(data =>
         this.filteredCities =  [...data].map(city =>{
         const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
