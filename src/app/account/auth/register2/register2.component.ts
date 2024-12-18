@@ -192,8 +192,8 @@ export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
   }
   
  
-  onPhoneNumberChanged(phoneNumber: string) {
-    this.signupForm.get('phone').setValue(phoneNumber);
+  onPhoneNumberChanged(event: { number: string; countryCode: string }) {
+    this.signupForm.get('phone').setValue(event.number);
   }
   async getCountryCode(country_id: number) {
     console.log(country_id);

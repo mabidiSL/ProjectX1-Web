@@ -5,8 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
-import { selectDataArea } from 'src/app/store/area/area-selector';
-import { fetchArealistData } from 'src/app/store/area/area.action';
+//import { selectDataArea } from 'src/app/store/area/area-selector';
+//import { fetchArealistData } from 'src/app/store/area/area.action';
 import { Area } from 'src/app/store/area/area.model';
 import { selectDataCity } from 'src/app/store/City/city-selector';
 import { fetchCitylistData } from 'src/app/store/City/city.action';
@@ -78,7 +78,7 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
       this.loading$ = this.store.pipe(select(selectDataLoading)); 
 
       this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 100,query:'', status: 'active' }));
-      this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 1000, status: 'active' }));
+      //this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 1000, status: 'active' }));
       this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 1000,query:'', status: 'active' }));
       this.store.dispatch(fetchRolelistData({page: 1, itemsPerPage: 100, query:'',status: 'active' }));
 
@@ -108,7 +108,7 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
     }
   ngOnInit() {
     this.fetchCountry();
-    this.fetchAreas();
+    //this.fetchAreas();
     this.fetchCities();
     this.fetchRoles();
      
@@ -126,7 +126,7 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
   
             
             this.employeeForm.controls['country_id'].setValue(employee.city.area.country_id);
-            this.employeeForm.controls['area_id'].setValue(employee.city.area_id);
+           // this.employeeForm.controls['area_id'].setValue(employee.city.area_id);
             this.employeeForm.controls['city_id'].setValue(employee.city_id);
             this.employeeForm.controls['role_id'].setValue(employee.role_id);
             this.selectedRole = employee.role;
@@ -186,18 +186,18 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
       });
     });
   }
-  fetchAreas(){
-    this.store.select(selectDataArea).subscribe(data =>
-      this.filteredAreas =  [...data].map(area =>{
-      const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
-      return {
-        ...area,  
-        translatedName 
-      };
-    })
-    .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-    }));
-  }
+  // fetchAreas(){
+  //   this.store.select(selectDataArea).subscribe(data =>
+  //     this.filteredAreas =  [...data].map(area =>{
+  //     const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
+  //     return {
+  //       ...area,  
+  //       translatedName 
+  //     };
+  //   })
+  //   .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
+  //   }));
+  // }
   fetchCities(){
     this.store.select(selectDataCity).subscribe((data) => {
       this.filteredCities = [...data].map(city =>{
@@ -215,32 +215,10 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
  
   onChangeCountrySelection(event: Country){
     const country = event;
-    this.employeeForm.get('area_id').setValue(null);
     this.employeeForm.get('city_id').setValue(null);
-    this.filteredAreas = [];
     this.filteredCities = [];
     if(country){
-      this.store.select(selectDataArea).subscribe(data =>
-        this.filteredAreas =  [...data].map(area =>{
-        const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
-        return {
-          ...area,  
-          translatedName 
-        };
-      })
-      .filter(area => area.country_id === country.id)
-      .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-      }));
-          
-    }
-   
-       
-  }
-  onChangeAreaSelection(event: Area){
-    const area = event;
-    this.filteredCities = [];
-    this.employeeForm.get('city_id').setValue(null);
-    if(area){
+      
       this.store.select(selectDataCity).subscribe((data) => {
         this.filteredCities = [...data].map(city =>{
          const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
@@ -250,16 +228,39 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
            translatedName 
          };
        })
-       .filter(city => city.area_id === area.id)
+       .filter(city => city.country_id === country)
        .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
        });
      });
+    }
+   
+   
+       
+  }
+  // onChangeAreaSelection(event: Area){
+  //   const area = event;
+  //   this.filteredCities = [];
+  //   this.employeeForm.get('city_id').setValue(null);
+  //   if(area){
+  //     this.store.select(selectDataCity).subscribe((data) => {
+  //       this.filteredCities = [...data].map(city =>{
+  //        const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
+     
+  //        return {
+  //          ...city,  
+  //          translatedName 
+  //        };
+  //      })
+  //      .filter(city => city.area_id === area.id)
+  //      .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
+  //      });
+  //    });
           
       
-    }
+  //   }
     
     
-  }
+  // }
   
   createEmployeeFromForm(formValue): Employee {
     const employee = formValue;
@@ -300,7 +301,7 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
     delete employee.f_name_ar;
     delete employee.l_name_ar;
     delete employee.country_id;
-    delete employee.area_id;
+   // delete employee.area_id;
     delete employee.role_id;
     delete employee.city;
     delete employee.bank_id;
@@ -347,9 +348,16 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
         }
     
   }
-   
-  onPhoneNumberChanged(phoneNumber: string) {
-    this.employeeForm.get('phone').setValue(phoneNumber);
+  setCountryByPhoneCode(code: string){
+    const country = this.countrylist.find(c => c.phoneCode === code);
+    console.log(country);
+    this.employeeForm.get('country_id').setValue(country?.id);
+    this.onChangeCountrySelection(country);
+  }
+  onPhoneNumberChanged(event: { number: string; countryCode: string }) {
+    this.employeeForm.get('phone').setValue(event.number);
+    this.setCountryByPhoneCode(event.countryCode);
+
   }
   onChangeRoleSelection(event: Role){
     const role = event;

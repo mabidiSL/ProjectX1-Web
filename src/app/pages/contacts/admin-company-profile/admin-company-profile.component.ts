@@ -259,8 +259,8 @@ export class AdminCompanyProfileComponent implements OnInit{
         
     // }
   
-  onPhoneNumberChanged(phoneNumber: string) {
-    this.adminForm.get('officeTel').setValue(phoneNumber);
+  onPhoneNumberChanged(event: { number: string; countryCode: string }) {
+    this.adminForm.get('officeTel').setValue(event.number);
   }
  
   createProfileFromForm(formValue): any {

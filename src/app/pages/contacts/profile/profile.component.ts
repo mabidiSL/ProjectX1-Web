@@ -90,8 +90,8 @@ export class ProfileComponent  {
 //     this.passwordForm.get('confirmpwd')?.touched
 //   );
 // }
-onPhoneNumberChanged(phoneNumber: string) {
-  this.profileForm.get('phone').setValue(phoneNumber);
+onPhoneNumberChanged(event: { number: string; countryCode: string }) {
+  this.profileForm.get('phone').setValue(event.number);
 }
 checkPasswordMatch() {
   const password = this.passwordForm.get('newPassword').value;

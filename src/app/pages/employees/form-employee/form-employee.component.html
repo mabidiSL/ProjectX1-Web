@@ -15,7 +15,7 @@
                     <form  [formGroup]="employeeForm"  class="m-4">
                       <div *ngIf="formError" class="alert alert-danger">{{ formError | translate}}</div>
                       <div class="row">
-                        <div class="col-md-6 mb-3">
+                        <!-- <div class="col-md-6 mb-3">
                           <div class="form-group ">
                              <label for="f_name_ar" >{{'First_Name in arabic' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                               <input type="text" id="f_name_ar" [readonly]="type==='view'"class="form-control" formControlName="f_name_ar" placeholder="{{ 'Enter_first_name_in_arabic' | translate }}" required>
@@ -32,7 +32,7 @@
                                   <span *ngIf="employeeForm.get('l_name_ar').errors?.['required']">{{'Last Name in arabic is required'| translate}}.</span>
                                 </div>
                             </div> 
-                        </div>
+                        </div> -->
                         <div class="col-md-6 mb-3">
                           <div class="form-group ">
                              <label for="f_name" >{{'First_Name' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
@@ -52,7 +52,7 @@
                             </div> 
                         </div>
                         
-                          <div class="col-md-6 mb-3">
+                          <!-- <div class="col-md-6 mb-3">
                             <div class="form-group ">
                                <label for="username" >{{'Username' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                                 <input type="text" id="username" [readonly]="type==='view'"class="form-control" formControlName="username" placeholder="{{ 'Enter username' | translate }}" required [readonly]="type==='view'">
@@ -60,7 +60,7 @@
                                     <span *ngIf="employeeForm.get('username').errors?.['required']">{{'Username is required'| translate}}.</span>
                                   </div>
                               </div> 
-                          </div>
+                          </div> -->
                           <div class="col-md-6 mb-3">
                             <div class="form-group ">
                               <label for="email">{{'Email'| translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
@@ -71,18 +71,18 @@
                             </div>
                           </div>
                      
-                          <div *ngIf="type === 'create'" class="col-md-6 mb-3">
+                          <!-- <div *ngIf="type === 'create'" class="col-md-6 mb-3">
                             <div class="form-group ">
                                 <label for="password" >{{'Password'| translate}} <span class="text-danger">*</span></label>
                                 <input type="password" id="password" class="form-control" formControlName="password" placeholder="{{ 'Enter the Password' | translate }}" required>
-                                <!-- <button class="btn btn-light " type="button" id="password-addon2">
+                                 <button class="btn btn-light " type="button" id="password-addon2">
                                   <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()"></i>
                                 </button> -->
-                                <div *ngIf="employeeForm.get('password').touched && employeeForm.get('password').invalid" class="invalid-feedback d-block">
+                                <!-- <div *ngIf="employeeForm.get('password').touched && employeeForm.get('password').invalid" class="invalid-feedback d-block">
                                   <span *ngIf="employeeForm.get('password').errors?.['required']">{{'Password is required'| translate}}.</span>
                                 </div>
                                 </div>
-                            </div>
+                            </div> --> 
                             <div class="col-md-6 mb-3">
                               <div class="form-group">
                                 <label for="phone" >{{'Phone Number'| translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label><br>
@@ -108,14 +108,14 @@
                               </div>
                             </div>
                             
-                              <div class="col-md-6 mb-3">
+                              <!-- <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                   <label for="area_id">{{'area' | translate}}</label>
                                   <ng-select [readonly]="type === 'view'" id="area_id" placeholder="{{'Select_the_Area' | translate}}" [items]="filteredAreas" bindLabel="translatedName" 
                                   bindValue="id"  formControlName="area_id" (change)="onChangeAreaSelection($event)" >
                                   </ng-select>                         
                                 </div>
-                              </div>
+                              </div> -->
           
                             <div class="col-md-6 mb-3">
                               <div class="form-group ">

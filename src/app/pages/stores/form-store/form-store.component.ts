@@ -223,8 +223,8 @@ private getNavigationState(){
     }
 }
    
-  onPhoneNumberChanged(phoneNumber: string) {
-    this.storeForm.get('phone').setValue(phoneNumber);
+  onPhoneNumberChanged(event: { number: string; countryCode: string }) {
+    this.storeForm.get('phone').setValue(event.number);
   }
 
   onSupervisorPhoneChanged(phoneNumber: string) {
