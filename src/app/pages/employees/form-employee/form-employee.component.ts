@@ -77,7 +77,7 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
       
       this.loading$ = this.store.pipe(select(selectDataLoading)); 
 
-      this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 100,query:'', status: 'active' }));
+      this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 1000,query:'', status: 'active' }));
       //this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 1000, status: 'active' }));
       this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 1000,query:'', status: 'active' }));
       this.store.dispatch(fetchRolelistData({page: 1, itemsPerPage: 100, query:'',status: 'active' }));
@@ -90,19 +90,17 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
       this.employeeForm = this.formBuilder.group({
         id: [null],
         l_name:['',Validators.required],
-        l_name_ar:['',Validators.required],
+        //l_name_ar:['',Validators.required],
         f_name:['',Validators.required],
-        f_name_ar:['',Validators.required],
-        username: ['', Validators.required],
+        //f_name_ar:['',Validators.required],
+        //username: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
-        password: ['', Validators.required],
+        //password: ['', Validators.required],
         phone:['',Validators.required], //Validators.pattern(/^\d{3}-\d{3}-\d{4}$/)*/],
         country_id:[null],
         city_id:[null],
-        area_id:[null], 
-        bankAccountNumber: [''],
-        bank_id:[null],
-        role_id:[null, Validators.required]
+        //area_id:[null], 
+         role_id:[null, Validators.required]
   
       });
     }
@@ -125,7 +123,7 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
           if (employee) {
   
             
-            this.employeeForm.controls['country_id'].setValue(employee.city.area.country_id);
+            this.employeeForm.controls['country_id'].setValue(employee.city.country_id);
            // this.employeeForm.controls['area_id'].setValue(employee.city.area_id);
             this.employeeForm.controls['city_id'].setValue(employee.city_id);
             this.employeeForm.controls['role_id'].setValue(employee.role_id);
@@ -148,8 +146,8 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
     this.employeeForm.patchValue({
       f_name: employee.translation_data[0].f_name,
       l_name: employee.translation_data[0].l_name,
-      f_name_ar: employee.translation_data[1].f_name,
-      l_name_ar: employee.translation_data[1].l_name,
+      // f_name_ar: employee.translation_data[1].f_name,
+      // l_name_ar: employee.translation_data[1].l_name,
            
     });
   
@@ -228,7 +226,7 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
            translatedName 
          };
        })
-       .filter(city => city.country_id === country)
+       .filter(city => city.country_id === country.id)
        .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
        });
      });
@@ -271,10 +269,10 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
       { field: 'l_name', name: 'l_name' }
         
     ];
-    const arFields = [
-      { field: 'f_name_ar', name: 'f_name' },
-      { field: 'l_name_ar', name: 'l_name' },
-          ];
+    // const arFields = [
+    //   { field: 'f_name_ar', name: 'f_name' },
+    //   { field: 'l_name_ar', name: 'l_name' },
+    //       ];
     
     // Create the English translation if valid
     const enTranslation = this.formUtilService.createTranslation(employee,'en', enFields);
@@ -282,11 +280,11 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
       employee.translation_data.push(enTranslation);
     }
 
-    // Create the Arabic translation if valid
-    const arTranslation = this.formUtilService.createTranslation(employee,'ar', arFields);
-    if (arTranslation) {
-      employee.translation_data.push(arTranslation);
-    }
+    // // Create the Arabic translation if valid
+    // const arTranslation = this.formUtilService.createTranslation(employee,'ar', arFields);
+    // if (arTranslation) {
+    //   employee.translation_data.push(arTranslation);
+    // }
     if(employee.translation_data.length <= 0)
       delete employee.translation_data;
        
@@ -300,12 +298,8 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
     delete employee.l_name;
     delete employee.f_name_ar;
     delete employee.l_name_ar;
-    delete employee.country_id;
-   // delete employee.area_id;
-    delete employee.role_id;
-    delete employee.city;
-    delete employee.bank_id;
-    delete employee.bankAccountNumber;
+    //delete employee.role_id;
+    
 
 
 
@@ -349,14 +343,19 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
     
   }
   setCountryByPhoneCode(code: string){
-    const country = this.countrylist.find(c => c.phoneCode === code);
+    console.log(code);
+    console.log(this.countrylist);
+    
+    const country = this.countrylist?.find(c => c.phoneCode === code);
     console.log(country);
     this.employeeForm.get('country_id').setValue(country?.id);
     this.onChangeCountrySelection(country);
   }
   onPhoneNumberChanged(event: { number: string; countryCode: string }) {
     this.employeeForm.get('phone').setValue(event.number);
-    this.setCountryByPhoneCode(event.countryCode);
+    if(this.type === 'create'){
+      this.setCountryByPhoneCode(event.countryCode);
+    }
 
   }
   onChangeRoleSelection(event: Role){

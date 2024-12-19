@@ -26,12 +26,12 @@
                           </div>
                       </div>
                      
-                      <div class="col-md-6 mb-3">
+                      <!-- <div class="col-md-6 mb-3">
                           <label for="name_ar">{{'Name_coupon_arabic'|translate}}</label>
                           <input class="form-control" id="name_ar" formControlName="name_ar" type="text" [readonly]="type==='view'"/>
                           
-                      </div>
-
+                      </div> -->
+                    <div class="row">
                       <div class="col-md-6 mb-3">
                           <label for="termsAndConditions">{{'Terms and Conditions'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                           <textarea class="form-control" id="termsAndConditions" formControlName="termsAndConditions" rows="5" [readonly]="type==='view'"></textarea>
@@ -40,11 +40,11 @@
                           </div>
                       </div>
 
-                      <div class="col-md-6 mb-3">
+                      <!-- <div class="col-md-6 mb-3">
                           <label for="termsAndConditions_ar">{{'Terms and Conditions in arabic'|translate}}</label>
                           <textarea class="form-control" id="termsAndConditions_ar" formControlName="termsAndConditions_ar" rows="5" [readonly]="type==='view'"></textarea>
                           
-                      </div>
+                      </div> -->
                       <div class="col-md-6 mb-3">
                         <label for="description">{{'Description'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                         <textarea class="form-control" id="description" formControlName="description" rows="5" [readonly]="type==='view'"></textarea>
@@ -52,11 +52,12 @@
                             {{'Description is required'|translate}}
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
+                  </div>
+                    <!-- <div class="col-md-6 mb-3">
                       <label for="description_ar">{{'Description in arabic'|translate}}</label>
                       <textarea class="form-control" id="description_ar" formControlName="description_ar" rows="5" [readonly]="type==='view'"></textarea>
                       
-                  </div>
+                  </div> -->
                    
                        <div *ngIf="type === 'edit'" class="col-md-6 mb-3">
                           <label for="codeCoupon">{{'Coupon Code'|translate}}</label>
@@ -91,10 +92,10 @@
                           {{'Store is required'|translate}}
                         </div> -->
                       </div>
-             <div class="row">
+                    <div class="row">
                       <div class="col-md-6 mb-3">
                         <label for="startDateCoupon">{{'Start_Date'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                        <input bsDatepicker class="form-control" id="startDateCoupon" placeholder="yyyy-mm-dd" formControlName="startDateCoupon" [bsConfig]="bsConfig"  [readonly]="type==='view'"/>
+                        <input bsDatepicker class="form-control" id="startDateCoupon" placeholder="yyyy-mm-dd" formControlName="startDateCoupon" [bsConfig]="bsConfig"  [disabled]="type==='view'"/>
                         <div *ngIf="formCoupon.get('startDateCoupon').invalid && formCoupon.get('startDateCoupon').touched" class="text-danger">
                           {{'Start Date is required'|translate}}
                         </div>
@@ -102,7 +103,7 @@
                     
                       <div class="col-md-6 mb-3">
                         <label for="endDateCoupon">{{'End Date'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                        <input bsDatepicker class="form-control" id="endDateCoupon" placeholder="yyyy-mm-dd" formControlName="endDateCoupon" [bsConfig]="bsConfig" [readonly]="type==='view'"/>
+                        <input bsDatepicker class="form-control" id="endDateCoupon" placeholder="yyyy-mm-dd" formControlName="endDateCoupon" [bsConfig]="bsConfig" [disabled]="type==='view'"/>
                         <div *ngIf="formCoupon.get('endDateCoupon').invalid && formCoupon.get('endDateCoupon').touched" class="text-danger">
                           {{'End Date is required'|translate}}
                         </div>

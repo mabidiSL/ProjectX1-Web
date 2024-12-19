@@ -93,7 +93,10 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
   }
   dateValidator(control: AbstractControl): { [key: string]: boolean } | null {
     const startDate = new Date(control.get('startDateGiftCard')?.value);
+    console.log(startDate);
     const endDate = new Date(control.get('endDateGiftCard')?.value);
+    console.log(endDate);
+
     const currentDate = new Date();
    // Normalize currentDate to midnight (00:00:00)
    currentDate.setHours(0, 0, 0, 0);
@@ -123,18 +126,18 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
   private initForm() {
     this.formGiftCard = this.formBuilder.group({
       id: [null],
-      name_ar: [null],
+      //name_ar: [null],
       name: [null, Validators.required],
-      description_ar: [null],
+      //description_ar: [null],
       description: [null, Validators.required],
-      termsAndConditions_ar: [null],
+     // termsAndConditions_ar: [null],
       termsAndConditions: [null, Validators.required],
       quantity: [null, Validators.required],
       company_id: [null, Validators.required],
       stores: [[]],
     
-      startDateGiftCard: [null, Validators.required],
-      endDateGiftCard: [null, Validators.required],
+      startDateGiftCard: ['', Validators.required],
+      endDateGiftCard: ['', Validators.required],
       
       giftCardImage: [null,Validators.required],
       giftCardValue: ['',Validators.required],
@@ -207,8 +210,8 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
             if(GiftCard.giftCardImage){
               this.fileName = GiftCard.giftCardImage.split('/').pop();
             }
-            //GiftCard.startDateGiftCard = this.formatDate(GiftCard.startDateGiftCard);
-            //GiftCard.endDateGiftCard = this.formatDate(GiftCard.endDateGiftCard);
+            GiftCard.startDateGiftCard = new Date(GiftCard.startDateGiftCard);
+            GiftCard.endDateGiftCard = new Date(GiftCard.endDateGiftCard);
             console.log(GiftCard);
             
             this.patchValueForm(GiftCard);
@@ -227,11 +230,11 @@ patchValueForm(giftCard: GiftCard){
 
   this.formGiftCard.patchValue({
     name: giftCard.translation_data[0].name,
-    name_ar: giftCard.translation_data[1]?.name,
+   // name_ar: giftCard.translation_data[1]?.name,
     description: giftCard.translation_data[0].description,
-    description_ar: giftCard.translation_data[1]?.description,
+   // description_ar: giftCard.translation_data[1]?.description,
     termsAndConditions: giftCard.translation_data[0].termsAndConditions,
-    termsAndConditions_ar: giftCard.translation_data[1]?.termsAndConditions,
+   // termsAndConditions_ar: giftCard.translation_data[1]?.termsAndConditions,
   });
 
 }
@@ -288,13 +291,13 @@ createGiftCardFromForm(formValue): GiftCard{
     { field: 'description', name: 'description' },
     { field: 'termsAndConditions', name: 'termsAndConditions' },
   ];
-  const arFields = [
-    { field: 'name_ar', name: 'name' },
-    { field: 'description_ar', name: 'description' },
-    { field: 'termsAndConditions_ar', name: 'termsAndConditions' },
+  // const arFields = [
+  //   { field: 'name_ar', name: 'name' },
+  //   { field: 'description_ar', name: 'description' },
+  //   { field: 'termsAndConditions_ar', name: 'termsAndConditions' },
 
 
-  ];
+  // ];
   // Create the English translation if valid
   const enTranslation = this.formUtilService.createTranslation(giftCard,'en', enFields);
   if (enTranslation) {
@@ -302,10 +305,10 @@ createGiftCardFromForm(formValue): GiftCard{
   }
 
   // Create the Arabic translation if valid
-  const arTranslation = this.formUtilService.createTranslation(giftCard,'ar', arFields);
-  if (arTranslation) {
-    giftCard.translation_data.push(arTranslation);
-  }
+  // const arTranslation = this.formUtilService.createTranslation(giftCard,'ar', arFields);
+  // if (arTranslation) {
+  //   giftCard.translation_data.push(arTranslation);
+  // }
   if(giftCard.translation_data.length <= 0)
     delete giftCard.translation_data;
 
@@ -316,11 +319,11 @@ createGiftCardFromForm(formValue): GiftCard{
       }
     });
     delete giftCard.name;  
-    delete giftCard.name_ar;    
+   // delete giftCard.name_ar;    
     delete giftCard.description;
-    delete giftCard.description_ar;
+    //delete giftCard.description_ar;
     delete giftCard.termsAndConditions;
-    delete giftCard.termsAndConditions_ar;
+    //delete giftCard.termsAndConditions_ar;
  
 
   console.log(giftCard);
@@ -341,13 +344,13 @@ onSubmit(){
       }
       this.formError = null;
       let newData = this.formGiftCard.value;
-      if(this.formGiftCard.get('stores').value !== null)  
-        newData.stores = this.formGiftCard.get('stores').value.map((store) =>(store.id ) );
+     
       if(!this.isEditing)
       {         
           //Dispatch Action
           delete newData.id;
           newData = this.createGiftCardFromForm(newData);
+          console.log(newData);
           this.store.dispatch(addGiftCardlist({ newData }));
       }
       else{

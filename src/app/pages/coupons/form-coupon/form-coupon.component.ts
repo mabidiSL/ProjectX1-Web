@@ -163,11 +163,11 @@ export class FormCouponComponent implements OnInit, OnDestroy{
     this.formCoupon = this.formBuilder.group({
       id: [null],
       name: ['', Validators.required],
-      name_ar: [''],
+     // name_ar: [''],
       description: ['', Validators.required],
-      description_ar: [''],
+     // description_ar: [''],
       termsAndConditions: ['', Validators.required],
-      termsAndConditions_ar: [''],
+      //termsAndConditions_ar: [''],
       codeCoupon: ['COUP123'],
       quantity: [null, Validators.required],
       //nbr_of_use: [null, Validators.required],
@@ -175,13 +175,13 @@ export class FormCouponComponent implements OnInit, OnDestroy{
       stores: [[]],
       startDateCoupon: ['', Validators.required],
       endDateCoupon: ['', Validators.required],
-      contractRepName: [''],
+      contractRepName: [null],
     
-      couponLogo: ['', Validators.required],
+      couponLogo: [null, Validators.required],
       couponType: ['free', Validators.required],// free,discountPercent,discountAmount,servicePrice checkboxes
-      couponValueBeforeDiscount:[''],
-      couponValueAfterDiscount:[''],
-      paymentDiscountRate: [''],
+      couponValueBeforeDiscount:[null],
+      couponValueAfterDiscount:[null],
+      paymentDiscountRate: [null],
       status:['active']
 
     }, { validators: this.dateValidator });
@@ -219,13 +219,15 @@ export class FormCouponComponent implements OnInit, OnDestroy{
         .subscribe(coupon => {
           if (coupon) {
           
+            console.log(coupon);
             
             this.existantcouponLogo = coupon.couponLogo;
             if(coupon.couponLogo){
               this.fileName = coupon.couponLogo.split('/').pop();
             }
-            
-             this.patchValueForm(coupon);
+            coupon.startDateCoupon = new Date(coupon.startDateCoupon);
+            coupon.endDateCoupon = new Date(coupon.endDateCoupon);
+            this.patchValueForm(coupon);
             this.originalCouponData = { ...coupon };
             this.isEditing = true;
 
@@ -240,11 +242,11 @@ patchValueForm(coupon: Coupon){
   this.formCoupon.get('stores').setValue(coupon.stores.map(store => store.id));
   this.formCoupon.patchValue({
     name: coupon.translation_data[0].name,
-    name_ar: coupon.translation_data[1]?.name,
+    ///name_ar: coupon.translation_data[1]?.name,
     description: coupon.translation_data[0].description,
-    description_ar: coupon.translation_data[1]?.description,
+    //description_ar: coupon.translation_data[1]?.description,
     termsAndConditions: coupon.translation_data[0].termsAndConditions,
-    termsAndConditions_ar: coupon.translation_data[1]?.termsAndConditions,
+   // termsAndConditions_ar: coupon.translation_data[1]?.termsAndConditions,
   });
 
 }
@@ -317,13 +319,13 @@ createCouponFromForm(formValue): Coupon{
     { field: 'termsAndConditions', name: 'termsAndConditions' },
 
   ];
-  const arFields = [
-    { field: 'name_ar', name: 'name' },
-    { field: 'description_ar', name: 'description' },
-    { field: 'termsAndConditions_ar', name: 'termsAndConditions' },
+  // const arFields = [
+  //   { field: 'name_ar', name: 'name' },
+  //   { field: 'description_ar', name: 'description' },
+  //   { field: 'termsAndConditions_ar', name: 'termsAndConditions' },
 
 
-  ];
+  // ];
   
   // Create the English translation if valid
   const enTranslation = this.formUtilService.createTranslation(coupon,'en', enFields);
@@ -332,10 +334,10 @@ createCouponFromForm(formValue): Coupon{
   }
 
   // Create the Arabic translation if valid
-  const arTranslation = this.formUtilService.createTranslation(coupon,'ar', arFields);
-  if (arTranslation) {
-    coupon.translation_data.push(arTranslation);
-  }
+  // const arTranslation = this.formUtilService.createTranslation(coupon,'ar', arFields);
+  // if (arTranslation) {
+  //   coupon.translation_data.push(arTranslation);
+  // }
   if(coupon.translation_data.length <= 0)
     delete coupon.translation_data;
 
@@ -346,13 +348,11 @@ createCouponFromForm(formValue): Coupon{
       }
     });
     delete coupon.name;  
-    delete coupon.name_ar;    
+    //delete coupon.name_ar;    
     delete coupon.description;
-    delete coupon.description_ar;
+    //delete coupon.description_ar;
     delete coupon.termsAndConditions;
-    delete coupon.termsAndConditions_ar;
-
-    
+    //delete coupon.termsAndConditions_ar;
 
   return coupon;
 
@@ -383,7 +383,6 @@ createCouponFromForm(formValue): Coupon{
          delete newData.codeCoupon;
          delete newData.id;
          newData = this.createCouponFromForm(newData);
-      
          this.store.dispatch(addCouponlist({ newData }));
       }
       else

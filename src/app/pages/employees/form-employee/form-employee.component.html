@@ -125,21 +125,8 @@
                              </ng-select>                      
                               </div>
                             </div>
-                        
-                              <div class="col-md-6 mb-3">
-                                <div class="form-group">
-                                  <label for="bankAccountNumber">{{'Bank_Account_Number' | translate}}</label>
-                                  <input type="number" id="bankAccountNumber" class="form-control" placeholder="{{'Enter_the_Bank_AccountNumber' | translate}}" formControlName="bankAccountNumber" [readonly]="type==='view'">
-                                  </div>
-                              </div>
-                              <div class="col-md-6 mb-3">
-                                <div class="form-group">
-                                  <label for="bank_id">{{'Bank_Name' | translate}}</label>
-                                  <ng-select [readonly]="type === 'view'" id="bank_id" placeholder="{{'Select_the_Bank' | translate}}" [items]="banks" bindLabel="name" 
-                                  bindValue="id"  formControlName="bank_id"  >
-                                  </ng-select>
-                                </div>
-                              </div>
+                          
+                             
                               <div class="col-md-6 mb-3">
                                 <div class="form-group ">
                                   <label for="role_id" >{{'Role'| translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>

@@ -70,7 +70,7 @@ export class AdminCompanyProfileComponent implements OnInit{
       console.log('***********');
  
       this.store.dispatch(getCompanyProfile({companyId: this.currentUser.companyId}))
-      this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 100, query:'', status: 'active' }));
+      this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 1000, query:'', status: 'active' }));
       this.store.dispatch(fetchSectionlistData({page: 1, itemsPerPage: 100, status: 'active' }));
      
       this.initForm();

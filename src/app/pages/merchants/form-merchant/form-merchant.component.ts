@@ -8,16 +8,16 @@ import { addMerchantlist,  getMerchantById,  updateMerchantlist } from 'src/app/
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { selectDataLoading, selectedMerchant } from 'src/app/store/merchantsList/merchantlist1-selector';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
-//import { fetchCitylistData } from 'src/app/store/City/city.action';
+import { fetchCitylistData } from 'src/app/store/City/city.action';
 import { fetchSectionlistData } from 'src/app/store/section/section.action';
 import { selectDataCountry } from 'src/app/store/country/country-selector';
 import { selectDataSection } from 'src/app/store/section/section-selector';
-//import { selectDataCity } from 'src/app/store/City/city-selector';
+import { selectDataCity } from 'src/app/store/City/city-selector';
 import { Merchant } from '../../../store/merchantsList/merchantlist1.model';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { UploadEvent } from 'src/app/shared/widget/image-upload/image-upload.component';
 //import { Area } from 'src/app/store/area/area.model';
-//import { City } from 'src/app/store/City/city.model';
+import { City } from 'src/app/store/City/city.model';
 import { Country } from 'src/app/store/country/country.model';
 import { SectionListModel } from 'src/app/store/section/section.model';
 
@@ -46,6 +46,7 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
   storeLogoBase64: string = null;
   isEditing: boolean = false;
   fromPendingContext: boolean = false;
+  filteredCities:  City[] = [];
 
   countrylist: Country[] = [];
   
@@ -74,7 +75,7 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
 
       this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 100,query:'', status: 'active' }));
      // this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 1000, status: 'active' }));
-     // this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 10000, query:'',status: 'active' }));
+      this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 10000, query:'',status: 'active' }));
       this.store.dispatch(fetchSectionlistData({page: 1, itemsPerPage: 100, status: 'active' }));
      
       this.initForm();
@@ -90,7 +91,7 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
     email: ['', [Validators.required, Validators.email]],
     phone:[null,Validators.required], //Validators.pattern(/^\d{3}-\d{3}-\d{4}$/)*/],
     country_id:[null, Validators.required],
-    city:[null],
+    city_id:[null],
     jobTitle: [null],
     //area_id:[null, Validators.required], 
     bankAccountNumber: [null],
@@ -119,7 +120,7 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
         
     this.fetchCountry();
     //this.fetchAreas();
-    //this.fetchCities();
+    this.fetchCities();
     this.fetchSection();
 
     const merchantId = this.route.snapshot.params['id'];
@@ -202,20 +203,20 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
 
   }
   
-  // fetchCities(){
-  //   this.store.select(selectDataCity).subscribe((data) => {
-  //     this.filteredCities = [...data].map(city =>{
-  //      const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
+  fetchCities(){
+    this.store.select(selectDataCity).subscribe((data) => {
+      this.filteredCities = [...data].map(city =>{
+       const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
    
-  //      return {
-  //        ...city,  
-  //        translatedName 
-  //      };
-  //    })
-  //    .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-  //    });
-  //  });
-  // }
+       return {
+         ...city,  
+         translatedName 
+       };
+     })
+     .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
+     });
+   });
+  }
   private getNavigationState(){
     /**Determining the context of the routing if it is from Approved State or Pending State */
       const navigation = this.router.getCurrentNavigation();
@@ -227,24 +228,25 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
 
   onChangeCountrySelection(event: Country){
     const country = event;
+    console.log(country);
+    
     if(country){
-      this.merchantForm.get('city').setValue(null);
-
-    //   this.filteredCities = [];
-    //   this.merchantForm.get('city_id').setValue(null);
-    //   this.store.select(selectDataCity).subscribe((data) => {
-    //     this.filteredCities = [...data].map(city =>{
-    //      const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
+      
+      this.filteredCities = [];
+      this.merchantForm.get('city_id').setValue(null);
+      this.store.select(selectDataCity).subscribe((data) => {
+        this.filteredCities = [...data].map(city =>{
+         const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
      
-    //      return {
-    //        ...city,  
-    //        translatedName 
-    //      };
-    //    })
-    //    .filter(city => city.country_id === country)
-    //    .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-    //    });
-    //  });
+         return {
+           ...city,  
+           translatedName 
+         };
+       })
+       .filter(city => city.country_id === country.id)
+       .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
+       });
+     });
     }
    
     
@@ -409,12 +411,8 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('/private/merchants/list');
   }
   toggleViewMode(){
-
-    if(this.fromPendingContext)
-      this.router.navigateByUrl('/private/merchants/approve');
-    else
-      this.router.navigateByUrl('/private/merchants/list');
-
+    this.router.navigateByUrl('/private/merchants/list');
+    
   }
 
 }
