@@ -14,6 +14,7 @@ export interface Employee {
         phone?: string;
         password?: string;
         image?: string;
+        country_id?:number;
         city_id?: number; // City;
         city?: City;
         bank_id?: number;

@@ -123,7 +123,7 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
           if (employee) {
   
             
-            this.employeeForm.controls['country_id'].setValue(employee.city.country_id);
+            this.employeeForm.controls['country_id'].setValue(employee.country_id);
            // this.employeeForm.controls['area_id'].setValue(employee.city.area_id);
             this.employeeForm.controls['city_id'].setValue(employee.city_id);
             this.employeeForm.controls['role_id'].setValue(employee.role_id);

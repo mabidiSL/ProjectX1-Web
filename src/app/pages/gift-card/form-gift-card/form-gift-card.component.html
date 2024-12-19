@@ -91,7 +91,7 @@
                        <div class="row">
                         <div class="col-md-6 mb-3">
                           <label for="startDateGiftCard">{{'Start Date'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <input bsDatepicker class="form-control" id="startDateGiftCard" placeholder="yyyy-mm-dd" formControlName="startDateGiftCard"  [disabled]="type==='view'"/>
+                          <input bsDatepicker class="form-control" id="startDateGiftCard" placeholder="yyyy-mm-dd" formControlName="startDateGiftCard"      [attr.disabled]="type === 'view' ? true : null"/>
                           <div *ngIf="formGiftCard.get('startDateGiftCard').invalid && formGiftCard.get('startDateGiftCard').touched" class="text-danger">
                             {{'Start Date is required'|translate}}
                           </div>
@@ -99,7 +99,7 @@
                       
                         <div class="col-md-6 mb-3">
                           <label for="endDateGiftCard">{{'End Date'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <input bsDatepicker class="form-control" id="endDateGiftCard" placeholder="yyyy-mm-dd" formControlName="endDateGiftCard"  [disabled]="type==='view'"/>
+                          <input bsDatepicker class="form-control" id="endDateGiftCard" placeholder="yyyy-mm-dd" formControlName="endDateGiftCard"  [attr.disabled]="type === 'view' ? true : null"/>
                           <div *ngIf="formGiftCard.get('endDateGiftCard').invalid && formGiftCard.get('endDateGiftCard').touched">
                             {{'End Date is required'|translate}}
                           </div>

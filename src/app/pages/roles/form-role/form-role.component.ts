@@ -80,7 +80,7 @@ export class FormRoleComponent implements OnInit, OnDestroy {
       this.roleForm = this.formBuilder.group({
         id:[null],
         name: ['', Validators.required],
-        name_ar: ['', Validators.required],
+      //  name_ar: ['', Validators.required],
         claims: [[]],
         
       });
@@ -134,7 +134,7 @@ export class FormRoleComponent implements OnInit, OnDestroy {
     this.roleForm.patchValue(role);
     this.roleForm.patchValue({
       name: role.translation_data[0].name,
-      name_ar: role.translation_data[1].name,
+     // name_ar: role.translation_data[1].name,
       
       
     });
@@ -166,10 +166,10 @@ createRoleFromForm(formValue): Role {
     { field: 'name', name: 'name' },
   
   ];
-  const arFields = [
-    { field: 'name_ar', name: 'name' },
+  // const arFields = [
+  //   { field: 'name_ar', name: 'name' },
    
-  ];
+  // ];
   
   // Create the English translation if valid
   const enTranslation = this.formUtilService.createTranslation(role,'en', enFields);
@@ -178,10 +178,10 @@ createRoleFromForm(formValue): Role {
   }
 
   // Create the Arabic translation if valid
-  const arTranslation = this.formUtilService.createTranslation(role,'ar', arFields);
-  if (arTranslation) {
-    role.translation_data.push(arTranslation);
-  }
+  // const arTranslation = this.formUtilService.createTranslation(role,'ar', arFields);
+  // if (arTranslation) {
+  //   role.translation_data.push(arTranslation);
+  // }
   if(role.translation_data.length <= 0)
     delete role.translation_data;
 
@@ -192,7 +192,7 @@ createRoleFromForm(formValue): Role {
      }
   });
     delete role.name;
-    delete role.name_ar;  
+    //delete role.name_ar;  
  return role;
 }
 
