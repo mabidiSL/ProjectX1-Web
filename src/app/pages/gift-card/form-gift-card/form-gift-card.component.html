@@ -19,13 +19,15 @@
                  
                   </div>     
                   <div class="row">
+                      <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="name">{{'Name'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                            <label for="name">{{'GiftCard Name'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                             <input class="form-control" id="name" formControlName="name" type="text" [readonly]="type==='view'"/>
                             <div *ngIf="formGiftCard.get('name').invalid && formGiftCard.get('name').touched" class="text-danger">
                                 {{'Name is required'|translate}}
                             </div>
                         </div>
+                      </div>
                         <!-- <div class="col-md-6 mb-3">
                             <label for="name_ar">{{'Name_in_arabic'|translate}}</label>
                             <input class="form-control" id="name_ar" formControlName="name_ar" type="text" [readonly]="type==='view'"/>
@@ -34,14 +36,14 @@
                         <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="termsAndConditions">{{'Terms and Conditions'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                            <textarea class="form-control" id="termsAndConditions" formControlName="termsAndConditions" rows="5"[readonly]="type==='view'"></textarea>
+                            <textarea class="form-control" id="termsAndConditions" formControlName="termsAndConditions" rows="2"[readonly]="type==='view'"></textarea>
                             <div *ngIf="formGiftCard.get('termsAndConditions').invalid && formGiftCard.get('termsAndConditions').touched" class="text-danger">
                                 {{'Terms and Conditions are required'|translate}}
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
                           <label for="description">{{'Description'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <textarea class="form-control" id="description" formControlName="description" rows="5" [readonly]="type==='view'"></textarea>
+                          <textarea class="form-control" id="description" formControlName="description" rows="2" [readonly]="type==='view'"></textarea>
                           <div *ngIf="formGiftCard.get('description').invalid && formGiftCard.get('description').touched" class="text-danger">
                               {{'Description is required'|translate}}
                           </div>
@@ -60,10 +62,10 @@
                         <textarea class="form-control" id="description_ar" formControlName="description_ar" rows="5" [readonly]="type==='view'"></textarea>
                        
                      </div> -->
-                      
-                        <div *ngIf="currentRole === 'Admin'" class="col-md-6 mb-3">
+                      <div class="row">
+                        <div  class="col-md-6 mb-3">
                           <label for="company_id">{{'Merchant Name'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <ng-select [readonly]="type === 'view'" id="company_id"  placeholder="{{'Select_the_merchant' |translate}}" [items]="merchantList" bindLabel="translatedName" 
+                          <ng-select [readonly]="type === 'view'|| currentRole !== 'Admin'" id="company_id"  placeholder="{{'Select_the_merchant' |translate}}" [items]="merchantList" bindLabel="translatedName" 
                           bindValue="id"  formControlName="company_id" (change)="onChangeMerchantSelection($event)" >
                           </ng-select>
                           <div *ngIf="formGiftCard.get('company_id').invalid && formGiftCard.get('company_id').touched">
@@ -86,12 +88,12 @@
                           <!-- <div *ngIf="isLoading" class="text-info">Loading stores...</div> -->
                           
                         </div>
-                        
+                      </div>
                       
                        <div class="row">
                         <div class="col-md-6 mb-3">
                           <label for="startDateGiftCard">{{'Start Date'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <input bsDatepicker class="form-control" id="startDateGiftCard" placeholder="yyyy-mm-dd" formControlName="startDateGiftCard"      [attr.disabled]="type === 'view' ? true : null"/>
+                          <input bsDatepicker class="form-control" id="startDateGiftCard" placeholder="yyyy-mm-dd" formControlName="startDateGiftCard"    />
                           <div *ngIf="formGiftCard.get('startDateGiftCard').invalid && formGiftCard.get('startDateGiftCard').touched" class="text-danger">
                             {{'Start Date is required'|translate}}
                           </div>
@@ -99,7 +101,7 @@
                       
                         <div class="col-md-6 mb-3">
                           <label for="endDateGiftCard">{{'End Date'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <input bsDatepicker class="form-control" id="endDateGiftCard" placeholder="yyyy-mm-dd" formControlName="endDateGiftCard"  [attr.disabled]="type === 'view' ? true : null"/>
+                          <input bsDatepicker class="form-control" id="endDateGiftCard" placeholder="yyyy-mm-dd" formControlName="endDateGiftCard"  />
                           <div *ngIf="formGiftCard.get('endDateGiftCard').invalid && formGiftCard.get('endDateGiftCard').touched">
                             {{'End Date is required'|translate}}
                           </div>
@@ -112,14 +114,14 @@
                         </div>     
                         
                       </div>
-                      <div class="col-md-6 mb-3">
+                      <div class="col-md-4 mb-3">
                         <label for="quantity">{{'Quantity'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                         <input class="form-control" id="quantity" formControlName="quantity" type="number" [readonly]="type==='view'"/>
                         <div *ngIf="formGiftCard.get('quantity').invalid && formGiftCard.get('quantity').touched" class="text-danger">
                           {{'Quantity is required'|translate}}
                         </div>
                       </div>
-                  <div class="col-md-6 mb-3">
+                  <div class="col-md-4 mb-3">
                     <label for="giftCardValue">{{'Value'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                     <input  class="form-control" id="giftCardValue" formControlName="giftCardValue" type="number" />
                      <div *ngIf="formGiftCard.get('giftCardValue').invalid && formGiftCard.get('giftCardValue').touched" class="text-danger">
@@ -127,7 +129,7 @@
                     </div> 
                   </div>
                 
-                  <div class="col-md-6 mb-3">
+                  <div class="col-md-4 mb-3">
                     <label for="discount">{{'Discount'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                     <input class="form-control" id="discount" formControlName="discount" type="number" />
                     <div *ngIf="formGiftCard.get('discount').invalid && formGiftCard.get('discount').touched" class="text-danger">

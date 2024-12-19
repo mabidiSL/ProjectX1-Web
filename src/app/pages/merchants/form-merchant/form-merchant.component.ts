@@ -101,6 +101,7 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
     companyLogo: [null, Validators.required],
     activationCode: [''],
     qrCode: [''],
+    officeTel: [''],
     section_id:[null, Validators.required],
     website: [undefined],
     whatsup:[null],

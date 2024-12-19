@@ -153,7 +153,7 @@
                 </ng-template>
               </td>
             </ng-container>
-            <ng-container *ngIf="!approveAction; else pendingActions" >        
+            <ng-container  >        
             <td class="text-center">
               <div style="display: flex; justify-content: center;">
               <ul class="list-unstyled hstack gap-1 mb-0">
@@ -172,15 +172,15 @@
                </div>
            </td>
            </ng-container>
-            <ng-template #pendingActions>
+            <!-- <ng-template #pendingActions>
             <td class="text-center" *ngIf="!(approveAction && isMerchant)">
-              <!-- <button 
+               <button 
                   type="button"
                   class="btn btn-info me-2"
                   [routerLink]="[viewButtonLink, data.id]">
                   {{'View' | translate}}
               </button> -->
-              <button 
+              <!-- <button 
                   *hasClaim="approveButtonPermission"
                   type="button"
                   class="btn btn-success me-2"
@@ -195,7 +195,7 @@
                   {{'Decline' | translate}}
               </button>
             </td>
-            </ng-template>
+            </ng-template> -->
     
             
           </tr>

@@ -28,29 +28,17 @@
                               </div>
                           </div> 
                       </div>
-                      <div class="col-md-6 mb-3">
-                        <div class="form-group ">
-                           <label for="name_ar" >{{'Store_Name in arabic' | translate}} </label>
-                            <input type="text" id="name_ar" class="form-control" formControlName="name_ar" [readonly]="type==='view'" >
-                           
-                          </div> 
-                      </div>
+                      
                       <div class="col-md-6 mb-3">
                         <div class="form-group ">
                            <label for="description" >{{'Description' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                           <textarea class="form-control" id="description" formControlName="description" rows="3"[readonly]="type === 'view'" ></textarea>
+                           <textarea class="form-control" id="description" formControlName="description" rows="1"[readonly]="type === 'view'" ></textarea>
                            <div *ngIf="storeForm.get('description').touched && storeForm.get('description').invalid" class="invalid-feedback d-block">
                                 <span *ngIf="storeForm.get('description').errors?.['required']">{{'Description is required'| translate}}.</span>
                               </div>
                           </div> 
                       </div>
-                      <div class="col-md-6 mb-3">
-                        <div class="form-group ">
-                           <label for="description_ar" >{{'Description in arabic' | translate}} </label>
-                           <textarea class="form-control" id="description_ar" formControlName="description_ar" rows="3"[readonly]="type === 'view'" ></textarea>
-                           
-                          </div> 
-                      </div>
+                     
                      
                 <div *ngIf="currentRole === 'Admin'" class="col-md-6 mb-3">
                   <div class="form-group ">

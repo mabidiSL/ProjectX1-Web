@@ -87,7 +87,11 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
       this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 100 ,query:'', status: 'active'})); 
     
     this.initForm();
-    this.bsConfig = this.datepickerConfigService.getConfig();
+    this.bsConfig = {
+      ...this.datepickerConfigService.getConfig(),
+      isDisabled: this.type === 'view', // Disable the datepicker if in view mode
+    };
+    // this.datepickerConfigService.getConfig();
 
    
   }

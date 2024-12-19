@@ -106,9 +106,7 @@ export class FormStoreComponent implements OnInit, OnDestroy {
       
       id: [null],
       name: ['', Validators.required],
-      name_ar: [''],
       description: ['', Validators.required],
-      description_ar: [''],
       phone: ['', Validators.required ],
       company_id: [null, Validators.required],
       city_id:[null, Validators.required],

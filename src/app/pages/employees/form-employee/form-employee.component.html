@@ -165,7 +165,7 @@
         </div> <!-- end col -->
       </div>
     </accordion-group>
-    <accordion-group  [isOpen]="isPermissionsOpen" heading="{{'View_Employee_Permissions' | translate}}" class  ="accordion-item" #md>
+    <accordion-group  [isDisabled]="isPermissionsOpen" heading="{{'View_Employee_Permissions' | translate}}" class  ="accordion-item" #md>
       <span accordion-heading class="float-end fs-5">
         <i class="mdi" [ngClass]="!md?.isOpen ? 'mdi mdi-chevron-down accor-plus-icon': 'mdi mdi-chevron-up accor-plus-icon'"></i>
       </span>
@@ -182,7 +182,7 @@
         <tbody>
           <!-- Loop over the Modules for the rows -->
           <tr *ngFor="let module of moduleKeys">
-            <td>{{ module | translate}}</td>
+            <td><strong>{{ module | translate}}</strong></td>
             <!-- Loop over the Permission keys for each module to create a checkbox -->
             <td *ngFor="let permission of permissionKeys">
               <input

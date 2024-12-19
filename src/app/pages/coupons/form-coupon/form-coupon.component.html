@@ -10,14 +10,32 @@
               <form [formGroup]="formCoupon"  >
                 <div *ngIf="formError" class="alert alert-danger">{{ formError | translate }}</div>
                 <div class="d-flex align-items-center justify-content-between mb-2">                 
-                              
-                  <div class="form-check form-switch form-switch-md ms-auto">
-                    <label class="form-check-label" for="SwitchCheckSizelg1">{{(formCoupon.get('status')?.value === 'active')? 'Active': 'InActive'}}</label>
-                    <input class="form-check-input" type="checkbox" id="SwitchCheckSizelg1" formControlName="status"  [checked]="(formCoupon.get('status').value === 'active')" (change)="onToggle($event)">
+                  <div *ngIf="formCoupon.get('status')?.value === 'pending'; else switchToggle" class="ms-auto">
+                    <span class="badge bg-warning text-dark" style="font-size: 1.2rem; padding: 0.5rem 1rem;">
+                      <i class="bi bi-hourglass-split" style="margin-right: 0.4rem;"></i> Pending
+                    </span>
                   </div>
+                  
+                  <ng-template #switchToggle>
+                    <div class="form-check form-switch form-switch-md ms-auto">
+                      <label class="form-check-label" for="SwitchCheckSizelg1">
+                        {{ formCoupon.get('status')?.value === 'active' ? 'Active' : 'InActive' }}
+                      </label>
+                      <input 
+                        class="form-check-input" 
+                        type="checkbox" 
+                        id="SwitchCheckSizelg1" 
+                        formControlName="status"  
+                        [checked]="formCoupon.get('status')?.value === 'active'" 
+                        (change)="onToggle($event)">
+                    </div>
+                  </ng-template>
+                             
+                  
                
                 </div>   
                 <div class="row">
+                  <div class="row">
                       <div class="col-md-6 mb-3">
                           <label for="name">{{'Name_coupon'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                           <input class="form-control" id="name" formControlName="name" type="text" [readonly]="type==='view'"/>
@@ -25,7 +43,11 @@
                               {{'Name is required'|translate}}
                           </div>
                       </div>
-                     
+                      <div *ngIf="type === 'edit'" class="col-md-6 mb-3">
+                        <label for="codeCoupon">{{'Coupon Code'|translate}}</label>
+                        <input class="form-control" id="codeCoupon" formControlName="codeCoupon" type="text" readonly />
+                    </div> 
+                    </div>
                       <!-- <div class="col-md-6 mb-3">
                           <label for="name_ar">{{'Name_coupon_arabic'|translate}}</label>
                           <input class="form-control" id="name_ar" formControlName="name_ar" type="text" [readonly]="type==='view'"/>
@@ -34,7 +56,7 @@
                     <div class="row">
                       <div class="col-md-6 mb-3">
                           <label for="termsAndConditions">{{'Terms and Conditions'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <textarea class="form-control" id="termsAndConditions" formControlName="termsAndConditions" rows="5" [readonly]="type==='view'"></textarea>
+                          <textarea class="form-control" id="termsAndConditions" formControlName="termsAndConditions" rows="2" [readonly]="type==='view'"></textarea>
                           <div *ngIf="formCoupon.get('termsAndConditions').invalid && formCoupon.get('termsAndConditions').touched" class="text-danger">
                               {{'Terms and Conditions are required'|translate}}
                           </div>
@@ -47,7 +69,7 @@
                       </div> -->
                       <div class="col-md-6 mb-3">
                         <label for="description">{{'Description'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                        <textarea class="form-control" id="description" formControlName="description" rows="5" [readonly]="type==='view'"></textarea>
+                        <textarea class="form-control" id="description" formControlName="description" rows="2" [readonly]="type==='view'"></textarea>
                         <div *ngIf="formCoupon.get('description').invalid && formCoupon.get('description').touched" class="text-danger">
                             {{'Description is required'|translate}}
                         </div>
@@ -59,14 +81,11 @@
                       
                   </div> -->
                    
-                       <div *ngIf="type === 'edit'" class="col-md-6 mb-3">
-                          <label for="codeCoupon">{{'Coupon Code'|translate}}</label>
-                          <input class="form-control" id="codeCoupon" formControlName="codeCoupon" type="text" readonly />
-                      </div> 
-                    
-                      <div *ngIf="currentRole === 'Admin'" class="col-md-6 mb-3">
+                       
+                      <div class="row">
+                      <div class="col-md-6 mb-3">
                         <label for="company_id">{{'Merchant_Name'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                        <ng-select [readonly]="type === 'view'" id="company_id"  placeholder="{{'Select_the_merchant' |translate}}" [items]="merchantList" bindLabel="translatedName" 
+                        <ng-select [readonly]="type === 'view' || currentRole !== 'Admin'" id="company_id"  placeholder="{{'Select_the_merchant' |translate}}" [items]="merchantList" bindLabel="translatedName" 
                         bindValue="id"  formControlName="company_id" (change)="onChangeMerchantSelection($event)">
                         </ng-select>
                         <div *ngIf="formCoupon.get('company_id').invalid && formCoupon.get('company_id').touched" class="text-danger">
@@ -92,6 +111,7 @@
                           {{'Store is required'|translate}}
                         </div> -->
                       </div>
+                      </div>
                     <div class="row">
                       <div class="col-md-6 mb-3">
                         <label for="startDateCoupon">{{'Start_Date'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
@@ -115,6 +135,7 @@
                         </div>
                       </div>
                     </div>
+                <div class="row">
                 <div class="col-md-6 mb-3">
                   <label for="quantity">{{'Quantity'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                   <input class="form-control" id="quantity" formControlName="quantity" type="number" [readonly]="type==='view'"/>
@@ -122,13 +143,15 @@
                     {{'Quantity is required'|translate}}
                   </div>
                 </div>
-                <!-- <div class="col-md-6 mb-3">
-                  <label for="nbr_of_use">{{'Number Of Use for Customer'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                <div class="col-md-6 mb-3">
+                  <label for="nbr_of_use">{{'Number Of Use'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                   <input class="form-control" id="nbr_of_use" formControlName="nbr_of_use" type="number" [readonly]="type==='view'"/>
                   <div *ngIf="formCoupon.get('nbr_of_use').invalid && formCoupon.get('nbr_of_use').touched" class="text-danger">
                     {{'Number of use is required'|translate}}
                   </div>
-                </div> -->
+                </div>
+              </div>
+              <div class="row">
                 <div *ngIf="currentRole === 'Admin'" class="col-md-6 mb-3">
                   <label for="contractRepName">{{'Contract Representative Name'|translate}}</label>
                   <input class="form-control" id="contractRepName" formControlName="contractRepName" type="text" [readonly]="type==='view'"/>
@@ -136,7 +159,7 @@
                     {{'Contract Representative Name is required'|translate}}
                   </div> -->
                 </div>
-                          
+              </div>   
               
                 <div class="col-md-12 mb-3">
                   <label for="couponType">{{'Coupon Type'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
@@ -159,19 +182,14 @@
                         {{'Discount Amount'|translate}}
                       </label>
                     </div>
-                    <div class="form-check form-check-inline">
-                      <label class="form-check-label">
-                        <input class="form-check-input" type="radio" formControlName="couponType" value="servicePrice" [class.readonly]="type==='view'" />
-                        {{'Service Price'|translate}}
-                      </label>
-                    </div>
+                  
                   </div>
                   <div *ngIf="formCoupon.get('couponType').invalid && formCoupon.get('couponType').touched" class="text-danger">
                     {{'Coupon Type is required'|translate}}
                   </div>
                 </div>
                 
-              
+              <div class="row">
                 <div class="col-md-6 mb-3">
                   <label for="couponValueBeforeDiscount">{{'Value Before Discount'|translate}}</label>
                   <input  class="form-control" id="couponValueBeforeDiscount" formControlName="couponValueBeforeDiscount" type="number" [readonly]="type==='view'"/>
@@ -187,14 +205,8 @@
                     {{'Value After Discount is required'|translate}}
                   </div> -->
                 </div>
-              
-                <div class="col-md-6 mb-3">
-                  <label for="paymentDiscountRate">{{'Payment Discount Rate'|translate}}</label>
-                  <input class="form-control" id="paymentDiscountRate" formControlName="paymentDiscountRate" type="text" [readonly]="type==='view'"/>
-                  <!-- <div *ngIf="formCoupon.get('paymentDiscountRate').invalid && formCoupon.get('paymentDiscountRate').touched">
-                    {{'Payment Discount Rate is required'|translate}}
-                  </div> -->
-                </div>
+              </div>
+                
                 <div class="row">
                 <div class="col-md-6 mb-3">
                   <label for="couponLogo">{{'Upload Coupon Logo'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
@@ -211,9 +223,16 @@
                       <button type="button" class="btn btn-success" (click)="toggleViewMode()">{{ 'Go_Back' | translate }}</button>
                     </ng-container>
                     <ng-template #editModeButtons>
-                      <button type="button" id="cancel-btn" class="btn btn-outline-secondary me-2" (click)="onCancel()">{{'Cancel'|translate}}</button>
-                      <button type="submit" class="btn btn-success" (click)="onSubmit()"  > {{ (type === 'create' ? 'Add coupon' : 'update_coupon') | translate }}
+                      <button *ngIf="(formCoupon.get('status')?.value !== 'pending' &&currentRole ==='Admin') ||(formCoupon.get('status')?.value === 'pending' && currentRole !=='Admin') ||(formCoupon.get('status')?.value !== 'pending' && currentRole !=='Admin')" type="submit" class="btn btn-success me-2" (click)="onSubmit()"  > {{ (type === 'create' ? 'Add coupon' : 'update_coupon') | translate }}
                       </button>
+                    <div *ngIf="currentRole ==='Admin'">
+                      <button *ngIf="formCoupon.get('status')?.value === 'pending'" type="submit" class="btn btn-success me-2" (click)="onApprove()"  > {{ 'Approve' | translate }}
+                      </button>
+                      <button *ngIf="formCoupon.get('status')?.value === 'pending'" type="submit" class="btn btn-danger me-2" (click)="onDecline()"  > {{ 'Decline' | translate }}
+                      </button>
+                    </div>
+                      <button type="button" id="cancel-btn" class="btn btn-outline-secondary me-2" (click)="onCancel()">{{'Cancel'|translate}}</button>
+
                       <div id="elmLoader" class="loader" *ngIf="loading$ | async">
                         <div class="spinner-border text-primary avatar-sm" role="status">
                           <span class="visually-hidden">{{'Loading...' | translate}}</span>

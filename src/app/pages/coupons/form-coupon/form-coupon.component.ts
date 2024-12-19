@@ -170,7 +170,7 @@ export class FormCouponComponent implements OnInit, OnDestroy{
       //termsAndConditions_ar: [''],
       codeCoupon: ['COUP123'],
       quantity: [null, Validators.required],
-      //nbr_of_use: [null, Validators.required],
+      nbr_of_use: [null, Validators.required],
       company_id: [null, Validators.required],
       stores: [[]],
       startDateCoupon: ['', Validators.required],
@@ -402,8 +402,15 @@ createCouponFromForm(formValue): Coupon{
       
    
     }
-      
+   onApprove(){
+    const coupon = {id: this.formCoupon.value.id, status: 'approved'}
+    this.store.dispatch(updateCouponlist({ updatedData: coupon }));
 
+   }   
+  onDecline(){
+    const coupon = {id: this.formCoupon.value.id, status: 'refused'}
+    this.store.dispatch(updateCouponlist({ updatedData: coupon }));
+  }
 /**
  * Upload Coupon Logo
  */

@@ -41,7 +41,7 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
   public bothColleaps:boolean = false;
 
   isFirstOpen:boolean = true;
-  isPermissionsOpen: boolean = false;
+  isPermissionsOpen: boolean = true;
 
   banks : any[] = [{id: '1', name:'Riyad Bank'},{id: '2', name:'Al Bilad Bank'}];
   
@@ -50,6 +50,9 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
   arealist$:  Observable<Area[]>  ;
   citylist$:  Observable<City[]> ;
   loading$: Observable<boolean>
+
+  moduleKeys: any[] = [];
+  permissionKeys: any[] = [];
 
   rolelist:  Role[] = [] ;
   selectedRole : Role = null;
@@ -62,8 +65,8 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
   public Permission: Permission;
   public Module: Modules;
 
-moduleKeys = Object.keys(Modules).filter(key => isNaN(Number(key))); // Get the module names
-permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // Get the permission names
+//moduleKeys = Object.keys(Modules).filter(key => isNaN(Number(key))); // Get the module names
+//permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // Get the permission names
 
 
 
@@ -125,6 +128,7 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
             
             this.employeeForm.controls['country_id'].setValue(employee.country_id);
            // this.employeeForm.controls['area_id'].setValue(employee.city.area_id);
+            //this.store.dispatch(fetchCitylistData)
             this.employeeForm.controls['city_id'].setValue(employee.city_id);
             this.employeeForm.controls['role_id'].setValue(employee.role_id);
             this.selectedRole = employee.role;
@@ -366,28 +370,62 @@ permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // G
 
       // Update the permission keys and module keys based on the selected role
       if (this.selectedRole) {
-    
+        this.isPermissionsOpen = false;
+        this.mapClaimsToEnums(this.selectedRole?.claims);
         //this.isPermissionsOpen = true;
-        this.setPermissionsForRole();
+        //this.setPermissionsForRole();
       }
     }
   }
-  setPermissionsForRole(): void {
-    // Clear existing permissions
+  mapClaimsToEnums(claims: any[]) {
+    this.moduleKeys = [];
+    this.permissionKeys = [];
+
     this.permissions = {};
 
-    // Loop through modules and permissions and check the claims for the selected role
-    this.moduleKeys.forEach(module => {
-      if (!this.permissions[module]) {
-        this.permissions[module] = {}; // Ensure it's initialized
-      }
-      this.permissionKeys.forEach(permission => {
-        // Check if the role has the permission for this module
-        this.permissions[module][permission] = this.hasPermission(module, permission);
-      });
+    claims.forEach(claim => {
+        if (claim.claimType in Modules) {
+            this.moduleKeys.push(Modules[claim.claimType]); // Get module name
+            claim.claimValue.forEach(value => {
+                if (value in Permission) {
+                    if(!this.permissionKeys.includes(Permission[value]))
+                      this.permissionKeys.push(Permission[value]); // Get permission name
+                }
+            });
+        }
     });
+    this.moduleKeys.forEach(module => {
+          if (!this.permissions[module]) {
+            this.permissions[module] = {}; // Ensure it's initialized
+          }
+          this.permissionKeys.forEach(permission => {
+            // Check if the role has the permission for this module
+            this.permissions[module][permission] = this.hasPermission(module, permission);
+          });
+        });
+    console.log(this.moduleKeys);
+    console.log(this.permissionKeys);
+    
+    
 
-  }
+
+}
+  // setPermissionsForRole(): void {
+  //   // Clear existing permissions
+  //   this.permissions = {};
+
+  //   // Loop through modules and permissions and check the claims for the selected role
+  //   this.moduleKeys.forEach(module => {
+  //     if (!this.permissions[module]) {
+  //       this.permissions[module] = {}; // Ensure it's initialized
+  //     }
+  //     this.permissionKeys.forEach(permission => {
+  //       // Check if the role has the permission for this module
+  //       this.permissions[module][permission] = this.hasPermission(module, permission);
+  //     });
+  //   });
+
+  // }
 
   // Check if the selected role has permission for a module and permission
 hasPermission(module: string, permission: string): boolean {

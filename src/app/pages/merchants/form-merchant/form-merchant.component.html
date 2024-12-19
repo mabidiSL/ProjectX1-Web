@@ -12,7 +12,7 @@
               <form   [formGroup]="merchantForm"  class="m-4">
                <div *ngIf="formError" class="alert alert-danger">{{ formError | translate}}</div>
                 <div class="row">
-
+                  <div class="row">
                   <div class="col-md-6 mb-3">
                     <div class="form-group ">
                     <label for="merchantName" >{{'Merchant Name'| translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
@@ -22,6 +22,66 @@
                     </div>  
                   </div>
                 </div>
+                <div class="col-md-6 mb-3">
+                  <div class="form-group">
+                    <label for="section_id">{{'Merchant Section' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                    <ng-select [readonly]="type === 'view'" placeholder="{{'Select a section' | translate}}" [items]="sectionlist" bindLabel="translatedName" 
+                    bindValue="id" id="section_id"  formControlName="section_id">
+                    </ng-select>
+                    <div *ngIf="merchantForm.get('section_id').touched && merchantForm.get('section_id').invalid" class="invalid-feedback d-block">
+                      <span *ngIf="merchantForm.get('section_id').errors?.['required']">{{'Section is required'| translate}}.</span>
+                    </div>   
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <div class="form-group">
+                    <label for="officeTel" >{{'Merchant Phone Number' |  translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label><br>
+                   <app-phone-number
+                   [disabled]="type === 'view'"
+                   *ngIf="merchantForm "
+                   [initialPhoneNumber]="merchantForm.get('officeTel')?.value"
+                   [inputId]="'officeTel'"
+                   [placeholder]="'Enter merchant phone' | translate"
+                    (phoneNumberChanged)="onMerchantPhoneNumberChanged($event)" >
+                  </app-phone-number>
+                   <div *ngIf="merchantForm.get('officeTel').touched && merchantForm.get('officeTel').invalid" class="invalid-feedback d-block">
+                    <span *ngIf="merchantForm.get('officeTel').errors?.['required']">{{'Phone Number is required'| translate}}.</span>
+                  </div>   
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div class="form-group">
+                    <label for="website">{{'Merchant Website' | translate}}</label>
+                    <input type="text" id="website" class="form-control" formControlName="website" placeholder="https://example.com" [readonly]="type==='view'">
+                  </div>
+                </div>
+            
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <div class="form-group">
+                    <label for="country_id" >{{'Country' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                    <ng-select [readonly]="type === 'view'" id="country_id" placeholder="{{'Select_the_Country' | translate}}" [items]="filteredCountries" bindLabel="translatedName" 
+                    bindValue="id" formControlName="country_id" (change)="onChangeCountrySelection($event)" >
+                   </ng-select>  
+                    <div *ngIf="merchantForm.get('country_id').touched && merchantForm.get('country_id').invalid" class="invalid-feedback d-block">
+                      <span *ngIf="merchantForm.get('country_id').errors?.['required']">{{'Country is required'| translate}}.</span>
+                    </div>   
+                  </div>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                  <div class="form-group ">
+                    <label for="city_id" >{{'City' | translate}}</label>
+                    <ng-select [readonly]="type === 'view'" id="city_id" placeholder="{{'Select_the_City' | translate}}" [items]="filteredCities" bindLabel="translatedName" 
+                    bindValue="id" formControlName="city_id"  >
+                    </ng-select>  
+                                         
+                  </div>
+                </div>
+              </div>
                 <!-- <div class="col-md-6 mb-3">
                   <div class="form-group ">
                   <label for="merchantName_ar" >{{'Merchant Name in arabic' | translate}} </label>
@@ -29,10 +89,11 @@
                   
                 </div>
               </div> -->
+              <div class="row">
                   <div class="col-md-6 mb-3">
                     <div class="form-group ">
                        
-                        <label for="f_name" >{{'First_Name' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                        <label for="f_name" >{{'Manager First Name' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                         <input type="text" id="f_name" class="form-control" formControlName="f_name" placeholder="{{ 'Enter the first name' | translate }}" required [readonly]="type==='view'">
                         <div *ngIf="merchantForm.get('f_name').touched && merchantForm.get('f_name').invalid" class="invalid-feedback d-block">
                             <span *ngIf="merchantForm.get('f_name').errors?.['required']">{{'Please enter the first Name'| translate}}.</span>
@@ -42,37 +103,34 @@
                   <div class="col-md-6 mb-3">
                     <div class="form-group ">
                        
-                        <label for="l_name" >{{'Last_Name' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                        <label for="l_name" >{{'Manager Last Name' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                         <input type="text" id="l_name" class="form-control" formControlName="l_name" placeholder="{{ 'Enter the last name' | translate }}" required [readonly]="type==='view'">
                         <div *ngIf="merchantForm.get('l_name').touched && merchantForm.get('l_name').invalid" class="invalid-feedback d-block">
                             <span *ngIf="merchantForm.get('l_name').errors?.['required']">{{'Please enter the last name'| translate}}.</span>
                           </div>
                       </div> 
                   </div>
+                </div>
+                <div class="row">
                   <div class="col-md-6 mb-3">
                     <div class="form-group ">
-                      <label for="email">{{'Email' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                      <label for="email">{{'Manager Email' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                       <input  type="email" id="email" class="form-control" formControlName="email" placeholder="{{ 'Enter the email' | translate }}" required [readonly]="type!=='create'">
                       <div *ngIf="merchantForm.get('email').touched && merchantForm.get('email').invalid" class="invalid-feedback d-block">
                         <span *ngIf="merchantForm.get('email').errors?.['required']">{{'Please enter the email'| translate}}.</span>
                       </div>
                     </div>
                   </div>         
-                  <div class="col-md-6 mb-3">
-                    <div class="form-group ">
-                        <label for="jobTitle" >{{'Job Title' | translate}} </label>
-                        <input type="text" id="jobTitle" class="form-control" formControlName="jobTitle" placeholder="{{ 'Enter your Job Title ' | translate }}">
-                   </div>
-                  </div> 
+                  
                     <div class="col-md-6 mb-3">
                       <div class="form-group">
-                        <label for="phone" >{{'Phone Number' |  translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label><br>
+                        <label for="phone" >{{'Manager Phone Number' |  translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label><br>
                        <app-phone-number
                        [disabled]="type === 'view'"
                        *ngIf="merchantForm "
                        [initialPhoneNumber]="merchantForm.get('phone')?.value"
                        [inputId]="'phone'"
-                       [placeholder]="'Enter merchant phone' | translate"
+                       [placeholder]="'Enter manager phone' | translate"
                         (phoneNumberChanged)="onPhoneNumberChanged($event)" >
                       </app-phone-number>
                        <div *ngIf="merchantForm.get('phone').touched && merchantForm.get('phone').invalid" class="invalid-feedback d-block">
@@ -80,19 +138,17 @@
                       </div>   
                       </div>
                     </div>
-                           
-                  
-                    <div class="col-md-6 mb-3">
-                      <div class="form-group">
-                        <label for="section_id">{{'Merchant Section' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                        <ng-select [readonly]="type === 'view'" placeholder="{{'Select a section' | translate}}" [items]="sectionlist" bindLabel="translatedName" 
-                        bindValue="id" id="section_id"  formControlName="section_id">
-                        </ng-select>
-                        <div *ngIf="merchantForm.get('section_id').touched && merchantForm.get('section_id').invalid" class="invalid-feedback d-block">
-                          <span *ngIf="merchantForm.get('section_id').errors?.['required']">{{'Section is required'| translate}}.</span>
-                        </div>   
-                      </div>
                     </div>
+                    <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <div class="form-group ">
+                          <label for="jobTitle" >{{'Manager Job Title' | translate}} </label>
+                          <input type="text" id="jobTitle" class="form-control" formControlName="jobTitle" placeholder="{{ 'Enter your Job Title ' | translate }}">
+                     </div>
+                    </div>   
+                  </div>    
+                  
+                    
                     <ng-template *ngIf="type !== 'create'" class="col-md-6 mb-3">
                       <div class="form-group ">
                         <label for="activationCode" >{{'Activation Code' | translate}} </label>
@@ -127,51 +183,23 @@
 
                     <div class="col-md-6 mb-3">
                       <div class="form-group">
-                        <label for="image">{{'Merchant Picture' | translate}}</label>
+                        <label for="image">{{'Manager Picture' | translate}}</label>
                          
-                        <app-image-upload [id]="'image'" [type]="'image'" [label]="'Upload Merchant Picture' | translate" [existantImage]="existantmerchantPicture" [filename]="fileName2" [alt]="'Merchant Pictutre'" [disabled]="type ==='view'" (imageUploaded)="onImageUpload($event)"></app-image-upload>
+                        <app-image-upload [id]="'image'" [type]="'image'" [label]="'Upload Merchant Picture' | translate" [existantImage]="existantmerchantPicture" [filename]="fileName2" [alt]="'Manager Pictutre'" [disabled]="type ==='view'" (imageUploaded)="onImageUpload($event)"></app-image-upload>
 
                          
                       </div>
                     </div>
                   </div>
+                    
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
-                      <label for="country_id" >{{'Country' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                      <ng-select [readonly]="type === 'view'" id="country_id" placeholder="{{'Select_the_Country' | translate}}" [items]="filteredCountries" bindLabel="translatedName" 
-                      bindValue="id" formControlName="country_id" (change)="onChangeCountrySelection($event)" >
-                     </ng-select>  
-                      <div *ngIf="merchantForm.get('country_id').touched && merchantForm.get('country_id').invalid" class="invalid-feedback d-block">
-                        <span *ngIf="merchantForm.get('country_id').errors?.['required']">{{'Country is required'| translate}}.</span>
-                      </div>   
-                    </div>
-                  </div>
-                  
-                  <div class="col-md-6 mb-3">
-                    <div class="form-group ">
-                      <label for="city_id" >{{'City' | translate}}</label>
-                      <ng-select [readonly]="type === 'view'" id="city_id" placeholder="{{'Select_the_City' | translate}}" [items]="filteredCities" bindLabel="translatedName" 
-                      bindValue="id" formControlName="city_id"  >
-                      </ng-select>  
-                                           
-                    </div>
-                  </div>
-                              
-                  <div class="col-md-6 mb-3">
-                    <div class="form-group">
-                      <label for="bankAccountNumber">{{'Bank Account Number' | translate}}</label>
+                      <label for="bankAccountNumber">{{'Merchant Bank Account Number' | translate}}</label>
                       <input type="text" id="bankAccountNumber" class="form-control" placeholder="{{ 'Enter Bank Account Number' | translate }}" formControlName="bankAccountNumber" [readonly]="type==='view'">
                     </div>
                   </div>
                  
-                  <div class="col-md-6 mb-3">
-                    <div class="form-group">
-                      <label for="website">{{'Merchant Website' | translate}}</label>
-                      <input type="text" id="website" class="form-control" formControlName="website" placeholder="https://example.com" [readonly]="type==='view'">
-                    </div>
-                  </div>
-                      
-              
+                  
                 <div class="col-md-6 mb-3">
                   <div class="form-group">
                     <label for="whatsup">{{'WhatsApp' | translate}}</label>
