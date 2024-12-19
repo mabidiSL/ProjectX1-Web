@@ -135,6 +135,8 @@
                 </form>
                 <ul class="list-inline wizard d-flex justify-content-end mb-0">
                   <li class="next list-inline-item" aria-disabled="false"><button class="btn btn-primary" cdkStepperNext>{{'Next' | translate}}</button></li>
+                  <li class="next list-inline-item" aria-disabled="false">
+                    <button class="btn btn-primary" (click)="onSubmit()">{{'Finish' | translate}}</button></li>
                 </ul>
               </section>
               }

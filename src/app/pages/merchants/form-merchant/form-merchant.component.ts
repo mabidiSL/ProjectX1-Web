@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, ElementRef, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { select, Store } from '@ngrx/store';
@@ -8,16 +8,16 @@ import { addMerchantlist,  getMerchantById,  updateMerchantlist } from 'src/app/
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { selectDataLoading, selectedMerchant } from 'src/app/store/merchantsList/merchantlist1-selector';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
-import { fetchCitylistData } from 'src/app/store/City/city.action';
+//import { fetchCitylistData } from 'src/app/store/City/city.action';
 import { fetchSectionlistData } from 'src/app/store/section/section.action';
 import { selectDataCountry } from 'src/app/store/country/country-selector';
 import { selectDataSection } from 'src/app/store/section/section-selector';
-import { selectDataCity } from 'src/app/store/City/city-selector';
+//import { selectDataCity } from 'src/app/store/City/city-selector';
 import { Merchant } from '../../../store/merchantsList/merchantlist1.model';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { UploadEvent } from 'src/app/shared/widget/image-upload/image-upload.component';
-import { Area } from 'src/app/store/area/area.model';
-import { City } from 'src/app/store/City/city.model';
+//import { Area } from 'src/app/store/area/area.model';
+//import { City } from 'src/app/store/City/city.model';
 import { Country } from 'src/app/store/country/country.model';
 import { SectionListModel } from 'src/app/store/section/section.model';
 
@@ -40,7 +40,7 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
   successmsg: boolean = false;
   merchant: Merchant = null;
   imageURL: string | undefined;
-  existantmerchantLogo: string = null;
+  existantcompanyLogo: string = null;
   existantmerchantPicture: string = null
   merchantPictureBase64: string = null;
   storeLogoBase64: string = null;
@@ -48,15 +48,13 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
   fromPendingContext: boolean = false;
 
   countrylist: Country[] = [];
-  arealist$:  Observable<Area[]>  ;
-  citylist$:  Observable<City[]> ;
+  
   loading$: Observable<boolean>;
 
   sectionlist:  SectionListModel[] = [];
   
   filteredCountries: Country[] = [];
-  filteredAreas :  Area[] = [];
-  filteredCities:  City[] = [];
+
   originalMerchantData: Merchant = {}; 
 
   fieldTextType: boolean  = false;
@@ -76,55 +74,30 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
 
       this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 100,query:'', status: 'active' }));
      // this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 1000, status: 'active' }));
-      this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 10000, query:'',status: 'active' }));
+     // this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 10000, query:'',status: 'active' }));
       this.store.dispatch(fetchSectionlistData({page: 1, itemsPerPage: 100, status: 'active' }));
      
       this.initForm();
       
      }
 
-     get passwordMatchError() {
-      return (
-        this.merchantForm.getError('passwordMismatch') &&
-        this.merchantForm.get('confpassword')?.touched
-      );
-    }
-  
-    passwordMatchValidator(formGroup: FormGroup) {
-      const newPassword = formGroup.get('password')?.value;
-      const confirmPassword = formGroup.get('confpassword')?.value;
-    
-      if (newPassword && confirmPassword) {
-        if (newPassword !== confirmPassword) {
-          formGroup.get('confpassword')?.setErrors({ passwordMismatch: true });
-          return { passwordMismatch: true }; // Return an error object
-        } else {
-          formGroup.get('confpassword')?.setErrors(null); // Clear errors if they match
-        }
-      }
-    
-      return null; // Return null if valid
-    }
+   
    private initForm() {
     this.merchantForm = this.formBuilder.group({
     id: [null],
     f_name: ['', Validators.required],
     l_name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', this.type === 'create' ? Validators.required : null],
-    confpassword: ['', this.type === 'create' ? Validators.required : null],
     phone:[null,Validators.required], //Validators.pattern(/^\d{3}-\d{3}-\d{4}$/)*/],
     country_id:[null, Validators.required],
-    city_id:[null],
+    city:[null],
+    jobTitle: [null],
     //area_id:[null, Validators.required], 
-    supervisorName: [''],
-    supervisorName_ar: [''],
-    supervisorPhone: [null],
-    bankAccountNumber: [''],
+    bankAccountNumber: [null],
     merchantName:['', Validators.required],
-    merchantName_ar:[''],
-    image: [''],
-    companyLogo: ['', Validators.required],
+    //merchantName_ar:[''],
+    image: [null],
+    companyLogo: [null, Validators.required],
     activationCode: [''],
     qrCode: [''],
     section_id:[null, Validators.required],
@@ -135,8 +108,6 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
     instagram: [undefined]
     
 
-  }, {
-    validators: this.type === 'create' ? this.passwordMatchValidator : null 
   });} 
   // set the currenr year
   year: number = new Date().getFullYear();
@@ -148,7 +119,7 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
         
     this.fetchCountry();
     //this.fetchAreas();
-    this.fetchCities();
+    //this.fetchCities();
     this.fetchSection();
 
     const merchantId = this.route.snapshot.params['id'];
@@ -170,9 +141,9 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
             this.originalMerchantData = { ...merchant };
 
             this.isEditing = true;
-            if(merchant.merchantLogo){
-              this.existantmerchantLogo = merchant.merchantLogo;
-              this.fileName1 = merchant.merchantLogo.split('/').pop();
+            if(merchant.companyLogo){
+              this.existantcompanyLogo = merchant.companyLogo;
+              this.fileName1 = merchant.companyLogo.split('/').pop();
 
             }
             if(merchant.merchantPicture){
@@ -194,7 +165,6 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
       l_name: merchant.user.translation_data[0].l_name,
       merchantName: merchant.translation_data[0].name,
       //merchantName_ar: merchant.translation_data[1].name,
-      supervisorName: merchant.translation_data[0].supervisorName,
       //supervisorName_ar: merchant.translation_data[1].supervisorName,
       
     });
@@ -232,20 +202,20 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
 
   }
   
-  fetchCities(){
-    this.store.select(selectDataCity).subscribe((data) => {
-      this.filteredCities = [...data].map(city =>{
-       const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
+  // fetchCities(){
+  //   this.store.select(selectDataCity).subscribe((data) => {
+  //     this.filteredCities = [...data].map(city =>{
+  //      const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
    
-       return {
-         ...city,  
-         translatedName 
-       };
-     })
-     .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-     });
-   });
-  }
+  //      return {
+  //        ...city,  
+  //        translatedName 
+  //      };
+  //    })
+  //    .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
+  //    });
+  //  });
+  // }
   private getNavigationState(){
     /**Determining the context of the routing if it is from Approved State or Pending State */
       const navigation = this.router.getCurrentNavigation();
@@ -258,21 +228,23 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
   onChangeCountrySelection(event: Country){
     const country = event;
     if(country){
-      this.filteredCities = [];
-      this.merchantForm.get('city_id').setValue(null);
-      this.store.select(selectDataCity).subscribe((data) => {
-        this.filteredCities = [...data].map(city =>{
-         const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
+      this.merchantForm.get('city').setValue(null);
+
+    //   this.filteredCities = [];
+    //   this.merchantForm.get('city_id').setValue(null);
+    //   this.store.select(selectDataCity).subscribe((data) => {
+    //     this.filteredCities = [...data].map(city =>{
+    //      const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
      
-         return {
-           ...city,  
-           translatedName 
-         };
-       })
-       .filter(city => city.country_id === country)
-       .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-       });
-     });
+    //      return {
+    //        ...city,  
+    //        translatedName 
+    //      };
+    //    })
+    //    .filter(city => city.country_id === country)
+    //    .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
+    //    });
+    //  });
     }
    
     
@@ -287,12 +259,11 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
   onPhoneNumberChanged(event: { number: string; countryCode: string }) {
 
     this.merchantForm.get('phone').setValue(event.number);
-    this.setCountryByPhoneCode(event.countryCode);
+    if(this.type === 'create'){
+      this.setCountryByPhoneCode(event.countryCode);
+    }
   }
 
-  onSupervisorPhoneChanged(phoneNumber: string) {
-    this.merchantForm.get('supervisorPhone').setValue(phoneNumber);
-  }
   // convenience getter for easy access to form fields
   get f() { return this.merchantForm.controls; }
 
@@ -303,23 +274,23 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
         { field: 'merchantName', name: 'name' },
         { field: 'f_name', name: 'f_name' },
         { field: 'l_name', name: 'l_name' },
-        { field: 'supervisorName', name: 'supervisorName' }
+       // { field: 'supervisorName', name: 'supervisorName' }
       ];
-      const arFields = [
-        { field: 'merchantName_ar', name: 'name' },
-        { field: 'supervisorName_ar', name: 'supervisorName' }
-      ];
+      // const arFields = [
+      //   { field: 'merchantName_ar', name: 'name' },
+      //   { field: 'supervisorName_ar', name: 'supervisorName' }
+      // ];
      // Create the English translation if valid
       const enTranslation = this.formUtilService.createTranslation(merchant,'en', enFields );
       if (enTranslation) {
         merchant.translation_data.push(enTranslation);
       }
      
-      // Create the Arabic translation if valid
-      const arTranslation = this.formUtilService.createTranslation(merchant,'ar', arFields );
-      if (arTranslation) {
-        merchant.translation_data.push(arTranslation);
-      }
+      // // Create the Arabic translation if valid
+      // const arTranslation = this.formUtilService.createTranslation(merchant,'ar', arFields );
+      // if (arTranslation) {
+      //   merchant.translation_data.push(arTranslation);
+      // }
       if(merchant.translation_data.length <= 0)
         delete merchant.translation_data;
       // Dynamically remove properties that are undefined or null at the top level of city object
@@ -332,10 +303,10 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
      delete merchant.merchantName;  
      delete merchant.f_name;
      delete merchant.l_name;
-     delete merchant.merchantName_ar;    
-     delete merchant.supervisorName;
-     delete merchant.supervisorName_ar;
-     delete merchant.country_id;
+    //  delete merchant.merchantName_ar;    
+    //  delete merchant.supervisorName;
+    //  delete merchant.supervisorName_ar;
+    // delete merchant.country_id;
  
      return merchant;
   }
@@ -359,14 +330,13 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
       const newData = this.merchantForm.value;
     
       if(this.storeLogoBase64){
-        newData.merchantLogo = this.storeLogoBase64;
+        newData.companyLogo = this.storeLogoBase64;
       }
       if(this.merchantPictureBase64){
         newData.merchantPicture = this.merchantPictureBase64;
       }
-      delete newData.confpassword;
-      delete newData.area_id;
-      delete newData.country_id;
+      
+     
       delete newData.qrCode;
       delete newData.activationCode;
 
@@ -425,8 +395,8 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
         // Handle Logo Upload
         this.storeLogoBase64 = event.file;
         this.fileName1 = ''; // Set the file name
-        this.existantmerchantLogo = event.file;
-        this.merchantForm.controls['companyLogo'].setValue(this.existantmerchantLogo);
+        this.existantcompanyLogo = event.file;
+        this.merchantForm.controls['companyLogo'].setValue(this.existantcompanyLogo);
       }
     }
   ngOnDestroy() {

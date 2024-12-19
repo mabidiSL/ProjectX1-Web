@@ -43,7 +43,7 @@ export class MerchantListComponent implements OnInit {
   unChecked : any = {status: 'inactive', label: 'inActive'};
   
   columns : any[]= [
-    { property: 'merchantLogo', label: 'Merchant Logo' },
+    { property: 'companyLogo', label: 'Merchant Logo' },
     { property: 'qrCode', label: 'Qr Merchant' },
     { property: 'activationCode', label: 'Activation Code' },
     { property: 'translation_data[0].name', label: 'Merchant_Name' },
@@ -84,7 +84,7 @@ export class MerchantListComponent implements OnInit {
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage , status: ''}));
+    this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage ,query: this.searchTerm, status: ''}));
     
   }
 

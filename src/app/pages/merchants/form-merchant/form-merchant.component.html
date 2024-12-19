@@ -22,13 +22,13 @@
                     </div>  
                   </div>
                 </div>
-                <div class="col-md-6 mb-3">
+                <!-- <div class="col-md-6 mb-3">
                   <div class="form-group ">
                   <label for="merchantName_ar" >{{'Merchant Name in arabic' | translate}} </label>
                   <input type="text" id="merchantName_ar" class="form-control" formControlName="merchantName_ar" placeholder="{{ 'Enter merchant name in arabic' | translate }}"  [readonly]="type==='view'">
                   
                 </div>
-              </div>
+              </div> -->
                   <div class="col-md-6 mb-3">
                     <div class="form-group ">
                        
@@ -57,45 +57,13 @@
                         <span *ngIf="merchantForm.get('email').errors?.['required']">{{'Please enter the email'| translate}}.</span>
                       </div>
                     </div>
-                  </div>
-               
-                              
-                  <div *ngIf="type === 'create'" class="col-md-6 mb-3">
+                  </div>         
+                  <div class="col-md-6 mb-3">
                     <div class="form-group ">
-                        <div class="form-group ">
-                          <label for="password" >{{'Password' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <div class="input-group auth-pass-inputgroup">
-                          <input [type]="fieldTextType ? 'text' : 'password'" id="password" class="form-control" placeholder="{{ 'Enter the Password' | translate }}" formControlName="password" required>
-                          <button class="btn btn-light ms-0" type="button" id="password-addon">
-                            <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()"></i>
-                          </button>
-                          <div *ngIf="merchantForm.get('password').touched && merchantForm.get('password').invalid" class="invalid-feedback d-block">
-                            <span *ngIf="merchantForm.get('password').errors?.['required']">{{'Please enter the password'| translate}}.</span>
-                          </div>
-                          </div>
-                        </div>
-                    </div>
-                    </div>
-
-                  <div *ngIf="type === 'create'" class="col-md-6 mb-3">
-                      <div class="form-group ">
-                        <div class="form-group ">
-                          <label for="confpassword" >{{'Confirm Password' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <div class="input-group auth-pass-inputgroup">
-                          <input [type]="confirmFieldTextType ? 'text' : 'password'" id="confpassword" class="form-control" placeholder="{{ 'Confirm Your New Password' | translate }}" formControlName="confpassword" required>
-                          <button class="btn btn-light ms-0" type="button" id="password-addon">
-                            <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !confirmFieldTextType, 'mdi-eye-outline': confirmFieldTextType}" (click)="toggleConfirmFieldTextType()"></i>
-                          </button>
-                          <div *ngIf="merchantForm.get('confpassword').touched && merchantForm.get('confpassword').invalid" class="invalid-feedback d-block">
-                            <span *ngIf="merchantForm.get('confpassword').errors?.['required']">{{'Please confirm your new password' | translate}}.</span>
-                            <div *ngIf="passwordMatchError">{{ 'confirm_password_does_not_matched' | translate }}</div>
-                          </div>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
-               
-                    
+                        <label for="jobTitle" >{{'Job Title' | translate}} </label>
+                        <input type="text" id="jobTitle" class="form-control" formControlName="jobTitle" placeholder="{{ 'Enter your Job Title ' | translate }}">
+                   </div>
+                  </div> 
                     <div class="col-md-6 mb-3">
                       <div class="form-group">
                         <label for="phone" >{{'Phone Number' |  translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label><br>
@@ -112,45 +80,8 @@
                       </div>   
                       </div>
                     </div>
-                    <!-- <div class="col-md-6 mb-3">
-                      <div class="form-group">
-                        <label for="serviceType">{{'Service Type' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                        <ng-select [readonly]="type === 'view'" placeholder="{{'Select service type' |translate}}" id="serviceType"  [items]="serviceTypes" formControlName="serviceType"  >
-                        </ng-select>
-                        <div *ngIf="merchantForm.get('serviceType').touched && merchantForm.get('serviceType').invalid" class="invalid-feedback d-block">
-                        <span *ngIf="merchantForm.get('serviceType').errors?.['required']">{{'Service Type is required'| translate}}.</span>
-                      </div>
-                    </div>
-                    </div> -->
-                 
-                    <div class="col-md-6 mb-3">
-                      <div class="form-group">
-                        <label for="supervisorName">{{'Supervisor Name' | translate}}</label>
-                        <input type="text" id="supervisorName" class="form-control" placeholder="{{ 'Enter supervisor name' | translate }}" formControlName="supervisorName" [readonly]="type==='view'">
-                        
-                      </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                      <div class="form-group">
-                        <label for="supervisorName_ar">{{'Supervisor Name in arabic' | translate}}</label>
-                        <input type="text" id="supervisorName_ar" class="form-control" placeholder="{{ 'Enter supervisor name in arabic' | translate }}" formControlName="supervisorName_ar" [readonly]="type==='view'">
-                       
-                      </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                      <div class="form-group">
-                        <label for="supervisorPhone">{{'Supervisor Phone' | translate}}</label><br>
-                        <app-phone-number
-                        [initialPhoneNumber]="merchantForm.get('supervisorPhone')?.value"
-                        [disabled]="type === 'view'"
-                        *ngIf="merchantForm "
-                        [inputId]="'supervisorPhone'"
-                        [placeholder]="'Enter supervisor phone' | translate"
-                        (phoneNumberChanged)="onSupervisorPhoneChanged($event)" >
-                       </app-phone-number> 
-                                         
-                      </div>
-                    </div>
+                           
+                  
                     <div class="col-md-6 mb-3">
                       <div class="form-group">
                         <label for="section_id">{{'Merchant Section' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
@@ -180,13 +111,13 @@
                         </div> 
                       </div>
                     </ng-template>
-                   
+                   <div class="row">
                     <div class="col-md-6 mb-3">
                       <div class="form-group">
                         <label for="companyLogo">{{ 'Merchant Logo' | translate }}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                     
                         <!-- File input for selecting or uploading a new image -->
-                        <app-image-upload [id]="'companyLogo'" [type]="'logo'" [label]="'Upload company Logo' | translate" [existantImage]="existantmerchantLogo" [filename]="fileName1" [alt]="'Coupon Logo'" [disabled]="type ==='view'" (logoUploaded)="onLogoUpload($event)"></app-image-upload>
+                        <app-image-upload [id]="'companyLogo'" [type]="'logo'" [label]="'Upload company Logo' | translate" [existantImage]="existantcompanyLogo" [filename]="fileName1" [alt]="'Coupon Logo'" [disabled]="type ==='view'" (logoUploaded)="onLogoUpload($event)"></app-image-upload>
                      
                         <div *ngIf="merchantForm.get('companyLogo').touched && merchantForm.get('companyLogo').invalid" class="invalid-feedback d-block">
                           <span *ngIf="merchantForm.get('companyLogo').errors?.['required']">{{'Merchant Logo is required'| translate}}.</span>
@@ -203,7 +134,7 @@
                          
                       </div>
                     </div>
-                
+                  </div>
                   <div class="col-md-6 mb-3">
                     <div class="form-group">
                       <label for="country_id" >{{'Country' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
@@ -216,9 +147,19 @@
                     </div>
                   </div>
                   
-                   
+                  <div class="col-lg-6">
+                    <div class="mb-3">
+                      <div class="form-group ">
+                        <label for="city" >{{'City'| translate }}  </label>
+                        <input type="text" id="city" class="form-control" formControlName="city" placeholder="{{ 'Enter the city of the merchant' | translate }}"     >
+                        <!-- <div *ngIf="adminForm.get('registrationCode').touched && adminForm.get('bank').invalid" class="invalid-feedback d-block">
+                        <span *ngIf="adminForm.get('registrationCode').errors?.['required']">{{'Registration Code is required'| translate}}.</span>
+                        </div>   -->
+                        </div>
+                  </div>
+                  </div>
 
-                  <div class="col-md-6 mb-3">
+                  <!-- <div class="col-md-6 mb-3">
                     <div class="form-group ">
                       <label for="city_id" >{{'City' | translate}}</label>
                       <ng-select [readonly]="type === 'view'" id="city_id" placeholder="{{'Select_the_City' | translate}}" [items]="filteredCities" bindLabel="translatedName" 
@@ -226,7 +167,7 @@
                       </ng-select>  
                                            
                     </div>
-                  </div>
+                  </div> -->
                               
                   <div class="col-md-6 mb-3">
                     <div class="form-group">

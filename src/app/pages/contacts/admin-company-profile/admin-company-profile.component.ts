@@ -62,7 +62,7 @@ export class AdminCompanyProfileComponent implements OnInit{
       this.authService.currentUser$.subscribe(user =>{
         this.currentUser = user;
       });
-      console.log(this.currentUser.companyId);
+      console.log(this.currentUser);
      
      
       console.log('***********');
@@ -258,9 +258,17 @@ export class AdminCompanyProfileComponent implements OnInit{
     //   }
         
     // }
+    setCountryByPhoneCode(code: string){
+      const country = this.filteredCountries.find(c => c.phoneCode === code);
+      console.log(country);
+      this.adminForm.get('country_id').setValue(country?.id);
+    }
   
+   
   onPhoneNumberChanged(event: { number: string; countryCode: string }) {
     this.adminForm.get('officeTel').setValue(event.number);
+    this.setCountryByPhoneCode(event.countryCode);
+
   }
  
   createProfileFromForm(formValue): any {
@@ -314,7 +322,6 @@ export class AdminCompanyProfileComponent implements OnInit{
    */
   onSubmit() {
     console.log('on submit');
-    
     this.formSubmitted = true;
 
     if (this.adminForm.invalid) {
@@ -327,13 +334,18 @@ export class AdminCompanyProfileComponent implements OnInit{
     }
       this.formError = null;
       const newData = this.adminForm.value;
+      //console.log(newData);
       if(this.existantcompanyLogo){
         newData.companyLogo = this.existantcompanyLogo;
       }
           
       const updatedDta = this.formUtilService.detectChanges(this.adminForm, this.originalCompanyData);
+      console.log(updatedDta);
+
       if (Object.keys(updatedDta).length > 0) {
         const changedData = this.createProfileFromForm(updatedDta);
+        console.log(changedData);
+        
         if(this.existantcompanyLogo !== this.originalCompanyData.companyLogo)
           changedData.companyLogo = this.existantcompanyLogo;
         

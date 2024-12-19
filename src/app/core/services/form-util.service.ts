@@ -43,14 +43,24 @@ export class FormUtilService{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   detectChanges<T>(form: FormGroup, data: T): Partial<T> {
     const changedData: Partial<T> = {};
-
+    console.log(form);
+    console.log(data);
+ 
+ 
     // Compare each field and add only the modified fields
     for (const key in form.controls) {
       
-      if(key.includes('phone') ||key.includes('Phone')){
-        if (form.controls[key].value !== data[key]) {
-          changedData[key] = form.controls[key].value;
-      }
+      if(key.includes('phone') ||key.includes('Phone')|| key.includes('Tel')){
+        if(data[key]){
+          if (form.controls[key].value !== data[key]) {
+            changedData[key] = form.controls[key].value;
+          }
+        }else
+        {
+          if (form.controls[key].value !== data['user'][key]) {
+            changedData[key] = form.controls[key].value;
+          }
+        }
       }
       if (form.controls[key].dirty) {
         // Check if the value is different from the original

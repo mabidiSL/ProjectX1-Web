@@ -40,7 +40,7 @@ id_number?: number;
 translation_data?: Translation[];
 serviceType? :  string ;
 supervisorPhone? :  string ;
-merchantLogo ?: string  ;
+companyLogo ?: string  ;
 merchantPicture? :  string ;
 bankAccountNumber ?:  string  
 website ?:  string;
