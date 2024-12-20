@@ -403,7 +403,7 @@ createCouponFromForm(formValue): Coupon{
    
     }
    onApprove(){
-    const coupon = {id: this.formCoupon.value.id, status: 'approved'}
+    const coupon = {id: this.formCoupon.value.id, status: 'active'}
     this.store.dispatch(updateCouponlist({ updatedData: coupon }));
 
    }   

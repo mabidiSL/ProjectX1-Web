@@ -10,6 +10,7 @@ import { selectDataLoading } from 'src/app/store/Authentication/authentication-s
 import { Observable } from 'rxjs';
 import { BackgroundService } from 'src/app/core/services/background.service';
 import { RandomBackgroundService } from 'src/app/core/services/setBackgroundEx.service';
+import { passwordValidator } from 'src/app/shared/validator/passwordValidator';
 
 @Component({
   selector: 'app-updatepassword',
@@ -60,7 +61,7 @@ export class UpdatepasswordComponent implements OnInit, OnDestroy {
     // form validation
     this.updatePassForm = this.formBuilder.group({
       
-        password: ['', [Validators.required]],
+        password: ['', [Validators.required,passwordValidator()]],
         confirmPassword: ['', [Validators.required]]
 
     }, {validators: [this.passwordMatchValidator]});

@@ -18,6 +18,7 @@ import { selectDataNotification, selectDataUnseenCount } from 'src/app/store/not
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { Notification } from 'src/app/store/notification/notification.model';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
+import { selectDataLoading } from 'src/app/store/Authentication/authentication-selector';
 
 @Component({
   selector: 'app-topbar',
@@ -47,6 +48,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
   notificationsSubject = new BehaviorSubject<any[]>([]);
   height: number = 0;  // Dynamic height
   maxHeight: number = 500;  // Maximum height for the container
+  loading$: Observable<boolean>;
 
   // Define layoutMode as a property
 
@@ -60,6 +62,8 @@ export class TopbarComponent implements OnInit, OnDestroy {
     private loaderService: LoaderService,
     public authService: AuthenticationService
     ) {
+              this.loading$ = this.store.pipe(select(selectDataLoading)); 
+      
       this.authService.currentUser$.subscribe(user => {
         if (user) {
           this.currentUser = user;

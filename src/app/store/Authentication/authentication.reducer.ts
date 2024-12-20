@@ -40,8 +40,8 @@ export const authenticationReducer = createReducer(
     on(loginSuccess, (state, { user, token }) => ({ ...state, loading: false, isLoggedIn: true, user,token, error: null, })),
     on(loginFailure, (state, { error }) => ({ ...state, loading: false, isLoggedIn: false, error })),
    
-    on(logout, (state) => ({ ...state, user: null, loading: true, isLoggedIn: false, token: null, error: null })),
-    on(logoutSuccess, (state, { message }) => ({ ...state, loading: false, message, isLoggedIn: false, error: null })),
+    on(logout, (state) => ({ ...state,loading: true,  error: null })),
+    on(logoutSuccess, (state, { message }) => ({ ...state, loading: false, message,user: null, token:null, isLoggedIn: false, error: null })),
     on(logoutFailure, (state, { error }) => ({ ...state, loading: false, isLoggedIn: false, error })),
 
     on(forgetPassword, state => ({ ...state, loading: true, error: null, })),

@@ -31,10 +31,10 @@ export class ProfileComponent  {
   profileForm: UntypedFormGroup;
   formError: string | null = null;
   formSubmitted = false;
-  fieldTextType!: boolean;
-  fieldTextType1!: boolean;
+  fieldTextType: boolean= true;
+  fieldTextType1: boolean= true;
 
-  fieldTextType2!: boolean;
+  fieldTextType2: boolean= true;
   originalProfileData: any = null;
   passwordMatchError: boolean = false;
 

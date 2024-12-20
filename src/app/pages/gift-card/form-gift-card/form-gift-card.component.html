@@ -11,13 +11,31 @@
                 <form #formElement [formGroup]="formGiftCard" >
                   <div *ngIf="formError" class="alert alert-danger">{{ formError | translate }}</div>
                   <div class="d-flex align-items-center justify-content-between mb-2">                 
-                              
-                    <div class="form-check form-switch form-switch-md ms-auto">
-                      <label class="form-check-label" for="SwitchCheckSizelg1">{{(formGiftCard.get('status')?.value === 'active')? 'Active': 'InActive'}}</label>
-                      <input class="form-check-input" type="checkbox" id="SwitchCheckSizelg1" formControlName="status"  [checked]="(formGiftCard.get('status').value === 'active')" (change)="onToggle($event)">
+                    <div *ngIf="formGiftCard.get('status')?.value === 'pending'; else switchToggle" class="ms-auto">
+                      <span class="badge bg-warning text-dark" style="font-size: 1.2rem; padding: 0.5rem 1rem;">
+                        <i class="bi bi-hourglass-split" style="margin-right: 0.4rem;"></i> Pending
+                      </span>
                     </div>
+                    
+                    <ng-template #switchToggle>
+                      <div class="form-check form-switch form-switch-md ms-auto">
+                        <label class="form-check-label" for="SwitchCheckSizelg1">
+                          {{ formGiftCard.get('status')?.value === 'active' ? 'Active' : 'InActive' }}
+                        </label>
+                        <input 
+                          class="form-check-input" 
+                          type="checkbox" 
+                          id="SwitchCheckSizelg1" 
+                          formControlName="status"  
+                          [checked]="formGiftCard.get('status')?.value === 'active'" 
+                          (change)="onToggle($event)">
+                      </div>
+                    </ng-template>
+                        
+                    
                  
-                  </div>     
+                  </div>
+                   
                   <div class="row">
                       <div class="row">
                         <div class="col-md-6 mb-3">
@@ -151,8 +169,15 @@
                         <button type="button" class="btn btn-success" (click)="toggleViewMode()">{{ 'Go_Back' | translate }}</button>
                       </ng-container>
                       <ng-template #editModeButtons>
-                        <button type="button" id="cancel-btn" class="btn btn-outline-secondary me-2" (click)="onCancel()">{{ 'Cancel' | translate }}</button>
-                        <button type="submit" class="btn btn-success" (click)="onSubmit()">{{ (type === 'create' ? 'Add gift card' : 'Update_gift_card') | translate }}</button>
+                        <button *ngIf="(formGiftCard.get('status')?.value !== 'pending' &&currentRole ==='Admin') ||(formGiftCard.get('status')?.value === 'pending' && currentRole !=='Admin') ||(formGiftCard.get('status')?.value !== 'pending' && currentRole !=='Admin')" type="submit" class="btn btn-success me-2" (click)="onSubmit()"  > {{ (type === 'create' ? 'Add gift card' : 'Update_gift_card') | translate }}
+                        </button>
+                      <div *ngIf="currentRole ==='Admin'">
+                        <button *ngIf="formGiftCard.get('status')?.value === 'pending'" type="submit" class="btn btn-success me-2" (click)="onApprove()"  > {{ 'Approve' | translate }}
+                        </button>
+                        <button *ngIf="formGiftCard.get('status')?.value === 'pending'" type="submit" class="btn btn-danger me-2" (click)="onDecline()"  > {{ 'Decline' | translate }}
+                        </button>
+                      </div>
+                        <button type="button" id="cancel-btn" class="btn btn-outline-secondary me-2" (click)="onCancel()">{{'Cancel'|translate}}</button>
                         <div id="elmLoader" class="loader" *ngIf="loading$ | async">
                           <div class="spinner-border text-primary avatar-sm" role="status">
                             <span class="visually-hidden">{{'Loading...' | translate}}</span>

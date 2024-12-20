@@ -372,7 +372,15 @@ onSubmit(){
       }
       
     }
-      
+    onApprove(){
+      const coupon = {id: this.formGiftCard.value.id, status: 'active'}
+      this.store.dispatch(updateGiftCardlist({ updatedData: coupon }));
+  
+     }   
+    onDecline(){
+      const coupon = {id: this.formGiftCard.value.id, status: 'refused'}
+      this.store.dispatch(updateGiftCardlist({ updatedData: coupon }));
+    }    
 /**
  * Upload GiftCard Logo
  */
