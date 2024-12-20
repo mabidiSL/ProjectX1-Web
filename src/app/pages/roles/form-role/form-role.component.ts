@@ -85,7 +85,7 @@ export class FormRoleComponent implements OnInit, OnDestroy {
         
       });
      }
-     mapClaimsToEnums(claims: any[]) {
+    mapClaimsToEnums(claims: any[]) {
       
       claims.forEach(claim => {
           if (claim.claimType in Modules) {

@@ -64,7 +64,7 @@
     margin-top: 10px;
     font-size: .8rem;
     font-weight: $font-weight-medium;
-    padding: 10px 20px;
+    padding: 10px 40px;
   }
 }
 
@@ -75,7 +75,7 @@
   background-color: var(--#{$prefix}secondary-bg);
   border: 2px solid var(--#{$prefix}border-color);
   border-radius: var(--#{$prefix}border-radius);
-  padding: 1rem;
+  padding: 2rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
