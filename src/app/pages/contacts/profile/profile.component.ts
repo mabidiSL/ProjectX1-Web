@@ -71,9 +71,9 @@ export class ProfileComponent  {
         jobTitle: [user?.jobTitle],
         email: [user?.email, [Validators.required, Validators.email]],
         phone:  [user?.phone, Validators.required],
-        logo:[user?.logo]
+        image:[user?.image]
       });
-      
+      this.imagePreview = (user?.image)? user?.image: null;
     this.passwordForm = this.formBuilder.group({
       id: [user?.id],
       currentPassword: ['', [Validators.required]],      
@@ -172,7 +172,7 @@ passwordMatchValidator(formGroup: FormGroup) {
 
       this.formError = null;
         const changedData =  this.createProfileFromForm(this.profileForm.value);
-        delete changedData.logo;
+        
         delete changedData.email;  
         console.log(changedData);
         this.store.dispatch(updateProfile({ user: changedData }));
@@ -199,7 +199,20 @@ private focusOnFirstInvalid() {
       }
       return null;
     }
+    imagePreview: string | ArrayBuffer | null = null; // Holds the image preview URL
 
+    onFileSelected(event: Event): void {
+      const fileInput = event.target as HTMLInputElement;
+      if (fileInput.files && fileInput.files[0]) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.imagePreview = reader.result; // Set the image preview to the uploaded file
+          this.profileForm.get('image').setValue(this.imagePreview);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
   
     // convenience getter for easy access to form fields
     get f() { return this.passwordForm.controls; }
