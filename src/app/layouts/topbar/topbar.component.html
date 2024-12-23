@@ -130,7 +130,7 @@
 
       <div class="dropdown d-inline-block" dropdown>
         <button type="button" class="btn header-item" dropdownToggle id="page-header-user-dropdown">
-          <img class="rounded-circle header-profile-user" src="assets/images/users/user-dummy-img.jpg" alt="Header Avatar">
+          <img class="rounded-circle header-profile-user" [src]="currentUser?.image?currentUser?.image:'assets/images/users/user-dummy-img.jpg'" alt="Header Avatar">
           <span class="d-none d-xl-inline-block ms-1">{{currentUser?.translation_data[0].f_name}}</span>
           <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
         </button>

@@ -165,7 +165,7 @@
         </div> <!-- end col -->
       </div>
     </accordion-group>
-    <accordion-group  [isDisabled]="isPermissionsOpen" heading="{{'View_Employee_Permissions' | translate}}" class  ="accordion-item" #md>
+    <accordion-group  [isDisabled]="isPermissionsOpen && !isEditing" heading="{{'View_Employee_Permissions' | translate}}" class  ="accordion-item" #md>
       <span accordion-heading class="float-end fs-5">
         <i class="mdi" [ngClass]="!md?.isOpen ? 'mdi mdi-chevron-down accor-plus-icon': 'mdi mdi-chevron-up accor-plus-icon'"></i>
       </span>
