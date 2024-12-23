@@ -768,7 +768,8 @@
         "APP_Token is required": "App Token is required",
         "APP_Secret": "App Secret",
         "Enter_the_app_secret": "Enter the app secret",
-        "App_secret is required": "App Secret is required"
+        "App_secret is required": "App Secret is required",
+        "Customer_List": "Customer List"
 
 
 

@@ -1,8 +1,9 @@
  
   <div class="container-fluid">
 
-    <app-page-title title="{{'Merchants_List'| translate}}" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+    <!-- <app-page-title title="{{'Merchants_List'| translate}}" [breadcrumbItems]="breadCrumbItems"></app-page-title> -->
     <app-custom-table
+      [pageTitle] = "'Merchants_List'| translate"
       [addButtonLink] ="'/private/merchants/create'"
       [addButtonLabel] ="'New_Merchant' | translate"
       [addButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Merchants, claimValue: [Permission.Create]}]"
@@ -15,9 +16,11 @@
       [ArrayData]="originalArray"
       [checkedStatus] = "checked"
       [uncheckedStatus] = "unChecked"
+      [statusList] = "statusList"
       [totalItems]="(totalItems$ | async)"
       (onPageSizeChanged)="onPageSizeChanged($event)"
       (onsearch)="onSearchEvent($event)"
+      (onFilter)="onFilterEvent($event)"
       (pageChanged)="onPageChanged($event)"
       (onChangeEvent)="onChangeEvent($event)"
       (onDelete)="onDelete($event)">

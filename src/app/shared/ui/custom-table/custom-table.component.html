@@ -4,56 +4,97 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="card">
+      <div class="card-body border-bottom">
+        <div class="d-flex align-items-center">
+           <h5 class="mb-0 card-title font-size-18 flex-grow-1">{{pageTitle}}</h5> 
+          <div class="flex-shrink-0 d-flex gap-1">
+            <button *hasClaim="addButtonPermission" [routerLink]="addButtonLink" type="button" class="btn btn-primary btn-rounded">
+              <i class="mdi mdi-plus me-1"></i> {{ addButtonLabel | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body border-bottom">
+        <div class="row g-3">
+          <div class="col-xxl-4 col-lg-6">
+            <input type="search" class="form-control" id="searchInput" placeholder="Search for ..." [(ngModel)]="searchTerm" (ngModelChange)="searchEvent()">
+          </div>
+          <div class="col-xxl-2 col-lg-6">
+            <select class="form-select" id="idStatus" aria-label="Default select example" (change)="selectStatus($event)">
+              <option  value="">{{'Select Status' | translate}}</option>
+              <option *ngFor="let status of statusList" [value]="status.status">{{ status.label  | translate}}</option>
+              </select>
+          </div>
+          <!-- <div class="col-xxl-2 col-lg-4">
+            <select class="form-select" id="idType" aria-label="Default select example" (click)="selectType()">
+              <option value="">Select Type</option>
+              <option value="Full Time">Full Time</option>
+              <option value="Part Time">Part Time</option>
+              <option value="Internship">Internship</option>
+              <option value="Freelance">Freelance</option>
+            </select>
+          </div> -->
+          <!-- <div class="col-xxl-2 col-lg-4">
+            <div id="datepicker1">
+              <input type="text" placeholder="Datepicker" class="form-control " bsDatepicker [bsConfig]="{ showWeekNumbers: false }">
+
+            </div> input-group -->
+          <!-- </div> --> 
+          <div class="col-xxl-2 col-lg-4">
+            <button type="button" class="btn btn-soft-secondary w-100" (click)="Filter()"><i class="mdi mdi-filter-outline align-middle"></i> {{'Filter' | translate}}</button>
+          </div>
+        </div>
+      </div>
       <div class="card-body">
-        <div class="row mb-2 align-items-center">
+        <!-- <div class="row mb-2 align-items-center"> -->
           <!-- Left Side: Search, Filter, Print, Download Buttons -->
-          <div class="col-sm-7">
-            <div class="d-flex align-items-center">
+          <!-- <div class="col-sm-7">
+            <div class="d-flex align-items-center"> -->
               <!-- Search Box -->
-              <div class="me-2">
+              <!-- <div class="me-2">
                 <div class="search-box">
                   <div class="position-relative">
                     <input type="text" class="form-control" id="searchTableList" placeholder="{{'HEADER.SEARCH' | translate}}" [(ngModel)]="searchTerm" (ngModelChange)="searchEvent()">
                     <i class="bx bx-search-alt search-icon"></i>
                   </div>
                 </div>
-              </div>
+              </div> -->
         
               <!-- Filter Button -->
-              <div class="me-2">
+              <!-- <div class="me-2">
                 <button class="btn btn-gold btn-rounded" id="filter" (click)="toggleDropdownEvent()">
                   <i class="bx bx-filter-alt"></i> 
-                </button>
-                <div class="dropdown-menu position-absolute" [class.show]="isDropdownOpen">
+                </button> -->
+                <!-- <div class="dropdown-menu position-absolute" [class.show]="isDropdownOpen">
                   <a class="dropdown-item" href="javascript:void(0);" *ngFor="let filter of filters" (click)="applyFilterEvent(filter.value)">{{ filter.label }}</a>
                 </div>
-              </div>
+              </div> -->
         
               <!-- Print Button -->
-              <div class="me-2">
-                <a href="javascript:window.print()" class="btn btn-gold btn-rounded"><i class="bx bx-printer"></i></a>
+              <!-- <div class="me-2">
+                <a href="javascript:window.print()" class="btn btn-gold btn-rounded"><i class="bx bx-printer"></i></a> -->
 
                 <!-- <button class="btn btn-gold btn-rounded" (click)="printDataEvent()">
                   <i class="bx bx-printer"></i> 
                 </button> -->
-              </div>
+              <!-- </div> -->
         
               <!-- Download Button -->
-              <div class="me-2">
+              <!-- <div class="me-2">
                 <button class="btn btn-gold btn-rounded waves-effect waves-light" (click)="downloadDataEvent()">
                   <i class="bx bx-download"></i> 
                 </button>
               </div>
-            </div>
-          </div>
+            </div> -->
+          <!-- </div> -->
         
           <!-- Right Side: Add Button -->
-          <div class="col-sm-5 text-end">
+          <!-- <div class="col-sm-5 text-end">
             <button *hasClaim="addButtonPermission" [routerLink]="addButtonLink" type="button" class="btn btn-primary btn-rounded">
               <i class="mdi mdi-plus me-1"></i> {{ addButtonLabel | translate }}
             </button>
-          </div>
-        </div>
+          </div> -->
+        <!-- </div> -->
         
         <!-- end row -->
 

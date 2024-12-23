@@ -32,6 +32,7 @@ export class MerchantListComponent implements OnInit {
   totalItems$: Observable<number>;
   loading$: Observable<boolean>
   searchTerm: string = '';
+  filterTerm: string = '';
 
   isDropdownOpen : boolean = false;
   filteredArray: Merchant[] = [];
@@ -39,9 +40,10 @@ export class MerchantListComponent implements OnInit {
 
   itemPerPage: number = 10;
   currentPage : number = 1;
+
   checked : any = {status: 'active', label: 'Active'};
   unChecked : any = {status: 'inactive', label: 'inActive'};
-  
+  statusList: any[] = [{status: 'all', label: 'All'},{status: 'active', label: 'Active'},{status: 'inactive', label: 'inActive'}];
   columns : any[]= [
     { property: 'companyLogo', label: 'Merchant Logo' },
     { property: 'qrCode', label: 'Qr Merchant' },
@@ -76,15 +78,25 @@ export class MerchantListComponent implements OnInit {
     this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status: '' }));
 
    }
+   onFilterEvent(event: any){
+    console.log(event);
+    if(event !== 'all')
+      this.filterTerm = event;
+    else
+      this.filterTerm = '';
+    
+    this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status: this.filterTerm }));
+
+   }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: totalItems,query: this.searchTerm, status:'' }));
+    this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: totalItems,query: this.searchTerm, status:this.filterTerm }));
    }
  
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage ,query: this.searchTerm, status: ''}));
+    this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage ,query: this.searchTerm, status: this.filterTerm}));
     
   }
 

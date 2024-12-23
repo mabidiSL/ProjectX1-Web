@@ -26,6 +26,7 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   @Input() addButtonLabel?: string;
   @Input() addButtonPermission?: any[];
   @Input() columns: any[];
+  @Input() statusList?: any[];
 
   @Input() viewButtonLink?: string;
   @Input() viewButtonPermission?: any[];
@@ -63,9 +64,11 @@ export class CustomTableComponent implements OnInit, OnChanges  {
 
   @Output() onDelete? = new EventEmitter();
   @Output() onApprove? = new EventEmitter();
-  
+  @Output() onFilter? = new EventEmitter();
+
   public currentUser: Observable<_User>;
-  
+  filterByStatus: string = null;
+
    // Tracks the currently sorted column
    sortedColumn: string | null = null;
    // Tracks the sorting direction: 'asc' for ascending or 'desc' for descending
@@ -311,5 +314,16 @@ sortData(column: string): void {
   else{
     this.router.navigate([`${this.viewButtonLink}`, data.id]);
   }
+}
+selectStatus(event: any){
+  if(event)
+    this.filterByStatus = event.target.value
+     console.log(event.target.value);
+  
+}
+Filter(){
+  if(this.filterByStatus)
+    this.onFilter.emit(this.filterByStatus);
+
 }
 }
