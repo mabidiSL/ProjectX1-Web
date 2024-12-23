@@ -133,7 +133,7 @@
                   </div>
                   
                 </form>
-                <ul class="list-inline wizard d-flex justify-content-end mb-0">
+                <ul class="list-inline wizard d-flex justify-content-end mt-5 mb-0">
                   <li class="next list-inline-item" aria-disabled="false"><button class="btn btn-primary" cdkStepperNext>{{'Next' | translate}}</button></li>
                   <li class="next list-inline-item" aria-disabled="false">
                     <button class="btn btn-primary" (click)="onSubmit()">{{'Finish' | translate}}</button></li>
@@ -175,7 +175,7 @@
                       <div class="mb-3">
                         <div class="form-group">
                             <label for="country_id" >{{'Country' | translate}} <span class="text-danger">*</span></label>
-                            <ng-select   id="country_id" placeholder="{{'Select_the_Country' | translate}}" [items]="filteredCountries" bindLabel="translatedName" 
+                            <ng-select    class="custom-dropdown" id="country_id" placeholder="{{'Select_the_Country' | translate}}" [items]="filteredCountries" bindLabel="translatedName" 
                             bindValue="id" formControlName="country_id"  >
                            </ng-select>  
                              <div *ngIf="adminForm.get('country_id').touched && adminForm.get('country_id').invalid" class="invalid-feedback d-block">
@@ -198,12 +198,13 @@
                     </div>
                     
                       </div>
+                   
                       
                  
                 
                 </form>
 
-                <ul class="list-inline wizard d-flex justify-content-end mb-0">
+                <ul class="list-inline wizard d-flex justify-content-end mt-5 mb-0">
                   <li class="previous list-inline-item" aria-disabled="true"><button class="btn btn-primary" cdkStepperPrevious>{{'Previous' | translate}}</button></li>
                   <li class="next list-inline-item" aria-disabled="false"><button class="btn btn-primary" cdkStepperNext>{{'Next' | translate}}</button></li>
                   <li class="next list-inline-item" aria-disabled="false">
@@ -266,7 +267,7 @@
                                
                 </form>
 
-                <ul class="list-inline wizard d-flex justify-content-end mb-0">
+                <ul class="list-inline wizard d-flex justify-content-end mt-5 mb-0">
                   <li class="previous list-inline-item" aria-disabled="true"><button class="btn btn-primary" cdkStepperPrevious>{{'Previous' | translate}}</button></li>
                   <li class="next list-inline-item" aria-disabled="false"><button class="btn btn-primary" cdkStepperNext>{{'Next' | translate}}</button></li>
                   <li class="next list-inline-item" aria-disabled="false">
@@ -326,7 +327,7 @@
                   </form>
                 </div>
 
-                <ul class="list-inline wizard d-flex justify-content-end mb-0">
+                <ul class="list-inline wizard d-flex justify-content-end mt-5 mb-0">
                   <li class="previous list-inline-item" aria-disabled="true"><button class="btn btn-primary" cdkStepperPrevious>{{'Previous' | translate}}</button></li>
                   <li class="next list-inline-item" aria-disabled="false"><button class="btn btn-primary" cdkStepperNext>{{'Next' | translate}}</button></li>
                   <li class="next list-inline-item" aria-disabled="false">
@@ -426,7 +427,7 @@
                   </form>
                 </div>
 
-                <ul class="list-inline wizard d-flex justify-content-end mb-0">
+                <ul class="list-inline wizard d-flex justify-content-end mt-5 mb-0">
                   <li class="previous list-inline-item" aria-disabled="true"><button class="btn btn-primary" cdkStepperPrevious>{{'Previous' | translate}}</button></li>
                   <li class="next list-inline-item" aria-disabled="false">
                     <button class="btn btn-primary" (click)="onSubmit()" >{{'Finish' | translate}}</button></li>

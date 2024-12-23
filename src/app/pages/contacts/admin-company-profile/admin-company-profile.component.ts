@@ -27,7 +27,8 @@ import { getCompanyProfile, updateCompanyProfile } from 'src/app/store/Authentic
 @Component({
   selector: 'app-admin-company-profile',
   templateUrl: './admin-company-profile.component.html',
-  styleUrl: './admin-company-profile.component.scss'
+  styleUrl: './admin-company-profile.component.scss',
+  //encapsulation: ViewEncapsulation.None  // Disable view encapsulation
 })
 export class AdminCompanyProfileComponent implements OnInit{
  

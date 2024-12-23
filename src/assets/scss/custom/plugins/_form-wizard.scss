@@ -144,6 +144,7 @@
 
   .stepper-body{ 
     margin-bottom: 0 !important;
+    min-height: 450px;
   }
   .dropdown-menu {
     z-index: 9999; /* Make sure dropdowns are above other content */
