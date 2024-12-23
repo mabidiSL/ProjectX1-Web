@@ -39,7 +39,7 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
   constructor(private formBuilder: FormBuilder, private cookieService: CookieService,private changeDetectorRef: ChangeDetectorRef) {
     this.phone = this.formBuilder.control(''); // Initialize the phone control
     this.itiOptions = {
-      initialCountry: 'sa', // set default country as Saudi Arabia
+      initialCountry: 'gb', // set default country as Saudi Arabia
       utilsScript: '/assets/js/utils.js'
       //'node_modules/intl-tel-input/build/js/utils.js', // for validation and formatting
      // loqdUtils: () => import('node_modules/intl-tel-input/build/js/utils.js'),

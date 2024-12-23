@@ -45,6 +45,15 @@
                                 {{'Name is required'|translate}}
                             </div>
                         </div>
+                        <div  class="col-md-6 mb-3">
+                          <label for="company_id">{{'Merchant Name'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                          <ng-select [readonly]="type === 'view'|| currentRole !== 'Admin'" id="company_id"  placeholder="{{'Select_the_merchant' |translate}}" [items]="merchantList" bindLabel="translatedName" 
+                          bindValue="id"  formControlName="company_id" (change)="onChangeMerchantSelection($event)" >
+                          </ng-select>
+                          <div *ngIf="formGiftCard.get('company_id').invalid && formGiftCard.get('company_id').touched">
+                            {{'Merchant Name is required'|translate}}
+                          </div>
+                        </div>
                       </div>
                         <!-- <div class="col-md-6 mb-3">
                             <label for="name_ar">{{'Name_in_arabic'|translate}}</label>
@@ -81,15 +90,7 @@
                        
                      </div> -->
                       <div class="row">
-                        <div  class="col-md-6 mb-3">
-                          <label for="company_id">{{'Merchant Name'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <ng-select [readonly]="type === 'view'|| currentRole !== 'Admin'" id="company_id"  placeholder="{{'Select_the_merchant' |translate}}" [items]="merchantList" bindLabel="translatedName" 
-                          bindValue="id"  formControlName="company_id" (change)="onChangeMerchantSelection($event)" >
-                          </ng-select>
-                          <div *ngIf="formGiftCard.get('company_id').invalid && formGiftCard.get('company_id').touched">
-                            {{'Merchant Name is required'|translate}}
-                          </div>
-                        </div>
+                        
                         <div class="col-md-6 mb-3">
                           <label for="stores">{{'Stores'|translate}}</label>
                           <ng-select 
@@ -106,6 +107,28 @@
                           <!-- <div *ngIf="isLoading" class="text-info">Loading stores...</div> -->
                           
                         </div>
+                          <div class="col-md-2 mb-3">
+                            <label for="quantity">{{'Quantity'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                            <input class="form-control" id="quantity" formControlName="quantity" type="number" [readonly]="type==='view'"/>
+                            <div *ngIf="formGiftCard.get('quantity').invalid && formGiftCard.get('quantity').touched" class="text-danger">
+                              {{'Quantity is required'|translate}}
+                            </div>
+                          </div>
+                          <div class="col-md-2 mb-3">
+                          <label for="giftCardValue">{{'Value'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                          <input  class="form-control" id="giftCardValue" formControlName="giftCardValue" type="number" />
+                          <div *ngIf="formGiftCard.get('giftCardValue').invalid && formGiftCard.get('giftCardValue').touched" class="text-danger">
+                            {{'Gift Card Value  is required'|translate}}
+                          </div> 
+                        </div>
+                      <div class="col-md-2 mb-3">
+                          <label for="discount">{{'Discount'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                          <input class="form-control" id="discount" formControlName="discount" type="number" />
+                          <div *ngIf="formGiftCard.get('discount').invalid && formGiftCard.get('discount').touched" class="text-danger">
+                            {{'Discount is required'|translate}}
+                          </div>
+                      </div>
+                
                       </div>
                       
                        <div class="row">
@@ -132,30 +155,8 @@
                         </div>     
                         
                       </div>
-                      <div class="col-md-4 mb-3">
-                        <label for="quantity">{{'Quantity'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                        <input class="form-control" id="quantity" formControlName="quantity" type="number" [readonly]="type==='view'"/>
-                        <div *ngIf="formGiftCard.get('quantity').invalid && formGiftCard.get('quantity').touched" class="text-danger">
-                          {{'Quantity is required'|translate}}
-                        </div>
-                      </div>
-                  <div class="col-md-4 mb-3">
-                    <label for="giftCardValue">{{'Value'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                    <input  class="form-control" id="giftCardValue" formControlName="giftCardValue" type="number" />
-                     <div *ngIf="formGiftCard.get('giftCardValue').invalid && formGiftCard.get('giftCardValue').touched" class="text-danger">
-                      {{'Gift Card Value  is required'|translate}}
-                    </div> 
-                  </div>
-                
-                  <div class="col-md-4 mb-3">
-                    <label for="discount">{{'Discount'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                    <input class="form-control" id="discount" formControlName="discount" type="number" />
-                    <div *ngIf="formGiftCard.get('discount').invalid && formGiftCard.get('discount').touched" class="text-danger">
-                      {{'Discount is required'|translate}}
-                    </div>
-                  </div>
-                <div class="row">
-                  <div class="col-md-6 mb-3">
+                 <div class="row">
+                   <div class="col-md-6 mb-3">
                     <label for="giftCardImage">{{'Upload Gift Card Image'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                    <app-image-upload [id]="'giftCardImage'" [type]="'logo'" [label]="'Upload GiftCard Image' | translate" [existantImage]="existantGiftCardLogo" [filename]="fileName" [alt]="'GiftCard Image'" [disabled]="type ==='view'" (logoUploaded)="uploadGiftCardLogo($event)"></app-image-upload>
                     <div *ngIf="formGiftCard.get('giftCardImage').invalid && formGiftCard.get('giftCardImage').touched" class="text-danger">

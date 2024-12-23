@@ -174,29 +174,7 @@
                       </div>
                     </ng-template>
                   </div>
-                   <div class="row justify-content-center">
-                    <div class="col-md-6 col-lg-4 me-4">
-                      <div class="form-group">
-                        <label for="companyLogo">{{ 'Merchant Logo' | translate }}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                    
-                        <!-- File input for selecting or uploading a new image -->
-                        <app-image-upload [id]="'companyLogo'" [type]="'logo'" [label]="'Upload company Logo' | translate" [existantImage]="existantcompanyLogo" [filename]="fileName1" [alt]="'Coupon Logo'" [disabled]="type ==='view'" (logoUploaded)="onLogoUpload($event)"></app-image-upload>
-                     
-                        <div *ngIf="merchantForm.get('companyLogo').touched && merchantForm.get('companyLogo').invalid" class="invalid-feedback d-block">
-                          <span *ngIf="merchantForm.get('companyLogo').errors?.['required']">{{'Merchant Logo is required'| translate}}.</span>
-                        </div>   
-                      </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-4 ">
-                      <div class="form-group">
-                        <label for="image">{{'Manager Picture' | translate}}</label>
-                        <app-image-upload [id]="'image'" [type]="'image'" [label]="'Upload Manager Picture' | translate" [existantImage]="existantmerchantPicture" [filename]="fileName2" [alt]="'Manager Pictutre'" [disabled]="type ==='view'" (imageUploaded)="onImageUpload($event)"></app-image-upload>
-
-                         
-                      </div>
-                    </div>
-                  </div>
+                   
                 <div class="row">
                   
                 <div class="col-md-6 col-lg-4 mb-3">
@@ -228,6 +206,29 @@
                     <input type="text" id="instagram" class="form-control" formControlName="instagram" placeholder="instagram.com/yourprofile" [readonly]="type==='view'">
                   </div>
                 </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 col-lg-4 me-4">
+                      <div class="form-group">
+                        <label for="companyLogo">{{ 'Merchant Logo' | translate }}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                    
+                        <!-- File input for selecting or uploading a new image -->
+                        <app-image-upload [id]="'companyLogo'" [type]="'logo'" [label]="'Upload company Logo' | translate" [existantImage]="existantcompanyLogo" [filename]="fileName1" [alt]="'Coupon Logo'" [disabled]="type ==='view'" (logoUploaded)="onLogoUpload($event)"></app-image-upload>
+                     
+                        <div *ngIf="merchantForm.get('companyLogo').touched && merchantForm.get('companyLogo').invalid" class="invalid-feedback d-block">
+                          <span *ngIf="merchantForm.get('companyLogo').errors?.['required']">{{'Merchant Logo is required'| translate}}.</span>
+                        </div>   
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4 ">
+                      <div class="form-group">
+                        <label for="image">{{'Manager Picture' | translate}}</label>
+                        <app-image-upload [id]="'image'" [type]="'image'" [label]="'Upload Manager Picture' | translate" [existantImage]="existantmerchantPicture" [filename]="fileName2" [alt]="'Manager Pictutre'" [disabled]="type ==='view'" (imageUploaded)="onImageUpload($event)"></app-image-upload>
+
+                         
+                      </div>
+                    </div>
                   </div>
                 <div class="col-12  mt-4">
                     <div class="d-flex justify-content-end">
