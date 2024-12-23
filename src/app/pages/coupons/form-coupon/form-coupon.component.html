@@ -148,7 +148,7 @@
                     </div>
                 
               <div class="row">
-                <div *ngIf="type === 'edit'" class="col-md-6 mb-3">
+                <div *ngIf="type !== 'create'" class="col-md-6 mb-3">
                   <label for="codeCoupon">{{'Coupon Code'|translate}}</label>
                   <input class="form-control" id="codeCoupon" formControlName="codeCoupon" type="text" readonly />
               </div> 
