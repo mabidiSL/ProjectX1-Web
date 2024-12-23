@@ -9,7 +9,7 @@
           </h2>
         </div>
           <div *ngIf="formError" class="alert alert-danger">{{ formError | translate}}</div>
-    
+    <div class="mt-4">
             <ng-stepper #cdkStepper [linear]="true" class="wizard" >
               <cdk-step [optional]="false"[completed]="isStepValid(0)" >
                 <ng-template cdkStepLabel>
@@ -227,7 +227,7 @@
                 }
               </cdk-step>
             </ng-stepper>
-       
+     </div>  
           <div class="text-center  mt-auto" style="font-size: 0.8rem; color: #6c757d;margin-bottom: 20px; ">
             <span>
               {{'Copyright' | translate}} © {{year}} {{'Project X1. All rights reserved.' | translate}}
