@@ -5,6 +5,9 @@
 body[data-layout-size="boxed"] {
 
     background-color: var(--#{$prefix}boxed-body-bg);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; // Make sure body takes full viewport height
 
     #layout-wrapper {
         background-color: var(--#{$prefix}body-bg);
