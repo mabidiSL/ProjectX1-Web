@@ -43,7 +43,7 @@
                       <div class="col-md-6 mb-3">
                         <div class="form-group ">
                               <label for="country_id" >{{'Country' | translate}} <span class="text-danger">*</span></label>
-                              <ng-select   id="country_id" placeholder="{{'Select_the_Country' | translate}}" [items]="countrylist" bindLabel="translatedName" 
+                              <ng-select   id="country_id" placeholder="{{'Select the country' | translate}}" [items]="countrylist" bindLabel="translatedName" 
                               bindValue="id" formControlName="country_id" (change)="onChangeCountrySelection($event)" >
                              </ng-select>  
                               <div *ngIf="signupForm.get('country_id').touched && signupForm.get('country_id').invalid" class="invalid-feedback d-block">
@@ -54,7 +54,7 @@
                       <div class="col-md-6 mb-3">
                         <div class="form-group ">
                           <label for="website">{{'Merchant WebSite' | translate}}</label>
-                          <input type="text" class="form-control" id="website" formControlName="website" placeholder="{{'Enter Company Email' | translate}}">
+                          <input type="text" class="form-control" id="website" formControlName="website" placeholder="{{'Enter company email' | translate}}">
                         </div>
                       </div>
                       </div>
@@ -90,7 +90,7 @@
                             <label for="l_name" >{{'Last Name' | translate}} <span class="text-danger">*</span></label>
                             <input type="text" id="l_name" class="form-control" formControlName="l_name" placeholder="{{ 'Enter your Last Name ' | translate }}" required>
                             <div *ngIf="signupForm.get('f_name').touched && signupForm.get('f_name').invalid" class="invalid-feedback d-block">
-                                <span *ngIf="signupForm.get('f_name').errors?.['required']">{{'Last formControlName="control" is required'| translate}}.</span>
+                                <span *ngIf="signupForm.get('f_name').errors?.['required']">{{'Last Name is required'| translate}}.</span>
                               </div>
                           </div> 
                       </div>

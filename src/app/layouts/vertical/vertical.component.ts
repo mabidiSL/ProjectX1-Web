@@ -1,4 +1,5 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
 import { EventService } from '../../core/services/event.service';
@@ -14,7 +15,7 @@ import { EventService } from '../../core/services/event.service';
 /**
  * Vertical component
  */
-export class VerticalComponent implements OnInit, AfterViewInit {
+export class VerticalComponent implements OnInit {
 
   isCondensed: any = false;
   sidebartype: string;
@@ -36,9 +37,7 @@ export class VerticalComponent implements OnInit, AfterViewInit {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(ua);
   }
 
-  ngAfterViewInit() {
-  }
-
+  
   /**
    * on settings button clicked from topbar
    */

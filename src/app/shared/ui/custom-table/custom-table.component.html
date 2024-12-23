@@ -132,7 +132,8 @@
                         'bg-warning': getProperty(data, column.property) === 'pending',
                         'bg-secondary': getProperty(data, column.property) === 'inactive',
                         'bg-danger': getProperty(data, column.property) === 'undelivered'
-                      }">
+                      }"
+                      style="font-size: 0.8rem;">
                   {{ getProperty(data, column.property) }}
                 </span>
               </ng-container>
