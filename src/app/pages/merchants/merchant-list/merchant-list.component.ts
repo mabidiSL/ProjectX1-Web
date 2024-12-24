@@ -44,13 +44,13 @@ export class MerchantListComponent implements OnInit {
   checked : any = {status: 'active', label: 'Active'};
   unChecked : any = {status: 'inactive', label: 'inActive'};
   statusList: any[] = [{status: 'all', label: 'All'},{status: 'active', label: 'Active'},{status: 'inactive', label: 'inActive'}];
+
   columns : any[]= [
     { property: 'companyLogo', label: 'Merchant Logo' },
     { property: 'qrCode', label: 'Qr Merchant' },
     { property: 'activationCode', label: 'Activation Code' },
     { property: 'translation_data[0].name', label: 'Merchant_Name' },
     { property: 'user.country.translation_data[0].name', label: 'Country' },
-    
     { property: 'user.status', label: 'Status' },
   ];
 
@@ -80,11 +80,11 @@ export class MerchantListComponent implements OnInit {
    }
    onFilterEvent(event: any){
     console.log(event);
-    if(event !== 'all')
-      this.filterTerm = event;
+    if(event.status !== 'all')
+      this.filterTerm = event.status;
     else
       this.filterTerm = '';
-    
+
     this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status: this.filterTerm }));
 
    }

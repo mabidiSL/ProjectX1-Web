@@ -27,6 +27,7 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   @Input() addButtonPermission?: any[];
   @Input() columns: any[];
   @Input() statusList?: any[];
+  @Input() datePicker?: boolean = false;
 
   @Input() viewButtonLink?: string;
   @Input() viewButtonPermission?: any[];
@@ -68,6 +69,10 @@ export class CustomTableComponent implements OnInit, OnChanges  {
 
   public currentUser: Observable<_User>;
   filterByStatus: string = null;
+  filterByStartDate: Date = null;
+  filterByEndDate: Date = null;
+
+
 
    // Tracks the currently sorted column
    sortedColumn: string | null = null;
@@ -321,9 +326,21 @@ selectStatus(event: any){
      console.log(event.target.value);
   
 }
+selectStartDate(event: any){
+  if(event)
+    this.filterByStartDate = event.target.value
+     console.log(event.target.value);
+  
+}
+selectEndDate(event: any){
+  if(event)
+    this.filterByEndDate = event.target.value
+     console.log(event.target.value);
+  
+}
 Filter(){
-  if(this.filterByStatus)
-    this.onFilter.emit(this.filterByStatus);
+  if(this.filterByStatus || this.filterByStartDate || this.filterByEndDate)
+    this.onFilter.emit({status:this.filterByStatus, startdate:this.filterByStartDate, enddate: this.filterByEndDate} );
 
 }
 }

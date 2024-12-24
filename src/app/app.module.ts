@@ -34,7 +34,6 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { MerchantsModule } from './pages/merchants/merchants.module';
 import { MerchantslistEffects1 } from './store/merchantsList/merchantlist1.effect';
 import { CouponsModule } from './pages/coupons/coupons.module';
-import { CouponslistEffects } from './store/coupon/coupon.effect';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AuthInterceptor } from './core/helpers/auth.interceptor';
 import { EmployeesModule } from './pages/employees/employees.module';
@@ -64,8 +63,7 @@ import { CustomerEffects } from './store/customer/customer.effect';
 import { AreasModule } from './pages/areas/areas.module';
 import { CityModule } from './pages/city/city.module';
 import { CountryModule } from './pages/country/country.module';
-import { GiftCardModule } from './pages/gift-card/gift-card.module';
-import { GiftCardsEffects } from './store/giftCard/giftCard.effect';
+import { OffersEffects } from './store/offer/offer.effect';
 import { LogsEffects } from './store/Log/log.effects';
 import { RolesModule } from './pages/roles/roles.module';
 import { LogsModule } from './pages/logs/logs.module';
@@ -75,6 +73,7 @@ import { PaymentEffects } from './store/payment/payment.effect';
 import { AccountModule } from './account/account.module';
 import { APP_INITIALIZER } from '@angular/core';
 import { LanguageInitService } from './core/services/initLanguage.service';
+import { GiftCardModule } from './pages/gift-card/gift-card.module';
 
 
 // Register the Arabic locale
@@ -148,7 +147,6 @@ export function createTranslateLoader(http: HttpClient): any {
     EffectsModule.forRoot([
       AuthenticationEffects,
       EmployeeslistEffects,
-      CouponslistEffects,
       MerchantslistEffects1,
       StoreslistEffects,
       countrieslistEffects,
@@ -158,7 +156,7 @@ export function createTranslateLoader(http: HttpClient): any {
       NotificationsEffects,
       RolesEffects,
       SectionEffects,
-      GiftCardsEffects,
+      OffersEffects,
       LogsEffects,
       PaymentEffects
       

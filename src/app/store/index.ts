@@ -2,7 +2,6 @@ import { ActionReducerMap } from "@ngrx/store";
 import { AuthenticationState, authenticationReducer } from "./Authentication/authentication.reducer";
 import { LayoutState, layoutReducer } from "./layouts/layouts.reducer";
 import { MerchantListReducer, MerchantlistState } from "./merchantsList/merchantlist1.reducer";
-import { CouponListReducer, CouponlistState } from "./coupon/coupon.reducer";
 import { EmployeeListReducer, EmployeelistState } from "./employee/employee.reducer";
 import { StoreListReducer, StorelistState } from "./store/store.reducer";
 import { CountryListReducer, CountrylistState } from "./country/country.reducer";
@@ -12,7 +11,7 @@ import { NotificationListReducer, NotificationlistState } from "./notification/n
 import { RoleListReducer, RolelistState } from "./Role/role.reducer";
 import { SectionListReducer, SectionlistState } from "./section/section.reducer";
 import { CustomerListReducer, CustomerlistState } from "./customer/customer.reducer";
-import { GiftCardListReducer, GiftCardlistState } from "./giftCard/giftCard.reducer";
+import { OfferListReducer, OfferlistState } from "./offer/offer.reducer";
 import { LogListReducer, LoglistState } from "./Log/log.reducer";
 import { PaymentListReducer, PaymentlistState } from "./payment/payment.reducer";
 
@@ -22,7 +21,6 @@ export interface RootReducerState {
     auth: AuthenticationState;
   
     MerchantList: MerchantlistState;
-    CouponList: CouponlistState;
     EmployeeList: EmployeelistState;
     StoreList: StorelistState;
     CountryList: CountrylistState;
@@ -32,7 +30,7 @@ export interface RootReducerState {
     RoleList: RolelistState;
     SectionList: SectionlistState;
     CustomerList: CustomerlistState;
-    GiftCardList: GiftCardlistState;
+    OfferList: OfferlistState;
     LogList: LoglistState;
     PaymentList: PaymentlistState;
 
@@ -43,7 +41,6 @@ export const rootReducer: ActionReducerMap<RootReducerState> = {
     layout: layoutReducer,
     auth: authenticationReducer,
     MerchantList:MerchantListReducer,
-    CouponList: CouponListReducer,
     EmployeeList: EmployeeListReducer,
     StoreList: StoreListReducer,
     CountryList: CountryListReducer,
@@ -53,7 +50,7 @@ export const rootReducer: ActionReducerMap<RootReducerState> = {
     RoleList: RoleListReducer,
     SectionList: SectionListReducer,
     CustomerList: CustomerListReducer,
-    GiftCardList: GiftCardListReducer,
+    OfferList: OfferListReducer,
     LogList: LogListReducer,
     PaymentList: PaymentListReducer
 

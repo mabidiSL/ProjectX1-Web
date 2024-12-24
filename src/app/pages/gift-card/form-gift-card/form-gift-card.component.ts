@@ -9,9 +9,9 @@ import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { DatepickerConfigService } from 'src/app/core/services/date.service';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { _User } from 'src/app/store/Authentication/auth.models';
-import { selectDataLoading, selectedGiftCard } from 'src/app/store/giftCard/giftCard-selector';
-import { addGiftCardlist, getGiftCardById, updateGiftCardlist } from 'src/app/store/giftCard/giftCard.action';
-import { GiftCard } from 'src/app/store/giftCard/giftCard.model';
+import { selectDataLoading, selectedOffer } from 'src/app/store/offer/offer-selector';
+import { addOfferlist, getOfferById, updateOfferlist } from 'src/app/store/offer/offer.action';
+import { Offer } from 'src/app/store/offer/offer.model';
 import { selectDataMerchant } from 'src/app/store/merchantsList/merchantlist1-selector';
 import { fetchMerchantlistData } from 'src/app/store/merchantsList/merchantlist1.action';
 import { Merchant } from 'src/app/store/merchantsList/merchantlist1.model';
@@ -37,7 +37,7 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
 
   selectedStores: Branch[]= [];
   merchantList: Merchant[] = [];
-  existantGiftCardLogo: string = null;
+  existantOfferLogo: string = null;
   fileName: string = ''; 
 
   merchantId: number =  null;
@@ -48,10 +48,10 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
   public currentUser: Observable<_User>;
 
   dropdownSettings : any;
-  formGiftCard: UntypedFormGroup;
+  formOffer: UntypedFormGroup;
   private destroy$ = new Subject<void>();
-  GiftCardLogoBase64: string = null;
-  originalGiftCardData: GiftCard = {};
+  OfferLogoBase64: string = null;
+  originalOfferData: Offer = {};
   @ViewChild('formElement', { static: false }) formElement: ElementRef;
 
   isEditing = false;
@@ -96,9 +96,9 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
    
   }
   dateValidator(control: AbstractControl): { [key: string]: boolean } | null {
-    const startDate = new Date(control.get('startDateGiftCard')?.value);
+    const startDate = new Date(control.get('startDate')?.value);
     console.log(startDate);
-    const endDate = new Date(control.get('endDateGiftCard')?.value);
+    const endDate = new Date(control.get('endDate')?.value);
     console.log(endDate);
 
     const currentDate = new Date();
@@ -117,9 +117,9 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
 
     if (startDate && endDate) {
       // Check if both dates are valid
-      if (startDate < currentDate || endDate < currentDate) {
-        return { invalidDate: true }; // Both dates must be >= current date
-      }
+      // if (startDate < currentDate || endDate < currentDate) {
+      //   return { invalidDate: true }; // Both dates must be >= current date
+      // }
       if (startDate >= endDate) {
         return { dateMismatch: true }; // Start date must be before end date
       }
@@ -128,22 +128,18 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
   }
 
   private initForm() {
-    this.formGiftCard = this.formBuilder.group({
+    this.formOffer = this.formBuilder.group({
       id: [null],
-      //name_ar: [null],
       name: [null, Validators.required],
-      //description_ar: [null],
       description: [null, Validators.required],
-     // termsAndConditions_ar: [null],
       termsAndConditions: [null, Validators.required],
       quantity: [null, Validators.required],
       company_id: [null, Validators.required],
       stores: [[]],
-    
-      startDateGiftCard: ['', Validators.required],
-      endDateGiftCard: ['', Validators.required],
-      
-      giftCardImage: [null,Validators.required],
+      category: ['gift-card'],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      image: [null,Validators.required],
       giftCardValue: ['',Validators.required],
       discount:[null, Validators.required],
       status:['active']
@@ -152,8 +148,6 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
     }, { validators: this.dateValidator });
   }
   ngOnInit() {
-    
-
     this.merchantList$ = this.store.pipe(select(selectDataMerchant)); 
     this.merchantList$.subscribe(data => {
       if(data && data.length > 0){
@@ -191,35 +185,35 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
      
 
     if(this.currentRole !== 'Admin'){
-      this.formGiftCard.get('company_id').setValue(this.merchantId);
-      this.formGiftCard.get('company_id').clearValidators()
+      this.formOffer.get('company_id').setValue(this.merchantId);
+      this.formOffer.get('company_id').clearValidators()
       this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000,query:'', status:'', company_id: this.merchantId}));
 
       this.isLoading = true;
       }
-    const GiftCardId = this.route.snapshot.params['id'];
-    if (GiftCardId) {
-      // Dispatch action to retrieve the GiftCard by ID
-      this.store.dispatch(getGiftCardById({ GiftCardId }));
-      // Subscribe to the selected GiftCard from the store
+    const OfferId = this.route.snapshot.params['id'];
+    if (OfferId) {
+      // Dispatch action to retrieve the Offer by ID
+      this.store.dispatch(getOfferById({ OfferId }));
+      // Subscribe to the selected Offer from the store
       this.store
-        .pipe(select(selectedGiftCard), takeUntil(this.destroy$))
-        .subscribe(GiftCard => {
-          if (GiftCard) {
+        .pipe(select(selectedOffer), takeUntil(this.destroy$))
+        .subscribe(Offer => {
+          if (Offer) {
             
            
             //this.storeList$ = this.store.pipe(select(selectData));
-            // Patch the form with GiftCard data
-            this.existantGiftCardLogo = GiftCard.giftCardImage;
-            if(GiftCard.giftCardImage){
-              this.fileName = GiftCard.giftCardImage.split('/').pop();
+            // Patch the form with Offer data
+            this.existantOfferLogo = Offer.image;
+            if(Offer.image){
+              this.fileName = Offer.image.split('/').pop();
             }
-            GiftCard.startDateGiftCard = new Date(GiftCard.startDateGiftCard);
-            GiftCard.endDateGiftCard = new Date(GiftCard.endDateGiftCard);
-            console.log(GiftCard);
+            Offer.startDate = new Date(Offer.startDate);
+            Offer.endDate = new Date(Offer.endDate);
+            console.log(Offer);
             
-            this.patchValueForm(GiftCard);
-            this.originalGiftCardData = { ...GiftCard };
+            this.patchValueForm(Offer);
+            this.originalOfferData = { ...Offer };
             this.isEditing = true;
 
           }
@@ -227,18 +221,18 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
     }
   
 }
-patchValueForm(giftCard: GiftCard){
-  this.formGiftCard.patchValue(giftCard);
-  this.formGiftCard.get('company_id').setValue(giftCard.offer[0].company_id);
-  this.formGiftCard.get('stores').setValue(giftCard.stores.map(store => store.id));
+patchValueForm(offer: Offer){
+  this.formOffer.patchValue(offer);
+  this.formOffer.get('company_id').setValue(offer.company_id);
+  this.formOffer.get('stores').setValue(offer.stores.map(store => store.id));
 
-  this.formGiftCard.patchValue({
-    name: giftCard.translation_data[0].name,
-   // name_ar: giftCard.translation_data[1]?.name,
-    description: giftCard.translation_data[0].description,
-   // description_ar: giftCard.translation_data[1]?.description,
-    termsAndConditions: giftCard.translation_data[0].termsAndConditions,
-   // termsAndConditions_ar: giftCard.translation_data[1]?.termsAndConditions,
+  this.formOffer.patchValue({
+    name: offer.translation_data[0].name,
+   // name_ar: offer.translation_data[1]?.name,
+    description: offer.translation_data[0].description,
+   // description_ar: offer.translation_data[1]?.description,
+    termsAndConditions: offer.translation_data[0].termsAndConditions,
+   // termsAndConditions_ar: offer.translation_data[1]?.termsAndConditions,
   });
 
 }
@@ -263,7 +257,7 @@ getFileNameFromUrl(url: string): string {
 onChangeMerchantSelection(event: Merchant){
   const merchant = event;
   this.storeList = [];
-  this.formGiftCard.get('stores').setValue(null);
+  this.formOffer.get('stores').setValue(null);
   if(merchant){
     this.isLoading = true;
     this.store.pipe(select(selectData)).subscribe(data => {
@@ -287,9 +281,9 @@ onChangeMerchantSelection(event: Merchant){
    
 }
 
-createGiftCardFromForm(formValue): GiftCard{
-  const giftCard = formValue;
-  giftCard.translation_data= [];
+createOfferFromForm(formValue): Offer{
+  const offer = formValue;
+  offer.translation_data= [];
   const enFields = [
     { field: 'name', name: 'name' },
     { field: 'description', name: 'description' },
@@ -303,67 +297,67 @@ createGiftCardFromForm(formValue): GiftCard{
 
   // ];
   // Create the English translation if valid
-  const enTranslation = this.formUtilService.createTranslation(giftCard,'en', enFields);
+  const enTranslation = this.formUtilService.createTranslation(offer,'en', enFields);
   if (enTranslation) {
-    giftCard.translation_data.push(enTranslation);
+    offer.translation_data.push(enTranslation);
   }
 
   // Create the Arabic translation if valid
-  // const arTranslation = this.formUtilService.createTranslation(giftCard,'ar', arFields);
+  // const arTranslation = this.formUtilService.createTranslation(offer,'ar', arFields);
   // if (arTranslation) {
-  //   giftCard.translation_data.push(arTranslation);
+  //   offer.translation_data.push(arTranslation);
   // }
-  if(giftCard.translation_data.length <= 0)
-    delete giftCard.translation_data;
+  if(offer.translation_data.length <= 0)
+    delete offer.translation_data;
 
   // Dynamically remove properties that are undefined or null at the top level of city object
-    Object.keys(giftCard).forEach(key => {
-      if (giftCard[key] === undefined || giftCard[key] === null) {
-        delete giftCard[key];  // Delete property if it's undefined or null
+    Object.keys(offer).forEach(key => {
+      if (offer[key] === undefined || offer[key] === null) {
+        delete offer[key];  // Delete property if it's undefined or null
       }
     });
-    delete giftCard.name;  
-   // delete giftCard.name_ar;    
-    delete giftCard.description;
-    //delete giftCard.description_ar;
-    delete giftCard.termsAndConditions;
-    //delete giftCard.termsAndConditions_ar;
+    delete offer.name;  
+   // delete offer.name_ar;    
+    delete offer.description;
+    //delete offer.description_ar;
+    delete offer.termsAndConditions;
+    //delete offer.termsAndConditions_ar;
  
 
-  console.log(giftCard);
-  return giftCard;
+  console.log(offer);
+  return offer;
 
   
 }
 onSubmit(){
 
       this.formSubmitted = true;
-      if (this.formGiftCard.invalid) {
+      if (this.formOffer.invalid) {
         this.formError = 'Please complete all required fields.';
-        Object.keys(this.formGiftCard.controls).forEach(control => {
-          this.formGiftCard.get(control).markAsTouched();
+        Object.keys(this.formOffer.controls).forEach(control => {
+          this.formOffer.get(control).markAsTouched();
         });
-        this.formUtilService.focusOnFirstInvalid(this.formGiftCard);
+        this.formUtilService.focusOnFirstInvalid(this.formOffer);
         return;
       }
       this.formError = null;
-      let newData = this.formGiftCard.value;
+      let newData = this.formOffer.value;
      
       if(!this.isEditing)
       {         
           //Dispatch Action
           delete newData.id;
-          newData = this.createGiftCardFromForm(newData);
+          newData = this.createOfferFromForm(newData);
           console.log(newData);
-          this.store.dispatch(addGiftCardlist({ newData }));
+          this.store.dispatch(addOfferlist({ newData, offerType: 'gift-card' }));
       }
       else{
-        const updatedDta = this.formUtilService.detectChanges(this.formGiftCard, this.originalGiftCardData);
+        const updatedDta = this.formUtilService.detectChanges(this.formOffer, this.originalOfferData);
         if (Object.keys(updatedDta).length > 0) {
-          const changedData = this.createGiftCardFromForm(updatedDta);
+          const changedData = this.createOfferFromForm(updatedDta);
           console.log(changedData);
-          changedData.id =  this.formGiftCard.value.id;
-          this.store.dispatch(updateGiftCardlist({ updatedData: changedData }));
+          changedData.id =  this.formOffer.value.id;
+          this.store.dispatch(updateOfferlist({ updatedData: changedData , offerType: 'gift-card'}));
         }
         else{
           this.formError = 'Nothing has been changed!!!';
@@ -373,32 +367,32 @@ onSubmit(){
       
     }
     onApprove(){
-      const coupon = {id: this.formGiftCard.value.id, status: 'active'}
-      this.store.dispatch(updateGiftCardlist({ updatedData: coupon }));
+      const coupon = {id: this.formOffer.value.id, status: 'active'}
+      this.store.dispatch(updateOfferlist({ updatedData: coupon, offerType: 'gift-card' }));
   
      }   
     onDecline(){
-      const coupon = {id: this.formGiftCard.value.id, status: 'refused'}
-      this.store.dispatch(updateGiftCardlist({ updatedData: coupon }));
+      const coupon = {id: this.formOffer.value.id, status: 'refused'}
+      this.store.dispatch(updateOfferlist({ updatedData: coupon, offerType: 'gift-card' }));
     }    
 /**
- * Upload GiftCard Logo
+ * Upload Offer Logo
  */
-async uploadGiftCardLogo(event: any){
+async uploadOfferLogo(event: any){
   if (event.type === 'logo') {
-    this.existantGiftCardLogo = event.file;
-    this.formGiftCard.controls['giftCardImage'].setValue(event.file);
+    this.existantOfferLogo = event.file;
+    this.formOffer.controls['image'].setValue(event.file);
   } 
 }
 onToggle(event: any){
   console.log(event.target.value);
   if(event){
-    this.formGiftCard.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
+    this.formOffer.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
 
   }
 }
   onCancel(){
-    this.formGiftCard.reset();
+    this.formOffer.reset();
     this.router.navigateByUrl('/private/giftCards/list');
   }
   ngOnDestroy() {

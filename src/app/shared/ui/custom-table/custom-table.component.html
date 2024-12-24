@@ -23,7 +23,7 @@
             <select class="form-select" id="idStatus" aria-label="Default select example" (change)="selectStatus($event)">
               <option  value="">{{'Select Status' | translate}}</option>
               <option *ngFor="let status of statusList" [value]="status.status">{{ status.label  | translate}}</option>
-              </select>
+            </select>
           </div>
           <!-- <div class="col-xxl-2 col-lg-4">
             <select class="form-select" id="idType" aria-label="Default select example" (click)="selectType()">
@@ -34,12 +34,16 @@
               <option value="Freelance">Freelance</option>
             </select>
           </div> -->
-          <!-- <div class="col-xxl-2 col-lg-4">
-            <div id="datepicker1">
-              <input type="text" placeholder="Datepicker" class="form-control " bsDatepicker [bsConfig]="{ showWeekNumbers: false }">
-
-            </div> input-group -->
-          <!-- </div> --> 
+           <div *ngIf="datePicker" class="col-xxl-2 col-lg-4">
+            <div  id="datepicker1">
+              <input type="text" placeholder="Start Date" class="form-control " bsDatepicker [bsConfig]="{ showWeekNumbers: false }" (change)="selectStartDate($event)">
+            </div> <!--input-group -->
+            </div>
+            <div *ngIf="datePicker" class="col-xxl-2 col-lg-4">
+              <div  id="datepicker2">
+                <input type="text" placeholder="End Date" class="form-control " bsDatepicker [bsConfig]="{ showWeekNumbers: false }" (change)="selectEndDate($event)">
+              </div> 
+           </div> 
           <div class="col-xxl-2 col-lg-4">
             <button type="button" class="btn btn-soft-secondary w-100" (click)="Filter()"><i class="mdi mdi-filter-outline align-middle"></i> {{'Filter' | translate}}</button>
           </div>

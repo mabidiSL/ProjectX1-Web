@@ -12,9 +12,9 @@ import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { UploadEvent } from 'src/app/shared/widget/image-upload/image-upload.component';
 import { _User } from 'src/app/store/Authentication/auth.models';
 
-import { selectedCoupon, selectDataLoading } from 'src/app/store/coupon/coupon-selector';
-import { addCouponlist, getCouponById, updateCouponlist } from 'src/app/store/coupon/coupon.action';
-import { Coupon } from 'src/app/store/coupon/coupon.model';
+import { selectedOffer, selectDataLoading } from 'src/app/store/offer/offer-selector';
+import { addOfferlist, getOfferById, updateOfferlist } from 'src/app/store/offer/offer.action';
+import { Offer } from 'src/app/store/offer/offer.model';
 import { selectDataMerchant } from 'src/app/store/merchantsList/merchantlist1-selector';
 import { fetchMerchantlistData } from 'src/app/store/merchantsList/merchantlist1.action';
 import { Merchant } from 'src/app/store/merchantsList/merchantlist1.model';
@@ -39,7 +39,7 @@ export class FormCouponComponent implements OnInit, OnDestroy{
   merchantList: Merchant[]= [];
   storeList: Branch[]= [];
 
-  existantcouponLogo: string = null;
+  existantofferLogo: string = null;
   fileName: string = ''; 
 
   fromPendingContext: boolean = false;
@@ -52,15 +52,15 @@ export class FormCouponComponent implements OnInit, OnDestroy{
   public currentUser: Observable<_User>;
 
   dropdownSettings : any;
-  formCoupon: UntypedFormGroup;
+  formOffer: UntypedFormGroup;
   formError: string | null = null;
   formSubmitted = false;
 
   private destroy$ = new Subject<void>();
-  couponLogoBase64: string = null;
+  offerLogoBase64: string = null;
   isEditing = false;
   isLoading = false;
-  originalCouponData: Coupon = {};
+  originalOfferData: Offer = {};
   @ViewChild('formElement', { static: false }) formElement: ElementRef;
 
 
@@ -129,8 +129,8 @@ export class FormCouponComponent implements OnInit, OnDestroy{
   }
 
   dateValidator(control: AbstractControl): { [key: string]: boolean } | null {
-    const startDate = new Date(control.get('startDateCoupon')?.value);
-    const endDate = new Date(control.get('endDateCoupon')?.value);
+    const startDate = new Date(control.get('startDate')?.value);
+    const endDate = new Date(control.get('endDate')?.value);
     const currentDate = new Date();
      // Normalize currentDate to midnight (00:00:00)
     currentDate.setHours(0, 0, 0, 0);
@@ -147,11 +147,11 @@ export class FormCouponComponent implements OnInit, OnDestroy{
  
     if (startDate && endDate) {
       // Check if both dates are valid
-      if (startDate < currentDate || endDate < currentDate) {
+      // if (startDate < currentDate || endDate < currentDate) {
      
         
-        return { invalidDate: true }; // Both dates must be >= current date
-      }
+      //   return { invalidDate: true }; // Both dates must be >= current date
+      // }
       if (startDate >= endDate) {
         return { dateMismatch: true }; // Start date must be before end date
       }
@@ -160,24 +160,20 @@ export class FormCouponComponent implements OnInit, OnDestroy{
   }
 
   private initForm() {
-    this.formCoupon = this.formBuilder.group({
+    this.formOffer = this.formBuilder.group({
       id: [null],
       name: ['', Validators.required],
-     // name_ar: [''],
       description: ['', Validators.required],
-     // description_ar: [''],
       termsAndConditions: ['', Validators.required],
-      //termsAndConditions_ar: [''],
-      codeCoupon: ['COUP123'],
       quantity: [null, Validators.required],
       nbr_of_use: [null, Validators.required],
       company_id: [null, Validators.required],
       stores: [[]],
-      startDateCoupon: ['', Validators.required],
-      endDateCoupon: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      category: ['coupon'],
       contractRepName: [null],
-    
-      couponLogo: [null, Validators.required],
+      image: [null, Validators.required],
       couponType: ['free', Validators.required],// free,discountPercent,discountAmount,servicePrice checkboxes
       couponValueBeforeDiscount:[null],
       couponValueAfterDiscount:[null],
@@ -189,46 +185,36 @@ export class FormCouponComponent implements OnInit, OnDestroy{
  
   ngOnInit() {
 
-    this.dropdownSettings = {
-        singleSelection: false,
-        idField: 'id',
-        textField: 'name',
-        selectAllText: 'Select All',
-        unSelectAllText: 'UnSelect All',
-        itemsShowLimit: 10,
-        allowSearchFilter: true
-      };
-    
-    
+   
     if(this.currentRole !== 'Admin'){
       console.log(this.merchantId);
-      this.formCoupon.get('company_id').setValue(this.merchantId);
-      this.formCoupon.get('company_id').clearValidators()
+      this.formOffer.get('company_id').setValue(this.merchantId);
+      this.formOffer.get('company_id').clearValidators()
       this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000,query:'', status:'', company_id: this.merchantId}));
       this.isLoading = true;
       
     }
      
-    const couponId = this.route.snapshot.params['id'];
-    if (couponId) {
-      // Dispatch action to retrieve the coupon by ID
-      this.store.dispatch(getCouponById({ couponId }));
-      // Subscribe to the selected coupon from the store
+    const offerId = this.route.snapshot.params['id'];
+    if (offerId) {
+      // Dispatch action to retrieve the offer by ID
+      this.store.dispatch(getOfferById({ OfferId:  offerId}));
+      // Subscribe to the selected offer from the store
       this.store
-        .pipe(select(selectedCoupon), takeUntil(this.destroy$))
-        .subscribe(coupon => {
-          if (coupon) {
+        .pipe(select(selectedOffer), takeUntil(this.destroy$))
+        .subscribe(offer => {
+          if (offer) {
           
-            console.log(coupon);
+            console.log(offer);
             
-            this.existantcouponLogo = coupon.couponLogo;
-            if(coupon.couponLogo){
-              this.fileName = coupon.couponLogo.split('/').pop();
+            this.existantofferLogo = offer.image;
+            if(offer.image){
+              this.fileName = offer.image.split('/').pop();
             }
-            coupon.startDateCoupon = new Date(coupon.startDateCoupon);
-            coupon.endDateCoupon = new Date(coupon.endDateCoupon);
-            this.patchValueForm(coupon);
-            this.originalCouponData = { ...coupon };
+            offer.startDate = new Date(offer.startDate);
+            offer.endDate = new Date(offer.endDate);
+            this.patchValueForm(offer);
+            this.originalOfferData = { ...offer };
             this.isEditing = true;
 
           }
@@ -236,17 +222,14 @@ export class FormCouponComponent implements OnInit, OnDestroy{
     }
   
 }
-patchValueForm(coupon: Coupon){
-  this.formCoupon.patchValue(coupon);
-  this.formCoupon.get('company_id').setValue(coupon.offer[0].company_id);
-  this.formCoupon.get('stores').setValue(coupon.stores.map(store => store.id));
-  this.formCoupon.patchValue({
-    name: coupon.translation_data[0].name,
-    ///name_ar: coupon.translation_data[1]?.name,
-    description: coupon.translation_data[0].description,
-    //description_ar: coupon.translation_data[1]?.description,
-    termsAndConditions: coupon.translation_data[0].termsAndConditions,
-   // termsAndConditions_ar: coupon.translation_data[1]?.termsAndConditions,
+patchValueForm(offer: Offer){
+  this.formOffer.patchValue(offer);
+  this.formOffer.get('company_id').setValue(offer.company_id);
+  this.formOffer.get('stores').setValue(offer.stores.map(store => store.id));
+  this.formOffer.patchValue({
+    name: offer.translation_data[0].name,
+    description: offer.translation_data[0].description,
+    termsAndConditions: offer.translation_data[0].termsAndConditions,
   });
 
 }
@@ -288,7 +271,7 @@ fetchStore(id: number){
 onChangeMerchantSelection(event: Merchant){
   const merchant = event;
   this.storeList = [];
-  this.formCoupon.get('stores').setValue(null);
+  this.formOffer.get('stores').setValue(null);
   if(merchant){
     this.isLoading = true;
     this.store.pipe(select(selectData)).subscribe(data => {
@@ -310,9 +293,9 @@ onChangeMerchantSelection(event: Merchant){
    
 }
 }
-createCouponFromForm(formValue): Coupon{
-  const coupon = formValue;
-  coupon.translation_data= [];
+createOfferFromForm(formValue): Offer{
+  const offer = formValue;
+  offer.translation_data= [];
   const enFields = [
     { field: 'name', name: 'name' },
     { field: 'description', name: 'description' },
@@ -328,71 +311,71 @@ createCouponFromForm(formValue): Coupon{
   // ];
   
   // Create the English translation if valid
-  const enTranslation = this.formUtilService.createTranslation(coupon,'en', enFields);
+  const enTranslation = this.formUtilService.createTranslation(offer,'en', enFields);
   if (enTranslation) {
-    coupon.translation_data.push(enTranslation);
+    offer.translation_data.push(enTranslation);
   }
 
   // Create the Arabic translation if valid
-  // const arTranslation = this.formUtilService.createTranslation(coupon,'ar', arFields);
+  // const arTranslation = this.formUtilService.createTranslation(offer,'ar', arFields);
   // if (arTranslation) {
-  //   coupon.translation_data.push(arTranslation);
+  //   offer.translation_data.push(arTranslation);
   // }
-  if(coupon.translation_data.length <= 0)
-    delete coupon.translation_data;
+  if(offer.translation_data.length <= 0)
+    delete offer.translation_data;
 
   // Dynamically remove properties that are undefined or null at the top level of city object
-    Object.keys(coupon).forEach(key => {
-      if (coupon[key] === undefined || coupon[key] === null || coupon[key]==='') {
-        delete coupon[key];  // Delete property if it's undefined or null
+    Object.keys(offer).forEach(key => {
+      if (offer[key] === undefined || offer[key] === null || offer[key]==='') {
+        delete offer[key];  // Delete property if it's undefined or null
       }
     });
-    delete coupon.name;  
-    //delete coupon.name_ar;    
-    delete coupon.description;
-    //delete coupon.description_ar;
-    delete coupon.termsAndConditions;
-    //delete coupon.termsAndConditions_ar;
+    delete offer.name;  
+    //delete offer.name_ar;    
+    delete offer.description;
+    //delete offer.description_ar;
+    delete offer.termsAndConditions;
+    //delete offer.termsAndConditions_ar;
 
-  return coupon;
+  return offer;
 
   
 }
   onSubmit(){
 
     this.formSubmitted = true;
-    console.log(this.formCoupon.value);
+    console.log(this.formOffer.value);
 
-    if (this.formCoupon.invalid) {
+    if (this.formOffer.invalid) {
       this.formError = 'Please complete all required fields.';
-      Object.keys(this.formCoupon.controls).forEach(control => {
-        this.formCoupon.get(control).markAsTouched();
+      Object.keys(this.formOffer.controls).forEach(control => {
+        this.formOffer.get(control).markAsTouched();
       });
-      this.formUtilService.focusOnFirstInvalid(this.formCoupon);
+      this.formUtilService.focusOnFirstInvalid(this.formOffer);
       return;
     }
       this.formError = null;
-      let newData = this.formCoupon.value;
-      if(this.couponLogoBase64){
-        newData.couponLogo = this.couponLogoBase64;
+      let newData = this.formOffer.value;
+      if(this.offerLogoBase64){
+        newData.image = this.offerLogoBase64;
       }
-      //newData.stores = this.formCoupon.get('stores').value.map((store) =>(store.id ) );
+      //newData.stores = this.formOffer.get('stores').value.map((store) =>(store.id ) );
 
       if(!this.isEditing)
       {
-         delete newData.codeCoupon;
+         delete newData.codeOffer;
          delete newData.id;
-         newData = this.createCouponFromForm(newData);
-         this.store.dispatch(addCouponlist({ newData }));
+         newData = this.createOfferFromForm(newData);
+         this.store.dispatch(addOfferlist({ newData, offerType:'coupon' }));
       }
       else
       {
-        const updatedDta = this.formUtilService.detectChanges(this.formCoupon, this.originalCouponData);
+        const updatedDta = this.formUtilService.detectChanges(this.formOffer, this.originalOfferData);
         if (Object.keys(updatedDta).length > 0) {
-          const changedData = this.createCouponFromForm(updatedDta);
-          changedData.id =  this.formCoupon.value.id;
+          const changedData = this.createOfferFromForm(updatedDta);
+          changedData.id =  this.formOffer.value.id;
  
-          this.store.dispatch(updateCouponlist({ updatedData: changedData }));
+          this.store.dispatch(updateOfferlist({ updatedData: changedData, offerType:'coupon' }));
         }
         else{
           this.formError = 'Nothing has been changed!!!';
@@ -403,34 +386,34 @@ createCouponFromForm(formValue): Coupon{
    
     }
    onApprove(){
-    const coupon = {id: this.formCoupon.value.id, status: 'active'}
-    this.store.dispatch(updateCouponlist({ updatedData: coupon }));
+    const offer = {id: this.formOffer.value.id, status: 'active'}
+    this.store.dispatch(updateOfferlist({ updatedData: offer , offerType:'coupon'}));
 
    }   
   onDecline(){
-    const coupon = {id: this.formCoupon.value.id, status: 'refused'}
-    this.store.dispatch(updateCouponlist({ updatedData: coupon }));
+    const offer = {id: this.formOffer.value.id, status: 'refused'}
+    this.store.dispatch(updateOfferlist({ updatedData: offer, offerType:'coupon' }));
   }
 /**
- * Upload Coupon Logo
+ * Upload Offer Logo
  */
- uploadCouponLogo(event: UploadEvent): void{
+ uploadOfferLogo(event: UploadEvent): void{
   if (event.type === 'logo') {
-    this.existantcouponLogo = event.file;
-    this.formCoupon.controls['couponLogo'].setValue(this.existantcouponLogo);
+    this.existantofferLogo = event.file;
+    this.formOffer.controls['image'].setValue(this.existantofferLogo);
   }
 }
 onToggle(event: any){
   console.log(event.target.value);
   if(event){
-    this.formCoupon.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
+    this.formOffer.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
 
   }
 }
 
 
   onCancel(){
-    this.formCoupon.reset();
+    this.formOffer.reset();
     this.router.navigateByUrl('/private/coupons/list');
   }
   ngOnDestroy() {
