@@ -73,7 +73,7 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
       this.getNavigationState();
       this.loading$ = this.store.pipe(select(selectDataLoading)); 
 
-      this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 100,query:'', status: 'active' }));
+      this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 1000,query:'', status: 'active' }));
      // this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 1000, status: 'active' }));
       this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 10000, query:'',status: 'active' }));
       this.store.dispatch(fetchSectionlistData({page: 1, itemsPerPage: 100, status: 'active' }));
@@ -253,18 +253,22 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
     
   }
   setCountryByPhoneCode(code: string){
+    console.log(this.filteredCountries);
     const country = this.filteredCountries.find(c => c.phoneCode === code);
     console.log(country);
     this.merchantForm.get('country_id').setValue(country?.id);
     this.onChangeCountrySelection(country);
   }
-
-  onPhoneNumberChanged(event: { number: string; countryCode: string }) {
-
-    this.merchantForm.get('phone').setValue(event.number);
+  onMerchantPhoneNumberChanged(event: { number: string; countryCode: string }){
+    this.merchantForm.get('officeTel').setValue(event.number);
     if(this.type === 'create'){
       this.setCountryByPhoneCode(event.countryCode);
     }
+  }
+  onPhoneNumberChanged(event: { number: string; countryCode: string }) {
+
+    this.merchantForm.get('phone').setValue(event.number);
+   
   }
 
   // convenience getter for easy access to form fields
