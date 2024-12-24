@@ -23,6 +23,8 @@ export class RolesComponent  implements OnInit{
   totalItems$: Observable<number>;
   loading$: Observable<any>
   searchTerm: string = '';
+  searchPlaceholder: string ='Search By Role title'
+  filterTerm: string = '';
 
   isDropdownOpen : boolean = false;
   filteredArray: any[] = [];
@@ -30,6 +32,11 @@ export class RolesComponent  implements OnInit{
 
   itemPerPage: number = 10;
   currentPage : number = 1;
+
+  statusList: any[] = [
+    {status: 'all', label: 'All'},
+    {status: 'active', label: 'Active'},
+    {status: 'inactive', label: 'inActive'}];
 
   columns : any[]= [
     { property: 'translation_data[0].name', label: 'Title' },
@@ -47,7 +54,7 @@ export class RolesComponent  implements OnInit{
 
   ngOnInit() {
           
-        this.store.dispatch(fetchRolelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:'' }));
+        this.store.dispatch(fetchRolelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:this.filterTerm }));
         this.roleList$.subscribe(data => {
         this.originalArray = data; // Role the full Role list
         this.filteredArray = [...this.originalArray];
@@ -55,23 +62,32 @@ export class RolesComponent  implements OnInit{
        
         });
    }
-
+  onFilterEvent(event: any){
+       console.log(event);
+       if(event.status !== 'all')
+         this.filterTerm = event.status;
+       else
+         this.filterTerm = '';
+   
+       this.store.dispatch(fetchRolelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status: this.filterTerm }));
+   
+    }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchRolelistData({ page: this.currentPage, itemsPerPage: totalItems, query: this.searchTerm, status:'' }));
+    this.store.dispatch(fetchRolelistData({ page: this.currentPage, itemsPerPage: totalItems, query: this.searchTerm, status:this.filterTerm }));
    }
 
    onSearchEvent(event: any){
     console.log(event);
     this.searchTerm = event;
-    this.store.dispatch(fetchRolelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:''}));
+    this.store.dispatch(fetchRolelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:this.filterTerm}));
 
    }
  
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchRolelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:''}));
+    this.store.dispatch(fetchRolelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:this.filterTerm}));
     
   }
 

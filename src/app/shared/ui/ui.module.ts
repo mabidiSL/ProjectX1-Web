@@ -20,6 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatCheckboxModule,
     TranslateModule,
     FormsModule,
+    NgSelectModule,
     RouterModule,
     UiSwitchModule,
     DirectiveModule,

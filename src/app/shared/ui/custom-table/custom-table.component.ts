@@ -27,10 +27,11 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   @Input() addButtonLink?: string;
   @Input() addButtonLabel?: string;
   @Input() addButtonPermission?: any[];
+
   @Input() columns: any[];
   @Input() statusList?: any[];
   @Input() roleList?: any[];
-
+  @Input() countrylist?: any[];
   @Input() datePicker?: boolean = false;
 
   @Input() viewButtonLink?: string;

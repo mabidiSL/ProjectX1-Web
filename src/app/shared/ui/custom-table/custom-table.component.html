@@ -25,10 +25,19 @@
               <option *ngFor="let status of statusList" [value]="status.status">{{ status.label  | translate}}</option>
             </select>
           </div>
-          <div class="col-xxl-2 col-lg-6">
+          <div *ngIf="countrylist"class="col-xxl-2 col-lg-6">
+            <select class="form-select" id="idCountry" aria-label="Default select example" (change)="selectCountry($event)">
+              <option  value="">{{'Select Country' | translate}}</option>
+              <option *ngFor="let country of countrylist" [value]="country.id">{{ country.translatedName }}</option>
+            </select>
+            <!-- <ng-select  placeholder="{{'Select Country' | translate}}" [items]="countrylist" bindLabel="translatedName" 
+             bindValue="id" id="country_id">
+              </ng-select> -->
+          </div>
+          <div *ngIf="roleList"class="col-xxl-2 col-lg-6">
             <select class="form-select" id="idRole" aria-label="Default select example" (change)="selectRole($event)">
               <option  value="">{{'Select Role' | translate}}</option>
-              <option *ngFor="let role of roleList" [value]="role.id">{{ role.name  | translate}}</option>
+              <option *ngFor="let role of roleList" [value]="role.id">{{ role.name }}</option>
             </select>
           </div>
           <!-- <div class="col-xxl-2 col-lg-4">

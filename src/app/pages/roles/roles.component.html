@@ -12,6 +12,8 @@
       [editButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.Update]}]"
       [deleteButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.Delete]}]"
       [ArrayData]="originalArray"
+      [statusList] = "statusList"
+      [searchPlaceholder]="searchPlaceholder"
       [checkedStatus] = "{status: 'active', label: 'Active'}"
       [uncheckedStatus] = "{status: 'inactive', label: 'inActive'}"
       [totalItems]="(totalItems$ | async)"
