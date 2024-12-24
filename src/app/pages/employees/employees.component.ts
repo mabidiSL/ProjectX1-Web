@@ -24,7 +24,9 @@ export class EmployeesComponent implements OnInit {
   totalItems$: Observable<number>;
   loading$: Observable<boolean>;
   searchTerm: string = '';
-
+  filterStatusTerm: string = '';
+  filterRoleTerm: number = 4;
+  searchPlaceholder: string ='Search By FName, LName or Email'
 
   isDropdownOpen : boolean = false;
   filteredArray: Employee[] = [];
@@ -32,7 +34,12 @@ export class EmployeesComponent implements OnInit {
 
   itemPerPage: number = 10;
   currentPage : number = 1;
-
+  statusList: any[] = [
+    {status: 'all', label: 'All'},
+    {status: 'active', label: 'Active'},
+    {status: 'inactive', label: 'inActive'},
+  ];
+  roleList: any[] = [];
   columns : any[]= [
     { property: 'translation_data[0].f_name', label: 'First_Name_tab' },
     { property: 'translation_data[0].l_name', label: 'Last_Name_tab' },
@@ -54,26 +61,48 @@ export class EmployeesComponent implements OnInit {
         this.store.dispatch(fetchEmployeelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm, role:4}));
         this.EmployeeList$.subscribe(data => {
         this.originalArray = data; // Employee the full Employee list
+        data.forEach(
+          empl => {
+            if( empl.role){
+              this.roleList.push({id:empl.role.id, name: empl.role.translation_data[0].name});
+            }});
+            this.roleList = this.roleList.filter((value, index, self) =>
+              index === self.findIndex((t) => (
+                t.id === value.id && t.name === value.name
+              ))
+            );
+        console.log(this.roleList);
         this.filteredArray = [...this.originalArray];
         document.getElementById('elmLoader')?.classList.add('d-none');
-       
     
         });
    }
+
+   onFilterEvent(event: any){
+      console.log(event);
+      this.filterStatusTerm = '';
+      if(event.status && event.status !== 'all')
+        this.filterStatusTerm = event.status;
+      if(event.role )
+        this.filterRoleTerm = event.role;
+          
+      this.store.dispatch(fetchEmployeelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm,role: this.filterRoleTerm, status: this.filterStatusTerm }));
+     
+      }
    onSearchEvent(event: any){
     console.log(event);
     this.searchTerm = event;
-    this.store.dispatch(fetchEmployeelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, role:4}));
+    this.store.dispatch(fetchEmployeelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, role: this.filterRoleTerm, status: this.filterStatusTerm}));
 
    }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchEmployeelistData({ page: this.currentPage, itemsPerPage: totalItems,query: this.searchTerm , role:4}));
+    this.store.dispatch(fetchEmployeelistData({ page: this.currentPage, itemsPerPage: totalItems,query: this.searchTerm , role: this.filterRoleTerm, status: this.filterStatusTerm}));
    }
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchEmployeelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm , role:4}));
+    this.store.dispatch(fetchEmployeelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm , role: this.filterRoleTerm, status: this.filterStatusTerm}));
     
   }
 

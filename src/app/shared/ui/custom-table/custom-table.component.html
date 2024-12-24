@@ -17,12 +17,18 @@
       <div class="card-body border-bottom">
         <div class="row g-3">
           <div class="col-xxl-4 col-lg-6">
-            <input type="search" class="form-control" id="searchInput" placeholder="Search for ..." [(ngModel)]="searchTerm" (ngModelChange)="searchEvent()">
+            <input type="search" class="form-control" id="searchInput" [placeholder]="searchPlaceholder? searchPlaceholder: 'Search for ...'" [(ngModel)]="searchTerm" (ngModelChange)="searchEvent()">
           </div>
           <div class="col-xxl-2 col-lg-6">
             <select class="form-select" id="idStatus" aria-label="Default select example" (change)="selectStatus($event)">
               <option  value="">{{'Select Status' | translate}}</option>
               <option *ngFor="let status of statusList" [value]="status.status">{{ status.label  | translate}}</option>
+            </select>
+          </div>
+          <div class="col-xxl-2 col-lg-6">
+            <select class="form-select" id="idRole" aria-label="Default select example" (change)="selectRole($event)">
+              <option  value="">{{'Select Role' | translate}}</option>
+              <option *ngFor="let role of roleList" [value]="role.id">{{ role.name  | translate}}</option>
             </select>
           </div>
           <!-- <div class="col-xxl-2 col-lg-4">

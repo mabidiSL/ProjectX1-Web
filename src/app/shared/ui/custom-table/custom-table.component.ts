@@ -22,11 +22,15 @@ export class CustomTableComponent implements OnInit, OnChanges  {
 
 
   @Input() pageTitle?: string;
+  @Input() searchPlaceholder?: string;
+
   @Input() addButtonLink?: string;
   @Input() addButtonLabel?: string;
   @Input() addButtonPermission?: any[];
   @Input() columns: any[];
   @Input() statusList?: any[];
+  @Input() roleList?: any[];
+
   @Input() datePicker?: boolean = false;
 
   @Input() viewButtonLink?: string;
@@ -69,6 +73,7 @@ export class CustomTableComponent implements OnInit, OnChanges  {
 
   public currentUser: Observable<_User>;
   filterByStatus: string = null;
+  filterByRole: string = null;
   filterByStartDate: Date = null;
   filterByEndDate: Date = null;
 
@@ -326,6 +331,12 @@ selectStatus(event: any){
      console.log(event.target.value);
   
 }
+selectRole(event: any){
+  if(event)
+    this.filterByRole = event.target.value
+     console.log(event.target.value);
+  
+}
 selectStartDate(event: any){
   if(event)
     this.filterByStartDate = event.target.value
@@ -339,8 +350,8 @@ selectEndDate(event: any){
   
 }
 Filter(){
-  if(this.filterByStatus || this.filterByStartDate || this.filterByEndDate)
-    this.onFilter.emit({status:this.filterByStatus, startdate:this.filterByStartDate, enddate: this.filterByEndDate} );
+  if(this.filterByStatus || this.filterByStartDate || this.filterByEndDate || this.filterByRole)
+    this.onFilter.emit({status:this.filterByStatus, startdate:this.filterByStartDate, enddate: this.filterByEndDate, role: this.filterByRole} );
 
 }
 }
