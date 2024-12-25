@@ -26,7 +26,9 @@ export class CouponsComponent  implements OnInit {
   searchTerm: string = '';
 
   filterstatusTerm: string = '';
-  filterDateTerm: Date = null;
+  filterstartDateTerm: string = '';
+  filterendDateTerm: string = '';
+
 
   isDropdownOpen : boolean = false;
   filteredArray: Offer[] = [];
@@ -61,7 +63,7 @@ export class CouponsComponent  implements OnInit {
 
   ngOnInit() {
    
-    this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, category:'coupon', query:'',status:'' }));
+    this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, category:'coupon', query:this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterendDateTerm, status:this.filterstatusTerm }));
     this.couponList$.subscribe(data => {
       this.originalArray = data; // Offer the full Offer list
       this.filteredArray = [...this.originalArray];
@@ -76,26 +78,32 @@ export class CouponsComponent  implements OnInit {
     this.filterstatusTerm = '';
     if(event.status && event.status !== 'all')
       this.filterstatusTerm = event.status;
-    if(event.date )
-      this.filterDateTerm = event.date;
+    if(event.startdate )
+      this.filterstartDateTerm = event.startdate;
+    else
+      this.filterstartDateTerm = '';
+    if(event.enddate )
+        this.filterendDateTerm = event.enddate;
+     else
+        this.filterendDateTerm = '';
     
-    this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, category: 'coupon', query: this.searchTerm, status: this.filterstatusTerm }));
+    this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, category: 'coupon', query: this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterendDateTerm, status: this.filterstatusTerm }));
     
   }
   onSearchEvent(event: any){
     console.log(event);
     this.searchTerm = event;
-    this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, category: 'coupon',query: this.searchTerm, status:this.filterstatusTerm }));
+    this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, category: 'coupon',query: this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterendDateTerm, status:this.filterstatusTerm }));
 
    }
   onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: totalItems, category: 'coupon',query:  this.searchTerm, status:this.filterstatusTerm}));
+    this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: totalItems, category: 'coupon',query:  this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterendDateTerm, status:this.filterstatusTerm}));
    }
    // pagechanged
    onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, category: 'coupon',query:  this.searchTerm, status:this.filterstatusTerm}));
+    this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, category: 'coupon',query:  this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterendDateTerm, status:this.filterstatusTerm}));
     
   }
 

@@ -363,15 +363,26 @@ selectMerchant(event: any){
   
 }
 selectStartDate(event: any){
-  if(event)
-    this.filterByStartDate = event.target.value
-     console.log(event.target.value);
+  console.log('start date selected');
+  console.log(event);
+  
+  if(event){
+    const formattedDate = event.toISOString().split('T')[0];  // 'YYYY-MM-DD'
+
+    this.filterByStartDate = formattedDate;
+     console.log(this.filterByStartDate);
+  }
   
 }
 selectEndDate(event: any){
-  if(event)
-    this.filterByEndDate = event.target.value
-     console.log(event.target.value);
+  console.log('end date selected');
+  console.log(event);
+  
+  if(event){
+    const formattedDate = event.toISOString().split('T')[0];  // 'YYYY-MM-DD'
+    this.filterByEndDate = formattedDate;
+    console.log(this.filterByEndDate);
+  }
   
 }
 Filter(){

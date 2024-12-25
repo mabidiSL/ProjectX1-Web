@@ -26,9 +26,10 @@ export class GiftCardComponent implements OnInit {
   totalItems$: Observable<number>;
   loading$: Observable<boolean>;
   searchTerm: string = '';
-  filterstatusTerm: string = '';
-  filterDateTerm: Date = null;
 
+  filterstatusTerm: string = '';
+  filterstartDateTerm: string = '';
+  filterendDateTerm: string = '';
 
   isDropdownOpen : boolean = false;
   filteredArray: Offer[] = [];
@@ -65,7 +66,7 @@ export class GiftCardComponent implements OnInit {
 
   ngOnInit() {
    
-    this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, category: 'gift-card', query:'', status: '' }));
+    this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, category: 'gift-card', query:this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterendDateTerm,  status: this.filterstatusTerm }));
     this.giftCardList$.subscribe(data => {
       this.originalArray = data; // giftCard the full giftCard list
       this.filteredArray = [...this.originalArray];
@@ -80,26 +81,32 @@ export class GiftCardComponent implements OnInit {
       this.filterstatusTerm = '';
       if(event.status && event.status !== 'all')
         this.filterstatusTerm = event.status;
-      if(event.date )
-        this.filterDateTerm = event.date;
+      if(event.startdate )
+        this.filterstartDateTerm = event.startdate;
+      else
+        this.filterstartDateTerm = '';
+      if(event.enddate )
+          this.filterendDateTerm = event.enddate;
+       else
+          this.filterendDateTerm = '';
        
-      this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, category: 'gift-card', query: this.searchTerm, status: this.filterstatusTerm }));
+      this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, category: 'gift-card', query: this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterendDateTerm, status: this.filterstatusTerm }));
   
      }
   onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: totalItems, category: 'gift-card',  query:  this.searchTerm, status:this.filterstatusTerm }));
+    this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: totalItems, category: 'gift-card',  query:  this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterendDateTerm, status:this.filterstatusTerm }));
    }
    // pagechanged
    onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,category: 'gift-card', query:  this.searchTerm, status:this.filterstatusTerm }));
+    this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,category: 'gift-card', query:  this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterendDateTerm, status:this.filterstatusTerm }));
     
   }
   onSearchEvent(event: any){
     console.log(event);
     this.searchTerm = event;
-    this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, category: 'gift-card', query: this.searchTerm, status:'' }));
+    this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, category: 'gift-card', query: this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterendDateTerm, status:this.filterstatusTerm }));
 
    }
   // Delete Store

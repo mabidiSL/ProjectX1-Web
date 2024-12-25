@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { Merchant, MerchantListModel } from './merchantlist1.model';
 
 // fetch all list
-export const fetchMerchantlistData = createAction('[Data] fetch Merchantlist', props<{ page?: number; itemsPerPage?: number,query?: string, status?: string }>());
+export const fetchMerchantlistData = createAction('[Data] fetch Merchantlist', props<{ page?: number; itemsPerPage?: number,query?: string, country_id?: number, status?: string }>());
 export const fetchMerchantlistSuccess = createAction('[Data] fetch Merchantlist success', props<{ MerchantListdata: MerchantListModel}>())
 export const fetchMerchantlistFail = createAction('[Data fetch Merchantlist failed]', props<{ error: string }>())
 

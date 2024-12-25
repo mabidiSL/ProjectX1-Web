@@ -34,7 +34,12 @@ export class CrudService {
     }
 
     fetchData<T>(url: string, payload?: Params ): Observable<T> {
-         return this.http.get<T>(`${environment.baseURL}${url}`, {params: this.setParams(payload)});
+        const cleanedPayload = payload ? this.removeNullValues(payload) : {};
+
+        // Pass the cleaned payload to the setParams function
+        return this.http.get<T>(`${environment.baseURL}${url}`, {
+        params: this.setParams(cleanedPayload)
+        });
     }
     
     addData<T>(url: string, newData: T): Observable<T> {
@@ -73,6 +78,18 @@ export class CrudService {
         }
         return params;
       }
+      // Helper function to remove null/undefined values from the payload
+    private removeNullValues(payload: any): any {
+        // Create a new object and only keep properties with non-null/undefined values
+        const cleanedPayload = Object.keys(payload).reduce((acc, key) => {
+        if (payload[key] !== null && payload[key] !== undefined) {
+            acc[key] = payload[key];
+        }
+        return acc;
+        }, {});
+
+        return cleanedPayload;
+    }
       
 }
 

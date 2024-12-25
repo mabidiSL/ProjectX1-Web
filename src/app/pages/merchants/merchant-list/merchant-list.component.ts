@@ -37,6 +37,8 @@ export class MerchantListComponent implements OnInit {
 
   searchTerm: string = '';
   filterTerm: string = '';
+  filterCountryTerm: number = null;
+
   searchPlaceholder: string ='Search By Merchant_Name or Email'
 
   isDropdownOpen : boolean = false;
@@ -74,7 +76,7 @@ export class MerchantListComponent implements OnInit {
 
   ngOnInit() {
         this.fetchCountry();
-        this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm, status: this.filterTerm  }));
+        this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm, country_id: this.filterCountryTerm, status: this.filterTerm  }));
         this.MerchantList$.subscribe(data => {
         this.originalArray = data; // Merchant the full Merchant list
         this.filteredArray = [...this.originalArray];
@@ -100,28 +102,33 @@ export class MerchantListComponent implements OnInit {
    onSearchEvent(event: any){
     console.log(event);
     this.searchTerm = event;
-    this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status: this.filterTerm }));
+    this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, country_id: this.filterCountryTerm, status: this.filterTerm }));
 
    }
    onFilterEvent(event: any){
     console.log(event);
-    if(event.status !== 'all')
+    if(event.status && event.status !== 'all')
       this.filterTerm = event.status;
     else
       this.filterTerm = '';
 
-    this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status: this.filterTerm }));
+    if(event.country)
+      this.filterCountryTerm = event.country;
+    else
+      this.filterCountryTerm = null;
+   
+    this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, country_id: this.filterCountryTerm, status: this.filterTerm }));
 
    }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: totalItems,query: this.searchTerm, status:this.filterTerm }));
+    this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: totalItems,query: this.searchTerm, country_id: this.filterCountryTerm, status:this.filterTerm }));
    }
  
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage ,query: this.searchTerm, status: this.filterTerm}));
+    this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage ,query: this.searchTerm,country_id: this.filterCountryTerm, status: this.filterTerm}));
     
   }
 

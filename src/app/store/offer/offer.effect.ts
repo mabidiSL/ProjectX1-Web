@@ -32,8 +32,8 @@ export class OffersEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchOfferlistData),
-            mergeMap(({ page, itemsPerPage, query, status }) =>
-                this.CrudService.fetchData('/offers',{ limit: itemsPerPage, page: page, query: query, status: status}).pipe(
+            mergeMap(({ page, itemsPerPage, query, startDate, endDate,  status }) =>
+                this.CrudService.fetchData('/offers',{ limit: itemsPerPage, page: page, query: query,startDate: startDate, endDate: endDate, status: status}).pipe(
                     map((response: any) => fetchOfferlistSuccess({ OfferListdata : response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);

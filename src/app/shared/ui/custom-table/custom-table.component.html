@@ -66,12 +66,12 @@
           </div> -->
            <div *ngIf="datePicker" class="col-xxl-2 col-lg-4">
             <div  id="datepicker1">
-              <input type="text" placeholder="Start Date" class="form-control " [(ngModel)]="filterByStartDate" bsDatepicker [bsConfig]="{ showWeekNumbers: false }" (change)="selectStartDate($event)">
+              <input type="text" placeholder="Start Date" class="form-control " [(ngModel)]="filterByStartDate" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', showWeekNumbers: false }" (ngModelChange)="selectStartDate($event)">
             </div> <!--input-group -->
             </div>
             <div *ngIf="datePicker" class="col-xxl-2 col-lg-4">
               <div  id="datepicker2">
-                <input type="text" placeholder="End Date" class="form-control " [(ngModel)]="filterByEndDate" bsDatepicker [bsConfig]="{ showWeekNumbers: false }" (change)="selectEndDate($event)">
+                <input type="text" placeholder="End Date" class="form-control " [(ngModel)]="filterByEndDate" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', showWeekNumbers: false }" (ngModelChange)="selectEndDate($event)">
               </div> 
            </div> 
            
