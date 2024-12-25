@@ -34,7 +34,7 @@ export class MerchantListComponent implements OnInit {
   MerchantList$: Observable<Merchant[]>;
   totalItems$: Observable<number>;
   loading$: Observable<boolean>;
-  
+
   searchTerm: string = '';
   filterTerm: string = '';
   searchPlaceholder: string ='Search By Merchant_Name or Email'
@@ -74,7 +74,7 @@ export class MerchantListComponent implements OnInit {
 
   ngOnInit() {
         this.fetchCountry();
-        this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: '', status: ''  }));
+        this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm, status: this.filterTerm  }));
         this.MerchantList$.subscribe(data => {
         this.originalArray = data; // Merchant the full Merchant list
         this.filteredArray = [...this.originalArray];
@@ -100,7 +100,7 @@ export class MerchantListComponent implements OnInit {
    onSearchEvent(event: any){
     console.log(event);
     this.searchTerm = event;
-    this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status: '' }));
+    this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status: this.filterTerm }));
 
    }
    onFilterEvent(event: any){

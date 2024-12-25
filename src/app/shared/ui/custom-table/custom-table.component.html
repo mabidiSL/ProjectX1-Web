@@ -16,27 +16,42 @@
       </div>
       <div class="card-body border-bottom">
         <div class="row g-3">
-          <div class="col-xxl-4 col-lg-6">
+          <div class="col-xxl-4 col-lg-4">
             <input type="search" class="form-control" id="searchInput" [placeholder]="searchPlaceholder? searchPlaceholder: 'Search for ...'" [(ngModel)]="searchTerm" (ngModelChange)="searchEvent()">
           </div>
-          <div class="col-xxl-2 col-lg-6">
-            <select class="form-select" id="idStatus" aria-label="Default select example" (change)="selectStatus($event)">
-              <option  value="">{{'Select Status' | translate}}</option>
+          <div class="col-xxl-2 col-lg-4">
+            <select class="form-select" id="idStatus" aria-label="Default select example" [(ngModel)]="filterByStatus" (change)="selectStatus($event)">
+              <option  value="null">{{'Select Status' | translate}}</option>
               <option *ngFor="let status of statusList" [value]="status.status">{{ status.label  | translate}}</option>
             </select>
           </div>
-          <div *ngIf="countrylist"class="col-xxl-2 col-lg-6">
-            <select class="form-select" id="idCountry" aria-label="Default select example" (change)="selectCountry($event)">
-              <option  value="">{{'Select Country' | translate}}</option>
+          <div *ngIf="merchantList"class="col-xxl-2 col-lg-4">
+            <select class="form-select" id="idRole" aria-label="Default select example" [(ngModel)]="filterByMerchant" (change)="selectMerchant($event)">
+              <option  value="null">{{'Select Merchant' | translate}}</option>
+              <option *ngFor="let merchant of merchantList" [value]="merchant.id">{{ merchant.translatedName }}</option>
+            </select>
+          </div>
+          <div *ngIf="countrylist"class="col-xxl-2 col-lg-4">
+            <select class="form-select" id="idCountry" aria-label="Default select example" [(ngModel)]="filterByCountry" (change)="selectCountry($event)">
+              <option  value="null">{{'Select Country' | translate}}</option>
               <option *ngFor="let country of countrylist" [value]="country.id">{{ country.translatedName }}</option>
             </select>
             <!-- <ng-select  placeholder="{{'Select Country' | translate}}" [items]="countrylist" bindLabel="translatedName" 
              bindValue="id" id="country_id">
               </ng-select> -->
           </div>
-          <div *ngIf="roleList"class="col-xxl-2 col-lg-6">
-            <select class="form-select" id="idRole" aria-label="Default select example" (change)="selectRole($event)">
-              <option  value="">{{'Select Role' | translate}}</option>
+          <div *ngIf="citylist"class="col-xxl-2 col-lg-4">
+            <select class="form-select" id="idCity" aria-label="Default select example" [(ngModel)]="filterByCity" (change)="selectCity($event)">
+              <option  value="null">{{'Select City' | translate}}</option>
+              <option *ngFor="let city of citylist" [value]="city.id">{{ city.translatedName }}</option>
+            </select>
+            <!-- <ng-select  placeholder="{{'Select Country' | translate}}" [items]="countrylist" bindLabel="translatedName" 
+             bindValue="id" id="country_id">
+              </ng-select> -->
+          </div>
+          <div *ngIf="roleList"class="col-xxl-2 col-lg-4">
+            <select class="form-select" id="idRole" aria-label="Default select example" [(ngModel)]="filterByRole" (change)="selectRole($event)">
+              <option  value="null">{{'Select Role' | translate}}</option>
               <option *ngFor="let role of roleList" [value]="role.id">{{ role.name }}</option>
             </select>
           </div>
@@ -51,16 +66,20 @@
           </div> -->
            <div *ngIf="datePicker" class="col-xxl-2 col-lg-4">
             <div  id="datepicker1">
-              <input type="text" placeholder="Start Date" class="form-control " bsDatepicker [bsConfig]="{ showWeekNumbers: false }" (change)="selectStartDate($event)">
+              <input type="text" placeholder="Start Date" class="form-control " [(ngModel)]="filterByStartDate" bsDatepicker [bsConfig]="{ showWeekNumbers: false }" (change)="selectStartDate($event)">
             </div> <!--input-group -->
             </div>
             <div *ngIf="datePicker" class="col-xxl-2 col-lg-4">
               <div  id="datepicker2">
-                <input type="text" placeholder="End Date" class="form-control " bsDatepicker [bsConfig]="{ showWeekNumbers: false }" (change)="selectEndDate($event)">
+                <input type="text" placeholder="End Date" class="form-control " [(ngModel)]="filterByEndDate" bsDatepicker [bsConfig]="{ showWeekNumbers: false }" (change)="selectEndDate($event)">
               </div> 
            </div> 
+           
           <div class="col-xxl-2 col-lg-4">
-            <button type="button" class="btn btn-soft-secondary w-100" (click)="Filter()"><i class="mdi mdi-filter-outline align-middle"></i> {{'Filter' | translate}}</button>
+            <a href="javascript:void(0);" class="btn btn-light me-2" (click)="resetFilter()"><i class="mdi mdi-refresh"></i></a>
+            <button type="button" class="btn btn-soft-secondary " (click)="Filter()">
+              <i class="mdi mdi-filter-outline align-middle"></i> {{'Filter' | translate}}
+            </button>
           </div>
         </div>
       </div>

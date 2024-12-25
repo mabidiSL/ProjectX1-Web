@@ -30,8 +30,8 @@ export class StoreslistEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchStorelistData),
-            mergeMap(({ page, itemsPerPage,query, status, company_id }) =>
-                this.CrudService.fetchData('/stores',{ limit: itemsPerPage, page: page,query: query,status: status, company_id: company_id}).pipe(
+            mergeMap(({ page, itemsPerPage,query, status, city_id, company_id }) =>
+                this.CrudService.fetchData('/stores',{ limit: itemsPerPage, page: page,query: query,status: status,city_id: city_id, company_id: company_id}).pipe(
                     map((response: any) => {
                     return fetchStorelistSuccess({ StoreListdata: response.result })}),
                     catchError((error) =>{

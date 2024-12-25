@@ -31,6 +31,10 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   @Input() columns: any[];
   @Input() statusList?: any[];
   @Input() roleList?: any[];
+  @Input() citylist?: any[];
+  @Input() merchantList?: any[];
+
+
   @Input() countrylist?: any[];
   @Input() datePicker?: boolean = false;
 
@@ -75,12 +79,15 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   public currentUser: Observable<_User>;
   filterByStatus: string = null;
   filterByRole: string = null;
+  filterByCity: string = null;
+  filterByCountry: string = null;
+  filterByMerchant: string = null;
+
+
   filterByStartDate: Date = null;
   filterByEndDate: Date = null;
 
-
-
-   // Tracks the currently sorted column
+  // Tracks the currently sorted column
    sortedColumn: string | null = null;
    // Tracks the sorting direction: 'asc' for ascending or 'desc' for descending
    sortDirection: 'asc' | 'desc' = 'asc';
@@ -317,7 +324,6 @@ sortData(column: string): void {
   navigateToView(data: any) {
 
   if(this.pending !== undefined){
-
     this.router.navigate([`${this.viewButtonLink}`, data.id], { 
       state: { fromPending: this.pending }
     });
@@ -338,6 +344,24 @@ selectRole(event: any){
      console.log(event.target.value);
   
 }
+selectCity(event: any){
+  if(event)
+    this.filterByCity = event.target.value
+     console.log(event.target.value);
+  
+}
+selectCountry(event: any){
+  if(event)
+    this.filterByCountry = event.target.value
+     console.log(event.target.value);
+  
+}
+selectMerchant(event: any){
+  if(event)
+    this.filterByMerchant = event.target.value
+     console.log(event.target.value);
+  
+}
 selectStartDate(event: any){
   if(event)
     this.filterByStartDate = event.target.value
@@ -351,9 +375,21 @@ selectEndDate(event: any){
   
 }
 Filter(){
-  if(this.filterByStatus || this.filterByStartDate || this.filterByEndDate || this.filterByRole)
+  if(this.filterByStatus || this.filterByStartDate || this.filterByEndDate || this.filterByRole || this.filterByCity || this.filterByCountry || this.filterByMerchant){
     console.log('onFilter');
-    this.onFilter.emit({status:this.filterByStatus, startdate:this.filterByStartDate, enddate: this.filterByEndDate, role: this.filterByRole} );
-
+    this.onFilter.emit({status:this.filterByStatus, startdate:this.filterByStartDate, enddate: this.filterByEndDate, company: this.filterByMerchant, country:  this.filterByCountry, city: this.filterByCity , role: this.filterByRole} );
+  }
 }
+  resetFilter(){
+    this.filterByStatus = null;
+    this.filterByStartDate = null;
+    this.filterByEndDate = null;
+    this.filterByMerchant =  null;
+    this.filterByCountry = null;
+    this.filterByCity = null;
+    this.filterByRole = null;
+    this.onFilter.emit({status:this.filterByStatus, startdate:this.filterByStartDate, enddate: this.filterByEndDate, company: this.filterByMerchant, country:  this.filterByCountry, city: this.filterByCity , role: this.filterByRole} );
+
+  }
+
 }
