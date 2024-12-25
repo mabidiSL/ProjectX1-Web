@@ -6,4 +6,10 @@
   .sort-arrow:hover {
     color: black; /* Ensure hover changes color to black */
   }
-  
+  textarea.form-control {
+    min-height: 2em; /* Ensures at least 2 lines of text are visible */
+    max-height: 10em; /* Optional: sets a maximum height for the textarea */
+    overflow-y: auto; /* Show scrollbars when content overflows */
+    word-wrap: break-word;
+    white-space: pre-wrap;
+  }

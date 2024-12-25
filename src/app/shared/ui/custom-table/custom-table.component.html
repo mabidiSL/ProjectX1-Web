@@ -181,11 +181,20 @@
                   <!-- Show Data for non-flag properties -->
                   <ng-template #showData>
                     <ng-container *ngIf="getProperty(data, column.property) !== null && getProperty(data, column.property) !== undefined">
+                      <ng-container *ngIf="column.property === 'description'; else showText">
+                        <textarea 
+                        class="form-control" 
+                        rows="2" 
+                        [(ngModel)]="data[column.property]" >
+                        </textarea>
+                    </ng-container>
+                    <ng-template #showText >
                       <h5 class="font-size-14 mb-1">
                         <a href="javascript: void(0);" class="text-dark">
                           {{ getProperty(data, column.property) }}
                         </a>
                       </h5>
+                    </ng-template>
                     </ng-container>
                   </ng-template>
                 </ng-container>
