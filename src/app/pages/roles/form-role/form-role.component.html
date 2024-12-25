@@ -9,7 +9,21 @@
             <div class="card-body ">
                 <form [formGroup]="roleForm"  >
                     <div *ngIf="formError" class="alert alert-danger">{{ formError | translate}}</div>
-                <div class="row">
+                    <div class="d-flex align-items-center justify-content-end mb-2">   
+                        <div class="form-check form-switch form-switch-md ms-auto">
+                            <label class="form-check-label" for="SwitchCheckSizelg1">
+                            {{ roleForm.get('status')?.value === 'active' ? 'Active' : 'InActive' }}
+                            </label>
+                            <input 
+                            class="form-check-input" 
+                            type="checkbox" 
+                            id="SwitchCheckSizelg1" 
+                            formControlName="status"  
+                            [checked]="roleForm.get('status')?.value === 'active'" 
+                            (change)="onToggle($event)">
+                        </div>
+                    </div>
+                    <div class="row">
                     <div class="col-md-6 mb-3">
                         <div class="form-group ">
                            <label for="name" >{{'role_name' | translate}} <span  *ngIf="type !== 'view'" class="text-danger">*</span></label>

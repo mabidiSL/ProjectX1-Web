@@ -352,6 +352,7 @@ selectEndDate(event: any){
 }
 Filter(){
   if(this.filterByStatus || this.filterByStartDate || this.filterByEndDate || this.filterByRole)
+    console.log('onFilter');
     this.onFilter.emit({status:this.filterByStatus, startdate:this.filterByStartDate, enddate: this.filterByEndDate, role: this.filterByRole} );
 
 }

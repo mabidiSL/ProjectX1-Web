@@ -23,7 +23,7 @@ export class RolesComponent  implements OnInit{
   totalItems$: Observable<number>;
   loading$: Observable<any>
   searchTerm: string = '';
-  searchPlaceholder: string ='Search By Role title'
+  searchPlaceholder: string ='Search By Role Title'
   filterTerm: string = '';
 
   isDropdownOpen : boolean = false;

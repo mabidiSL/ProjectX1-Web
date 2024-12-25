@@ -82,6 +82,7 @@ export class FormRoleComponent implements OnInit, OnDestroy {
         name: ['', Validators.required],
       //  name_ar: ['', Validators.required],
         claims: [[]],
+        status:['active']
         
       });
      }
@@ -404,7 +405,13 @@ toggleModule(moduleKey: string, event: any): void {
     this.roleForm.patchValue({ claims: this.claims });
 }
 
+onToggle(event: any){
+  console.log(event.target.value);
+  if(event){
+    this.roleForm.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
 
+  }
+}
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
