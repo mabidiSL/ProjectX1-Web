@@ -55,7 +55,7 @@
                             <tbody>
                                 <tr *ngFor="let module of moduleKeys">
                                     <td *ngIf="module === 'All'; else otherModules" >
-                                        <input class="me-2" type="checkbox" [checked] ="ALLModulesChecked" (change)="toggleGlobalAll($event.target.checked)"  />
+                                        <input class="me-2" type="checkbox" [checked] ="ALLModulesChecked" (change)="toggleGlobalAll($event.target.checked)" [disabled]="type==='view'" />
                                         <strong>{{ module | translate }}</strong>
                                     </td>
                                     <ng-template #otherModules>
