@@ -24,6 +24,9 @@ export class NotificationsComponent implements OnInit{
   totalItems$: Observable<number>;
   loading$: Observable<boolean>
   searchTerm: string = '';
+  filterstatusTerm: string = '';
+
+  searchPlaceholder: string ='Search By Title'
 
   isDropdownOpen : boolean = false;
   filteredArray: Notification[] = [];
@@ -31,7 +34,11 @@ export class NotificationsComponent implements OnInit{
 
   itemPerPage: number = 10;
   currentPage : number = 1;
-
+  statusList: any[] = [
+    {status: 'all', label: 'All'},
+    {status: 'delivered',label:'Delivered'},
+    {status: 'undelivered',label:'Undelivered'},
+  ];
   columns : any[]= [
     { property: 'translation_data[0].title', label: 'Title' },
     { property: 'translation_data[0].description', label: 'Description' },
@@ -48,7 +55,7 @@ export class NotificationsComponent implements OnInit{
 
   ngOnInit() {
           
-        this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:'' }));
+        this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:this.searchTerm, status: this.filterstatusTerm }));
         this.notificationList$.subscribe(data => {
         this.originalArray = data; // Notification the full Notification list
         this.filteredArray = [...this.originalArray];
@@ -56,22 +63,31 @@ export class NotificationsComponent implements OnInit{
      
         });
    }
+     onFilterEvent(event: any){
+         console.log(event);
+         this.filterstatusTerm = '';
+         if(event.status && event.status !== 'all')
+           this.filterstatusTerm = event.status;
+        
+         this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,  query: this.searchTerm, status: this.filterstatusTerm }));
+     
+        }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: totalItems, query: this.searchTerm }));
+    this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: totalItems, query: this.searchTerm ,status: this.filterstatusTerm}));
    }
  
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm }));
+    this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm,status: this.filterstatusTerm }));
     
   }
 
   onSearchEvent(event: any){
     console.log(event);
     this.searchTerm = event;
-    this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm }));
+    this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status: this.filterstatusTerm }));
 
    }
   // Delete Notification

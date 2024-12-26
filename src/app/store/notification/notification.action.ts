@@ -3,7 +3,7 @@ import { createAction, props } from '@ngrx/store';
 import { NotificationListModel, Notification } from './notification.model';
 
 // fetch all list
-export const fetchNotificationlistData = createAction('[Data] fetch Notificationlist',props<{ page: number; itemsPerPage: number, query: string }>());
+export const fetchNotificationlistData = createAction('[Data] fetch Notificationlist',props<{ page: number; itemsPerPage: number, query: string, status?: string }>());
 export const fetchNotificationlistSuccess = createAction('[Data] fetch Notificationlist success', props<{ NotificationListdata: NotificationListModel }>())
 export const fetchNotificationlistFail = createAction('[Data fetch Notificationlist failed]', props<{ error: string }>())
 export const fetchMyNotificationlistData = createAction('[Data] fetch My Notification List');

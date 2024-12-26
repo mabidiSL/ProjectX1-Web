@@ -1,7 +1,7 @@
 <div class="container-fluid">
 
-    <app-page-title title="{{'Notification_List'| translate}}" [breadcrumbItems]="breadCrumbItems"></app-page-title>
     <app-custom-table
+      [pageTitle] = "'Notification_List'| translate"
       [addButtonLink] ="'/private/notifications/create'"
       [addButtonLabel] ="'New_Notification'| translate"
       [addButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Notification_Management, claimValue: [Permission.Create]}]"
@@ -15,8 +15,11 @@
       [checkedStatus] = "{status: 'delivered', label: 'Delivered'}"
       [uncheckedStatus] = "{status: 'undelivered', label: 'Undelivered'}"
       [totalItems]="(totalItems$ | async)"
+      [statusList] = "statusList"
       (onPageSizeChanged)="onPageSizeChanged($event)"
+      [searchPlaceholder]="searchPlaceholder"
       (onsearch)="onSearchEvent($event)"
+      (onFilter)="onFilterEvent($event)"
       (pageChanged)="onPageChanged($event)"
       (onChangeEvent)="onChangeEvent($event)"
       (onDelete)="onDelete($event)">
@@ -27,7 +30,7 @@
   
   <div id="elmLoader" class="text-center">
     <div class="spinner-border text-primary avatar-sm" role="status">
-      <span class="visually-hidden">Loading...</span>
+      <span class="visually-hidden">{{'Loading...' | translate}}</span>
     </div>
   </div>
   
