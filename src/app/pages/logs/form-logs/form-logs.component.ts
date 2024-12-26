@@ -6,6 +6,7 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Subject, Observable, takeUntil } from 'rxjs';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { DatepickerConfigService } from 'src/app/core/services/date.service';
+import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { selectDataLoading, selectLogById } from 'src/app/store/Log/log-selector';
 import { getLogById } from 'src/app/store/Log/log.actions';
 import { Log } from 'src/app/store/Log/log.models';
@@ -40,6 +41,7 @@ export class FormLogsComponent implements OnInit {
     private route: ActivatedRoute, 
     private router: Router,
     private authService: AuthenticationService, 
+    private formUtilService: FormUtilService,
     private datepickerConfigService: DatepickerConfigService,
     public store: Store) {
      
@@ -68,6 +70,9 @@ export class FormLogsComponent implements OnInit {
   ngOnInit() {
   const LogId = this.route.snapshot.params['id'];
   if (LogId) {
+    if (this.type === 'view') {
+      this.formUtilService.disableFormControls(this.logForm);
+     }
     // Dispatch action to retrieve the log by ID
     this.store.dispatch(getLogById({ LogId }));
     // Subscribe to the selected log from the store

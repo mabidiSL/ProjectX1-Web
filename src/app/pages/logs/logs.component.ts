@@ -26,7 +26,7 @@ export class LogsComponent implements OnInit {
   loading$: Observable<any>;
   currentId : number = null;
   searchTerm: string = '';
-  filterDateTerm: string = '';
+  filterDateTerm: string = null;
 
   isDropdownOpen : boolean = false;
   filteredArray: any[] = [];
@@ -69,9 +69,8 @@ export class LogsComponent implements OnInit {
          if(event.date )
            this.filterDateTerm = event.date;
          else
-           this.filterDateTerm = '';
-     
-          
+           this.filterDateTerm = null;
+               
          this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, actionDate: this.filterDateTerm }));
      
         }

@@ -110,6 +110,9 @@ export class FormCustomerComponent  implements OnInit, OnDestroy{
      
     const customerId = this.route.snapshot.params['id'];
     if (customerId) {
+      if (this.type === 'view') {
+        this.formUtilService.disableFormControls(this.customerForm);
+       }
       // Dispatch action to retrieve the customer by ID
       this.store.dispatch(getCustomerById({ customerId }));
       

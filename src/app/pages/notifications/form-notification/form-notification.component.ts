@@ -75,6 +75,9 @@ export class FormNotificationComponent implements OnInit {
     this.fetchCustomers();
     const notifId = this.route.snapshot.params['id'];
     if (notifId) {
+      if (this.type === 'view') {
+        this.formUtilService.disableFormControls(this.notifForm);
+       }
       // Dispatch action to retrieve the notif by ID
       this.store.dispatch(getNotificationById({ notificationId: notifId }));
       

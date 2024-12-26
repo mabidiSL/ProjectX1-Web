@@ -119,8 +119,8 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
     const employeeId = this.route.snapshot.params['id'];
     if (employeeId) {
       if (this.type === 'view') {
-        this.employeeForm.get('status')?.disable();
-      }
+        this.formUtilService.disableFormControls(this.employeeForm);
+       }
       // Dispatch action to retrieve the employee by ID
       this.store.dispatch(getEmployeeById({ employeeId }));
       

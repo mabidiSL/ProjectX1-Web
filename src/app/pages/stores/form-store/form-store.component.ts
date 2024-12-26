@@ -170,8 +170,8 @@ export class FormStoreComponent implements OnInit, OnDestroy {
     const StoreId = this.route.snapshot.params['id'];
     if (StoreId) {
       if (this.type === 'view') {
-        this.storeForm.get('status')?.disable();
-      }
+        this.formUtilService.disableFormControls(this.storeForm);
+       }
       // Dispatch action to retrieve the Store by ID
       this.store.dispatch(getStoreById({ StoreId }));
       

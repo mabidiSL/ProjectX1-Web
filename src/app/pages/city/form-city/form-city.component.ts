@@ -86,8 +86,8 @@ export class FormCityComponent  implements OnInit, OnDestroy {
       const CityId = this.route.snapshot.params['id'];
       if (CityId) {
         if (this.type === 'view') {
-          this.cityForm.get('status')?.disable();
-        }
+          this.formUtilService.disableFormControls(this.cityForm);
+         }
         // Dispatch action to retrieve the city by ID
         this.store.dispatch(getCityById({ CityId }));
         

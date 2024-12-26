@@ -98,6 +98,9 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
     if (!this.inputElement && document.querySelector(`#${this.inputId}`)) {
       this.inputElement = document.querySelector(`#${this.inputId}`) as HTMLInputElement; 
       if(this.inputElement){
+        if(this.disabled)
+          this.inputElement.disabled = true;
+          
       this.checkLanguageAndApplyRtl();
       this.iti = intlTelInput(this.inputElement, this.itiOptions);
       //console.log('Country data:', this.iti.getCountryData()); // Log the available country data

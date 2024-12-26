@@ -195,7 +195,7 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
     const OfferId = this.route.snapshot.params['id'];
     if (OfferId) {
       if (this.type === 'view') {
-        this.formOffer.get('status')?.disable();
+       this.formUtilService.disableFormControls(this.formOffer);
       }
       // Dispatch action to retrieve the Offer by ID
       this.store.dispatch(getOfferById({ OfferId }));
@@ -224,6 +224,12 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
         });
     }
   
+}
+ // Method to disable all form controls
+ disableFormControls() {
+  Object.keys(this.formOffer.controls).forEach(key => {
+    this.formOffer.get(key)?.disable();  // Disable the control
+  });
 }
 patchValueForm(offer: Offer){
   this.formOffer.patchValue(offer);

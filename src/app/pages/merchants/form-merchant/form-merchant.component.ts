@@ -129,8 +129,8 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
     const merchantId = this.route.snapshot.params['id'];
     if (merchantId) {
       if (this.type === 'view') {
-        this.merchantForm.get('status')?.disable();
-      }
+        this.formUtilService.disableFormControls(this.merchantForm);
+       }
       // Dispatch action to retrieve the merchant by ID
       this.store.dispatch(getMerchantById({ merchantId }));
       

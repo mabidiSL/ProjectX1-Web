@@ -369,12 +369,23 @@ selectMerchant(event: any){
      console.log(event.target.value);
   
 }
+selectDate(event: any){
+  console.log(' date selected');
+  console.log(event);
+  
+  if(event){
+    const formattedDate = new Date(event);
+    this.filterByDate = formattedDate;
+     console.log(this.filterByDate);
+  }
+  
+}
 selectStartDate(event: any){
   console.log('start date selected');
   console.log(event);
   
   if(event){
-    const formattedDate = event.toISOString().split('T')[0];  // 'YYYY-MM-DD'
+    const formattedDate = new Date(event);
 
     this.filterByStartDate = formattedDate;
      console.log(this.filterByStartDate);
@@ -386,7 +397,8 @@ selectEndDate(event: any){
   console.log(event);
   
   if(event){
-    const formattedDate = event.toISOString().split('T')[0];  // 'YYYY-MM-DD'
+    const formattedDate = new Date(event);
+
     this.filterByEndDate = formattedDate;
     console.log(this.filterByEndDate);
   }

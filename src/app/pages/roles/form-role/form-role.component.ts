@@ -111,8 +111,8 @@ export class FormRoleComponent implements OnInit, OnDestroy {
     const roleId = this.route.snapshot.params['id'];
     if (roleId) {
       if (this.type === 'view') {
-        this.roleForm.get('status')?.disable();
-      }
+        this.formUtilService.disableFormControls(this.roleForm);
+       }
       // Dispatch action to retrieve the role by ID
       this.store.dispatch(getRoleById({ RoleId: roleId }));
       

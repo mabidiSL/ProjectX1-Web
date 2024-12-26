@@ -118,4 +118,11 @@ export class FormUtilService{
     else
         return error.error.result.error;
   }
+
+   // Method to disable all form controls
+   disableFormControls(form: FormGroup) {
+    Object.keys(form.controls).forEach(key => {
+      form.get(key)?.disable();  // Disable the control
+    });
+  }
 }

@@ -79,8 +79,8 @@
       const CountryId = this.route.snapshot.params['id'];
       if (CountryId) {
         if (this.type === 'view') {
-          this.countryForm.get('status')?.disable();
-        }
+          this.formUtilService.disableFormControls(this.countryForm);
+         }
         // Dispatch action to retrieve the Country by ID
         this.store.dispatch(getCountryById({ CountryId }));
         

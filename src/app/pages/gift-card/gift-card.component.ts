@@ -28,8 +28,8 @@ export class GiftCardComponent implements OnInit {
   searchTerm: string = '';
 
   filterstatusTerm: string = '';
-  filterstartDateTerm: string = '';
-  filterendDateTerm: string = '';
+  filterstartDateTerm: string = null;
+  filterendDateTerm: string = null;
 
   isDropdownOpen : boolean = false;
   filteredArray: Offer[] = [];
@@ -84,11 +84,11 @@ export class GiftCardComponent implements OnInit {
       if(event.startdate )
         this.filterstartDateTerm = event.startdate;
       else
-        this.filterstartDateTerm = '';
+        this.filterstartDateTerm = null;
       if(event.enddate )
           this.filterendDateTerm = event.enddate;
        else
-          this.filterendDateTerm = '';
+          this.filterendDateTerm = null;
        
       this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, category: 'gift-card', query: this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterendDateTerm, status: this.filterstatusTerm }));
   
