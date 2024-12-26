@@ -1,7 +1,7 @@
 <div class="container-fluid">
 
-    <app-page-title title="{{'Role_List'| translate}}" [breadcrumbItems]="breadCrumbItems"></app-page-title>
     <app-custom-table
+      [pageTitle] = "'Role_List'| translate"
       [addButtonLink] ="'/private/roles/create'"
       [addButtonLabel] ="'New_Role'| translate"
       [addButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.Create]}]"

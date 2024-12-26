@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
   import { Component, ElementRef, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
   import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
   import { ActivatedRoute, Router } from '@angular/router';
@@ -56,7 +57,9 @@ export class FormCityComponent  implements OnInit, OnDestroy {
           name: ['', Validators.required],
           country_id:[null, Validators.required],
           longitude: ['long'],
-          latitude: ['lat']
+          latitude: ['lat'],
+          status:['active']
+
                      
         });
   }
@@ -178,7 +181,13 @@ export class FormCityComponent  implements OnInit, OnDestroy {
           }
     
     }
-
+    onToggle(event: any){
+      console.log(event.target.value);
+      if(event){
+        this.cityForm.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
+    
+      }
+    }
     ngOnDestroy() {
       this.destroy$.next();
       this.destroy$.complete();

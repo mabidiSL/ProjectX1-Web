@@ -57,6 +57,8 @@
           //name_ar: [''],
           phoneCode: ['', Validators.required ],
           flag:[null, Validators.required],
+          status:['active']
+
                      
         });
        }
@@ -204,7 +206,13 @@ createCountryFromForm(formValue): Country{
       }
     }
    
- 
+    onToggle(event: any){
+      console.log(event.target.value);
+      if(event){
+        this.countryForm.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
+    
+      }
+    }
   
     ngOnDestroy() {
       this.destroy$.next();

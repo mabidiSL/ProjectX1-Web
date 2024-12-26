@@ -25,6 +25,9 @@ export class CustomersComponent implements OnInit {
   CustomerList$: Observable<Customer[]>;
   totalItems$: Observable<number>;
   loading$: Observable<boolean>;
+  searchPlaceholder: string ='Search By FName, LName or Email'
+  filterTerm: string = '';
+  searchTerm: string = '';
 
 
   isDropdownOpen : boolean = false;
@@ -33,7 +36,10 @@ export class CustomersComponent implements OnInit {
 
   itemPerPage: number = 10;
   currentPage : number = 1;
-
+  statusList: any[] = [
+    {status: 'all', label: 'All'},
+    {status: 'active', label: 'Active'},
+    {status: 'inactive', label: 'inActive'}];
   columns : any[]= [
     { property: 'translation_data[0].f_name', label: 'First_Name_tab' },
     { property: 'translation_data[0].l_name', label: 'Last_Name_tab' },
@@ -52,7 +58,7 @@ export class CustomersComponent implements OnInit {
 
   ngOnInit() {
           
-        this.store.dispatch(fetchCustomerlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, role:3}));
+        this.store.dispatch(fetchCustomerlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, role:3 , query: this.searchTerm, status: this.filterTerm}));
         this.CustomerList$.subscribe(data => {
         this.originalArray = data; // Customer the full Customer list
         this.filteredArray = [...this.originalArray];
@@ -60,15 +66,32 @@ export class CustomersComponent implements OnInit {
            
         });
    }
+ onFilterEvent(event: any){
+       console.log(event);
 
+      if(event.status && event.status !== 'all')
+         this.filterTerm = event.status;
+      else
+        this.filterTerm = '';
+
+      
+      this.store.dispatch(fetchCustomerlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,  role:3, query: this.searchTerm, status: this.filterTerm}));
+   
+    }
+     onSearchEvent(event: any){
+        console.log(event);
+        this.searchTerm = event;
+        this.store.dispatch(fetchCustomerlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, role:3, query: this.searchTerm, status: this.filterTerm}));
+    
+       }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchCustomerlistData({ page: this.currentPage, itemsPerPage: totalItems }));
+    this.store.dispatch(fetchCustomerlistData({ page: this.currentPage, itemsPerPage: totalItems, role:3, query: this.searchTerm, status: this.filterTerm }));
    }
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchCustomerlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage }));
+    this.store.dispatch(fetchCustomerlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, role:3,query: this.searchTerm, status: this.filterTerm }));
     
   }
 

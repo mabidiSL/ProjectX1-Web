@@ -107,7 +107,9 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
     whatsup:[null],
     facebook: [undefined],
     twitter: [undefined],
-    instagram: [undefined]
+    instagram: [undefined],
+    status:['active']
+
     
 
   });} 
@@ -404,6 +406,13 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
         this.fileName1 = ''; // Set the file name
         this.existantcompanyLogo = event.file;
         this.merchantForm.controls['companyLogo'].setValue(this.existantcompanyLogo);
+      }
+    }
+    onToggle(event: any){
+      console.log(event.target.value);
+      if(event){
+        this.merchantForm.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
+    
       }
     }
   ngOnDestroy() {

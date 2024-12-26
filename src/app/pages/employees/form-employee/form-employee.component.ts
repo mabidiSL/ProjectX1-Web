@@ -103,7 +103,9 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
         country_id:[null],
         city_id:[null],
         //area_id:[null], 
-         role_id:[null, Validators.required]
+         role_id:[null, Validators.required],
+         status:['active']
+
   
       });
     }
@@ -460,10 +462,13 @@ hasPermission(module: string, permission: string): boolean {
 //     });
 //   }
 // }
+onToggle(event: any){
+  console.log(event.target.value);
+  if(event){
+    this.employeeForm.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
 
-
-
-
+  }
+}
 
   ngOnDestroy() {
     this.destroy$.next();
