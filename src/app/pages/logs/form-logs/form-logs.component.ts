@@ -48,6 +48,8 @@ export class FormLogsComponent implements OnInit {
      
       this.initForm();
       this.bsConfig = this.datepickerConfigService.getConfig();
+      this.setReadonlyConfig();
+
 
     } 
     private initForm() {
@@ -79,6 +81,11 @@ export class FormLogsComponent implements OnInit {
         }
       });
   }
+}
+setReadonlyConfig() {
+  
+    this.bsConfig.isDisabled = true;  // Disable the datepicker
+ 
 }
 patchValueForm(log: Log){
   this.logForm.patchValue(log);

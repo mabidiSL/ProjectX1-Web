@@ -126,7 +126,7 @@
                     <div class="row">
                       <div class="col-md-6 mb-3">
                         <label for="startDate">{{'Start_Date'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                        <input bsDatepicker class="form-control" id="startDate" placeholder="yyyy-mm-dd" formControlName="startDate" [bsConfig]="bsConfig"  [disabled]="type==='view'"/>
+                        <input bsDatepicker class="form-control" id="startDate" placeholder="yyyy-mm-dd" formControlName="startDate" [bsConfig]="bsConfig"  />
                         <div *ngIf="formOffer.get('startDate').invalid && formOffer.get('startDate').touched" class="text-danger">
                           {{'Start Date is required'|translate}}
                         </div>
@@ -134,7 +134,7 @@
                     
                       <div class="col-md-6 mb-3">
                         <label for="endDate">{{'End Date'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                        <input bsDatepicker class="form-control" id="endDate" placeholder="yyyy-mm-dd" formControlName="endDate" [bsConfig]="bsConfig" [disabled]="type==='view'"/>
+                        <input bsDatepicker class="form-control" id="endDate" placeholder="yyyy-mm-dd" formControlName="endDate" [bsConfig]="bsConfig" />
                         <div *ngIf="formOffer.get('endDate').invalid && formOffer.get('endDate').touched" class="text-danger">
                           {{'End Date is required'|translate}}
                         </div>

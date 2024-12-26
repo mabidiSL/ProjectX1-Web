@@ -95,6 +95,8 @@ export class FormCouponComponent implements OnInit, OnDestroy{
       
       this.initForm();
       this.bsConfig = this.datepickerConfigService.getConfig();
+      this.setReadonlyConfig();
+
       this.merchantList$ = this.store.pipe(select(selectDataMerchant)); // Observing the merchant list from store
     
       this.merchantList$.subscribe(data => {
@@ -127,7 +129,13 @@ export class FormCouponComponent implements OnInit, OnDestroy{
       });
          
   }
-
+  setReadonlyConfig() {
+    if (this.type === 'view') {
+      this.bsConfig.isDisabled = true;  // Disable the datepicker
+    } else {
+      this.bsConfig.isDisabled = false;  // Enable the datepicker
+    }
+  }
   dateValidator(control: AbstractControl): { [key: string]: boolean } | null {
     const startDate = new Date(control.get('startDate')?.value);
     const endDate = new Date(control.get('endDate')?.value);

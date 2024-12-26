@@ -7,6 +7,7 @@ import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 export class DatepickerConfigService {
   getConfig(): Partial<BsDatepickerConfig> {
     return {
+      isDisabled : false,
       minDate: new Date(), 
       dateInputFormat: 'YYYY-MM-DD', 
     };
