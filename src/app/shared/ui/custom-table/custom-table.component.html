@@ -19,13 +19,13 @@
           <div class="col-xxl-4 col-lg-4">
             <input type="search" class="form-control" id="searchInput" [placeholder]="searchPlaceholder? searchPlaceholder: 'Search for ...'" [(ngModel)]="searchTerm" (ngModelChange)="searchEvent()">
           </div>
-          <div class="col-xxl-2 col-lg-4">
+          <div *ngIf="statusList" class="col-xxl-2 col-lg-4">
             <select class="form-select" id="idStatus" aria-label="Default select example" [(ngModel)]="filterByStatus" (change)="selectStatus($event)">
               <option  value="null">{{'Select Status' | translate}}</option>
               <option *ngFor="let status of statusList" [value]="status.status">{{ status.label  | translate}}</option>
             </select>
           </div>
-          <div *ngIf="merchantList"class="col-xxl-2 col-lg-4">
+          <div *ngIf="merchantList" class="col-xxl-2 col-lg-4">
             <select class="form-select" id="idRole" aria-label="Default select example" [(ngModel)]="filterByMerchant" (change)="selectMerchant($event)">
               <option  value="null">{{'Select Merchant' | translate}}</option>
               <option *ngFor="let merchant of merchantList" [value]="merchant.id">{{ merchant.translatedName }}</option>
@@ -64,6 +64,11 @@
               <option value="Freelance">Freelance</option>
             </select>
           </div> -->
+          <div *ngIf="actiondatePicker" class="col-xxl-2 col-lg-4">
+            <div  id="datepicker">
+              <input type="text" placeholder="Select The Date" class="form-control " [(ngModel)]="filterByDate" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', showWeekNumbers: false }" (ngModelChange)="selectDate($event)">
+            </div> <!--input-group -->
+            </div>
            <div *ngIf="datePicker" class="col-xxl-2 col-lg-4">
             <div  id="datepicker1">
               <input type="text" placeholder="Start Date" class="form-control " [(ngModel)]="filterByStartDate" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD', showWeekNumbers: false }" (ngModelChange)="selectStartDate($event)">

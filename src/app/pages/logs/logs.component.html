@@ -1,13 +1,16 @@
 <div class="container-fluid">
 
-    <app-page-title title="{{'Logs'| translate}}" [breadcrumbItems]="breadCrumbItems"></app-page-title>
     <app-custom-table
+      [pageTitle] = "'Logs'| translate"
       [columns]="columns"
       [viewButtonLink]="'/private/logs/view'"
       [viewButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.View]}]"
       [ArrayData]="originalArray"
       [totalItems]="(totalItems$ | async)"
+      [actiondatePicker] = "true"
+      [searchPlaceholder]="searchPlaceholder"
       (onsearch)="onSearchEvent($event)"
+      (onFilter)="onFilterEvent($event)"
       (onPageSizeChanged)="onPageSizeChanged($event)"
       (pageChanged)="onPageChanged($event)"
       >

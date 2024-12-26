@@ -26,10 +26,12 @@ export class LogsComponent implements OnInit {
   loading$: Observable<any>;
   currentId : number = null;
   searchTerm: string = '';
+  filterDateTerm: string = '';
 
   isDropdownOpen : boolean = false;
   filteredArray: any[] = [];
   originalArray: any[] = [];
+  searchPlaceholder: string ='Search By Title'
 
   itemPerPage: number = 10;
   currentPage : number = 1;
@@ -52,7 +54,7 @@ export class LogsComponent implements OnInit {
 
   ngOnInit() {
         this.authService.currentUser$.subscribe((user)=>{this.currentId = user.id; console.log(this.currentId);});
-        this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:this.searchTerm }));
+        this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:this.searchTerm , actionDate: this.filterDateTerm}));
         this.logList$.subscribe(data => {
               this.originalArray = data; // Log the full Log list
               this.filteredArray = [...this.originalArray];
@@ -61,21 +63,33 @@ export class LogsComponent implements OnInit {
        
         });
    }
+    onFilterEvent(event: any){
+         console.log(event);
+         
+         if(event.date )
+           this.filterDateTerm = event.date;
+         else
+           this.filterDateTerm = '';
+     
+          
+         this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, actionDate: this.filterDateTerm }));
+     
+        }
    onSearchEvent(event: any){
     console.log(event);
     this.searchTerm = event;
-    this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm }));
+    this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, actionDate: this.filterDateTerm }));
 
    }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: totalItems,query: this.searchTerm }));
+    this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: totalItems,query: this.searchTerm, actionDate: this.filterDateTerm }));
    }
  
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm }));
+    this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm, actionDate: this.filterDateTerm }));
     
   }
 

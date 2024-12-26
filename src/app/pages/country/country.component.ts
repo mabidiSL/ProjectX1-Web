@@ -28,6 +28,8 @@ export class CountryComponent implements OnInit {
   totalItems$: Observable<number>;
   loading$: Observable<boolean>
   searchTerm: string = '';
+  filterTerm: string = '';
+  searchPlaceholder: string ='Search By Name'
 
   isDropdownOpen : boolean = false;
   filteredArray: Country[] = [];
@@ -36,6 +38,10 @@ export class CountryComponent implements OnInit {
   itemPerPage: number = 10;
   currentPage : number = 1;
   
+  statusList: any[] = [
+    {status: 'all', label: 'All'},
+    {status: 'active', label: 'Active'},
+    {status: 'inactive', label: 'inActive'}];
   columns : any[]= [
     { property: 'flag', label: 'Flag' },
     { property: 'translation_data[0].name', label: 'Country' },
@@ -54,7 +60,7 @@ export class CountryComponent implements OnInit {
 
   ngOnInit() {
    
-    this.store.dispatch(fetchCountrylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm, status:'' }));
+    this.store.dispatch(fetchCountrylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm, status:this.filterTerm }));
     this.countriesList$.subscribe(data => {
       this.originalArray = data; // Country the full Country list
       this.filteredArray = [...this.originalArray];
@@ -64,20 +70,31 @@ export class CountryComponent implements OnInit {
     });
        
   }
+   onFilterEvent(event: any){
+         console.log(event);
+  
+        if(event.status && event.status !== 'all')
+           this.filterTerm = event.status;
+        else
+          this.filterTerm = '';
+       
+        this.store.dispatch(fetchCountrylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status: this.filterTerm }));
+     
+      }
   onSearchEvent(event: any){
     console.log(event);
     this.searchTerm = event;
-    this.store.dispatch(fetchCountrylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:''}));
+    this.store.dispatch(fetchCountrylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:this.filterTerm}));
 
    }
   onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchCountrylistData({ page: this.currentPage, itemsPerPage: totalItems,query: this.searchTerm, status:'' }));
+    this.store.dispatch(fetchCountrylistData({ page: this.currentPage, itemsPerPage: totalItems,query: this.searchTerm, status:this.filterTerm }));
    }
    // pagechanged
    onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchCountrylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm, status: '' }));
+    this.store.dispatch(fetchCountrylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm, status: this.filterTerm }));
     
   }
 

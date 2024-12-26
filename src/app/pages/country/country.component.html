@@ -12,12 +12,15 @@
       [editButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.Update]}]"
       [deleteButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.Delete]}]"
       [ArrayData]="originalArray"
+      [statusList] = "statusList"
+      [searchPlaceholder]="searchPlaceholder"
       [checkedStatus] = "{status: 'active', label: 'Active'}"
       [uncheckedStatus] = "{status: 'inactive', label: 'inActive'}"
       (pageChanged)="onPageChanged($event)"
       [totalItems]="(totalItems$ | async)"
       (onPageSizeChanged)="onPageSizeChanged($event)"
       (onsearch)="onSearchEvent($event)"
+      (onFilter)="onFilterEvent($event)"
       (onChangeEvent)="onChangeEvent($event)"
       (onDelete)="onDelete($event)">
 </app-custom-table>
