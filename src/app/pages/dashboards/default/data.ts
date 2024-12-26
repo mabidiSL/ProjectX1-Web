@@ -197,4 +197,5 @@ const CustomerRatingChart: ChartType = {
 };
 
 
+
 export { emailSentBarChart, monthlyEarningChart, transactions, statData, CustomerRatingChart };

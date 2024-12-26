@@ -1,3 +1,4 @@
+import { ApexOptions } from 'ng-apexcharts';
 import { ChartType } from './dashboard.model'; 
 
 export const CustomerRatingChart: ChartType = {
@@ -69,5 +70,79 @@ export const MostPaymentMethodChart: ChartType = {
         }
       }
     ]
+  };
+export const LinewithDataChart: ApexOptions = {
+    chart: {
+      type: 'line', // Line chart type
+      height: 350,  // Set chart height
+      zoom: {
+        enabled: false // Disable zooming on the chart
+      }
+    },
+    series: [
+      {
+        name: 'Coupons Impressions',
+        data: [30, 40, 45, 50, 49, 60, 70]  // Replace with dynamic data
+      },
+      {
+        name: 'Coupons Views',
+        data: [20, 30, 35, 40, 45, 50, 60]  // Replace with dynamic data
+      },
+      {
+        name: 'Gift Cards Impressions',
+        data: [15, 25, 30, 35, 40, 45, 50]  // Replace with dynamic data
+      },
+      {
+        name: 'Gift Cards Views',
+        data: [10, 20, 25, 30, 35, 40, 45]  // Replace with dynamic data
+      }
+    ],
+    colors: ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'],  // Custom colors for each line
+    title: {
+      text: 'Visitor Statistics',  // Title for the chart
+      align: 'center'
+    },
+    xaxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],  // X-axis categories (e.g., months)
+      title: {
+        text: 'Months'
+      }
+    },
+    yaxis: {
+      title: {
+        text: 'Impressions/Views'
+      },
+      min: 0  // Minimum value for Y-axis
+    },
+    stroke: {
+      width: 3  // Line thickness
+    },
+    markers: {
+      size: 5,  // Size of the data point markers
+      colors: ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'],
+      strokeWidth: 2
+    },
+    dataLabels: {
+      enabled: false  // Disable data labels on the chart
+    },
+    responsive: [
+      {
+        breakpoint: 768,
+        options: {
+          chart: {
+            height: 250  // Adjust height for smaller screens
+          },
+          yaxis: {
+            labels: {
+              show: false
+            }
+          }
+        }
+      }
+    ],
+    legend: {
+      position: 'top',  // Position of the legend
+      horizontalAlign: 'center'
+    }
   };
   

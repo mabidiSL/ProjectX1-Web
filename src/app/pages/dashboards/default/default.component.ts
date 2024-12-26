@@ -7,9 +7,10 @@ import { EventService } from '../../../core/services/event.service';
 
 import { ConfigService } from '../../../core/services/config.service';
 import { DashboardService } from 'src/app/core/services/dashboard.service';
-import { CustomerRatingChart, MostPaymentMethodChart } from './chart-config';
+import { CustomerRatingChart, LinewithDataChart, MostPaymentMethodChart } from './chart-config';
 import { _User } from 'src/app/store/Authentication/auth.models';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
+import { ApexOptions } from 'ng-apexcharts';
 
 @Component({
   selector: 'app-default',
@@ -20,6 +21,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
   modalRef?: BsModalRef;
   isVisible: string;
   MostPaymentMethodChart : ChartType = MostPaymentMethodChart;
+  LinewithDataChart: ApexOptions = LinewithDataChart;
   CustomerRatingChart: ChartType = CustomerRatingChart;
   emailSentBarChart: ChartType;
   monthlyEarningChart: ChartType;
@@ -111,14 +113,22 @@ export class DefaultComponent implements OnInit, AfterViewInit {
         link: "/private/coupons/list",
         value: this.rateStatics.totalCoupons
       },
-            {
+      {
+        icon: 'bx bxs-gift',
+        title: "Gift Cards",
+        link:'/private/giftCards/list',
+        value: this.rateStatics.totalGiftCards
+      },
+      {
         icon: "bxs-user-detail",
         title: "Customers",
+        link: "/private/customers/list",
         value: this.rateStatics.totalCustomers
       },
       {
         icon: "bxs-user-detail",
         title: "Employees",
+        link: "/private/employees/list",
         value: this.rateStatics.totalEmployees
       }
      
@@ -133,17 +143,22 @@ export class DefaultComponent implements OnInit, AfterViewInit {
         value: this.rateStatics.totalStores
       },
       {
+        icon: "bxs-user-detail",
+        title: "Merchant Employees",
+        link: "/private/employees/list",
+        value: this.rateStatics.totalEmployees
+      },
+      {
         icon: "bx bxs-coupon",
-        title: "Coupons",
+        title: "Live Coupons",
         link: "/private/coupons/list",
         value: this.rateStatics.totalCoupons
       },
-      
       {
-        icon: "bxs-user-detail",
-        title: "Employees",
-        link: "/private/employees/list",
-        value: this.rateStatics.totalEmployees
+        icon: 'bx bxs-gift',
+        title: "Live Gift Cards",
+        link:'/private/giftCards/list',
+        value: this.rateStatics.totalGiftCards
       }
      
     ];}

@@ -119,9 +119,6 @@ export class CustomTableComponent implements OnInit, OnChanges  {
 
   ) {
     
-    //The retreival of arabic attribute from backendside is done in this component according to the language stored in cookie service
-
-
     this.authService.currentUser$.subscribe(user => {
       if (user) {
       if(user.role.translation_data[0].name !== 'Admin')
@@ -173,7 +170,14 @@ export class CustomTableComponent implements OnInit, OnChanges  {
 
       // If the value matches the ISO 8601 format, parse it as a Date
       if (iso8601Pattern.test(value)) {
-          value = new Date(value);  
+          value = new Date(value); 
+          // Extract day, month, and year
+          const day = String(value.getUTCDate()).padStart(2, '0'); // Add leading zero if needed
+          const month = String(value.getUTCMonth() + 1).padStart(2, '0'); // Get month (1-based)
+          const year = value.getUTCFullYear(); // Get full year
+
+          // Format as DD/MM/YYYY
+          value = `${day}/${month}/${year}`;         
       }
   }
 
