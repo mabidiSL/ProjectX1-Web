@@ -174,6 +174,7 @@ export class FormCouponComponent implements OnInit, OnDestroy{
       description: ['', Validators.required],
       termsAndConditions: ['', Validators.required],
       quantity: [null, Validators.required],
+      price: [null, Validators.required],
       nbr_of_use: [null, Validators.required],
       company_id: [null, Validators.required],
       stores: [[]],

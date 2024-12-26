@@ -174,7 +174,14 @@
                           {{'Coupon Type is required'|translate}}
                         </div>
                         </div>
-                        <div class="col-md-3 mb-3">
+                        <div class="col-md-2 mb-3">
+                          <label for="price">{{'Price'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                          <input class="form-control" id="price" formControlName="price" type="number" [readonly]="type==='view'"/>
+                          <div *ngIf="formOffer.get('price').invalid && formOffer.get('price').touched" class="text-danger">
+                            {{'Price is required'|translate}}
+                          </div>
+                        </div>
+                        <div class="col-md-2 mb-3">
                           <label for="couponValueBeforeDiscount">{{'Value Before Discount'|translate}}</label>
                           <input  class="form-control" id="couponValueBeforeDiscount" formControlName="couponValueBeforeDiscount" type="number" [readonly]="type==='view'"/>
                           <!-- <div *ngIf="formOffer.get('couponValueBeforeDiscount').invalid && formOffer.get('couponValueBeforeDiscount').touched">
@@ -182,7 +189,7 @@
                           </div> -->
                         </div>
                       
-                        <div class="col-md-3 mb-3">
+                        <div class="col-md-2 mb-3">
                           <label for="couponValueAfterDiscount">{{'Value After Discount'|translate}}</label>
                           <input class="form-control" id="couponValueAfterDiscount" formControlName="couponValueAfterDiscount" type="text" [readonly]="type==='view'"/>
                           <!-- <div *ngIf="formOffer.get('couponValueAfterDiscount').invalid && formOffer.get('couponValueAfterDiscount').touched">

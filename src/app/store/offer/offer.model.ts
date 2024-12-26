@@ -17,6 +17,7 @@ export interface Offer {
         image? : string,
         contractRepName? : string ,
         stores? : any[],
+        price?: number,
         giftCardValue? : number,
         discount? : number,
         nbr_of_use? : number,

@@ -91,7 +91,7 @@
                      </div> -->
                       <div class="row">
                         
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                           <label for="stores">{{'Stores'|translate}}</label>
                           <ng-select 
                           [readonly]="type === 'view'" 
@@ -112,6 +112,13 @@
                             <input class="form-control" id="quantity" formControlName="quantity" type="number" [readonly]="type==='view'"/>
                             <div *ngIf="formOffer.get('quantity').invalid && formOffer.get('quantity').touched" class="text-danger">
                               {{'Quantity is required'|translate}}
+                            </div>
+                          </div>
+                          <div class="col-md-2 mb-3">
+                            <label for="price">{{'Price'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                            <input class="form-control" id="price" formControlName="price" type="number" [readonly]="type==='view'"/>
+                            <div *ngIf="formOffer.get('price').invalid && formOffer.get('price').touched" class="text-danger">
+                              {{'Price is required'|translate}}
                             </div>
                           </div>
                           <div class="col-md-2 mb-3">
