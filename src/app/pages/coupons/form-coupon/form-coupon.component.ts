@@ -205,6 +205,9 @@ export class FormCouponComponent implements OnInit, OnDestroy{
      
     const offerId = this.route.snapshot.params['id'];
     if (offerId) {
+      if (this.type === 'view') {
+        this.formOffer.get('status')?.disable();
+      }
       // Dispatch action to retrieve the offer by ID
       this.store.dispatch(getOfferById({ OfferId:  offerId}));
       // Subscribe to the selected offer from the store

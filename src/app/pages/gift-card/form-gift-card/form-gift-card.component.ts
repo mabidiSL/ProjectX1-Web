@@ -193,6 +193,9 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
       }
     const OfferId = this.route.snapshot.params['id'];
     if (OfferId) {
+      if (this.type === 'view') {
+        this.formOffer.get('status')?.disable();
+      }
       // Dispatch action to retrieve the Offer by ID
       this.store.dispatch(getOfferById({ OfferId }));
       // Subscribe to the selected Offer from the store
