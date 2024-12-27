@@ -210,9 +210,10 @@ createCountryFromForm(formValue): Country{
     }
    
     onToggle(event: any){
-      console.log(event.target.value);
+
       if(event){
-        this.countryForm.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
+        const newValue = event.target.checked ? 'active' : 'inactive';
+        this.countryForm.get('status')?.setValue(newValue);
     
       }
     }

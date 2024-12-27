@@ -417,9 +417,10 @@ createOfferFromForm(formValue): Offer{
   }
 }
 onToggle(event: any){
-  console.log(event.target.value);
+
   if(event){
-    this.formOffer.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
+    const newValue = event.target.checked ? 'active' : 'inactive';
+    this.formOffer.get('status')?.setValue(newValue);
 
   }
 }

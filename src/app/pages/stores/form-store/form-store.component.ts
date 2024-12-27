@@ -437,9 +437,10 @@ onUploadSuccess(event: any) {
   }, 100);
 }
 onToggle(event: any){
-  console.log(event.target.value);
+
   if(event){
-    this.storeForm.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
+    const newValue = event.target.checked ? 'active' : 'inactive';
+    this.storeForm.get('status')?.setValue(newValue);
 
   }
 }

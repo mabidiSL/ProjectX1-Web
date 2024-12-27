@@ -409,9 +409,10 @@ toggleModule(moduleKey: string, event: any): void {
 }
 
 onToggle(event: any){
-  console.log(event.target.value);
+
   if(event){
-    this.roleForm.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
+    const newValue = event.target.checked ? 'active' : 'inactive';
+    this.roleForm.get('status')?.setValue(newValue);
 
   }
 }

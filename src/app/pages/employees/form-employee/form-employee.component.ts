@@ -447,13 +447,10 @@ hasPermission(module: string, permission: string): boolean {
 
 
 onToggle(event: any){
-  console.log(event.target.value);
- 
+
   if(event){
     const newValue = event.target.checked ? 'active' : 'inactive';
-    console.log(newValue);
-   this.employeeForm.get('status')?.setValue(newValue);
-    //this.employeeForm.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
+    this.employeeForm.get('status')?.setValue(newValue);
 
   }
 }

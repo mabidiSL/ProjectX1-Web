@@ -185,9 +185,10 @@ export class FormCityComponent  implements OnInit, OnDestroy {
     
     }
     onToggle(event: any){
-      console.log(event.target.value);
+
       if(event){
-        this.cityForm.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
+        const newValue = event.target.checked ? 'active' : 'inactive';
+        this.cityForm.get('status')?.setValue(newValue);
     
       }
     }

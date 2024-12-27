@@ -412,12 +412,14 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
       }
     }
     onToggle(event: any){
-      console.log(event.target.value);
+
       if(event){
-        this.merchantForm.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
+        const newValue = event.target.checked ? 'active' : 'inactive';
+        this.merchantForm.get('status')?.setValue(newValue);
     
       }
     }
+    
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
