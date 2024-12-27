@@ -120,6 +120,11 @@
     }
 }
 
+.ng-select .ng-dropdown-panel {
+    max-height: 150px; /* Adjust the height as needed */
+    overflow: hidden;
+}
+
 [data-bs-theme="dark"] {
     .ng-select .ng-select-container {
         background-color: #2a3042 !important;
