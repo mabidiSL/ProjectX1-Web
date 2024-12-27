@@ -410,6 +410,9 @@ Filter(){
     this.onFilter.emit({status:this.filterByStatus, startdate:this.filterByStartDate, enddate: this.filterByEndDate, company: this.filterByMerchant, country:  this.filterByCountry, city: this.filterByCity , role: this.filterByRole, date: this.filterByDate} );
   }
 }
+isFilterApplied(): boolean {
+  return !!this.filterByStatus || !!this.filterByDate || !!this.filterByStartDate || !!this.filterByEndDate|| !!this.filterByMerchant || !!this.filterByCountry|| !!this.filterByCity|| !!this.filterByRole ;
+}
   resetFilter(){
     this.filterByStatus = null;
     this.filterByDate = null;
