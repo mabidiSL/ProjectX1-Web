@@ -79,11 +79,11 @@ export class CouponsComponent  implements OnInit {
     if(event.status && event.status !== 'all')
       this.filterstatusTerm = event.status;
     if(event.startdate )
-      this.filterstartDateTerm = event.startdate;
+      this.filterstartDateTerm = event.startdate.toISOString().split('T')[0];
     else
       this.filterstartDateTerm = null;
     if(event.enddate )
-        this.filterendDateTerm = event.enddate;
+        this.filterendDateTerm = event.enddate.toISOString().split('T')[0];
      else
         this.filterendDateTerm = null;
     

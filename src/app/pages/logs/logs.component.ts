@@ -54,7 +54,7 @@ export class LogsComponent implements OnInit {
 
   ngOnInit() {
         this.authService.currentUser$.subscribe((user)=>{this.currentId = user.id; console.log(this.currentId);});
-        this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:this.searchTerm , actionDate: this.filterDateTerm}));
+        this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:this.searchTerm , startDate: this.filterDateTerm}));
         this.logList$.subscribe(data => {
               this.originalArray = data; // Log the full Log list
               this.filteredArray = [...this.originalArray];
@@ -67,28 +67,28 @@ export class LogsComponent implements OnInit {
          console.log(event);
          
          if(event.date )
-           this.filterDateTerm = event.date;
+           this.filterDateTerm = event.date.toISOString().split('T')[0];
          else
            this.filterDateTerm = null;
                
-         this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, actionDate: this.filterDateTerm }));
+         this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, startDate: this.filterDateTerm }));
      
         }
    onSearchEvent(event: any){
     console.log(event);
     this.searchTerm = event;
-    this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, actionDate: this.filterDateTerm }));
+    this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, startDate: this.filterDateTerm }));
 
    }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: totalItems,query: this.searchTerm, actionDate: this.filterDateTerm }));
+    this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: totalItems,query: this.searchTerm, startDate: this.filterDateTerm }));
    }
  
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm, actionDate: this.filterDateTerm }));
+    this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm, startDate: this.filterDateTerm }));
     
   }
 
