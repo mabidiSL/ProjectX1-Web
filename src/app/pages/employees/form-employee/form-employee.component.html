@@ -15,10 +15,11 @@
                         
                   <div class="form-check form-switch form-switch-md ms-auto">
                     <label class="form-check-label" for="SwitchCheckSizelg1">{{(employeeForm.get('status')?.value === 'active')? 'Active': 'InActive'}}</label>
-                    <input class="form-check-input" type="checkbox" id="SwitchCheckSizelg1" formControlName="status"  [checked]="(employeeForm.get('status').value === 'active')" (change)="onToggle($event)">
+                    <input class="form-check-input" type="checkbox" id="SwitchCheckSizelg1"  formControlName="status"  [checked]="(employeeForm.get('status').value === 'active')" (change)="onToggle($event)">
                   </div>
                
-                </div> <div class="row">
+                </div>
+                 <div class="row">
                   <!-- <div class="col-md-6 mb-3">
                     <div class="form-group ">
                        <label for="f_name_ar" >{{'First_Name in arabic' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
@@ -124,7 +125,7 @@
                       <div class="col-md-3 mb-3">
                         <div class="form-group ">
                           <label for="city_id" >{{'City' | translate}}</label>
-                          <ng-select [readonly]="type === 'view'" id="city_id" placeholder="{{'Select_the_City' | translate}}" [items]="filteredCities" bindLabel="translatedName" 
+                          <ng-select [readonly]="type === 'view'" id="city_id" [loading]="loadingCities$ | async" placeholder="{{'Select_the_City' | translate}}" [items]="filteredCities" bindLabel="translatedName" 
                        bindValue="id"  formControlName="city_id"  >
                        </ng-select>                      
                         </div>

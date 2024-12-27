@@ -20,6 +20,9 @@ import {
     updateCitylist,
     updateCitylistFailure,
     updateCitylistSuccess,
+    getCityByCountryId,
+    getCityByCountryIdFailure,
+    getCityByCountryIdSuccess,
    
 } from './city.action';
 import { ToastrService } from 'ngx-toastr';
@@ -43,7 +46,21 @@ export class CityEffects {
             ),
         ),
     );
-  
+    getData$ = createEffect(() =>
+      this.actions$.pipe(
+          ofType(getCityByCountryId),
+          mergeMap(({  country_id }) =>
+              this.CrudService.fetchData(`/cities/country/${country_id}`).pipe(
+                  map((response: any) => getCityByCountryIdSuccess({ CityListdata: response.result })),
+                  catchError((error) =>{
+                    const errorMessage = this.formUtilService.getErrorMessage(error);
+                      this.toastr.error(errorMessage); 
+                      return of(getCityByCountryIdFailure({ error: errorMessage })); 
+                    })
+              )
+          ),
+      ),
+  );
     addData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(addCitylist),

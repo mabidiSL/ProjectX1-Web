@@ -16,7 +16,7 @@ export const selectedCity = createSelector(
   selectDataState,
   (state: CitylistState) =>  state?.selectedCity || null
 );
-export const selectDataLoading = createSelector(
+export const selectDataLoadingCities = createSelector(
   selectDataState,
   (state: CitylistState) => state?.loading || false
 );

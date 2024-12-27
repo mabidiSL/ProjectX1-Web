@@ -9,10 +9,16 @@ export const fetchCitylistFail = createAction('[Data fetch Citylist failed]', pr
 export const addCitylist = createAction('[Data] Add Citylist',  props<{ newData: City }>());
 export const addCitylistSuccess = createAction('[Data] Add Citylist Success', props<{ newData: City }>());
 export const addCitylistFailure = createAction('[Data] Add Citylist Failure', props<{ error: string }>());
+
 //get City by ID
 export const getCityById = createAction('[Data] get City', props<{ CityId: number }>());
 export const getCityByIdSuccess = createAction('[Data] get City success', props<{ City: City }>());
 export const getCityByIdFailure = createAction('[Data] get City Failure', props<{ error: string }>());
+
+//get City by Country ID
+export const getCityByCountryId = createAction('[Data] get City', props<{country_id: number }>());
+export const getCityByCountryIdSuccess = createAction('[Data] get City success', props<{ CityListdata: CityListModel }>());
+export const getCityByCountryIdFailure = createAction('[Data] get City Failure', props<{ error: string }>());
 
 // Update Data
 export const updateCitylist = createAction(

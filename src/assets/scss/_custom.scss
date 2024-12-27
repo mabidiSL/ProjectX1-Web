@@ -121,8 +121,11 @@
 }
 
 .ng-select .ng-dropdown-panel {
-    max-height: 150px; /* Adjust the height as needed */
-    overflow: hidden;
+    max-height: 200px; /* Set the desired fixed height for the dropdown */
+  overflow-y: auto;  /* Enable vertical scrolling if the content exceeds the max-height */
+  overflow: hidden; /* Hide horizontal overflow if not needed */
+  position: absolute; /* Ensure the dropdown is absolutely positioned */
+  z-index: 9999;
 }
 
 [data-bs-theme="dark"] {

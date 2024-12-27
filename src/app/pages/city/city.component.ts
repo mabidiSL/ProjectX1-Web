@@ -8,7 +8,7 @@ import {  select, Store } from '@ngrx/store';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 
 import { deleteCitylist, fetchCitylistData, updateCitylist } from 'src/app/store/City/city.action';
-import { selectDataCity, selectDataLoading, selectDataTotalItems } from 'src/app/store/City/city-selector';
+import { selectDataCity, selectDataLoadingCities, selectDataTotalItems } from 'src/app/store/City/city-selector';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { City } from 'src/app/store/City/city.model';
 
@@ -55,7 +55,7 @@ export class CityComponent  implements OnInit {
       
       this.citiesList$ = this.store.pipe(select(selectDataCity)); 
       this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
-      this.loading$ = this.store.pipe(select(selectDataLoading));
+      this.loading$ = this.store.pipe(select(selectDataLoadingCities));
 
 
   }

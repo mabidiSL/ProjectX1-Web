@@ -1,6 +1,6 @@
 // src/app/Citylist.reducer.ts
 import { createReducer, on } from '@ngrx/store';
-import { addCitylist, addCitylistFailure, addCitylistSuccess, deleteCitylist, deleteCitylistFailure, deleteCitylistSuccess, fetchCitylistData, fetchCitylistFail, fetchCitylistSuccess, getCityById, getCityByIdFailure, getCityByIdSuccess, updateCitylist, updateCitylistFailure, updateCitylistSuccess } from './city.action';
+import { addCitylist, addCitylistFailure, addCitylistSuccess, deleteCitylist, deleteCitylistFailure, deleteCitylistSuccess, fetchCitylistData, fetchCitylistFail, fetchCitylistSuccess, getCityByCountryId, getCityByCountryIdFailure, getCityByCountryIdSuccess, getCityById, getCityByIdFailure, getCityByIdSuccess, updateCitylist, updateCitylistFailure, updateCitylistSuccess } from './city.action';
 import { City } from './city.model';
 
 export interface CitylistState {
@@ -57,13 +57,15 @@ export const CityListReducer = createReducer(
   
     })),
        //Handle adding City failure
-       on(addCitylistFailure, (state, { error }) => ({
+    on(addCitylistFailure, (state, { error }) => ({
         ...state,
         error,
         loading: false 
       })),
-      //Handle getting City by id
-      on(getCityById, (state) => ({
+
+
+    //Handle getting City by id
+    on(getCityById, (state) => ({
         ...state,
         loading: true,
         error: null 
@@ -76,6 +78,26 @@ export const CityListReducer = createReducer(
         error: null 
     })),
     on(getCityByIdFailure, (state, { error }) => ({
+      ...state,
+      error,
+      loading: false, 
+    })),
+
+    //Handle getting City by Country id
+    on(getCityByCountryId, (state) => ({
+        ...state,
+        loading: true,
+        error: null 
+      })),
+    // Handle success of getting City by CountryID 
+    on(getCityByCountryIdSuccess, (state, { CityListdata }) => ({
+      ...state,
+      CityListdata: CityListdata.data,
+      totalItems: CityListdata.totalItems,
+      loading: false,
+      error: null
+    })),
+    on(getCityByCountryIdFailure, (state, { error }) => ({
       ...state,
       error,
       loading: false, 

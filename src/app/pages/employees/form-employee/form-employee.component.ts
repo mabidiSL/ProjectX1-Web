@@ -9,8 +9,8 @@ import { FormUtilService } from 'src/app/core/services/form-util.service';
 //import { selectDataArea } from 'src/app/store/area/area-selector';
 //import { fetchArealistData } from 'src/app/store/area/area.action';
 import { Area } from 'src/app/store/area/area.model';
-import { selectDataCity } from 'src/app/store/City/city-selector';
-import { fetchCitylistData } from 'src/app/store/City/city.action';
+import { selectDataCity, selectDataLoadingCities } from 'src/app/store/City/city-selector';
+import { getCityByCountryId } from 'src/app/store/City/city.action';
 import { City } from 'src/app/store/City/city.model';
 import { selectDataCountry } from 'src/app/store/country/country-selector';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
@@ -51,7 +51,9 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
   countrylist: Country[] = [];
   arealist$:  Observable<Area[]>  ;
   citylist$:  Observable<City[]> ;
-  loading$: Observable<boolean>
+  loading$: Observable<boolean>;
+  loadingCities$: Observable<boolean>;
+
 
   moduleKeys: any[] = [];
   permissionKeys: any[] = [];
@@ -83,10 +85,11 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
     private store: Store){
       
       this.loading$ = this.store.pipe(select(selectDataLoading)); 
+      this.loadingCities$ = this.store.pipe(select(selectDataLoadingCities));
 
       this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 1000,query:'', status: 'active' }));
       //this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 1000, status: 'active' }));
-      this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 1000,query:'', status: 'active' }));
+     // this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 1000,query:'', status: 'active' }));
       this.store.dispatch(fetchRolelistData({page: 1, itemsPerPage: 100, query:'',status: 'active' }));
 
       this.initForm();
@@ -236,7 +239,7 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
     this.employeeForm.get('city_id').setValue(null);
     this.filteredCities = [];
     if(country){
-      
+      this.store.dispatch(getCityByCountryId({country_id:country.id}));
       this.store.select(selectDataCity).subscribe((data) => {
         this.filteredCities = [...data].map(city =>{
          const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
@@ -246,7 +249,6 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
            translatedName 
          };
        })
-       .filter(city => city.country_id === country.id)
        .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
        });
      });
@@ -425,22 +427,7 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
 
 
 }
-  // setPermissionsForRole(): void {
-  //   // Clear existing permissions
-  //   this.permissions = {};
-
-  //   // Loop through modules and permissions and check the claims for the selected role
-  //   this.moduleKeys.forEach(module => {
-  //     if (!this.permissions[module]) {
-  //       this.permissions[module] = {}; // Ensure it's initialized
-  //     }
-  //     this.permissionKeys.forEach(permission => {
-  //       // Check if the role has the permission for this module
-  //       this.permissions[module][permission] = this.hasPermission(module, permission);
-  //     });
-  //   });
-
-  // }
+ 
 
   // Check if the selected role has permission for a module and permission
 hasPermission(module: string, permission: string): boolean {
@@ -458,31 +445,15 @@ hasPermission(module: string, permission: string): boolean {
     
   }
 
-// togglePermission(module: string, permission: string, event: any): void {
-//   const moduleEnum = this.Module[module as keyof typeof Modules];
-//   const permissionEnum = this.Permission[permission as keyof typeof Permission];
 
-//   const claim = this.selectedRole.claims.find((claim) => claim.claimType === moduleEnum);
-//   if (claim) {
-//     if (event.target.checked) {
-//       // Add the permission
-//       claim.claimValue.push(permissionEnum);
-//     } else {
-//       // Remove the permission
-//       claim.claimValue = claim.claimValue.filter((perm) => perm !== permissionEnum);
-//     }
-//   } else {
-//     // If there's no claim for this module, create one and add the permission
-//     this.selectedRole.claims.push({
-//       claimType: moduleEnum,
-//       claimValue: [permissionEnum],
-//     });
-//   }
-// }
 onToggle(event: any){
   console.log(event.target.value);
+ 
   if(event){
-    this.employeeForm.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
+    const newValue = event.target.checked ? 'active' : 'inactive';
+    console.log(newValue);
+   this.employeeForm.get('status')?.setValue(newValue);
+    //this.employeeForm.get('status').setValue(event.target.value === 'on'? 'inactive':'active');
 
   }
 }

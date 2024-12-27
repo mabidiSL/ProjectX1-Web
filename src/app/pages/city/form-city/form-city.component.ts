@@ -8,7 +8,7 @@
   import { fetchCountrylistData } from 'src/app/store/country/country.action';
   import { selectDataCountry } from 'src/app/store/country/country-selector';
 
-import { selectedCity, selectDataLoading } from 'src/app/store/City/city-selector';
+import { selectedCity, selectDataLoadingCities } from 'src/app/store/City/city-selector';
 import { addCitylist, getCityById, updateCitylist } from 'src/app/store/City/city.action';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { City } from 'src/app/store/City/city.model';
@@ -49,7 +49,7 @@ export class FormCityComponent  implements OnInit, OnDestroy {
       private formUtilService: FormUtilService,
       public store: Store) {
         
-        this.loading$ = this.store.pipe(select(selectDataLoading)); 
+        this.loading$ = this.store.pipe(select(selectDataLoadingCities)); 
         this.store.dispatch(fetchCountrylistData({ page: 1, itemsPerPage: 1000,query:'', status:'active' }));
         
         this.cityForm = this.formBuilder.group({
