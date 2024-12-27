@@ -118,8 +118,6 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
     }
   ngOnInit() {
     this.fetchCountry();
-    //this.fetchAreas();
-    this.fetchCities();
     this.fetchRoles();
      
      
@@ -138,9 +136,8 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
           if (employee) {
             this.isEditing = true;         
             this.employeeForm.controls['country_id'].setValue(employee.country_id);
-           // this.employeeForm.controls['area_id'].setValue(employee.city.area_id);
-            //this.store.dispatch(fetchCitylistData)
-            this.employeeForm.controls['city_id'].setValue(employee.city_id);
+            this.fetchCities(employee.country_id, employee.city_id);
+           
             this.employeeForm.controls['role_id'].setValue(employee.role_id);
             this.selectedRole = employee.role;
             this.patchValueForm(employee);
@@ -219,7 +216,8 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
   //   .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
   //   }));
   // }
-  fetchCities(){
+  fetchCities(id: number, city_id?: number){
+    this.store.dispatch(getCityByCountryId({country_id:id}));
     this.store.select(selectDataCity).subscribe((data) => {
       this.filteredCities = [...data].map(city =>{
        const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
@@ -231,6 +229,8 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
      })
      .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
      });
+     if(this.isEditing)
+      this.employeeForm.controls['city_id'].setValue(city_id);
    });
   }
  
@@ -239,22 +239,8 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
     this.employeeForm.get('city_id').setValue(null);
     this.filteredCities = [];
     if(country){
-      this.store.dispatch(getCityByCountryId({country_id:country.id}));
-      this.store.select(selectDataCity).subscribe((data) => {
-        this.filteredCities = [...data].map(city =>{
-         const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
-     
-         return {
-           ...city,  
-           translatedName 
-         };
-       })
-       .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-       });
-     });
+      this.fetchCities(country.id);
     }
-   
-   
        
   }
   // onChangeAreaSelection(event: Area){
