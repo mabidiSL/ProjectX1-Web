@@ -82,7 +82,7 @@
                 <div class="col-md-6 col-lg-4 mb-3">
                   <div class="form-group ">
                     <label for="city_id" >{{'City' | translate}}</label>
-                    <ng-select [readonly]="type === 'view'" id="city_id" placeholder="{{'Select_the_City' | translate}}" [items]="filteredCities" bindLabel="translatedName" 
+                    <ng-select [readonly]="type === 'view'" id="city_id" [loading]="loadingCities$ | async" placeholder="{{'Select_the_City' | translate}}" [items]="filteredCities" bindLabel="translatedName" 
                     bindValue="id" formControlName="city_id"  >
                     </ng-select>  
                                          

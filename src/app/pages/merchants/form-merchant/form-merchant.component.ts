@@ -8,11 +8,11 @@ import { addMerchantlist,  getMerchantById,  updateMerchantlist } from 'src/app/
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { selectDataLoading, selectedMerchant } from 'src/app/store/merchantsList/merchantlist1-selector';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
-import { fetchCitylistData } from 'src/app/store/City/city.action';
+import { fetchCitylistData, getCityByCountryId } from 'src/app/store/City/city.action';
 import { fetchSectionlistData } from 'src/app/store/section/section.action';
 import { selectDataCountry } from 'src/app/store/country/country-selector';
 import { selectDataSection } from 'src/app/store/section/section-selector';
-import { selectDataCity } from 'src/app/store/City/city-selector';
+import { selectDataCity, selectDataLoadingCities } from 'src/app/store/City/city-selector';
 import { Merchant } from '../../../store/merchantsList/merchantlist1.model';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { UploadEvent } from 'src/app/shared/widget/image-upload/image-upload.component';
@@ -51,6 +51,8 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
   countrylist: Country[] = [];
   
   loading$: Observable<boolean>;
+  loadingCities$: Observable<boolean>;
+
 
   sectionlist:  SectionListModel[] = [];
   
@@ -72,6 +74,8 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
 
       this.getNavigationState();
       this.loading$ = this.store.pipe(select(selectDataLoading)); 
+      this.loadingCities$ = this.store.pipe(select(selectDataLoadingCities));
+      
 
       this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 1000,query:'', status: 'active' }));
      // this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 1000, status: 'active' }));
@@ -122,8 +126,6 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
   ngOnInit() {
         
     this.fetchCountry();
-    //this.fetchAreas();
-    this.fetchCities();
     this.fetchSection();
 
     const merchantId = this.route.snapshot.params['id'];
@@ -139,15 +141,15 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
         .pipe(select(selectedMerchant), takeUntil(this.destroy$))
         .subscribe((merchant: Merchant) => {
           if (merchant) {
-            console.log(merchant);
-
+            this.isEditing = true;
             this.globalId = merchant.id;
-            this.patchValueForm(merchant);
             this.merchantForm.controls['country_id'].setValue(merchant.user.country_id);
-           // this.merchantForm.controls['area_id'].setValue(merchant.user.city.area_id);
+            this.fetchCities(merchant.user.country_id);
+            this.patchValueForm(merchant);
+
+            // this.merchantForm.controls['area_id'].setValue(merchant.user.city.area_id);
             this.originalMerchantData = { ...merchant };
 
-            this.isEditing = true;
             if(merchant.companyLogo){
               this.existantcompanyLogo = merchant.companyLogo;
               this.fileName1 = merchant.companyLogo.split('/').pop();
@@ -209,7 +211,8 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
 
   }
   
-  fetchCities(){
+  fetchCities(id: number){
+    this.store.dispatch(getCityByCountryId({country_id:id}));
     this.store.select(selectDataCity).subscribe((data) => {
       this.filteredCities = [...data].map(city =>{
        const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
@@ -221,6 +224,8 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
      })
      .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
      });
+    //  if(this.isEditing)
+    //   this.merchantForm.controls['city_id'].setValue(city_id);
    });
   }
   private getNavigationState(){
@@ -234,25 +239,12 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
 
   onChangeCountrySelection(event: Country){
     const country = event;
-    console.log(country);
+    this.filteredCities = [];
+    this.merchantForm.get('city_id').setValue(null);
     
     if(country){
+        this.fetchCities(country.id);
       
-      this.filteredCities = [];
-      this.merchantForm.get('city_id').setValue(null);
-      this.store.select(selectDataCity).subscribe((data) => {
-        this.filteredCities = [...data].map(city =>{
-         const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
-     
-         return {
-           ...city,  
-           translatedName 
-         };
-       })
-       .filter(city => city.country_id === country.id)
-       .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-       });
-     });
     }
    
     

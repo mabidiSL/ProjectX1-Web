@@ -88,8 +88,6 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
       this.loadingCities$ = this.store.pipe(select(selectDataLoadingCities));
 
       this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 1000,query:'', status: 'active' }));
-      //this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 1000, status: 'active' }));
-     // this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 1000,query:'', status: 'active' }));
       this.store.dispatch(fetchRolelistData({page: 1, itemsPerPage: 100, query:'',status: 'active' }));
 
       this.initForm();
@@ -136,7 +134,7 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
           if (employee) {
             this.isEditing = true;         
             this.employeeForm.controls['country_id'].setValue(employee.country_id);
-            this.fetchCities(employee.country_id, employee.city_id);
+            this.fetchCities(employee.country_id);
            
             this.employeeForm.controls['role_id'].setValue(employee.role_id);
             this.selectedRole = employee.role;
@@ -216,7 +214,7 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
   //   .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
   //   }));
   // }
-  fetchCities(id: number, city_id?: number){
+  fetchCities(id: number){
     this.store.dispatch(getCityByCountryId({country_id:id}));
     this.store.select(selectDataCity).subscribe((data) => {
       this.filteredCities = [...data].map(city =>{
@@ -229,8 +227,8 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
      })
      .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
      });
-     if(this.isEditing)
-      this.employeeForm.controls['city_id'].setValue(city_id);
+    //  if(this.isEditing)
+    //   this.employeeForm.controls['city_id'].setValue(city_id);
    });
   }
  

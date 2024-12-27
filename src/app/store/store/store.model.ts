@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PaginateModel, Translation } from "src/app/core/interfaces/core.interface";
 import { City } from "../City/city.model";
 import { Merchant } from "../merchantsList/merchantlist1.model";
@@ -13,6 +14,7 @@ export interface Branch {
      phone?: string;
      url?: string;
      company_id?: number;
+     company?: any;
      merchant ?:   Merchant;
      city_id?: number;
      city? :  City ;

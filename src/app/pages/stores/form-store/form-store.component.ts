@@ -12,9 +12,9 @@ import { selectDataLoading, selectStoreById } from 'src/app/store/store/store-se
 import { addStorelist, getStoreById, updateStorelist } from 'src/app/store/store/store.action';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { fetchMerchantlistData } from 'src/app/store/merchantsList/merchantlist1.action';
-import { fetchCitylistData } from 'src/app/store/City/city.action';
+import { fetchCitylistData, getCityByCountryId } from 'src/app/store/City/city.action';
 import { selectDataMerchant } from 'src/app/store/merchantsList/merchantlist1-selector';
-import { selectDataCity } from 'src/app/store/City/city-selector';
+import { selectDataCity, selectDataLoadingCities } from 'src/app/store/City/city-selector';
 import { City } from 'src/app/store/City/city.model';
 import { Merchant } from 'src/app/store/merchantsList/merchantlist1.model';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
@@ -42,6 +42,8 @@ export class FormStoreComponent implements OnInit, OnDestroy {
   merchantlist$: Observable<Merchant[]>;
   citylist$: Observable<City[]>;
   loading$: Observable<boolean>;
+  loadingCities$: Observable<boolean>;
+
 
   merchantList: Merchant[] = [];
   phoneCode!: string;
@@ -83,6 +85,8 @@ export class FormStoreComponent implements OnInit, OnDestroy {
 
       this.getNavigationState();
       this.loading$ = this.store.pipe(select(selectDataLoading));
+      this.loadingCities$ = this.store.pipe(select(selectDataLoadingCities));
+      
       
       this.authservice.currentUser$.subscribe(user => {
         this.currentRole = user?.role.translation_data[0].name;
@@ -93,7 +97,7 @@ export class FormStoreComponent implements OnInit, OnDestroy {
       
 
       this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 100 ,query:'', status: 'active'}));
-      this.store.dispatch(fetchCitylistData({ page: 1, itemsPerPage: 10000 , query:'',status: 'active'}));
+      //this.store.dispatch(fetchCitylistData({ page: 1, itemsPerPage: 10000 , query:'',status: 'active'}));
       
       this.initForm();
 
@@ -119,7 +123,7 @@ export class FormStoreComponent implements OnInit, OnDestroy {
   ngOnInit() {
     
       this.fetchMerchants();
-      this.fetchCities();
+      
      
    
     // Append the value of the Merchant to company_id
@@ -180,9 +184,11 @@ export class FormStoreComponent implements OnInit, OnDestroy {
         .pipe(select(selectStoreById), takeUntil(this.destroy$))
         .subscribe(Store => {
           if (Store) {
+            this.isEditing = true;
             console.log(Store);
             this.uploadedFiles = Store.images;
-         
+            this.fetchCities(Store.company.user.country_id);
+
             // this.storeForm.get('city_id').setValue(Store.city_id); 
             // this.storeForm.get('images').setValue(Store.images); 
             // this.storeForm.get('phone').setValue(Store.phone);
@@ -190,7 +196,6 @@ export class FormStoreComponent implements OnInit, OnDestroy {
             this.patchValueForm(Store);
             this.originalStoreData = _.cloneDeep(Store);
 
-            this.isEditing = true;
 
           }
         });
@@ -246,8 +251,10 @@ private getNavigationState(){
       });
     });
   }
- 
-  fetchCities(){
+ fetchCities(id: number){
+  if(id){
+    console.log(' i am in fetch cities', id);
+    this.store.dispatch(getCityByCountryId({country_id:id}));
     this.store.select(selectDataCity).subscribe((data) => {
       this.filteredCities = [...data].map(city =>{
        const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
@@ -259,8 +266,14 @@ private getNavigationState(){
      })
      .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
      });
+    //  if(this.isEditing){
+    //   console.log(this.filteredCities);
+    //   this.storeForm.controls['city_id'].setValue(city_id);
+    //  }
    });
   }
+  }
+ 
   onChangeMerchantSelection(event: Merchant){
     const selectMerchant = event;
        
@@ -268,19 +281,11 @@ private getNavigationState(){
       this.filteredCities = [];
       this.storeForm.get('city_id').setValue(null);
       const country_id = selectMerchant.user.country_id;
+      console.log(country_id);
+      
       console.log(selectMerchant);
       this.setPhoneCode(selectMerchant);
-      this.store.select(selectDataCity).subscribe(data =>
-        this.filteredCities =  [...data].map(city =>{
-        const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
-        return {
-          ...city,  
-          translatedName 
-        };
-      })
-      .filter(city => city.country_id === country_id)
-      .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-      }));
+      this.fetchCities(country_id);
     }
     
   }
