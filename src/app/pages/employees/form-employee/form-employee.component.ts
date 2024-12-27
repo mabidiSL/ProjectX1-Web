@@ -3,6 +3,7 @@ import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef } from '@ang
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
+import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 //import { selectDataArea } from 'src/app/store/area/area-selector';
@@ -32,6 +33,7 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
   employeeForm: UntypedFormGroup;
   formError: string | null = null;
   formSubmitted = false;
+  modalRef?: BsModalRef;
 
   isEditing: boolean = false;
   isCollapsed: boolean;
@@ -61,6 +63,7 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
   filteredAreas :  Area[] = [];
   filteredCities:  City[] = [];
   @ViewChild('formElement', { static: false }) formElement: ElementRef;
+  @ViewChild('ViewContent', { static: false }) showModal?: ModalDirective;
 
   public Permission: Permission;
   public Module: Modules;
@@ -75,6 +78,7 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
     private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private modalService: BsModalService,
     private formUtilService: FormUtilService,
     private store: Store){
       
@@ -148,6 +152,14 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
         });
     }
        
+  }
+
+  /**
+   * Open modal
+   * @param content modal content
+   */
+  openViewModal(content: any) {
+    this.modalRef = this.modalService.show(content);
   }
   patchValueForm(employee: Employee){
     this.employeeForm.patchValue(employee);
@@ -376,8 +388,7 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
       if (this.selectedRole) {
         this.isPermissionsOpen = false;
         this.mapClaimsToEnums(this.selectedRole?.claims);
-        //this.isPermissionsOpen = true;
-        //this.setPermissionsForRole();
+     
       }
     }
   }
@@ -442,7 +453,10 @@ hasPermission(module: string, permission: string): boolean {
     }
     return false;
   }
-
+  showRolePermissions(role: any){
+    console.log(role);
+    
+  }
 
 // togglePermission(module: string, permission: string, event: any): void {
 //   const moduleEnum = this.Module[module as keyof typeof Modules];
