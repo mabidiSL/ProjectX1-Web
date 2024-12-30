@@ -81,7 +81,7 @@
                                             type="checkbox" 
                                             [checked]=" hasPermission(module, permission) || ALLModulesChecked "
                                             (change)="togglePermission(module, permission, $event)" 
-                                            [disabled]="type === 'view' ||shouldDisableMerchantCheckbox(module, permission) ||  shouldDisableCheckbox(module, permission) " 
+                                            [disabled]="type === 'view' ||shouldDisableMerchantCheckbox(module) ||  shouldDisableCheckbox(module, permission) " 
                                             title="{{ permission }}"
                                         />
                                     </td>
