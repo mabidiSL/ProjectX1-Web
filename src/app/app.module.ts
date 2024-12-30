@@ -74,6 +74,9 @@ import { AccountModule } from './account/account.module';
 import { APP_INITIALIZER } from '@angular/core';
 import { LanguageInitService } from './core/services/initLanguage.service';
 import { GiftCardModule } from './pages/gift-card/gift-card.module';
+import { OrdersModule } from './pages/orders/orders.module';
+import { OrdersEffects } from './store/Order/order.effects';
+import { InvoicesModule } from './pages/invoices/invoices.module';
 
 
 // Register the Arabic locale
@@ -123,7 +126,9 @@ export function createTranslateLoader(http: HttpClient): any {
     GiftCardModule,
     EmployeesModule,
     StoresModule,
+    InvoicesModule,
     RolesModule,
+    OrdersModule,
     CustomersModule,
     PaymentModule,
     LogsModule,
@@ -158,7 +163,8 @@ export function createTranslateLoader(http: HttpClient): any {
       SectionEffects,
       OffersEffects,
       LogsEffects,
-      PaymentEffects
+      PaymentEffects,
+      OrdersEffects
       
     ]),
   ],

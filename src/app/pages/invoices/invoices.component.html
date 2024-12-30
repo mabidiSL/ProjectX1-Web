@@ -1,0 +1,32 @@
+<div class="container-fluid">
+
+    <app-custom-table
+      [pageTitle] = "'Customer Invoices'| translate"
+      [columns]="columns"
+      [viewButtonLink]="'/private/invoices/view'"
+      [viewButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customer_Invoice, claimValue: [Permission.View]}]"  
+      [ArrayData]="originalArray"
+      [actiondatePicker] = "true"
+      [noActionColumn] = "true"
+      [statusList] = "statusList"
+      [searchPlaceholder]="searchPlaceholder"
+      [totalItems]="(totalItems$ | async)"
+      (onPageSizeChanged)="onPageSizeChanged($event)"
+      (onsearch)="onSearchEvent($event)"
+      (onFilter)="onFilterEvent($event)"
+      (pageChanged)="onPageChanged($event)"
+      (onChangeEvent)="onChangeEvent($event)"
+      (onDelete)="onDelete($event)">
+</app-custom-table>
+   
+  </div>
+
+  
+  <div id="elmLoader" class="loader" *ngIf="loading$ | async">
+    <div class="spinner-border text-primary avatar-sm" role="status">
+      <span class="visually-hidden">{{'Loading...' | translate}}</span>
+    </div>
+  </div>    
+  
+  
+  

@@ -162,7 +162,7 @@
           </span>
         </div>
         </th>
-        <th *ngIf="isMerchant && !pending || !isMerchant" scope="col" style="width: 200px;text-align: center;">{{'Actions'| translate}}</th>
+        <th *ngIf="!noActionColumn &&(isMerchant && !pending || !isMerchant)" scope="col" style="width: 200px;text-align: center;">{{'Actions'| translate}}</th>
       </tr>
     </thead>
     <tbody>
@@ -223,10 +223,10 @@
                <ng-container >
                 <span class="badge"
                       [ngClass]="{
-                        'bg-success': getProperty(data, column.property) === 'delivered' || getProperty(data, column.property) === 'approved' || getProperty(data, column.property) === 'active',
-                        'bg-warning': getProperty(data, column.property) === 'pending',
+                        'bg-success': getProperty(data, column.property) === 'delivered' || getProperty(data, column.property) === 'approved' || getProperty(data, column.property) === 'active'|| getProperty(data, column.property) === 'paid',
+                        'bg-warning': getProperty(data, column.property) === 'pending' || getProperty(data, column.property) === 'refund',
                         'bg-secondary': getProperty(data, column.property) === 'inactive',
-                        'bg-danger': getProperty(data, column.property) === 'undelivered'
+                        'bg-danger': getProperty(data, column.property) === 'undelivered'|| getProperty(data, column.property) === 'unpaid'
                       }"
                       style="font-size: 0.7rem;">
                   {{ getProperty(data, column.property) }}
@@ -249,7 +249,7 @@
                 </ng-template>
               </td>
             </ng-container>
-            <ng-container  >        
+            <ng-container  *ngIf="!noActionColumn">  
             <td class="text-center">
               <div style="display: flex; justify-content: center;">
               <ul class="list-unstyled hstack gap-1 mb-0">

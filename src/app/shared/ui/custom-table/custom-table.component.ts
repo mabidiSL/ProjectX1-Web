@@ -62,6 +62,7 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   @Input() checkedStatus?: any;
   @Input() uncheckedStatus?: any;
   @Input() pending?: boolean = false;
+  @Input() noActionColumn?: boolean = false;
 
 
 
@@ -329,15 +330,13 @@ sortData(column: string): void {
     }
   }
   navigateToView(data: any) {
-
-  if(this.pending !== undefined){
-    this.router.navigate([`${this.viewButtonLink}`, data.id], { 
-      state: { fromPending: this.pending }
-    });
-  }
-  else{
-    this.router.navigate([`${this.viewButtonLink}`, data.id]);
-  }
+   
+    if(this.viewButtonLink.includes('invoices')){
+      console.log(this.viewButtonLink);
+      
+      this.router.navigate([`${this.viewButtonLink}`]);}
+    else
+      this.router.navigate([`${this.viewButtonLink}`, data.id]);
 }
 selectStatus(event: any){
   if(event)

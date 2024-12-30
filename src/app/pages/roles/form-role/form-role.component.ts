@@ -29,6 +29,7 @@ export class FormRoleComponent implements OnInit, OnDestroy {
 
   role: Role;
   claims: { claimType: Modules; claimValue: Permission[] }[] = [];
+  isAllChecked: boolean = false;
 
   submitted: boolean = false;
   error: string = '';
@@ -148,9 +149,23 @@ export class FormRoleComponent implements OnInit, OnDestroy {
     this.claims = [];
     this.ALLModulesChecked = false;
   }
+  shouldDisableMerchantCheckbox(module: string, permission: string): boolean {
+    const permissionEnum = Permission[permission as keyof typeof Permission];
+
+    // Check if "All" is checked for this specific module
+    const moduleEnum = Modules[module as keyof typeof Modules];
+    const role_claim = this.claims.find((claim) => claim.claimType === moduleEnum);
+
+    // If "All" is checked for the current module, disable all checkboxes for that module
+    if (this.isAllChecked && role_claim && role_claim.claimValue.includes(permissionEnum)) {
+      return true; // Disable the permission checkboxes
+    }
+
+    return false;
+  }
   shouldDisableCheckbox(module: string, permission: string): boolean {
     // Check if all modules are checked
-    if (this.ALLModulesChecked) {
+    if (this.ALLModulesChecked ) {
         return true; // Disable all checkboxes in this case
     }
 
@@ -246,7 +261,93 @@ createRoleFromForm(formValue): Role {
    
   }
  
+    hasAllPermission(module: string): boolean {
+      const moduleEnum = Modules[module as keyof typeof Modules];
+
+      if (this.claims && this.claims.length > 0) {
+        const role_claim = this.claims.find((claim) => claim.claimType === moduleEnum);
+        
+        if (this.merchantClaims && this.merchantClaims.length > 0) {
+          const claim = this.merchantClaims.find((claim) => claim.claimType === moduleEnum);
+          
+          // Check if all permissions are included in the merchant's claims
+          
+          // Check if the role_claim claimValue matches the merchant's claimValue exactly
+          if (role_claim && claim && role_claim.claimValue.length === claim.claimValue.length && 
+              role_claim.claimValue.every(value => claim.claimValue.includes(value))) {
+                return true;  // "All" checkbox should be checked
+          }
+          
+          return false;
+        }
+      }
+
+  }
+  // This method will handle the toggle of the "All" checkbox
+  toggleAllPermissions(module: string, isChecked: boolean): void {
+    console.log(module,'is', isChecked);
+    this.isAllChecked = !this.isAllChecked;
+    const moduleEnum = Modules[module as keyof typeof Modules];
   
+    if (this.claims && this.claims.length > 0) {
+      const role_claim = this.claims.find((claim) => claim.claimType === moduleEnum);
+      console.log('phase1',role_claim);
+      
+  
+      if (this.merchantClaims && this.merchantClaims.length > 0) {
+        const claim = this.merchantClaims.find((claim) => claim.claimType === moduleEnum);
+        console.log('phase2',claim);
+
+        if (role_claim && claim) {
+          if (isChecked) {
+            //this.isAllChecked = true;
+            // If "All" is checked, store all permissions in the role
+            role_claim.claimValue = [...claim.claimValue]; // Copy the permissions from the merchant's claims to the role
+          } else {
+            //this.isAllChecked = false;
+            // Clear role_claim permissions if "All" is unchecked
+            role_claim.claimValue = []; // Clear the permissions for this role
+          }
+  
+          // Update claims to reflect the changes
+          this.updateClaims(role_claim); // Assuming this method handles updating the claims
+
+        }
+        else if (!role_claim && claim && isChecked) {
+          // If the module doesn't exist in role_claim and the "All" checkbox is checked, add it
+          console.log('Module does not exist in role_claim, adding it.');
+          this.addRoleClaim(moduleEnum, claim.claimValue);
+          this.updateClaims(role_claim); // Assuming this method handles updating the claims
+
+        }
+
+      }
+    }
+  }
+  addRoleClaim(moduleEnum: any, claimValue: any[]): void {
+    const newClaim = {
+      claimType: moduleEnum,
+      claimValue: claimValue
+    };
+    this.claims.push(newClaim); // Add the new claim to the role_claim array
+    console.log('New role claim added:', newClaim); // Log the new claim for debugging
+  }
+  
+  // Helper method to update claims (if necessary)
+  updateClaims(updatedClaim: any): void {
+    const index = this.claims.findIndex((claim) => claim.claimType === updatedClaim.claimType);
+    if (index !== -1) {
+      // If the claim already exists, update it
+      this.claims[index] = updatedClaim;
+    } else {
+      // If the claim doesn't exist, add it
+      this.claims.push(updatedClaim);
+    }
+    console.log(this.claims);
+    
+  }
+  
+
   hasPermission(module: string, permission: string): boolean {
     const moduleEnum = Modules[module as keyof typeof Modules];
     const permissionEnum = Permission[permission as keyof typeof Permission];

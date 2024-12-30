@@ -47,9 +47,9 @@ export const MENU: MenuItem[] = [
     {
         id: 41,
         label: 'MENUITEMS.CUSTOMERINVOICES.TEXT',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customer_Invoice, claimValue: [Permission.ViewAll]}],
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customer_Invoice, claimValue: [Permission.ViewAll, Permission.View]}],
         icon:  'bx bxs-report',
-        link:'/pages/coming-soon',
+        link:'/private/invoices/list',
                 
     },
     {
@@ -232,9 +232,21 @@ export const MENU: MenuItem[] = [
             }
         ,
            
-    
-     
-   
+        {
+            id: 13,
+            label: 'MENUITEMS.ORDERMANAGEMENT.TEXT',
+            claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [ Permission.ViewAll]}],
+            isTitle: true
+        }, 
+        {
+            id: 4,
+            label: 'MENUITEMS.ORDERMANAGEMENT.ORDER.TEXT',
+            icon: 'bx bxs-basket',
+            claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.ViewAll]}],
+            link:'/private/orders/list',
+           
+        }
+   ,
    
     {
         id: 25,

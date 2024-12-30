@@ -100,6 +100,13 @@
     "CUSTOMERMANAGEMENT": {
       "TEXT": "Customer Management"
     },
+    "ORDERMANAGEMENT": {
+      "TEXT": "Order Management",
+      "ORDER":{
+        "TEXT": "Orders"
+
+      }
+    },
     "EMPLOYEEMANAGEMENT": {
       "TEXT": "Employee Management"
     },

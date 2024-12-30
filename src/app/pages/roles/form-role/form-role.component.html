@@ -47,6 +47,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>{{ 'Permissions' | translate }}</th>
+                                    <th *ngIf="currentRole !== 'Admin'">{{'All' | translate }}</th>
                                     <th *ngFor="let permission of permissionKeys">
                                         {{ permission | translate }}
                                     </th>
@@ -55,7 +56,10 @@
                             <tbody>
                                 <tr *ngFor="let module of moduleKeys">
                                     <td *ngIf="module === 'All'; else otherModules" >
-                                        <input class="me-2" type="checkbox" [checked] ="ALLModulesChecked" (change)="toggleGlobalAll($event.target.checked)" [disabled]="type==='view'" />
+                                        <input class="me-2" type="checkbox" 
+                                        [checked] ="ALLModulesChecked" 
+                                        (change)="toggleGlobalAll($event.target.checked)" 
+                                        [disabled]="type==='view'" />
                                         <strong>{{ module | translate }}</strong>
                                     </td>
                                     <ng-template #otherModules>
@@ -63,12 +67,21 @@
                                           <strong>{{ module | translate }}</strong>
                                       </td>
                                   </ng-template>
+                                  <td *ngIf="currentRole !== 'Admin'" >
+                                    <input 
+                                    type="checkbox" 
+                                    [checked]=" hasAllPermission(module) "
+                                    (change)="toggleAllPermissions(module, $event.target.checked)" 
+                                    [disabled]="type === 'view'"
+                                    title="'All'"
+                                   />
+                                </td>
                                     <td *ngFor="let permission of permissionKeys">
                                         <input 
                                             type="checkbox" 
                                             [checked]=" hasPermission(module, permission) || ALLModulesChecked "
                                             (change)="togglePermission(module, permission, $event)" 
-                                            [disabled]="type === 'view' || shouldDisableCheckbox(module, permission)" 
+                                            [disabled]="type === 'view' ||shouldDisableMerchantCheckbox(module, permission) ||  shouldDisableCheckbox(module, permission) " 
                                             title="{{ permission }}"
                                         />
                                     </td>

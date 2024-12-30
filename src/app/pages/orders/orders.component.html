@@ -1,0 +1,38 @@
+<div class="container-fluid">
+
+    <app-custom-table
+      [pageTitle] = "'Orders'| translate"
+      [addButtonLink] ="'/private/orders/create'"
+      [addButtonLabel] ="'New Order'| translate"
+      [addButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.Create]}]"
+      [columns]="columns"
+      [viewButtonLink]="'/private/orders/view'"
+      [viewButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.View]}]"
+      [editButtonLink]="'/private/orders/edit'"
+      [editButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.Update]}]"
+      [deleteButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.Delete]}]"
+      [ArrayData]="originalArray"
+      [actiondatePicker] = "true"
+      [noActionColumn] = "true"
+      [statusList] = "statusList"
+      [searchPlaceholder]="searchPlaceholder"
+      [totalItems]="(totalItems$ | async)"
+      (onPageSizeChanged)="onPageSizeChanged($event)"
+      (onsearch)="onSearchEvent($event)"
+      (onFilter)="onFilterEvent($event)"
+      (pageChanged)="onPageChanged($event)"
+      (onChangeEvent)="onChangeEvent($event)"
+      (onDelete)="onDelete($event)">
+</app-custom-table>
+   
+  </div>
+
+  
+  <div id="elmLoader" class="loader" *ngIf="loading$ | async">
+    <div class="spinner-border text-primary avatar-sm" role="status">
+      <span class="visually-hidden">{{'Loading...' | translate}}</span>
+    </div>
+  </div>    
+  
+  
+  
