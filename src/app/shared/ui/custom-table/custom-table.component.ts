@@ -30,6 +30,8 @@ export class CustomTableComponent implements OnInit, OnChanges  {
 
   @Input() columns: any[];
   @Input() statusList?: any[];
+  @Input() categoryList?: any[];
+
   @Input() roleList?: any[];
   @Input() citylist?: any[];
   @Input() merchantList?: any[];
@@ -81,6 +83,7 @@ export class CustomTableComponent implements OnInit, OnChanges  {
 
   public currentUser: Observable<_User>;
   filterByStatus: string = null;
+  filterByCategory: string = null;
   filterByRole: string = null;
   filterByCity: string = null;
   filterByCountry: string = null;
@@ -344,6 +347,12 @@ selectStatus(event: any){
      console.log(event.target.value);
   
 }
+selectCategory(event: any){
+  if(event)
+    this.filterByCategory = event.target.value
+     console.log(event.target.value);
+  
+}
 selectRole(event: any){
   if(event)
     this.filterByRole = event.target.value
@@ -404,9 +413,9 @@ selectEndDate(event: any){
   
 }
 Filter(){
-  if(this.filterByStatus || this.filterByStartDate || this.filterByEndDate || this.filterByRole || this.filterByCity || this.filterByCountry || this.filterByMerchant || this.filterByDate){
+  if(this.filterByStatus || this.filterByStartDate || this.filterByEndDate || this.filterByRole || this.filterByCity || this.filterByCountry || this.filterByMerchant || this.filterByDate || this.filterByCategory){
     console.log('onFilter');
-    this.onFilter.emit({status:this.filterByStatus, startdate:this.filterByStartDate, enddate: this.filterByEndDate, company: this.filterByMerchant, country:  this.filterByCountry, city: this.filterByCity , role: this.filterByRole, date: this.filterByDate} );
+    this.onFilter.emit({status:this.filterByStatus, startdate:this.filterByStartDate, enddate: this.filterByEndDate, company: this.filterByMerchant, country:  this.filterByCountry, city: this.filterByCity , role: this.filterByRole, date: this.filterByDate, category: this.filterByCategory} );
   }
 }
 isFilterApplied(): boolean {
@@ -423,7 +432,8 @@ isFilterApplied(): boolean {
     this.filterByCountry = null;
     this.filterByCity = null;
     this.filterByRole = null;
-    this.onFilter.emit({status:this.filterByStatus, startdate:this.filterByStartDate, enddate: this.filterByEndDate, company: this.filterByMerchant, country:  this.filterByCountry, city: this.filterByCity , role: this.filterByRole, date: this.filterByDate} );
+    this.filterByCategory = null;
+    this.onFilter.emit({status:this.filterByStatus, startdate:this.filterByStartDate, enddate: this.filterByEndDate, company: this.filterByMerchant, country:  this.filterByCountry, city: this.filterByCity , role: this.filterByRole, date: this.filterByDate, category: this.filterByCategory} );
 
   }
 

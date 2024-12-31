@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { Observable } from 'rxjs';
-import { selectData, selectDataLoading, selectDataTotalItems } from 'src/app/store/customer/customer-selector';
+import { selectData, selectDataLoading, selectDataTotalItems } from 'src/app/store/customer-reviews/customer-review-selector';
 import { fetchCustomerReviewlistData } from 'src/app/store/customer-reviews/customer-review.action';
 import { CustomerReview } from 'src/app/store/customer-reviews/customer-review.model';
 
@@ -26,7 +26,7 @@ export class CustomerReviewsComponent implements OnInit {
   CustomerReviewList$: Observable<CustomerReview[]>;
   totalItems$: Observable<number>;
   loading$: Observable<boolean>;
-  searchPlaceholder: string ='Search By FName, LName or Email'
+  searchPlaceholder: string ='Search By Email'
   filterTerm: string = '';
   searchTerm: string = '';
 
@@ -39,16 +39,16 @@ export class CustomerReviewsComponent implements OnInit {
   currentPage : number = 1;
   
   categoryList: any[] = [
-    {status: 'all', label: 'All'},
-    {status: 'offer', label: 'Offer'},
-    {status: 'company', label: 'Company'},
-    {status: 'store', label: 'Store'}
+    {category: 'all', label: 'All'},
+    {category: 'offer', label: 'Offer'},
+    {category: 'company', label: 'Company'},
+    {category: 'store', label: 'Store'}
   ];
   
   columns : any[]= [
-    { property: 'translation_data[0].f_name', label: 'First_Name_tab' },
-    { property: 'translation_data[0].l_name', label: 'Last_Name_tab' },
-    { property: 'email', label: 'Email' },
+    //{ property: 'user.translation_data[0].f_name', label: 'First_Name_tab' },
+    //{ property: 'user.translation_data[0].l_name', label: 'Last_Name_tab' },
+    { property: 'user.email', label: 'Email' },
     { property: 'category', label: 'Category' },
     { property: 'rating', label: 'Rating' },
   ];
@@ -67,6 +67,8 @@ export class CustomerReviewsComponent implements OnInit {
         this.CustomerReviewList$.subscribe(data => {
         this.originalArray = data; // CustomerReview the full CustomerReview list
         this.filteredArray = [...this.originalArray];
+        console.log(this.filteredArray);
+        
         document.getElementById('elmLoader')?.classList.add('d-none');
            
         });
@@ -74,7 +76,7 @@ export class CustomerReviewsComponent implements OnInit {
  onFilterEvent(event: any){
       console.log(event);
 
-      if(event.status && event.status !== 'all')
+      if(event.category && event.category !== 'all')
          this.filterTerm = event.status;
       else
         this.filterTerm = '';

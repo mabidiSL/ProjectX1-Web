@@ -9,7 +9,7 @@
       [deleteButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customers, claimValue: [Permission.Delete]}]"
       [ArrayData]="originalArray"
       [totalItems]="(totalItems$ | async)"
-      [statusList] = "categoryList"
+      [categoryList] = "categoryList"
       [searchPlaceholder]="searchPlaceholder"
       (pageChanged)="onPageChanged($event)"
       (onPageSizeChanged)="onPageSizeChanged($event)"

@@ -1,6 +1,5 @@
-import { PaginateModel, Translation } from "src/app/core/interfaces/core.interface";
-import {  Role } from "../Role/role.models";
-import { City } from "../City/city.model";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { PaginateModel } from "src/app/core/interfaces/core.interface";
 
 export interface CustomerReviewListModel  extends PaginateModel
 {   
@@ -9,18 +8,11 @@ export interface CustomerReviewListModel  extends PaginateModel
 export interface CustomerReview {
     
         id?: number;
-        translation_data?: Translation[];
-        email?: string;
-        phone?: string;
-        password?: string;
-        image?: string;
-        city_id?: number; // City;
-        city?: City;
-        bank_id?: number;
-        bankAccountNumber?: string;
-        bankName?: string;
-        role_id?: number;
-        role?: Role;
-        createdBy?: string;
-        status?: string;//pending,approved,active, inactive, disabled
+        user_id?: number;
+        user?: any;
+        rating?: number;
+        offer_id?: number;
+        category?: string;
+        company_id?: number;
+        store_id?: number;
 }

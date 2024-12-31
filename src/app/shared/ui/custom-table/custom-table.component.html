@@ -19,6 +19,12 @@
           <div class="col-xxl-4 col-lg-4">
             <input type="search" class="form-control" id="searchInput" [placeholder]="searchPlaceholder? searchPlaceholder: 'Search for ...'" [(ngModel)]="searchTerm" (ngModelChange)="searchEvent()">
           </div>
+          <div *ngIf="categoryList" class="col-xxl-2 col-lg-4">
+            <select class="form-select" id="idStatus" aria-label="Default select example" [(ngModel)]="filterByStatus" (change)="selectStatus($event)">
+              <option  value="null">{{'Select Category' | translate}}</option>
+              <option *ngFor="let category of categoryList" [value]="category.category">{{ category.label  | translate}}</option>
+            </select>
+          </div>
           <div *ngIf="statusList" class="col-xxl-2 col-lg-4">
             <select class="form-select" id="idStatus" aria-label="Default select example" [(ngModel)]="filterByStatus" (change)="selectStatus($event)">
               <option  value="null">{{'Select Status' | translate}}</option>
@@ -153,6 +159,7 @@
           (click)="sortData(column.property)" 
           style="cursor: pointer; display: flex; "
         >
+
           {{ column.label | translate }}
           <span 
             style="margin-left: 8px; color: gray;" 
@@ -196,7 +203,7 @@
                         </textarea>
                     </ng-container>
                     <ng-template #showText >
-                      <ng-container *ngIf="getProperty(data, column.property) === 'rating'; else showText1">
+                      <ng-container *ngIf="column.property === 'rating'; else showText1">
                         <span class="badge bg-success font-size-12">
                           <i class="mdi mdi-star me-1"></i>
                           {{ getProperty(data, column.property)}}
