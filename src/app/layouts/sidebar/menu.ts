@@ -57,7 +57,7 @@ export const MENU: MenuItem[] = [
         label: 'MENUITEMS.CUSTOMERSREVIEWS.TEXT',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customer_Reviews, claimValue: [Permission.ViewAll]}],
         icon:  'bx bxs-star',
-        link:'/pages/coming-soon',
+        link:'/private/customer-reviews/list',
                 
     },
     {

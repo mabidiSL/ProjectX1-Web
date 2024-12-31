@@ -46,7 +46,7 @@ export class InvoicesComponent implements OnInit {
   columns : any[]= [
     { property: 'order_id', label: '#InvoiceID' },
     { property: 'users.email', label: 'Billing To' },
-    { property: 'status', label: 'Invoice Description' },
+    { property: 'status', label: 'Invoice Status' },
     { property: 'dueDate', label: 'Due Date' },
     { property: 'order_id', label: 'Total Amount' },
 
@@ -58,7 +58,7 @@ export class InvoicesComponent implements OnInit {
       this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
       this.loading$ = this.store.pipe(select(selectDataLoading));
 
-    }
+  }
 
   ngOnInit() {
           
