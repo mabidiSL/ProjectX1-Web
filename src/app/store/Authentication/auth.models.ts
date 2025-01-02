@@ -25,6 +25,7 @@ username?: string;
 translation_data?: Translation[];
 jobTitle?: string;
 merchantId?: number;
+country_id?: number;
 email?: string;
 password?: string;
 emailVerifiedAt?: string;

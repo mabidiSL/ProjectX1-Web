@@ -7,7 +7,7 @@ import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { deleteStorelist, fetchStorelistData, updateStorelist } from 'src/app/store/store/store.action';
 import { selectData, selectDataLoading, selectDataTotalItems } from 'src/app/store/store/store-selector';
 import { Branch } from 'src/app/store/store/store.model';
-import { fetchCitylistData } from 'src/app/store/City/city.action';
+import {  getCityByCountryId } from 'src/app/store/City/city.action';
 import { selectDataCity } from 'src/app/store/City/city-selector';
 import { City } from 'src/app/store/City/city.model';
 import { Merchant } from 'src/app/store/merchantsList/merchantlist1.model';
@@ -31,7 +31,7 @@ export class StoresComponent implements OnInit {
   public Modules = Modules;
   public Permission = Permission;
   currentRole: string = '';
-
+  country_id: number = null;
   storeList$: Observable<Branch[]>;
   totalItems$: Observable<number>;
   loading$: Observable<boolean>;
@@ -67,17 +67,19 @@ export class StoresComponent implements OnInit {
 
   constructor(public store: Store,    private authservice: AuthenticationService,
   ) {
+    this.authservice.currentUser$.subscribe(user => {
+      this.currentRole = user?.role.translation_data[0].name;
+      this.country_id = user?.country_id;
       
-      this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 1000,query:'', status: 'active' }));
-      this.store.dispatch(fetchMerchantlistData({page: 1, itemsPerPage: 1000,query:'', status: 'active' }));
+    } );
+
+     // this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 1000,query:'', status: 'active' }));
+     this.store.dispatch(getCityByCountryId({page: 1, itemsPerPage: 1000,country_id: this.country_id }));
+     this.store.dispatch(fetchMerchantlistData({page: 1, itemsPerPage: 1000,query:'', status: 'active' }));
       this.storeList$ = this.store.pipe(select(selectData)); // Observing the Store list from store
       this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
       this.loading$ = this.store.pipe(select(selectDataLoading));
-      this.authservice.currentUser$.subscribe(user => {
-        this.currentRole = user?.role.translation_data[0].name;
-        
-      } );
-
+     
     }
 
   ngOnInit() {
