@@ -13,6 +13,7 @@ import { City } from 'src/app/store/City/city.model';
 import { Merchant } from 'src/app/store/merchantsList/merchantlist1.model';
 import { fetchMerchantlistData } from 'src/app/store/merchantsList/merchantlist1.action';
 import { selectDataMerchant } from 'src/app/store/merchantsList/merchantlist1-selector';
+import { AuthenticationService } from 'src/app/core/services/auth.service';
 
 /**
  * Stores component
@@ -29,6 +30,7 @@ export class StoresComponent implements OnInit {
   breadCrumbItems: Array<object>;
   public Modules = Modules;
   public Permission = Permission;
+  currentRole: string = '';
 
   storeList$: Observable<Branch[]>;
   totalItems$: Observable<number>;
@@ -45,7 +47,7 @@ export class StoresComponent implements OnInit {
   filteredArray: Branch[] = [];
   originalArray: Branch[] = [];
   citylist:  City[] = [];
-  merchantList:  Merchant[] = [];
+  merchantList:  Merchant[] = null;
 
 
   itemPerPage: number = 10;
@@ -63,18 +65,25 @@ export class StoresComponent implements OnInit {
     { property: 'status', label: 'Status' },
   ];
 
-  constructor(public store: Store) {
+  constructor(public store: Store,    private authservice: AuthenticationService,
+  ) {
       
       this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 1000,query:'', status: 'active' }));
       this.store.dispatch(fetchMerchantlistData({page: 1, itemsPerPage: 1000,query:'', status: 'active' }));
       this.storeList$ = this.store.pipe(select(selectData)); // Observing the Store list from store
       this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
       this.loading$ = this.store.pipe(select(selectDataLoading));
+      this.authservice.currentUser$.subscribe(user => {
+        this.currentRole = user?.role.translation_data[0].name;
+        
+      } );
 
     }
 
   ngOnInit() {
-        this.fetchMerchants();
+        if(this.currentRole=== 'Admin'){
+          this.fetchMerchants();
+        }
         this.fetchCities(); 
         this.store.dispatch(fetchStorelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query:this.searchTerm, status:this.filterTerm, company_id: this.filterMerchantTerm}));
         this.storeList$.subscribe(data => {
