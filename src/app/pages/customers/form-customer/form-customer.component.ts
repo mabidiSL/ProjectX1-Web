@@ -9,7 +9,7 @@ import { DatepickerConfigService } from 'src/app/core/services/date.service';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { UploadEvent } from 'src/app/shared/widget/image-upload/image-upload.component';
 import { selectDataArea } from 'src/app/store/area/area-selector';
-import { fetchArealistData } from 'src/app/store/area/area.action';
+//import { fetchArealistData } from 'src/app/store/area/area.action';
 import { Area } from 'src/app/store/area/area.model';
 import { selectDataCity } from 'src/app/store/City/city-selector';
 import { fetchCitylistData } from 'src/app/store/City/city.action';
@@ -73,7 +73,7 @@ export class FormCustomerComponent  implements OnInit, OnDestroy{
       this.loading$ = this.store.pipe(select(selectDataLoading)); 
 
       this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 100,query:'', status: 'active' }));
-      this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 1000, status: 'active' }));
+      //this.store.dispatch(fetchArealistData({page: 1, itemsPerPage: 1000, status: 'active' }));
       this.store.dispatch(fetchCitylistData({page: 1, itemsPerPage: 1000,query:'', status: 'active' }));
 
       this.initForm();
@@ -86,10 +86,9 @@ export class FormCustomerComponent  implements OnInit, OnDestroy{
       this.customerForm = this.formBuilder.group({
         id: [null],
         l_name:['',Validators.required],
-        l_name_ar:['',Validators.required],
+        //l_name_ar:['',Validators.required],
         f_name:['',Validators.required],
-        f_name_ar:['',Validators.required],
-        username: ['', Validators.required],
+        
         email: ['', [Validators.required, Validators.email]],
         phone:['',Validators.required], //Validators.pattern(/^\d{3}-\d{3}-\d{4}$/)*/],
         country_id:[null],
@@ -104,7 +103,7 @@ export class FormCustomerComponent  implements OnInit, OnDestroy{
     }
   ngOnInit() {
     this.fetchCountry();
-    this.fetchAreas();
+    //this.fetchAreas();
     this.fetchCities();
      
      
@@ -121,10 +120,10 @@ export class FormCustomerComponent  implements OnInit, OnDestroy{
         .pipe(select(selectedCustomer), takeUntil(this.destroy$))
         .subscribe(customer => {
           if (customer) {
-  
+            console.log(customer);
             
-            this.customerForm.controls['country_id'].setValue(customer.city.area.country_id);
-            this.customerForm.controls['area_id'].setValue(customer.city.area_id);
+            this.customerForm.controls['country_id'].setValue(customer.country_id);
+            //this.customerForm.controls['area_id'].setValue(customer.city.area_id);
             this.customerForm.controls['city_id'].setValue(customer.city_id);
             this.patchValueForm(customer);
             
@@ -142,8 +141,8 @@ export class FormCustomerComponent  implements OnInit, OnDestroy{
     this.customerForm.patchValue({
       f_name: customer.translation_data[0].f_name,
       l_name: customer.translation_data[0].l_name,
-      f_name_ar: customer.translation_data[1].f_name,
-      l_name_ar: customer.translation_data[1].l_name,
+      // f_name_ar: customer.translation_data[1].f_name,
+      // l_name_ar: customer.translation_data[1].l_name,
            
     });
   
@@ -164,18 +163,18 @@ export class FormCustomerComponent  implements OnInit, OnDestroy{
       });
     });
   }
-  fetchAreas(){
-    this.store.select(selectDataArea).subscribe(data =>
-      this.filteredAreas =  [...data].map(area =>{
-      const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
-      return {
-        ...area,  
-        translatedName 
-      };
-    })
-    .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-    }));
-  }
+  // fetchAreas(){
+  //   this.store.select(selectDataArea).subscribe(data =>
+  //     this.filteredAreas =  [...data].map(area =>{
+  //     const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
+  //     return {
+  //       ...area,  
+  //       translatedName 
+  //     };
+  //   })
+  //   .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
+  //   }));
+  // }
   fetchCities(){
     this.store.select(selectDataCity).subscribe((data) => {
       this.filteredCities = [...data].map(city =>{
@@ -193,9 +192,9 @@ export class FormCustomerComponent  implements OnInit, OnDestroy{
  
   onChangeCountrySelection(event: Country){
     const country = event;
-    this.customerForm.get('area_id').setValue(null);
+    //this.customerForm.get('area_id').setValue(null);
     this.customerForm.get('city_id').setValue(null);
-    this.filteredAreas = [];
+    //this.filteredAreas = [];
     this.filteredCities = [];
     if(country){
       this.store.select(selectDataArea).subscribe(data =>
@@ -214,30 +213,30 @@ export class FormCustomerComponent  implements OnInit, OnDestroy{
    
        
   }
-  onChangeAreaSelection(event: Area){
-    const area = event;
-    this.filteredCities = [];
-    this.customerForm.get('city_id').setValue(null);
-    if(area){
-      this.store.select(selectDataCity).subscribe((data) => {
-        this.filteredCities = [...data].map(city =>{
-         const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
+  // onChangeAreaSelection(event: Area){
+  //   const area = event;
+  //   this.filteredCities = [];
+  //   this.customerForm.get('city_id').setValue(null);
+  //   if(area){
+  //     this.store.select(selectDataCity).subscribe((data) => {
+  //       this.filteredCities = [...data].map(city =>{
+  //        const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
      
-         return {
-           ...city,  
-           translatedName 
-         };
-       })
-       .filter(city => city.area_id === area.id)
-       .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-       });
-     });
+  //        return {
+  //          ...city,  
+  //          translatedName 
+  //        };
+  //      })
+  //      .filter(city => city.area_id === area.id)
+  //      .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
+  //      });
+  //    });
           
       
-    }
+  //   }
     
     
-  }
+  // }
   
   createCustomerFromForm(formValue): Customer {
     const customer = formValue;
@@ -248,10 +247,10 @@ export class FormCustomerComponent  implements OnInit, OnDestroy{
       { field: 'l_name', name: 'l_name' }
         
     ];
-    const arFields = [
-      { field: 'f_name_ar', name: 'f_name' },
-      { field: 'l_name_ar', name: 'l_name' },
-          ];
+    // const arFields = [
+    //   { field: 'f_name_ar', name: 'f_name' },
+    //   { field: 'l_name_ar', name: 'l_name' },
+    //       ];
     
     // Create the English translation if valid
     const enTranslation = this.formUtilService.createTranslation(customer,'en', enFields);
@@ -259,11 +258,11 @@ export class FormCustomerComponent  implements OnInit, OnDestroy{
       customer.translation_data.push(enTranslation);
     }
 
-    // Create the Arabic translation if valid
-    const arTranslation = this.formUtilService.createTranslation(customer,'ar', arFields);
-    if (arTranslation) {
-      customer.translation_data.push(arTranslation);
-    }
+    // // Create the Arabic translation if valid
+    // const arTranslation = this.formUtilService.createTranslation(customer,'ar', arFields);
+    // if (arTranslation) {
+    //   customer.translation_data.push(arTranslation);
+    // }
     if(customer.translation_data.length <= 0)
       delete customer.translation_data;
        
@@ -275,10 +274,10 @@ export class FormCustomerComponent  implements OnInit, OnDestroy{
     });
     delete customer.f_name;
     delete customer.l_name;
-    delete customer.f_name_ar;
-    delete customer.l_name_ar;
-    delete customer.country_id;
-    delete customer.area_id;
+    // delete customer.f_name_ar;
+    // delete customer.l_name_ar;
+   // delete customer.country_id;
+    //delete customer.area_id;
     delete customer.city;
   
 

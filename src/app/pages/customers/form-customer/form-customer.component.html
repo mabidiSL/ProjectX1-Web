@@ -43,7 +43,7 @@
                               </div> 
                           </div>
                           
-                          <div class="col-md-6 mb-3">
+                          <!-- <div class="col-md-6 mb-3">
                             <div class="form-group ">
                                <label for="f_name_ar" >{{'First_Name in arabic' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                                 <input type="text" id="f_name_ar" [readonly]="type==='view'"class="form-control" formControlName="f_name_ar" placeholder="{{ 'Enter_first_name_in_arabic' | translate }}" required>
@@ -60,17 +60,9 @@
                                     <span *ngIf="customerForm.get('l_name_ar').errors?.['required']">{{'Last Name in arabic is required'| translate}}.</span>
                                   </div>
                               </div> 
-                          </div>
+                          </div> -->
                           
-                            <div class="col-md-6 mb-3">
-                              <div class="form-group ">
-                                 <label for="username" >{{'Username' | translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                                  <input type="text" id="username" [readonly]="type==='view'"class="form-control" formControlName="username" placeholder="{{ 'Enter username' | translate }}" required [readonly]="type==='view'">
-                                  <div *ngIf="customerForm.get('username').touched && customerForm.get('username').invalid" class="invalid-feedback d-block">
-                                      <span *ngIf="customerForm.get('username').errors?.['required']">{{'Username is required'| translate}}.</span>
-                                    </div>
-                                </div> 
-                            </div>
+                          
                             <div class="col-md-6 mb-3">
                               <div class="form-group ">
                                 <label for="email">{{'Email'| translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label>
@@ -138,7 +130,7 @@
                                 </div>
                               </div>
                               
-                                <div class="col-md-6 mb-3">
+                                <!-- <div class="col-md-6 mb-3">
                                   <div class="form-group">
                                     <label for="area_id">{{'area' | translate}}</label>
                                     <ng-select [readonly]="type === 'view'" id="area_id" placeholder="{{'Select_the_Area' | translate}}" [items]="filteredAreas" bindLabel="translatedName" 
@@ -146,7 +138,7 @@
                                     </ng-select>                         
                                   </div>
                                 </div>
-            
+             -->
                               <div class="col-md-6 mb-3">
                                 <div class="form-group ">
                                   <label for="city_id" >{{'City' | translate}}</label>

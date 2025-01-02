@@ -153,7 +153,17 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   
   getProperty(data: any, propertyPath: string): any {
    
-
+    if (propertyPath === 'categoryInfo') {
+      // Handle dynamic resolution for Category Info
+      if (data.category === 'offer') {
+        return data.offer?.translation_data?.name ;
+      } else if (data.category === 'merchant') {
+        return data.company?.translation_data?.name ;
+      } else if (data.category === 'store') {
+        return data.store?.translation_data?.name ;
+      }
+      return; // Default fallback
+    }
     const keys = propertyPath.split('.');
     let value = keys.reduce((acc, key) => 
       {

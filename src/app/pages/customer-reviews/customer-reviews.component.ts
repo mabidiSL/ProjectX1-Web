@@ -46,10 +46,12 @@ export class CustomerReviewsComponent implements OnInit {
   ];
   
   columns : any[]= [
-    //{ property: 'user.translation_data[0].f_name', label: 'First_Name_tab' },
+    { property: 'user.translation_data[0].f_name', label: 'First_Name_tab' },
     //{ property: 'user.translation_data[0].l_name', label: 'Last_Name_tab' },
     { property: 'user.email', label: 'Email' },
     { property: 'category', label: 'Category' },
+    { property: 'categoryInfo', label: 'Category Info' },
+    { property: 'user.city.translation_data[0].name', label: 'City' },
     { property: 'rating', label: 'Rating' },
   ];
 

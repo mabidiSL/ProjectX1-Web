@@ -46,7 +46,7 @@ export class OrdersComponent implements OnInit {
   columns : any[]= [
     { property: 'order_id', label: '#OrderID' },
     { property: 'users.email', label: 'Billing Name' },
-    { property: 'order_id', label: 'Date' },
+    { property: 'createdAt', label: 'Date' },
     { property: 'order_id', label: 'Total' },
     { property: 'status', label: 'Payment Status' },
     { property: 'order_id', label: 'Payment Method' },
