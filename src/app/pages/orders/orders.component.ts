@@ -131,6 +131,25 @@ export class OrdersComponent implements OnInit, OnDestroy {
             .pipe(select(selectOrderById), takeUntil(this.destroy$))
             .subscribe(order => {
               if (order) {
+               // console.log(order.items);
+                /*order.items = Object.values(
+                  order.items.reduce((acc, item) => {
+                      const { offer_id, offers } = item;
+                      if (!acc[offer_id]) {
+                          acc[offer_id] = {
+                              ...item,
+                              quantity: 1, // Start quantity at 1
+                              price: offers.price, // Initialize total price
+                          };
+                      } else {
+                          acc[offer_id].quantity += 1; // Increment quantity
+                          acc[offer_id].price = offers.price; // Add to total price
+                      }
+                      return acc;
+                  }, {})
+              );*/
+             // console.log(order.items);
+              
                 this.Order =  order;
                 this.calculateSubtotal();
                 console.log(order);
