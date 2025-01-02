@@ -254,7 +254,7 @@ private getNavigationState(){
  fetchCities(id: number){
   if(id){
     console.log(' i am in fetch cities', id);
-    this.store.dispatch(getCityByCountryId({country_id:id}));
+    this.store.dispatch(getCityByCountryId({page:1, itemsPerPage:1000,country_id:id}));
     this.store.select(selectDataCity).subscribe((data) => {
       this.filteredCities = [...data].map(city =>{
        const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';

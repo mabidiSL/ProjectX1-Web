@@ -9,10 +9,12 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { UIModule } from 'src/app/shared/ui/ui.module';
 import { OrdersComponent } from './orders.component';
+import { FormOrderComponent } from './form-order/form-order.component';
+import { ViewOrderComponent } from './view-order/view-order.component';
 
 
 @NgModule({
-  declarations: [OrdersComponent],
+  declarations: [OrdersComponent, FormOrderComponent, ViewOrderComponent],
   imports: [
         CommonModule,
         FormsModule,

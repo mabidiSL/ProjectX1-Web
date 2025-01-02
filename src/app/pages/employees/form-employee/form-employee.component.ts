@@ -215,7 +215,7 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
   //   }));
   // }
   fetchCities(id: number){
-    this.store.dispatch(getCityByCountryId({country_id:id}));
+    this.store.dispatch(getCityByCountryId({page:1, itemsPerPage:1000, country_id:id}));
     this.store.select(selectDataCity).subscribe((data) => {
       this.filteredCities = [...data].map(city =>{
        const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
@@ -227,6 +227,8 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
      })
      .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
      });
+     console.log(this.filteredCities);
+     
     //  if(this.isEditing)
     //   this.employeeForm.controls['city_id'].setValue(city_id);
    });

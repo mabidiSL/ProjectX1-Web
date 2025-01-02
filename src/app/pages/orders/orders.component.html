@@ -1,8 +1,8 @@
+ <!-- [addButtonLink] ="'/private/orders/create'" -->
 <div class="container-fluid">
 
     <app-custom-table
       [pageTitle] = "'Orders'| translate"
-      [addButtonLink] ="'/private/orders/create'"
       [addButtonLabel] ="'New Order'| translate"
       [addButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.Create]}]"
       [columns]="columns"
@@ -22,7 +22,8 @@
       (onFilter)="onFilterEvent($event)"
       (pageChanged)="onPageChanged($event)"
       (onChangeEvent)="onChangeEvent($event)"
-      (onDelete)="onDelete($event)">
+      (onDelete)="onDelete($event)"
+      (onViewDetail)="onViewDetail($event)">
 </app-custom-table>
    
   </div>
@@ -35,4 +36,58 @@
   </div>    
   
   
+  <ng-template  #ViewContent role="document" let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title mt-0" id="orderdetailsModalLabel">Order Details</h5>
+      <button type="button" class="btn-close" aria-hidden="true" (click)="modalRef?.hide()"></button>
+    </div>
+    <div class="modal-body">
+      <p class="mb-2" id="orderlist-overview">
+        Order id:
+        <span class="list-id text-primary">#{{Order.id}}</span>
+      </p>
+      <p class="mb-4">
+        Billing Name:
+        <span class="orderlist-customer text-primary">{{Order.user?.translation_data[0]?.f_name}} {{Order.user?.translation_data[0]?.l_name}}</span>
+      </p>
+      <div class="table-responsive">
+        <table class="table table-centered table-nowrap">
+          <thead>
+            <tr>
+              <th scope="col">Product</th>
+              <th scope="col">Product Name</th>
+              <th scope="col">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of Order.items">
+              <th scope="row">
+                <div>
+                  <img [src]="item.offers.image? item.offers?.image : 'assets/images/product/product-dummy.png'" alt class="avatar-sm" />
+                </div>
+              </th>
+              <td>
+                <div>
+                  <h5 class="text-truncate font-size-14">{{item.offers.translation_data[0]?.name}}</h5>
+                  <p class="text-muted mb-0">£ {{item.offers.price}} x 1</p>
+                </div>
+              </td>
+              <td>£ {{item.offers.price}}</td>
+            </tr>
+            
+            <tr>
+              <td colspan="2">
+                <h6 class="m-0">Total:</h6>
+              </td>
+              <td>£ {{subTotal}}</td>
+            </tr>
+           
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="modalRef?.hide()">Close</button>
+    </div>
+  </ng-template>
   

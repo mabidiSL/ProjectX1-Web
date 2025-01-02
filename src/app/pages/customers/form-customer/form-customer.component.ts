@@ -8,7 +8,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { DatepickerConfigService } from 'src/app/core/services/date.service';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { UploadEvent } from 'src/app/shared/widget/image-upload/image-upload.component';
-import { selectDataArea } from 'src/app/store/area/area-selector';
+//import { selectDataArea } from 'src/app/store/area/area-selector';
 //import { fetchArealistData } from 'src/app/store/area/area.action';
 import { Area } from 'src/app/store/area/area.model';
 import { selectDataCity } from 'src/app/store/City/city-selector';
@@ -197,18 +197,20 @@ export class FormCustomerComponent  implements OnInit, OnDestroy{
     //this.filteredAreas = [];
     this.filteredCities = [];
     if(country){
-      this.store.select(selectDataArea).subscribe(data =>
-        this.filteredAreas =  [...data].map(area =>{
-        const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
-        return {
-          ...area,  
-          translatedName 
-        };
-      })
-      .filter(area => area.country_id === country.id)
-      .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-      }));
-          
+   
+      this.store.select(selectDataCity).subscribe((data) => {
+        this.filteredCities = [...data].map(city =>{
+         const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
+     
+         return {
+           ...city,  
+           translatedName 
+         };
+       })
+       .filter(city => city.country_id === country.id)
+       .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
+       });
+     });    
     }
    
        

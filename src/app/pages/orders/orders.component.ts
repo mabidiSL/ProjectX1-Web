@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
-import { Observable } from 'rxjs';
-import { selectDataTotalItems, selectDataLoading } from 'src/app/store/notification/notification-selector';
-import { selectDataOrder } from 'src/app/store/Order/order-selector';
-import { fetchOrderlistData, deleteOrderlist, updateOrderlist } from 'src/app/store/Order/order.actions';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { selectDataLoading, selectDataOrder, selectDataTotalItems, selectOrderById } from 'src/app/store/Order/order-selector';
+import { fetchOrderlistData, deleteOrderlist, updateOrderlist, getOrderById } from 'src/app/store/Order/order.actions';
+import { Order } from 'src/app/store/Order/order.models';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
 
 @Component({
@@ -13,9 +14,10 @@ import { Modules, Permission } from 'src/app/store/Role/role.models';
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss'
 })
-export class OrdersComponent implements OnInit {
+export class OrdersComponent implements OnInit, OnDestroy {
 
 
+    private destroy$ = new Subject<void>();
   
   // bread crumb items
   breadCrumbItems: Array<object>;
@@ -24,7 +26,9 @@ export class OrdersComponent implements OnInit {
 
   orderList$: Observable<any[]>;
   totalItems$: Observable<number>;
-  loading$: Observable<any>
+  loading$: Observable<any>;
+  modalRef?: BsModalRef;
+  subTotal: number = null;
   searchTerm: string = '';
   searchPlaceholder: string ='Search By OrderID or Billing Name'
   filterTerm: string = '';
@@ -33,9 +37,11 @@ export class OrdersComponent implements OnInit {
   isDropdownOpen : boolean = false;
   filteredArray: any[] = [];
   originalArray: any[] = [];
+  Order: Order = null;
 
   itemPerPage: number = 10;
   currentPage : number = 1;
+  @ViewChild('ViewContent', { static: false }) showModal?: TemplateRef<any>;
 
   statusList: any[] = [
     {status: 'all', label: 'All'},
@@ -44,20 +50,21 @@ export class OrdersComponent implements OnInit {
     {status: 'refund', label: 'Refund'}];
 
   columns : any[]= [
-    { property: 'order_id', label: '#OrderID' },
-    { property: 'users.email', label: 'Billing Name' },
+    { property: 'id', label: '#OrderID' },
+    { property: 'billingName', label: 'Billing Name' },
     { property: 'createdAt', label: 'Date' },
     { property: 'order_id', label: 'Total' },
     { property: 'status', label: 'Payment Status' },
-    { property: 'order_id', label: 'Payment Method' },
+    { property: 'payment_method', label: 'Payment Method' },
 
   ];
 
-  constructor(private store: Store) {
+  constructor(private store: Store, private modalService: BsModalService  ) {
       
       this.orderList$ = this.store.pipe(select(selectDataOrder)); // Observing the Order list from Order
       this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
       this.loading$ = this.store.pipe(select(selectDataLoading));
+
 
     }
 
@@ -117,5 +124,32 @@ export class OrdersComponent implements OnInit {
     this.store.dispatch(updateOrderlist({ updatedData: newData }));
   }
 
+  onViewDetail(event: any){
+    this.store.dispatch(getOrderById({OrderId: event }));
+        // Subscribe to the selected order from the store
+        this.store
+            .pipe(select(selectOrderById), takeUntil(this.destroy$))
+            .subscribe(order => {
+              if (order) {
+                this.Order =  order;
+                this.calculateSubtotal();
+                console.log(order);
+                if (!this.modalRef ) {
+                  this.modalRef = this.modalService.show(this.showModal);
+                }
+                //this.modalRef = this.modalService.show(this.showModal);
+     
+              }
+            });
+        }
+calculateSubtotal(): void {
+          this.subTotal = this.Order.items.reduce((acc: number, item: any) => {
+            return acc + item.offers.price;
+          }, 0);
+ }
+ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+        }
+  }
 
-}

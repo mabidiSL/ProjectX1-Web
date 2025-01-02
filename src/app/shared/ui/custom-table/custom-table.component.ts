@@ -80,6 +80,8 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   @Output() onDelete? = new EventEmitter();
   @Output() onApprove? = new EventEmitter();
   @Output() onFilter? = new EventEmitter();
+  @Output() onViewDetail? = new EventEmitter();
+
 
   public currentUser: Observable<_User>;
   filterByStatus: string = null;
@@ -152,7 +154,9 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   }
   
   getProperty(data: any, propertyPath: string): any {
-   
+    if (propertyPath === 'billingName') {
+      return data.user?.translation_data[0].f_name +' '+ data.user?.translation_data[0].l_name;
+    }
     if (propertyPath === 'categoryInfo') {
       // Handle dynamic resolution for Category Info
       if (data.category === 'offer') {
@@ -342,13 +346,16 @@ sortData(column: string): void {
       });
     }
   }
-  navigateToView(data: any) {
+navigateToView(data: any) {
    
     if(this.viewButtonLink.includes('invoices')){
       console.log(this.viewButtonLink);
-      
       this.router.navigate([`${this.viewButtonLink}`]);}
-    else
+    else if(this.viewButtonLink.includes('orders'))
+      {console.log(this.viewButtonLink);
+      this.onViewDetail.emit(data.id);}
+      
+      else
       this.router.navigate([`${this.viewButtonLink}`, data.id]);
 }
 selectStatus(event: any){

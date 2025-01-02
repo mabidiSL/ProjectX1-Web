@@ -12,6 +12,7 @@ export class Order{
   codeCoupon?: string;
   qrCode?: string;
   nbr_of_use_left?: number;
+  items?: any[];
   order_id?: number;
   offer_id?: number;
   unit_amount?: number;
