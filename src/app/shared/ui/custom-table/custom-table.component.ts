@@ -359,39 +359,43 @@ navigateToView(data: any) {
       this.router.navigate([`${this.viewButtonLink}`, data.id]);
 }
 selectStatus(event: any){
-  if(event)
-    this.filterByStatus = event.target.value
-     console.log(event.target.value);
+
+  if(event ){
+    this.filterByStatus = event.status;
+  }
   
 }
 selectCategory(event: any){
-  if(event)
-    this.filterByCategory = event.target.value
-     console.log(event.target.value);
+  if(event ){
+    this.filterByCategory = event.category;
+  }
   
 }
 selectRole(event: any){
-  if(event)
-    this.filterByRole = event.target.value
-     console.log(event.target.value);
+  if(event ){
+    this.filterByRole = event.category;
+  }
+  
   
 }
 selectCity(event: any){
-  if(event)
-    this.filterByCity = event.target.value
-     console.log(event.target.value);
-  
+  if(event ){
+    this.filterByCity = event.category;
+  }
+ 
 }
 selectCountry(event: any){
-  if(event)
-    this.filterByCountry = event.target.value
-     console.log(event.target.value);
-  
+  if(event ){
+    this.filterByCountry = event.category;
+  }
+    
 }
 selectMerchant(event: any){
-  if(event)
-    this.filterByMerchant = event.target.value
-     console.log(event.target.value);
+
+  if(event ){
+    this.filterByMerchant = event.category;
+  }  
+   
   
 }
 selectDate(event: any){

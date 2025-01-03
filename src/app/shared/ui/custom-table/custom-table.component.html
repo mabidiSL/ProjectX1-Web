@@ -21,45 +21,39 @@
           </div>
           <div *ngIf="categoryList" class="col-xxl-2 col-lg-4">
             <select class="form-select" id="idStatus" aria-label="Default select example" [(ngModel)]="filterByStatus" (change)="selectStatus($event)">
-              <option  value="null">{{'Select Category' | translate}}</option>
+              <option  value="">{{'Select Category' | translate}}</option>
               <option *ngFor="let category of categoryList" [value]="category.category">{{ category.label  | translate}}</option>
             </select>
           </div>
           <div *ngIf="statusList" class="col-xxl-2 col-lg-4">
-            <select class="form-select" id="idStatus" aria-label="Default select example" [(ngModel)]="filterByStatus" (change)="selectStatus($event)">
+            <ng-select  placeholder="{{'Select Status' | translate}}" [items]="statusList" bindLabel="label" 
+            bindValue="status" id="idStatus"   [(ngModel)]="filterByStatus" (change)="selectStatus($event)">
+            </ng-select>
+            <!-- <select class="form-select" id="idStatus" aria-label="Default select example" [(ngModel)]="filterByStatus" (change)="selectStatus($event)">
               <option  value="null">{{'Select Status' | translate}}</option>
               <option *ngFor="let status of statusList" [value]="status.status">{{ status.label  | translate}}</option>
-            </select>
+            </select> -->
           </div>
           <div *ngIf="merchantList" class="col-xxl-2 col-lg-4">
-            <select class="form-select" id="idRole" aria-label="Default select example" [(ngModel)]="filterByMerchant" (change)="selectMerchant($event)">
-              <option  value="null">{{'Select Merchant' | translate}}</option>
-              <option *ngFor="let merchant of merchantList" [value]="merchant.id">{{ merchant.translatedName }}</option>
-            </select>
+            <ng-select  placeholder="{{'Select Merchant' | translate}}" [items]="merchantList" bindLabel="translatedName" 
+            bindValue="id" id="idMerchant"   [(ngModel)]="filterByMerchant" (change)="selectMerchant($event)">
+            </ng-select>
           </div>
           <div *ngIf="countrylist"class="col-xxl-2 col-lg-4">
-            <select class="form-select" id="idCountry" aria-label="Default select example" [(ngModel)]="filterByCountry" (change)="selectCountry($event)">
-              <option  value="null">{{'Select Country' | translate}}</option>
-              <option *ngFor="let country of countrylist" [value]="country.id">{{ country.translatedName }}</option>
-            </select>
-            <!-- <ng-select  placeholder="{{'Select Country' | translate}}" [items]="countrylist" bindLabel="translatedName" 
-             bindValue="id" id="country_id">
-              </ng-select> -->
+            <ng-select  placeholder="{{'Select Country' | translate}}" [items]="countrylist" bindLabel="translatedName" 
+            bindValue="id" id="idCountry"   [(ngModel)]="filterByCountry" (change)="selectCountry($event)">
+            </ng-select>
+           
           </div>
           <div *ngIf="citylist"class="col-xxl-2 col-lg-4">
-            <select class="form-select" id="idCity" aria-label="Default select example" [(ngModel)]="filterByCity" (change)="selectCity($event)">
-              <option  value="null">{{'Select City' | translate}}</option>
-              <option *ngFor="let city of citylist" [value]="city.id">{{ city.translatedName }}</option>
-            </select>
-            <!-- <ng-select  placeholder="{{'Select Country' | translate}}" [items]="countrylist" bindLabel="translatedName" 
-             bindValue="id" id="country_id">
-              </ng-select> -->
+            <ng-select  placeholder="{{'Select City' | translate}}" [items]="citylist" bindLabel="translatedName" 
+            bindValue="id" id="idCity"   [(ngModel)]="filterByCity" (change)="selectCity($event)">
+            </ng-select>
           </div>
           <div *ngIf="roleList"class="col-xxl-2 col-lg-4">
-            <select class="form-select" id="idRole" aria-label="Default select example" [(ngModel)]="filterByRole" (change)="selectRole($event)">
-              <option  value="null">{{'Select Role' | translate}}</option>
-              <option *ngFor="let role of roleList" [value]="role.id">{{ role.name }}</option>
-            </select>
+            <ng-select  placeholder="{{'Select Role' | translate}}" [items]="roleList" bindLabel="name" 
+            bindValue="id" id="idRole"   [(ngModel)]="filterByRole" (change)="selectRole($event)">
+            </ng-select>
           </div>
           <!-- <div class="col-xxl-2 col-lg-4">
             <select class="form-select" id="idType" aria-label="Default select example" (click)="selectType()">
@@ -89,7 +83,7 @@
           <div class="col-xxl-2 col-lg-4">
             <a href="javascript:void(0);" class="btn btn-light me-2" (click)="resetFilter()"><i class="mdi mdi-refresh"></i></a>
             <button 
-                type="button" class="btn btn-outline-primary"
+                type="button" class="btn btn-primary" [disabled]="!isFilterApplied()"
                 (click)="Filter()">
               <i class="mdi mdi-filter-outline align-middle"></i> {{'Filter' | translate}}
             </button>

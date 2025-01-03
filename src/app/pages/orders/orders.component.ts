@@ -30,7 +30,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   modalRef?: BsModalRef;
   subTotal: number = null;
   searchTerm: string = '';
-  searchPlaceholder: string ='Search By OrderID or Billing Name'
+  searchPlaceholder: string ='Search By OrderID or Billing Name(fName, lName)'
   filterTerm: string = '';
   filterDateTerm: string = null;
 
@@ -46,8 +46,8 @@ export class OrdersComponent implements OnInit, OnDestroy {
   statusList: any[] = [
     {status: 'all', label: 'All'},
     {status: 'paid', label: 'Paid'},
-    {status: 'unpaid', label: 'Refund'},
-    {status: 'refund', label: 'Refund'}];
+    {status: 'unpaid', label: 'UnPaid'},
+    ];
 
   columns : any[]= [
     { property: 'id', label: '#OrderID' },
@@ -70,7 +70,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
           
-        this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:this.filterTerm }));
+        this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, date: this.filterDateTerm,status:this.filterTerm }));
         this.orderList$.subscribe(data => {
         this.originalArray = data; // Order the full Order list
         this.filteredArray = [...this.originalArray];
@@ -85,29 +85,31 @@ export class OrdersComponent implements OnInit, OnDestroy {
        else
          this.filterTerm = '';
        if(event.date )
-          this.filterDateTerm = event.date.toISOString().split('T')[0];
+          //this.filterDateTerm = event.date.toISOString().split('T')[0];
+       this.filterDateTerm = event.date.toLocaleDateString('en-CA'); // Outputs in YYYY-MM-DD format
+
        else
           this.filterDateTerm = null;
    
-       this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status: this.filterTerm }));
+       this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, date: this.filterDateTerm,  status: this.filterTerm }));
    
     }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: totalItems, query: this.searchTerm, status:this.filterTerm }));
+    this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: totalItems, query: this.searchTerm, date: this.filterDateTerm,status:this.filterTerm }));
    }
 
    onSearchEvent(event: any){
     console.log(event);
     this.searchTerm = event;
-    this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:this.filterTerm}));
+    this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, date: this.filterDateTerm,status:this.filterTerm}));
 
    }
  
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:this.filterTerm}));
+    this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm,date: this.filterDateTerm, status:this.filterTerm}));
     
   }
 

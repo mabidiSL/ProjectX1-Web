@@ -67,7 +67,8 @@ export class LogsComponent implements OnInit {
          console.log(event);
          
          if(event.date )
-           this.filterDateTerm = event.date.toISOString().split('T')[0];
+           this.filterDateTerm = event.date.toLocaleDateString('en-CA');
+          //event.date.toISOString().split('T')[0];
          else
            this.filterDateTerm = null;
                
