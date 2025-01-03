@@ -178,7 +178,7 @@
             </td>
             <ng-container *ngFor="let column of columns">
                 <td >
-                <ng-container *ngIf="column.property !== 'status' && column.property !== 'user.status'; else  status">
+                <ng-container *ngIf="column.property !== 'status' && column.property !== 'user.status' && !column.property.includes('status'); else  status">
                   <!-- Check if column.property is 'flag' -->
                   <ng-container *ngIf="column.property === 'flag' || column.property.includes('Logo')||column.property.includes('qr'); else showData">
                     <div>

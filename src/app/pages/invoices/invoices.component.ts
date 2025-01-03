@@ -40,13 +40,12 @@ export class InvoicesComponent implements OnInit {
   statusList: any[] = [
     {status: 'all', label: 'All'},
     {status: 'paid', label: 'Paid'},
-    {status: 'unpaid', label: 'Refund'},
-    {status: 'refund', label: 'Refund'}];
-
+    {status: 'unpaid', label: 'UnPaid'},
+  ];
   columns : any[]= [
     { property: 'id', label: '#InvoiceID' },
     { property: 'billingName', label: 'Billing To' },
-    { property: 'status', label: 'Invoice Status' },
+    { property: 'orderItems[0]?.status', label: 'Invoice Status' },
     { property: 'dueDate', label: 'Due Date' },
     { property: 'totalAmount', label: 'Total Amount' },
 
@@ -62,7 +61,7 @@ export class InvoicesComponent implements OnInit {
 
   ngOnInit() {
           
-        this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:this.filterTerm }));
+        this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, date: this.filterDateTerm, status:this.filterTerm }));
         this.invoiceList$.subscribe(data => {
         this.originalArray = data; // Invoice the full Invoice list
         this.filteredArray = [...this.originalArray];
@@ -82,25 +81,25 @@ export class InvoicesComponent implements OnInit {
        else
           this.filterDateTerm = null;
    
-       this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status: this.filterTerm }));
+       this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, date: this.filterDateTerm,  status: this.filterTerm }));
    
     }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: totalItems, query: this.searchTerm, status:this.filterTerm }));
+    this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: totalItems, query: this.searchTerm, date: this.filterDateTerm, status:this.filterTerm }));
    }
 
    onSearchEvent(event: any){
     console.log(event);
     this.searchTerm = event;
-    this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:this.filterTerm}));
+    this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, date: this.filterDateTerm,status:this.filterTerm}));
 
    }
  
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:this.filterTerm}));
+    this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, date: this.filterDateTerm, status:this.filterTerm}));
     
   }
 
