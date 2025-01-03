@@ -94,6 +94,7 @@
                          <app-phone-number
                          *ngIf="employeeForm"
                          [disabled]="type==='view'"
+                         [phoneCode]="phoneCode"
                          [inputId]="'phone'"
                          [initialPhoneNumber]="employeeForm.get('phone').value"
                           [placeholder]="'Enter_employee_phone' | translate"

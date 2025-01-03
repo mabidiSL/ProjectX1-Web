@@ -9,6 +9,7 @@ export interface Country {
      id?: number;
      translation_data?: Translation[];
      phoneCode?: string;
+     ISO2?: string;
      flag?: string;
      status? : string;
      updatedAt? :  string;

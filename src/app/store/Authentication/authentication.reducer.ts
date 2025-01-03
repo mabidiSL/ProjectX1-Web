@@ -57,7 +57,7 @@ export const authenticationReducer = createReducer(
     on(updateProfileFailure, (state, { error }) => ({ ...state, loading: false, error })),
    
     on(updateCompanyProfile, (state) => ({ ...state, loading: true, error: null })),
-    on(updateCompanyProfileSuccess, (state, { company }) => ({ ...state, loading: false, company, error: null })),
+    on(updateCompanyProfileSuccess, (state, { company }) => ({ ...state, loading: false, user: company.user,company, error: null })),
     on(updateCompanyProfileFailure, (state, { error }) => ({ ...state, loading: false, error })),
     
     on(getCompanyProfile, (state) => ({ ...state, loading: true, error: null })),

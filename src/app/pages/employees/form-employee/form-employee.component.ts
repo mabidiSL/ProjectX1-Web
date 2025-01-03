@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { BsModalRef, BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
 import { Observable, Subject, takeUntil } from 'rxjs';
+import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 //import { selectDataArea } from 'src/app/store/area/area-selector';
 //import { fetchArealistData } from 'src/app/store/area/area.action';
@@ -12,8 +13,8 @@ import { Area } from 'src/app/store/area/area.model';
 import { selectDataCity, selectDataLoadingCities } from 'src/app/store/City/city-selector';
 import { getCityByCountryId } from 'src/app/store/City/city.action';
 import { City } from 'src/app/store/City/city.model';
-import { selectDataCountry } from 'src/app/store/country/country-selector';
-import { fetchCountrylistData } from 'src/app/store/country/country.action';
+import { selectDataCountry, selectedCountry } from 'src/app/store/country/country-selector';
+import { fetchCountrylistData, getCountryById } from 'src/app/store/country/country.action';
 import { Country } from 'src/app/store/country/country.model';
 import { selectDataLoading, selectedEmployee } from 'src/app/store/employee/employee-selector';
 import { addEmployeelist, getEmployeeById, updateEmployeelist } from 'src/app/store/employee/employee.action';
@@ -53,10 +54,11 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
   citylist$:  Observable<City[]> ;
   loading$: Observable<boolean>;
   loadingCities$: Observable<boolean>;
-
+  country_id!: number;
 
   moduleKeys: any[] = [];
   permissionKeys: any[] = [];
+  phoneCode!: string;
 
   rolelist:  Role[] = [] ;
   selectedRole : Role = null;
@@ -70,20 +72,21 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
   public Permission: Permission;
   public Module: Modules;
 
-//moduleKeys = Object.keys(Modules).filter(key => isNaN(Number(key))); // Get the module names
-//permissionKeys = Object.keys(Permission).filter(key => isNaN(Number(key))); // Get the permission names
-
-
-
-
   constructor(
     private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private modalService: BsModalService,
+    private authservice: AuthenticationService,
     private formUtilService: FormUtilService,
     private store: Store){
       
+      this.authservice.currentUser$.subscribe(user => {
+        console.log(user);
+        this.country_id = user?.country_id; 
+        if(this.country_id)      
+          this.store.dispatch(getCountryById({CountryId: this.country_id}));
+      });
       this.loading$ = this.store.pipe(select(selectDataLoading)); 
       this.loadingCities$ = this.store.pipe(select(selectDataLoadingCities));
 
@@ -117,7 +120,7 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
   ngOnInit() {
     this.fetchCountry();
     this.fetchRoles();
-     
+    this.setPhoneCodeByCountry();
      
     const employeeId = this.route.snapshot.params['id'];
     if (employeeId) {
@@ -151,7 +154,15 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
     }
        
   }
-
+  setPhoneCodeByCountry(){
+    this.store.select(selectedCountry).subscribe(
+      (country)  => {
+        if(country)
+          this.phoneCode = country.ISO2;
+          this.employeeForm.controls['country_id'].setValue(country.id);
+          this.fetchCities(country.id);
+      });
+  }
   /**
    * Open modal
    * @param content modal content
@@ -239,6 +250,7 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
     this.employeeForm.get('city_id').setValue(null);
     this.filteredCities = [];
     if(country){
+      this.phoneCode = country.ISO2;
       this.fetchCities(country.id);
     }
        

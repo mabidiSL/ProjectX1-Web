@@ -18,6 +18,7 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
   @Input() inputId: string ;
   @Input() phoneCode?: string = null;
 
+
   
   @Input() placeholder: string;
   inputElement: HTMLInputElement;
@@ -37,6 +38,7 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
  errorMap: string[] = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
 
   constructor(private formBuilder: FormBuilder, private cookieService: CookieService,private changeDetectorRef: ChangeDetectorRef) {
+    
     this.phone = this.formBuilder.control(''); // Initialize the phone control
     this.itiOptions = {
       initialCountry: 'gb', // set default country as Saudi Arabia
@@ -75,7 +77,7 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
         console.log('not initialized');
         this.initializeIntlTelInput();
       }
-      //this.iti.setCountry(this.phoneCode); // Update the country code
+      this.iti.setCountry(this.phoneCode); // Update the country code
       
     }
   }

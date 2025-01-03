@@ -182,7 +182,8 @@ export class AuthenticationEffects {
     exhaustMap(({company} ) => {
       return this.AuthService.updateCompanyProfile(company).pipe(
         map((response : any) => {
-            //localStorage.setItem('currentUser', JSON.stringify(user.user));
+            localStorage.setItem('currentUser', JSON.stringify(response.user));
+            this.AuthService.setCurrentUser(response.user);
             this.toastr.success('The company profile was updated successfully.');
             this.router.navigate(['/private/dashboard']);
             return updateCompanyProfileSuccess({company:response});
