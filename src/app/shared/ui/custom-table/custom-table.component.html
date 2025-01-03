@@ -20,10 +20,10 @@
             <input type="search" class="form-control" id="searchInput" [placeholder]="searchPlaceholder? searchPlaceholder: 'Search for ...'" [(ngModel)]="searchTerm" (ngModelChange)="searchEvent()">
           </div>
           <div *ngIf="categoryList" class="col-xxl-2 col-lg-4">
-            <select class="form-select" id="idStatus" aria-label="Default select example" [(ngModel)]="filterByStatus" (change)="selectStatus($event)">
-              <option  value="">{{'Select Category' | translate}}</option>
-              <option *ngFor="let category of categoryList" [value]="category.category">{{ category.label  | translate}}</option>
-            </select>
+            <ng-select  placeholder="{{'Select Category' | translate}}" [items]="categoryList" bindLabel="label" 
+            bindValue="category" id="idCategory"   [(ngModel)]="filterByCategory" (change)="selectCategory($event)">
+            </ng-select>
+           
           </div>
           <div *ngIf="statusList" class="col-xxl-2 col-lg-4">
             <ng-select  placeholder="{{'Select Status' | translate}}" [items]="statusList" bindLabel="label" 

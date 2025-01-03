@@ -79,7 +79,7 @@ export class CustomerReviewsComponent implements OnInit {
       console.log(event);
 
       if(event.category && event.category !== 'all')
-         this.filterTerm = event.status;
+         this.filterTerm = event.category;
       else
         this.filterTerm = '';
       
