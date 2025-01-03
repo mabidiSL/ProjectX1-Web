@@ -79,6 +79,7 @@ import { OrdersEffects } from './store/Order/order.effects';
 import { InvoicesModule } from './pages/invoices/invoices.module';
 import { CustomerReviewsModule } from './pages/customer-reviews/customer-reviews.module';
 import { CustomerReviewEffects } from './store/customer-reviews/customer-review.effect';
+import { InvoicesEffects } from './store/invoices/invoice.effects';
 
 
 // Register the Arabic locale
@@ -168,7 +169,9 @@ export function createTranslateLoader(http: HttpClient): any {
       LogsEffects,
       PaymentEffects,
       OrdersEffects,
-      CustomerReviewEffects
+      CustomerReviewEffects,
+      InvoicesEffects
+
       
     ]),
   ],

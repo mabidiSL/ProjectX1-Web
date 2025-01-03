@@ -16,6 +16,7 @@ import { LogListReducer, LoglistState } from "./Log/log.reducer";
 import { PaymentListReducer, PaymentlistState } from "./payment/payment.reducer";
 import { OrderListReducer, OrderlistState } from "./Order/order.reducer";
 import { CustomerReviewListReducer, CustomerReviewlistState } from "./customer-reviews/customer-review.reducer";
+import { InvoiceListReducer, InvoicelistState } from "./invoices/invoice.reducer";
 
 
 export interface RootReducerState {
@@ -37,6 +38,7 @@ export interface RootReducerState {
     PaymentList: PaymentlistState;
     OrderList: OrderlistState;
     CustomerReviewList: CustomerReviewlistState;
+    InvoiceList: InvoicelistState;
 
     
 }
@@ -58,7 +60,8 @@ export const rootReducer: ActionReducerMap<RootReducerState> = {
     LogList: LogListReducer,
     PaymentList: PaymentListReducer,
     OrderList: OrderListReducer,
-    CustomerReviewList: CustomerReviewListReducer
+    CustomerReviewList: CustomerReviewListReducer,
+    InvoiceList: InvoiceListReducer
 
 
 }
