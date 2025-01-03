@@ -8,7 +8,7 @@
       [pageTitle] = "'Customer Reviews'| translate"  
       [columns]="columns"
       [viewButtonLink]="'/private/customer-reviews/view'"
-      [deleteButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customers, claimValue: [Permission.Delete]}]"
+      [deleteButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customers, claimValue: [Permission.All,Permission.Delete]}]"
       [ArrayData]="originalArray"
       [totalItems]="(totalItems$ | async)"
       [categoryList] = "categoryList"

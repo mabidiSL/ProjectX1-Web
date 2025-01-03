@@ -4,7 +4,7 @@
       [pageTitle] = "'Logs'| translate"
       [columns]="columns"
       [viewButtonLink]="'/private/logs/view'"
-      [viewButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.View]}]"
+      [viewButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.All,Permission.View]}]"
       [ArrayData]="originalArray"
       [totalItems]="(totalItems$ | async)"
       [actiondatePicker] = "true"

@@ -4,7 +4,7 @@
       [pageTitle] = "'Customer Invoices'| translate"
       [columns]="columns"
       [viewButtonLink]="'/private/invoices/view'"
-      [viewButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customer_Invoice, claimValue: [Permission.View]}]"  
+      [viewButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customer_Invoice, claimValue: [Permission.All,Permission.View]}]"  
       [ArrayData]="originalArray"
       [actiondatePicker] = "true"
       [noActionColumn] = "true"
