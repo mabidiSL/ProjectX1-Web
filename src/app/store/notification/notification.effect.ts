@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -88,16 +89,17 @@ export class NotificationsEffects {
           ofType(updateNotificationlist),
           mergeMap(({ updatedData, route }) =>
             this.CrudService.updateData(`/notifications/${updatedData.id}`, updatedData).pipe(
-              map(() => {
+              map((response: any) => {
                 if(route !== ''){
                   this.router.navigate([route]);
 
                 }else
                 {
                   this.router.navigate(['/private/notifications/list']);
+                  this.toastr.success('The Notification has been updated successfully.');
                 }
-                this.toastr.success('The Notification has been updated successfully.');
-                return updateNotificationlistSuccess({ updatedData }); // Make sure to return the action
+               
+                return updateNotificationlistSuccess({ updatedData: response }); // Make sure to return the action
               }),
               catchError((error) =>{
                 const errorMessage = this.formUtilService.getErrorMessage(error);

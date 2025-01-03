@@ -151,12 +151,11 @@ export class TopbarComponent implements OnInit, OnDestroy {
     switch (notification.type) {
       case 'merchant-registration':
         return 'private/merchants/list';
-      case 'coupon-approved':
+      case 'coupon-approval-request':
         return 'private/coupons/list';
-      case 'giftCard-approved':
+      case 'giftCard-approval-request':
         return 'private/giftCards/list';
-      case 'store-approval-request':
-        return 'private/stores/list';
+      
     //   default:
     //     return 'private/notifications/list'; // Default route if no match
     // }
