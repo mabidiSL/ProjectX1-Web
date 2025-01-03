@@ -26,7 +26,7 @@ export class CustomerReviewsComponent implements OnInit {
   CustomerReviewList$: Observable<CustomerReview[]>;
   totalItems$: Observable<number>;
   loading$: Observable<boolean>;
-  searchPlaceholder: string ='Search By Email'
+  searchPlaceholder: string ='Search By FName, LName or Email'
   filterTerm: string = '';
   searchTerm: string = '';
 

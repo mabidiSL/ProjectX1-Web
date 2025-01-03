@@ -133,35 +133,39 @@ export class OrdersComponent implements OnInit, OnDestroy {
             .pipe(select(selectOrderById), takeUntil(this.destroy$))
             .subscribe(order => {
               if (order) {
-               // console.log(order.items);
-                /*order.items = Object.values(
-                  order.items.reduce((acc, item) => {
-                      const { offer_id, offers } = item;
-                      if (!acc[offer_id]) {
-                          acc[offer_id] = {
-                              ...item,
-                              quantity: 1, // Start quantity at 1
-                              price: offers.price, // Initialize total price
-                          };
-                      } else {
-                          acc[offer_id].quantity += 1; // Increment quantity
-                          acc[offer_id].price = offers.price; // Add to total price
-                      }
-                      return acc;
-                  }, {})
-              );*/
-             // console.log(order.items);
+                console.log(order.items);
+
+                order.items = order.items.reduce((acc, item) => {
+                  // Find if the item already exists in the accumulator array
+                  const existingItem = acc.find(i => i.offer_id === item.offer_id);
+                
+                  if (existingItem) {
+                    // If item exists, increment the quantity
+                    existingItem.quantity += 1;
+                  } else {
+                    item.quantity = 1;
+                    // If item doesn't exist, add it to the array
+                    acc.push({ ...item });
+                  }
+                
+                  return acc;
+                }, [])
+                console.log(order.items);
               
                 this.Order =  order;
-                this.calculateSubtotal();
-                console.log(order);
-                if (!this.modalRef ) {
-                  this.modalRef = this.modalService.show(this.showModal);
-                }
+                //this.calculateSubtotal();
+                //console.log(order);
+                this.modalRef = this.modalService.show(this.showModal);
                 //this.modalRef = this.modalService.show(this.showModal);
      
               }
             });
+        }
+        closeModal() {
+          if (this.modalRef) {
+            this.modalRef.hide();
+            this.modalRef = null; // Reset modal reference on close
+          }
         }
 calculateSubtotal(): void {
           this.subTotal = this.Order.items.reduce((acc: number, item: any) => {

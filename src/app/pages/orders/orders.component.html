@@ -37,15 +37,28 @@
   
   
   <ng-template  #ViewContent role="document" let-modal>
-    <div class="modal-header">
+    <div class="modal-header" [attr.inert]="modalRef ? null : true">
       <h5 class="modal-title mt-0" id="orderdetailsModalLabel">Order Details</h5>
-      <button type="button" class="btn-close" aria-hidden="true" (click)="modalRef?.hide()"></button>
+      <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
     </div>
     <div class="modal-body">
-      <p class="mb-2" id="orderlist-overview">
-        Order id:
-        <span class="list-id text-primary">#{{Order.id}}</span>
-      </p>
+      <div class="d-flex justify-content-between mb-2">
+        <p id="orderlist-overview" class="m-0">
+          Order ID:
+          <span class="list-id text-primary">#{{Order.id}}</span>
+        </p>
+        <p id="orderstatus">
+          Order Status:
+          <span
+          class="badge"
+          [ngClass]="{
+            'bg-success': Order.status === 'paid',
+            'bg-warning': Order.status === 'unpaid'
+          }">
+          {{Order.status}}
+      </span>
+        </p>
+      </div>
       <p class="mb-4">
         Billing Name:
         <span class="orderlist-customer text-primary">{{Order.user?.translation_data[0]?.f_name}} {{Order.user?.translation_data[0]?.l_name}}</span>
@@ -69,17 +82,17 @@
               <td>
                 <div>
                   <h5 class="text-truncate font-size-14">{{item.offers.translation_data[0]?.name}}</h5>
-                  <p class="text-muted mb-0">£ {{item.offers.price}} x 1</p>
+                  <p class="text-muted mb-0">£ {{item.offers.price}} x {{item.quantity}}</p>
                 </div>
               </td>
-              <td>£ {{item.offers.price}}</td>
+              <td>£ {{item.offers.price * item.quantity}}</td>
             </tr>
             
             <tr>
               <td colspan="2">
                 <h6 class="m-0">Total:</h6>
               </td>
-              <td>£ {{subTotal}}</td>
+              <td>£ {{Order.totalAmount}}</td>
             </tr>
            
           </tbody>
@@ -87,7 +100,7 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-secondary" (click)="modalRef?.hide()">Close</button>
+      <button class="btn btn-secondary" (click)="closeModal()">Close</button>
     </div>
   </ng-template>
   
