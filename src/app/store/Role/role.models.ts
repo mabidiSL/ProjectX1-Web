@@ -47,6 +47,7 @@ export  enum Modules
         Merchant_Commissions = 13,
         Coupons = 6,
         Gift_Cards = 7,
+        Orders = 15,
         Marketing_Compaigns = 27,
         Marketing_Offers = 28,
         Special_Coupons = 9,

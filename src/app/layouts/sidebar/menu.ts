@@ -55,7 +55,7 @@ export const MENU: MenuItem[] = [
     {
         id: 41,
         label: 'MENUITEMS.CUSTOMERSREVIEWS.TEXT',
-        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customer_Reviews, claimValue: [Permission.ViewAll]}],
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customer_Reviews, claimValue: [Permission.ViewAll,  Permission.View]}],
         icon:  'bx bxs-star',
         link:'/private/customer-reviews/list',
                 
@@ -235,14 +235,14 @@ export const MENU: MenuItem[] = [
         {
             id: 13,
             label: 'MENUITEMS.ORDERMANAGEMENT.TEXT',
-            claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [ Permission.ViewAll]}],
+            claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Orders, claimValue: [ Permission.ViewAll, Permission.View]}],
             isTitle: true
         }, 
         {
             id: 4,
             label: 'MENUITEMS.ORDERMANAGEMENT.ORDER.TEXT',
             icon: 'bx bxs-basket',
-            claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Role, claimValue: [Permission.ViewAll]}],
+            claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Orders, claimValue: [Permission.ViewAll, Permission.View]}],
             link:'/private/orders/list',
            
         }
