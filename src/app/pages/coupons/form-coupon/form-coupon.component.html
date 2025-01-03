@@ -45,7 +45,7 @@
                       </div>
                       <div class="col-md-6 mb-3">
                         <label for="company_id">{{'Merchant_Name'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                        <ng-select [readonly]="type === 'view' || currentRole !== 'Admin'" id="company_id"  placeholder="{{'Select_the_merchant' |translate}}" [items]="merchantList" bindLabel="translatedName" 
+                        <ng-select [readonly]="type === 'view' || currentRole === 'Merchant'" id="company_id"  placeholder="{{'Select_the_merchant' |translate}}" [items]="merchantList" bindLabel="translatedName" 
                         bindValue="id"  formControlName="company_id" (change)="onChangeMerchantSelection($event)">
                         </ng-select>
                         <div *ngIf="formOffer.get('company_id').invalid && formOffer.get('company_id').touched" class="text-danger">
