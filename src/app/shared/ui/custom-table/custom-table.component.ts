@@ -160,11 +160,11 @@ export class CustomTableComponent implements OnInit, OnChanges  {
     if (propertyPath === 'categoryInfo') {
       // Handle dynamic resolution for Category Info
       if (data.category === 'offer') {
-        return data.offer?.translation_data?.name ;
+        return data.offer?.translation_data[0]?.name ;
       } else if (data.category === 'merchant') {
-        return data.company?.translation_data?.name ;
+        return data.company?.translation_data[0]?.name ;
       } else if (data.category === 'store') {
-        return data.store?.translation_data?.name ;
+        return data.store?.translation_data[0]?.name ;
       }
       return; // Default fallback
     }
