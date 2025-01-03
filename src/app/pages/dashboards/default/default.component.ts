@@ -53,13 +53,14 @@ export class DefaultComponent implements OnInit, AfterViewInit {
         this.currentRole = user.role.translation_data[0].name;
       }});
        
-      this.dashboardService.getStatistics('week').subscribe(
+     if(this.currentRole && (this.currentRole === 'Admin' || this.currentRole === 'Merchant'))
+      { this.dashboardService.getStatistics('week').subscribe(
         response =>{
           this.rateStatics = response.result
           this.updateCustomerRatingChart();
           this.updateStatisticsData();
-        }
-        );
+        });
+      }
   }
 
   ngOnInit() {

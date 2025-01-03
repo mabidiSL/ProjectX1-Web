@@ -13,7 +13,7 @@ const routes: Routes = [
     component: CreateMerchantComponent,
     canActivate: [RoleGuard],
     data: {
-      claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Merchants, claimValue:[Permission.ViewAll,Permission.Create]}]
+      claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Merchants, claimValue:[Permission.All,Permission.ViewAll,Permission.Create]}]
   
     }
   },
@@ -22,7 +22,7 @@ const routes: Routes = [
     component: EditMerchantComponent,
     canActivate: [RoleGuard],
     data: {
-    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Merchants, claimValue:[Permission.ViewAll,Permission.Update]}]
+    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Merchants, claimValue:[Permission.All,Permission.ViewAll,Permission.Update]}]
   
      }
   },
@@ -31,7 +31,7 @@ const routes: Routes = [
     component: ViewMerchantComponent,
     canActivate: [RoleGuard],
     data: {
-    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Merchants, claimValue:[Permission.ViewAll,Permission.View]}]
+    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Merchants, claimValue:[Permission.All,Permission.ViewAll,Permission.View]}]
   
      }
   },
@@ -40,7 +40,7 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: {
       //claim: { claimType: [Modules.All,Modules.Merchants], claimValue: [Permission.All,Permission.ViewAll]}
-      claim : [{claimType: Modules.All, claimValue: [Permission.All]}, {claimType: Modules.Merchants, claimValue: [Permission.ViewAll]}]
+      claim : [{claimType: Modules.All, claimValue: [Permission.All]}, {claimType: Modules.Merchants, claimValue: [Permission.All,Permission.ViewAll]}]
 
     },
     component: MerchantListComponent

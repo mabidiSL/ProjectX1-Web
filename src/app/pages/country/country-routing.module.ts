@@ -12,7 +12,7 @@ const routes: Routes = [
   path: 'list',
   canActivate: [RoleGuard],
   data: {
-    claim : [{claimType: Modules.All, claimValue: [Permission.All]}, {claimType: Modules.System_Administration, claimValue: [Permission.ViewAll]}]
+    claim : [{claimType: Modules.All, claimValue: [Permission.All]}, {claimType: Modules.System_Administration, claimValue: [Permission.All,Permission.ViewAll]}]
 
   },
   component: CountryComponent
@@ -22,7 +22,7 @@ const routes: Routes = [
   component: CreateCountryComponent,
   canActivate: [RoleGuard],
   data: {
-    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.System_Administration, claimValue:[Permission.ViewAll,Permission.Create]}]
+    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.System_Administration, claimValue:[Permission.All,Permission.ViewAll,Permission.Create]}]
 
   }
 },
@@ -31,7 +31,7 @@ const routes: Routes = [
   component: EditCountryComponent,
   canActivate: [RoleGuard],
   data: {
-  claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.System_Administration, claimValue:[Permission.ViewAll,Permission.Update]}]
+  claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.System_Administration, claimValue:[Permission.All,Permission.ViewAll,Permission.Update]}]
 
    }
 },
@@ -41,7 +41,7 @@ const routes: Routes = [
     component: ViewCountryComponent,
     canActivate: [RoleGuard],
     data: {
-    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.System_Administration, claimValue:[Permission.ViewAll,Permission.View]}]
+    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.System_Administration, claimValue:[Permission.All,Permission.ViewAll,Permission.View]}]
   
      }
   }];

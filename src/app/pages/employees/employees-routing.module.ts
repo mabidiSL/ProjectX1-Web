@@ -13,7 +13,7 @@ const routes: Routes = [
   component: EmployeesComponent,
   canActivate: [RoleGuard],
   data: {
-    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Employees, claimValue:[Permission.ViewAll]}]
+    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Employees, claimValue:[Permission.All,Permission.ViewAll]}]
 }
 },
 {
@@ -21,7 +21,7 @@ const routes: Routes = [
   component: CreateEmployeeComponent,
   canActivate: [RoleGuard],
   data: {
-    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Employees, claimValue:[Permission.ViewAll,Permission.Create]}]
+    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Employees, claimValue:[Permission.All,Permission.ViewAll,Permission.Create]}]
 
   }
 },
@@ -39,7 +39,7 @@ const routes: Routes = [
   component: ViewEmployeeComponent,
   canActivate: [RoleGuard],
   data: {
-  claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Employees, claimValue:[Permission.ViewAll,Permission.View]}]
+  claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Employees, claimValue:[Permission.All,Permission.ViewAll,Permission.View]}]
 
    }
 }];

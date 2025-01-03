@@ -9,7 +9,7 @@ const routes: Routes = [
     path: 'list',
     canActivate: [RoleGuard],
     data: {
-      claim : [{claimType: Modules.All, claimValue: [Permission.All]}, {claimType: Modules.Customers, claimValue: [Permission.ViewAll]}]
+      claim : [{claimType: Modules.All, claimValue: [Permission.All]}, {claimType: Modules.Customers, claimValue: [Permission.All,Permission.ViewAll]}]
   
     },
     component: CustomerReviewsComponent

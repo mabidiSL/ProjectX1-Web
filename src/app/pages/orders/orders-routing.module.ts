@@ -10,7 +10,7 @@ const routes: Routes = [
     path: 'list',
     canActivate: [RoleGuard],
     data: {
-      claim : [{claimType: Modules.All, claimValue: [Permission.All]}, {claimType: Modules.Role, claimValue: [Permission.ViewAll]}]
+      claim : [{claimType: Modules.All, claimValue: [Permission.All]}, {claimType: Modules.Role, claimValue: [Permission.All,Permission.ViewAll]}]
 
     },
     component: OrdersComponent
@@ -20,7 +20,7 @@ const routes: Routes = [
     component: ViewOrderComponent,
     canActivate: [RoleGuard],
     data: {
-    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Role, claimValue:[Permission.ViewAll,Permission.View]}]
+    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Role, claimValue:[Permission.All,Permission.ViewAll,Permission.View]}]
   
      }
   }];

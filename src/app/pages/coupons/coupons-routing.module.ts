@@ -14,7 +14,7 @@ const routes: Routes = [
   path: 'list',
   canActivate: [RoleGuard],
   data: {
-    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Coupons, claimValue:[Permission.ViewAll]}]
+    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Coupons, claimValue:[Permission.All,Permission.ViewAll]}]
 },
 component: CouponsComponent
 
@@ -24,7 +24,7 @@ component: CouponsComponent
   component: CreateCouponComponent,
   canActivate: [RoleGuard],
   data: {
-    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Coupons, claimValue:[Permission.ViewAll,Permission.Create]}]
+    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Coupons, claimValue:[Permission.All,Permission.ViewAll,Permission.Create]}]
 
   }
 },
@@ -33,7 +33,7 @@ component: CouponsComponent
   component: EditCouponComponent,
   canActivate: [RoleGuard],
   data: {
-  claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Coupons, claimValue:[Permission.ViewAll,Permission.Update]}]
+  claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Coupons, claimValue:[Permission.All,Permission.ViewAll,Permission.Update]}]
 
    }
 },
@@ -42,7 +42,7 @@ component: CouponsComponent
   component: ViewCouponComponent,
   canActivate: [RoleGuard],
   data: {
-  claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Coupons, claimValue:[Permission.ViewAll,Permission.View]}]
+  claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Coupons, claimValue:[Permission.All,Permission.ViewAll,Permission.View]}]
 
    }
 },

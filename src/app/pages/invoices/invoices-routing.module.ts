@@ -10,7 +10,7 @@ const routes: Routes = [
     path: 'list',
     canActivate: [RoleGuard],
     data: {
-      claim : [{claimType: Modules.All, claimValue: [Permission.All]}, {claimType: Modules.Customer_Invoice, claimValue: [Permission.ViewAll]}]
+      claim : [{claimType: Modules.All, claimValue: [Permission.All]}, {claimType: Modules.Customer_Invoice, claimValue: [Permission.All,Permission.ViewAll]}]
 
     },
     component: InvoicesComponent
@@ -20,7 +20,7 @@ const routes: Routes = [
       component: DetailComponent,
       canActivate: [RoleGuard],
       data: {
-      claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Customer_Invoice, claimValue:[Permission.View]}]
+      claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Customer_Invoice, claimValue:[Permission.All,Permission.View]}]
     
        }
     }

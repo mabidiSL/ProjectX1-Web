@@ -15,7 +15,7 @@ const routes: Routes = [
     component: GiftCardComponent,
     canActivate: [RoleGuard],
     data: {
-      claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Gift_Cards, claimValue:[Permission.ViewAll]}]
+      claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Gift_Cards, claimValue:[Permission.All,Permission.ViewAll]}]
   }
   },
   {
@@ -23,7 +23,7 @@ const routes: Routes = [
     component: CreateGiftCardComponent,
     canActivate: [RoleGuard],
     data: {
-      claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Gift_Cards, claimValue:[Permission.ViewAll,Permission.Create]}]
+      claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Gift_Cards, claimValue:[Permission.All,Permission.ViewAll,Permission.Create]}]
   
     }
   },
@@ -32,7 +32,7 @@ const routes: Routes = [
     component: EditGiftCardComponent,
     canActivate: [RoleGuard],
     data: {
-    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Gift_Cards, claimValue:[Permission.ViewAll,Permission.Update]}]
+    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Gift_Cards, claimValue:[Permission.All,Permission.ViewAll,Permission.Update]}]
   
      }
   },
@@ -41,7 +41,7 @@ const routes: Routes = [
     component: ViewGiftCardComponent,
     canActivate: [RoleGuard],
     data: {
-    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Gift_Cards, claimValue:[Permission.ViewAll,Permission.View]}]
+    claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Gift_Cards, claimValue:[Permission.All,Permission.ViewAll,Permission.View]}]
   
      }
   },
