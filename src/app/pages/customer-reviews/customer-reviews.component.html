@@ -1,11 +1,13 @@
  
+             <!-- [viewButtonLink]="'/private/customer-reviews/view'"
+       [viewButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customers, claimValue: [Permission.View]}]" -->
+
   <div class="container-fluid">
 
     <app-custom-table
       [pageTitle] = "'Customer Reviews'| translate"  
       [columns]="columns"
       [viewButtonLink]="'/private/customer-reviews/view'"
-      [viewButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customers, claimValue: [Permission.View]}]"
       [deleteButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customers, claimValue: [Permission.Delete]}]"
       [ArrayData]="originalArray"
       [totalItems]="(totalItems$ | async)"

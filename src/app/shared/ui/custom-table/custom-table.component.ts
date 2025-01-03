@@ -351,13 +351,17 @@ navigateToView(data: any) {
     if(this.viewButtonLink.includes('invoices')){
       console.log(this.viewButtonLink);
       this.router.navigate([`${this.viewButtonLink}`]);}
-    else if(this.viewButtonLink.includes('orders'))
-      {console.log(this.viewButtonLink);
-      this.onViewDetail.emit(data.id);}
-      
-      else
-      this.router.navigate([`${this.viewButtonLink}`, data.id]);
-}
+    else 
+      if(this.viewButtonLink.includes('orders')){
+        console.log(this.viewButtonLink);
+        this.onViewDetail.emit(data.id);
+      }
+      else if(this.viewButtonLink.includes('reviews')){
+          console.log(this.viewButtonLink);
+       }
+        else
+        this.router.navigate([`${this.viewButtonLink}`, data.id]);
+  }
 selectStatus(event: any){
 
   if(event ){
