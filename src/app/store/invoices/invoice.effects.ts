@@ -26,8 +26,8 @@ export class InvoicesEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchInvoicelistData),
-            mergeMap(({ page, itemsPerPage, query,date, status }) =>
-                this.CrudService.fetchData('/invoices',{ limit: itemsPerPage, page: page,query: query, date: date,status: status}).pipe(
+            mergeMap(({ page, itemsPerPage, query, category, date, status }) =>
+                this.CrudService.fetchData('/invoices',{ limit: itemsPerPage, page: page,query: query, category: category, date: date,status: status}).pipe(
                     map((response: any) => fetchInvoicelistSuccess({ InvoiceListdata : response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);

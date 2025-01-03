@@ -154,6 +154,9 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   }
   
   getProperty(data: any, propertyPath: string): any {
+    if (propertyPath === 'totalAmount') {
+      return '£ '+ data.totalAmount;
+    }
     if (propertyPath === 'billingName') {
       return data.user?.translation_data[0].f_name +' '+ data.user?.translation_data[0].l_name;
     }
