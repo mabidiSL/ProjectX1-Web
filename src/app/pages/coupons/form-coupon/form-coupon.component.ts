@@ -175,7 +175,7 @@ export class FormCouponComponent implements OnInit, OnDestroy{
       description: ['', Validators.required],
       termsAndConditions: ['', Validators.required],
       quantity: [null, Validators.required],
-      price: [null, Validators.required],
+      price: [{ value: null, disabled: true }, Validators.required],
       nbr_of_use: [null, Validators.required],
       company_id: [null, Validators.required],
       stores: [[]],
@@ -199,12 +199,12 @@ export class FormCouponComponent implements OnInit, OnDestroy{
     this.formOffer.get('couponType').valueChanges.subscribe(value => {
       if (value === 'free') {
         console.log('Value of coupon', value);
-        
+        this.formOffer.get('price').disable();
         this.formOffer.get('discount').disable();
         this.formOffer.get('couponValueBeforeDiscount').disable();
         this.formOffer.get('couponValueAfterDiscount').disable();
       } else {
-        if(value === 'discountPercent')
+        this.formOffer.get('price').enable();
         this.formOffer.get('discount').enable();
         this.formOffer.get('couponValueBeforeDiscount').enable();
         this.formOffer.get('couponValueAfterDiscount').enable();
