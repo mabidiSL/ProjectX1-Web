@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
@@ -73,6 +73,7 @@ export class FormCouponComponent implements OnInit, OnDestroy{
     private datepickerConfigService: DatepickerConfigService,
     private authservice: AuthenticationService,
     private formUtilService: FormUtilService,
+    private cdr: ChangeDetectorRef,
     private route: ActivatedRoute){
       
       this.getNavigationState();
@@ -184,8 +185,9 @@ export class FormCouponComponent implements OnInit, OnDestroy{
       contractRepName: [null],
       image: [null, Validators.required],
       couponType: ['free', Validators.required],// free,discountPercent,discountAmount,servicePrice checkboxes
-      couponValueBeforeDiscount:[null],
-      couponValueAfterDiscount:[null],
+      couponValueBeforeDiscount:[{ value: null, disabled: true }],
+      couponValueAfterDiscount:[{ value: null, disabled: true }],
+      discount: [{ value: null, disabled: true }],
       paymentDiscountRate: [null],
       status:['active']
 
@@ -194,7 +196,21 @@ export class FormCouponComponent implements OnInit, OnDestroy{
  
   ngOnInit() {
 
-   
+    this.formOffer.get('couponType').valueChanges.subscribe(value => {
+      if (value === 'free') {
+        console.log('Value of coupon', value);
+        
+        this.formOffer.get('discount').disable();
+        this.formOffer.get('couponValueBeforeDiscount').disable();
+        this.formOffer.get('couponValueAfterDiscount').disable();
+      } else {
+        if(value === 'discountPercent')
+        this.formOffer.get('discount').enable();
+        this.formOffer.get('couponValueBeforeDiscount').enable();
+        this.formOffer.get('couponValueAfterDiscount').enable();
+      }
+      this.cdr.detectChanges();
+    });
     if(this.currentRole !== 'Admin'){
       console.log(this.merchantId);
       this.formOffer.get('company_id').setValue(this.merchantId);

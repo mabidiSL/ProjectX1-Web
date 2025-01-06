@@ -38,7 +38,7 @@
                   <div class="row">
                       <div class="col-md-6 mb-3">
                           <label for="name">{{'Name_coupon'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <input class="form-control" id="name" formControlName="name" type="text" [readonly]="type==='view'"/>
+                          <input class="form-control" id="name" formControlName="name" placeholder="{{'Enter Coupon Name' |translate}}" type="text" [readonly]="type==='view'"/>
                           <div *ngIf="formOffer.get('name').invalid && formOffer.get('name').touched" class="text-danger">
                               {{'Name is required'|translate}}
                           </div>
@@ -61,7 +61,7 @@
                     <div class="row">
                       <div class="col-md-6 mb-3">
                           <label for="termsAndConditions">{{'Terms and Conditions'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <textarea class="form-control" id="termsAndConditions" formControlName="termsAndConditions" rows="2" [readonly]="type==='view'"></textarea>
+                          <textarea class="form-control" id="termsAndConditions" formControlName="termsAndConditions" placeholder="{{'Enter Terms and Conditions' |translate}}" rows="2" [readonly]="type==='view'"></textarea>
                           <div *ngIf="formOffer.get('termsAndConditions').invalid && formOffer.get('termsAndConditions').touched" class="text-danger">
                               {{'Terms and Conditions are required'|translate}}
                           </div>
@@ -74,7 +74,7 @@
                       </div> -->
                       <div class="col-md-6 mb-3">
                         <label for="description">{{'Description'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                        <textarea class="form-control" id="description" formControlName="description" rows="2" [readonly]="type==='view'"></textarea>
+                        <textarea class="form-control" id="description" formControlName="description" placeholder="{{'Enter Description' |translate}}" rows="2" [readonly]="type==='view'"></textarea>
                         <div *ngIf="formOffer.get('description').invalid && formOffer.get('description').touched" class="text-danger">
                             {{'Description is required'|translate}}
                         </div>
@@ -110,21 +110,21 @@
                       </div>
                         <div class="col-md-3 mb-3">
                           <label for="quantity">{{'Quantity'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <input class="form-control" id="quantity" formControlName="quantity" type="number" [readonly]="type==='view'"/>
+                          <input class="form-control" id="quantity" formControlName="quantity" type="number" placeholder="{{'Enter Coupon Quantity' |translate}}"[readonly]="type==='view'"/>
                           <div *ngIf="formOffer.get('quantity').invalid && formOffer.get('quantity').touched" class="text-danger">
                             {{'Quantity is required'|translate}}
                           </div>
                         </div>
                         <div class="col-md-3 mb-3">
                           <label for="nbr_of_use">{{'Number Of Use'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <input class="form-control" id="nbr_of_use" formControlName="nbr_of_use" type="number" [readonly]="type==='view'"/>
+                          <input class="form-control" id="nbr_of_use" formControlName="nbr_of_use" placeholder="{{'Enter Number of Use of Coupon' |translate}}" type="number" [readonly]="type==='view'"/>
                           <div *ngIf="formOffer.get('nbr_of_use').invalid && formOffer.get('nbr_of_use').touched" class="text-danger">
                             {{'Number of use is required'|translate}}
                           </div>
                         </div>
                       </div>
                     <div class="row">
-                      <div class="col-md-6 mb-3">
+                      <div class="col-md-3 mb-3">
                         <label for="startDate">{{'Start_Date'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                         <input bsDatepicker class="form-control" id="startDate" placeholder="yyyy-mm-dd" formControlName="startDate" [bsConfig]="bsConfig"  />
                         <div *ngIf="formOffer.get('startDate').invalid && formOffer.get('startDate').touched" class="text-danger">
@@ -132,7 +132,7 @@
                         </div>
                       </div>
                     
-                      <div class="col-md-6 mb-3">
+                      <div class="col-md-3 mb-3">
                         <label for="endDate">{{'End Date'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                         <input bsDatepicker class="form-control" id="endDate" placeholder="yyyy-mm-dd" formControlName="endDate" [bsConfig]="bsConfig" />
                         <div *ngIf="formOffer.get('endDate').invalid && formOffer.get('endDate').touched" class="text-danger">
@@ -144,6 +144,13 @@
                         <div *ngIf="formOffer.errors?.dateMismatch" class="text-danger">
                           {{'Start Date must be before End Date'|translate}}.
                         </div>
+                      </div>
+                      <div *ngIf="currentRole === 'Admin'" class="col-md-6 mb-3">
+                        <label for="contractRepName">{{'Contract Representative Name'|translate}}</label>
+                        <input class="form-control" id="contractRepName" formControlName="contractRepName" type="text" placeholder="{{'Enter Contract Representative Name' |translate}}" [readonly]="type==='view'"/>
+                        <!-- <div *ngIf="formOffer.get('contractRepName').invalid && formOffer.get('contractRepName').touched">
+                          {{'Contract Representative Name is required'|translate}}
+                        </div> -->
                       </div>
                     </div>
                     <div class="row">
@@ -174,40 +181,52 @@
                           {{'Coupon Type is required'|translate}}
                         </div>
                         </div>
-                        <div class="col-md-2 mb-3">
+                        <div class="row col-6">
+                        <div class="col-md-3 mb-3">
                           <label for="price">{{'Price'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <input class="form-control" id="price" formControlName="price" type="number" [readonly]="type==='view'"/>
+                          <div class="input-group">
+                          <input class="form-control" id="price" formControlName="price" placeholder="{{'0' |translate}}" type="number" [readonly]="type==='view'"/>
                           <div *ngIf="formOffer.get('price').invalid && formOffer.get('price').touched" class="text-danger">
                             {{'Price is required'|translate}}
                           </div>
+                          <span class="input-group-text">
+                            £
+                          </span>
+                          </div>
                         </div>
-                        <div class="col-md-2 mb-3">
-                          <label for="couponValueBeforeDiscount">{{'Value Before Discount'|translate}}</label>
-                          <input  class="form-control" id="couponValueBeforeDiscount" formControlName="couponValueBeforeDiscount" type="number" [readonly]="type==='view'"/>
+                        <div class="col-md-3 mb-3">
+                          <label for="discount">{{'Discount'|translate}}</label>
+                          <div class="input-group">
+                          <input  class="form-control" id="discount" formControlName="discount" type="number" [readonly]="type==='view'" />
+                          <!-- <div *ngIf="formOffer.get('couponValueBeforeDiscount').invalid && formOffer.get('couponValueBeforeDiscount').touched">
+                            {{'Value Before Discount is required'|translate}}
+                          </div> -->
+                          <span *ngIf="formOffer.get('couponType').value === 'discountPercent'"  class="input-group-text">
+                            %
+                          </span>
+                          <span *ngIf="formOffer.get('couponType').value === 'discountAmount'"  class="input-group-text">
+                            £
+                          </span>
+                        </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          <label for="couponValueBeforeDiscount">{{'Value Bfr. Disc'|translate}}</label>
+                          <input  class="form-control" id="couponValueBeforeDiscount" formControlName="couponValueBeforeDiscount" type="number" [readonly]="type==='view'" />
                           <!-- <div *ngIf="formOffer.get('couponValueBeforeDiscount').invalid && formOffer.get('couponValueBeforeDiscount').touched">
                             {{'Value Before Discount is required'|translate}}
                           </div> -->
                         </div>
                       
-                        <div class="col-md-2 mb-3">
-                          <label for="couponValueAfterDiscount">{{'Value After Discount'|translate}}</label>
-                          <input class="form-control" id="couponValueAfterDiscount" formControlName="couponValueAfterDiscount" type="text" [readonly]="type==='view'"/>
+                        <div class="col-md-3 mb-3">
+                          <label for="couponValueAfterDiscount">{{'Value Aft. Disc'|translate}}</label>
+                          <input class="form-control" id="couponValueAfterDiscount" formControlName="couponValueAfterDiscount" type="text" [readonly]="type==='view'" />
                           <!-- <div *ngIf="formOffer.get('couponValueAfterDiscount').invalid && formOffer.get('couponValueAfterDiscount').touched">
                             {{'Value After Discount is required'|translate}}
                           </div> -->
                         </div>
+                        </div>
                       </div>
-             
-              <div class="row">
-                <div *ngIf="currentRole === 'Admin'" class="col-md-6 mb-3">
-                  <label for="contractRepName">{{'Contract Representative Name'|translate}}</label>
-                  <input class="form-control" id="contractRepName" formControlName="contractRepName" type="text" [readonly]="type==='view'"/>
-                  <!-- <div *ngIf="formOffer.get('contractRepName').invalid && formOffer.get('contractRepName').touched">
-                    {{'Contract Representative Name is required'|translate}}
-                  </div> -->
-                </div>
-              </div>   
-             
+                        
                 
                 <div class="row">
                 <div class="col-md-6 mb-3">

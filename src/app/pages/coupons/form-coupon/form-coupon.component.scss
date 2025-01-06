@@ -1,5 +1,12 @@
-input.readonly {
-    pointer-events: none; /* Prevent interaction */
-    opacity: 0.6; /* Visual cue */
-  }
-  
+.input-group {
+  display: flex;
+  align-items: stretch;
+}
+
+.input-group .input-group-text {
+  font-size: 0.9rem; /* Adjust size as needed */
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #ced4da; /* Matches the input's border */
+  border-left: 0; /* Removes the left border to merge with the input */
+  background-color: #f8f9fa; /* Matches form controls' background */
+}
