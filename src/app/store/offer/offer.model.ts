@@ -21,7 +21,7 @@ export interface Offer {
         giftCardValue? : number,
         discount? : number,
         nbr_of_use? : number,
-        couponType? :  number ,
+        couponType? :  string ,
         couponValueBeforeDiscount? : number,
         couponValueAfterDiscount? : number,
         paymentDiscountRate? : number,

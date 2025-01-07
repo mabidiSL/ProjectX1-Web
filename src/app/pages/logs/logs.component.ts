@@ -39,7 +39,7 @@ export class LogsComponent implements OnInit {
   columns : any[]= [
     { property: 'translation_data[0].title', label: 'Title' },
     { property: 'translation_data[0].description', label: 'Description' },
-    { property: 'ipAdress', label: 'IpAddress' },
+    { property: 'ipAdress', label: 'IP Address' },
     { property: 'actionDate', label: 'Action_Date' },
 
   ];

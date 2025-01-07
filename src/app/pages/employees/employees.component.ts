@@ -25,7 +25,7 @@ export class EmployeesComponent implements OnInit {
   loading$: Observable<boolean>;
   searchTerm: string = '';
   filterStatusTerm: string = '';
-  filterRoleTerm: number = 4;
+  filterRoleTerm: number = null;
   searchPlaceholder: string ='Search By FName, LName or Email'
 
   isDropdownOpen : boolean = false;
@@ -58,7 +58,7 @@ export class EmployeesComponent implements OnInit {
 
   ngOnInit() {
           
-        this.store.dispatch(fetchEmployeelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm, role:4}));
+        this.store.dispatch(fetchEmployeelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,query: this.searchTerm, role:null}));
         this.EmployeeList$.subscribe(data => {
         this.originalArray = data; // Employee the full Employee list
         data.forEach(

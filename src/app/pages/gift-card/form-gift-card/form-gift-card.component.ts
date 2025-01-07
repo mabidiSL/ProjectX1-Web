@@ -142,7 +142,7 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
       image: [null,Validators.required],
       price: [null,Validators.required],
       giftCardValue: [null,Validators.required],
-      discount:[null, Validators.required],
+      discount:[null],
       status:['active']
 
 

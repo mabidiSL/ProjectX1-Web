@@ -40,12 +40,12 @@
                       <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="name">{{'GiftCard Name'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                            <input class="form-control" id="name" formControlName="name" type="text" [readonly]="type==='view'"/>
+                            <input class="form-control" id="name" formControlName="name" placeholder="{{'Enter Gift Card Name' |translate}}" type="text" [readonly]="type==='view'"/>
                             <div *ngIf="formOffer.get('name').invalid && formOffer.get('name').touched" class="text-danger">
                                 {{'Name is required'|translate}}
                             </div>
                         </div>
-                        <div  class="col-md-6 mb-3">
+                        <div  *ngIf="currentRole === 'Admin'"class="col-md-3 mb-3">
                           <label for="company_id">{{'Merchant Name'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                           <ng-select [readonly]="type === 'view'|| currentRole === 'Merchant'" id="company_id"  placeholder="{{'Select_the_merchant' |translate}}" [items]="merchantList" bindLabel="translatedName" 
                           bindValue="id"  formControlName="company_id" (change)="onChangeMerchantSelection($event)" >
@@ -54,6 +54,36 @@
                             {{'Merchant Name is required'|translate}}
                           </div>
                         </div>
+                        <div class="col-md-3 mb-3" *ngIf="currentRole === 'Admin'; else nonAdminStores">
+                        <label for="stores">{{'Stores'|translate}}</label>
+                          <ng-select 
+                          [readonly]="type === 'view'" 
+                          id="stores" 
+                          placeholder="{{'Select Stores' | translate}}"
+                          [items]="storeList" 
+                          bindLabel="translatedName" 
+                          bindValue="id"  
+                          formControlName="stores" 
+                          [multiple] = "true"
+                          >
+                          </ng-select>
+                          
+                        </div>
+                        <ng-template #nonAdminStores>
+                          <div class="col-md-6 mb-3">
+                            <label for="stores">{{ 'Stores' | translate }}</label>
+                            <ng-select
+                              [readonly]="type === 'view'"
+                              id="stores"
+                              [placeholder]="'Select_Stores' | translate"
+                              [items]="storeList"
+                              bindLabel="translatedName"
+                              bindValue="id"
+                              formControlName="stores"
+                              [multiple]="true">
+                            </ng-select>
+                          </div>
+                        </ng-template>
                       </div>
                         <!-- <div class="col-md-6 mb-3">
                             <label for="name_ar">{{'Name_in_arabic'|translate}}</label>
@@ -63,14 +93,14 @@
                         <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="termsAndConditions">{{'Terms and Conditions'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                            <textarea class="form-control" id="termsAndConditions" formControlName="termsAndConditions" rows="2"[readonly]="type==='view'"></textarea>
+                            <textarea class="form-control" id="termsAndConditions" placeholder="{{'Enter Terms and Conditions' |translate}}" formControlName="termsAndConditions" rows="2"[readonly]="type==='view'"></textarea>
                             <div *ngIf="formOffer.get('termsAndConditions').invalid && formOffer.get('termsAndConditions').touched" class="text-danger">
                                 {{'Terms and Conditions are required'|translate}}
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
                           <label for="description">{{'Description'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <textarea class="form-control" id="description" formControlName="description" rows="2" [readonly]="type==='view'"></textarea>
+                          <textarea class="form-control" id="description" placeholder="{{'Enter Description' |translate}}" formControlName="description" rows="2" [readonly]="type==='view'"></textarea>
                           <div *ngIf="formOffer.get('description').invalid && formOffer.get('description').touched" class="text-danger">
                               {{'Description is required'|translate}}
                           </div>
@@ -89,51 +119,44 @@
                         <textarea class="form-control" id="description_ar" formControlName="description_ar" rows="5" [readonly]="type==='view'"></textarea>
                        
                      </div> -->
-                      <div class="row">
-                        
-                        <div class="col-md-4 mb-3">
-                          <label for="stores">{{'Stores'|translate}}</label>
-                          <ng-select 
-                          [readonly]="type === 'view'" 
-                          id="stores" 
-                          placeholder="{{'Select Stores' | translate}}"
-                          [items]="storeList" 
-                          bindLabel="translatedName" 
-                          bindValue="id"  
-                          formControlName="stores" 
-                          [multiple] = "true"
-                          >
-                          </ng-select>
-                          <!-- <div *ngIf="isLoading" class="text-info">Loading stores...</div> -->
-                          
-                        </div>
-                          <div class="col-md-2 mb-3">
+                      <div class="row">           
+                          <div class="col-md-3 mb-3">
                             <label for="quantity">{{'Quantity'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                            <input class="form-control" id="quantity" formControlName="quantity" type="number" [readonly]="type==='view'"/>
+                            <input class="form-control" id="quantity" formControlName="quantity" placeholder="{{'Enter Quantity' |translate}}" type="number" [readonly]="type==='view'"/>
                             <div *ngIf="formOffer.get('quantity').invalid && formOffer.get('quantity').touched" class="text-danger">
                               {{'Quantity is required'|translate}}
                             </div>
                           </div>
-                          <div class="col-md-2 mb-3">
+                          <div class="col-md-3 mb-3">
                             <label for="price">{{'Price'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                            <input class="form-control" id="price" formControlName="price" type="number" [readonly]="type==='view'"/>
+                            <div class="input-group">
+                            <input class="form-control" id="price" formControlName="price" placeholder="{{'Enter Price' |translate}}" type="number" [readonly]="type==='view'"/>
                             <div *ngIf="formOffer.get('price').invalid && formOffer.get('price').touched" class="text-danger">
                               {{'Price is required'|translate}}
                             </div>
+                            <span class="input-group-text">
+                              £
+                            </span>
                           </div>
-                          <div class="col-md-2 mb-3">
+                          </div>
+                          <div class="col-md-3 mb-3">
                           <label for="giftCardValue">{{'Value'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <input  class="form-control" id="giftCardValue" formControlName="giftCardValue" type="number" />
+                          <div class="input-group">
+                          <input  class="form-control" id="giftCardValue" placeholder="{{'Enter Gift Card Value' |translate}}" formControlName="giftCardValue" type="number" />
                           <div *ngIf="formOffer.get('giftCardValue').invalid && formOffer.get('giftCardValue').touched" class="text-danger">
                             {{'Gift Card Value  is required'|translate}}
                           </div> 
+                          <span class="input-group-text">
+                            £
+                          </span>
                         </div>
-                      <div class="col-md-2 mb-3">
-                          <label for="discount">{{'Discount'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <input class="form-control" id="discount" formControlName="discount" type="number" />
-                          <div *ngIf="formOffer.get('discount').invalid && formOffer.get('discount').touched" class="text-danger">
+                        </div>
+                      <div class="col-md-3 mb-3">
+                          <label for="discount">{{'Discount'|translate}}</label>
+                          <input class="form-control" id="discount" placeholder="{{'Enter Discount' |translate}}" formControlName="discount" type="number" />
+                          <!-- <div *ngIf="formOffer.get('discount').invalid && formOffer.get('discount').touched" class="text-danger">
                             {{'Discount is required'|translate}}
-                          </div>
+                          </div> -->
                       </div>
                 
                       </div>
