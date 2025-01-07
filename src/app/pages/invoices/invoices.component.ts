@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { selectDataInvoice, selectDataLoading, selectDataTotalItems } from 'src/app/store/invoices/invoice-selector';
 import { deleteInvoicelist, fetchInvoicelistData } from 'src/app/store/invoices/invoice.actions';
 
@@ -13,7 +14,7 @@ import { Modules, Permission } from 'src/app/store/Role/role.models';
   templateUrl: './invoices.component.html',
   styleUrl: './invoices.component.scss'
 })
-export class InvoicesComponent implements OnInit {
+export class InvoicesComponent implements OnInit, OnDestroy {
 
 
   
@@ -29,13 +30,14 @@ export class InvoicesComponent implements OnInit {
   searchPlaceholder: string ='Search By InvoiceID or Billing Name'
   filterTerm: string = '';
   filterDateTerm: string = null;
-
+  category_invoice: string = null
   isDropdownOpen : boolean = false;
   filteredArray: any[] = [];
   originalArray: any[] = [];
 
   itemPerPage: number = 10;
   currentPage : number = 1;
+  private routeSubscription: Subscription;
 
   statusList: any[] = [
     {status: 'all', label: 'All'},
@@ -51,7 +53,7 @@ export class InvoicesComponent implements OnInit {
 
   ];
 
-  constructor(private store: Store) {
+  constructor(private store: Store,private route: ActivatedRoute) {
       
       this.invoiceList$ = this.store.pipe(select(selectDataInvoice)); // Observing the Invoice list from Invoice
       this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
@@ -60,14 +62,22 @@ export class InvoicesComponent implements OnInit {
   }
 
   ngOnInit() {
-          
-        this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, category:'customer-invoice', date: this.filterDateTerm, status:this.filterTerm }));
-        this.invoiceList$.subscribe(data => {
-        this.originalArray = data; // Invoice the full Invoice list
-        this.filteredArray = [...this.originalArray];
-        document.getElementById('elmLoader')?.classList.add('d-none');
+    this.routeSubscription = this.route.paramMap.subscribe(params => {
+      this.category_invoice = params.get('path');
+      if (this.category_invoice) {
+        this.fetchInvoices();
+      }
+    });
        
-        });
+   }
+   fetchInvoices(){
+    this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, category: this.category_invoice, dueDate: this.filterDateTerm, status:this.filterTerm }));
+    this.invoiceList$.subscribe(data => {
+    this.originalArray = data; // Invoice the full Invoice list
+    this.filteredArray = [...this.originalArray];
+    document.getElementById('elmLoader')?.classList.add('d-none');
+   
+    });
    }
   onFilterEvent(event: any){
        console.log(event);
@@ -81,25 +91,25 @@ export class InvoicesComponent implements OnInit {
        else
           this.filterDateTerm = null;
    
-       this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, category:'customer-invoice', date: this.filterDateTerm,  status: this.filterTerm }));
+       this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, category: this.category_invoice, dueDate: this.filterDateTerm,  status: this.filterTerm }));
    
     }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: totalItems, query: this.searchTerm, category:'customer-invoice', date: this.filterDateTerm, status:this.filterTerm }));
+    this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: totalItems, query: this.searchTerm, category:this.category_invoice, dueDate: this.filterDateTerm, status:this.filterTerm }));
    }
 
    onSearchEvent(event: any){
     console.log(event);
     this.searchTerm = event;
-    this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, category:'customer-invoice', date: this.filterDateTerm,status:this.filterTerm}));
+    this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, category: this.category_invoice, dueDate: this.filterDateTerm,status:this.filterTerm}));
 
    }
  
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, category:'customer-invoice', date: this.filterDateTerm, status:this.filterTerm}));
+    this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, category:this.category_invoice, dueDate: this.filterDateTerm, status:this.filterTerm}));
     
   }
 
@@ -107,7 +117,11 @@ export class InvoicesComponent implements OnInit {
   onDelete(id: any) {
     this.store.dispatch(deleteInvoicelist({ InvoiceId: id }));
   }
-
+  ngOnDestroy() {
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
+    }
+  }
 
 
 

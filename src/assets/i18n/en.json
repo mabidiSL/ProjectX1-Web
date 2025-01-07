@@ -776,7 +776,9 @@
         "APP_Secret": "App Secret",
         "Enter_the_app_secret": "Enter the app secret",
         "App_secret is required": "App Secret is required",
-        "Customer_List": "Customer List"
+        "Customer_List": "Customer List",
+        "customer-invoice": "Customer Invoices",
+        "merchant-invoice": "Merchant Invoices"
 
 
 

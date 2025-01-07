@@ -49,7 +49,7 @@ export const MENU: MenuItem[] = [
         label: 'MENUITEMS.CUSTOMERINVOICES.TEXT',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customer_Invoice, claimValue: [Permission.All, Permission.ViewAll, Permission.View]}],
         icon:  'bx bxs-report',
-        link:'/private/invoices/list',
+        link:'/private/invoices/list/customer-invoice',
                 
     },
     {
@@ -193,7 +193,7 @@ export const MENU: MenuItem[] = [
         label: 'MENUITEMS.MERCHANTINVOICES.TEXT',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Merchant_Invoices, claimValue: [Permission.All, Permission.ViewAll]}],
         icon:  'bx bxs-report',
-        link:'/pages/coming-soon',
+        link:'/private/invoices/list/merchant-invoice',
                 
     },
     {  id: 11,

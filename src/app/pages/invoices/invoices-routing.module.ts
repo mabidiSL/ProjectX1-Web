@@ -7,10 +7,10 @@ import { DetailComponent } from './detail/detail.component';
 
 const routes: Routes = [
   {
-    path: 'list',
+    path: 'list/:path',
     canActivate: [RoleGuard],
     data: {
-      claim : [{claimType: Modules.All, claimValue: [Permission.All]}, {claimType: Modules.Customer_Invoice, claimValue: [Permission.All,Permission.ViewAll]}]
+      claim : [{claimType: Modules.All, claimValue: [Permission.All]}, {claimType: Modules.Customer_Invoice, claimValue: [Permission.All,Permission.ViewAll]} , {claimType: Modules.Merchant_Invoices, claimValue: [Permission.All,Permission.ViewAll]}]
 
     },
     component: InvoicesComponent
@@ -20,7 +20,7 @@ const routes: Routes = [
       component: DetailComponent,
       canActivate: [RoleGuard],
       data: {
-      claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Customer_Invoice, claimValue:[Permission.All,Permission.View]}]
+      claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Customer_Invoice, claimValue:[Permission.All,Permission.View]}, {claimType: Modules.Customer_Invoice, claimValue: [Permission.All,Permission.ViewAll]} , {claimType: Modules.Merchant_Invoices, claimValue: [Permission.All,Permission.ViewAll]}]
     
        }
     }

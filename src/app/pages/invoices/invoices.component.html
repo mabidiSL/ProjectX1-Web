@@ -1,7 +1,7 @@
 <div class="container-fluid">
 
     <app-custom-table
-      [pageTitle] = "'Customer Invoices'| translate"
+      [pageTitle]="category_invoice| translate"
       [columns]="columns"
       [viewButtonLink]="'/private/invoices/view'"
       [viewButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Customer_Invoice, claimValue: [Permission.All,Permission.View]}]"  

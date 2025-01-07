@@ -447,7 +447,7 @@ Filter(){
   }
 }
 isFilterApplied(): boolean {
-  console.log(  !!this.filterByStatus || !!this.filterByDate || !!this.filterByStartDate || !!this.filterByEndDate|| !!this.filterByMerchant || !!this.filterByCountry|| !!this.filterByCity|| !!this.filterByRole || !!this.filterByCategory   );
+ // console.log(  !!this.filterByStatus || !!this.filterByDate || !!this.filterByStartDate || !!this.filterByEndDate|| !!this.filterByMerchant || !!this.filterByCountry|| !!this.filterByCity|| !!this.filterByRole || !!this.filterByCategory   );
   
   return !!this.filterByStatus || !!this.filterByDate || !!this.filterByStartDate || !!this.filterByEndDate|| !!this.filterByMerchant || !!this.filterByCountry|| !!this.filterByCity|| !!this.filterByRole || !!this.filterByCategory ;
 }
