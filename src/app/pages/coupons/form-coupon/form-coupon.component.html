@@ -157,16 +157,7 @@
                           </div>
                         </div>
                       </div>
-                    <div class="row">
                    
-                      <div *ngIf="currentRole === 'Admin' || companyId === 1" class="col-md-6 mb-3">
-                        <label for="contractRepName">{{'Contract Representative Name'|translate}}</label>
-                        <input class="form-control" id="contractRepName" formControlName="contractRepName" type="text" placeholder="{{'Enter Contract Representative Name' |translate}}" [readonly]="type==='view'"/>
-                        <!-- <div *ngIf="formOffer.get('contractRepName').invalid && formOffer.get('contractRepName').touched">
-                          {{'Contract Representative Name is required'|translate}}
-                        </div> -->
-                      </div>
-                    </div>
                     <div class="row">
                       <div class="col-md-6 mb-3">
                         <label for="couponType">{{'Coupon Type'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
@@ -221,6 +212,16 @@
                             £
                           </span>
                         </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                   
+                        <div *ngIf="currentRole === 'Admin' || companyId === 1" class="col-md-6 mb-3">
+                          <label for="contractRepName">{{'Contract Representative Name'|translate}}</label>
+                          <input class="form-control" id="contractRepName" formControlName="contractRepName" type="text" placeholder="{{'Enter Contract Representative Name' |translate}}" [readonly]="type==='view'"/>
+                          <!-- <div *ngIf="formOffer.get('contractRepName').invalid && formOffer.get('contractRepName').touched">
+                            {{'Contract Representative Name is required'|translate}}
+                          </div> -->
                         </div>
                       </div>
                         
