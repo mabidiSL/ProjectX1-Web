@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { HTTP_INTERCEPTORS, HttpErrorResponse, HttpEvent } from '@angular/common/http';
+import { HTTP_INTERCEPTORS,  HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
 
-import { catchError, Observable, switchMap, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../services/auth.service';
 
@@ -17,16 +17,8 @@ export class AuthInterceptor implements HttpInterceptor {
     const token = localStorage.getItem('token');  // Adjust the key as needed
 
       if (token) {
-            const clonedRequest = this.addTokenHeader(request, token);
-            return next.handle(clonedRequest).pipe(
-                catchError((error: HttpErrorResponse) => {
-                // If the error is a 401 (Unauthorized), attempt to refresh the token
-                if (error.status === 401) {
-                    return this.handle401Error(request, next);
-                }
-                return throwError(() => error);
-                })
-            );
+            request = this.addTokenHeader(request, token);
+            
          }
           return next.handle(request);
       }
@@ -39,36 +31,7 @@ export class AuthInterceptor implements HttpInterceptor {
         });
       }
     
-  private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
-        const refreshToken = localStorage.getItem('refreshToken');  // Retrieve the refresh token
-        if (refreshToken) {
-          // Call refresh token API
-          return this.authService.refreshToken(refreshToken).pipe(
-            switchMap((response: any) => {
-              // Store the new token
-              localStorage.setItem('token',response.result.accessToken);
-              
-              // Retry the original request with the new token
-              const clonedRequest = this.addTokenHeader(request, response.result.accessToken);
-              return next.handle(clonedRequest);
-             }),
-            catchError((error) => {
-              // Handle refresh token failure (e.g., logout the user)
-             
-              this.authService.clearSession();
-              //this.router.navigate(['/auth/login']);
-              location.reload();
-              return throwError(() => error);
-            })
-          );
-        }
-    
-        // If no refresh token, logout the user
-       // this.authService.logout();
-       this.authService.clearSession();
-        location.reload();
-        return throwError(() => 'Refresh token not available.');
-      }
+ 
   }
  
 

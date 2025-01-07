@@ -80,6 +80,7 @@ import { InvoicesModule } from './pages/invoices/invoices.module';
 import { CustomerReviewsModule } from './pages/customer-reviews/customer-reviews.module';
 import { CustomerReviewEffects } from './store/customer-reviews/customer-review.effect';
 import { InvoicesEffects } from './store/invoices/invoice.effects';
+import { ErrorInterceptor } from './core/helpers/error.interceptor';
 
 
 // Register the Arabic locale
@@ -178,7 +179,7 @@ export function createTranslateLoader(http: HttpClient): any {
   bootstrap: [AppComponent],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-   // { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
    {
     provide: APP_INITIALIZER,
     useFactory: (languageInitService: LanguageInitService) => () => languageInitService.initializeLanguage(),
