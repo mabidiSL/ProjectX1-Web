@@ -76,7 +76,7 @@
                       </div>
                     </div>
               
-                    <ng-template *ngIf="currentUser.role.translation_data[0].name !=='Admin'" class="col-lg-6">
+                    <ng-template *ngIf="currentUser.role.translation_data[0].name !=='Admin' && currentUser.companyId !== 1" class="col-lg-6">
                       <div class="mb-3">
                         <div class="form-group">
                           <label for="section_id">{{'Company Section' | translate}}<span class="text-danger">*</span> </label>

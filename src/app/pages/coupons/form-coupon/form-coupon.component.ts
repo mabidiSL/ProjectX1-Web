@@ -44,7 +44,7 @@ export class FormCouponComponent implements OnInit, OnDestroy{
 
   fromPendingContext: boolean = false;
 
-  merchantId: number =  null;
+  companyId: number =  null;
   currentRole: string = '';
   bsConfig: Partial<BsDatepickerConfig>;
 
@@ -81,14 +81,14 @@ export class FormCouponComponent implements OnInit, OnDestroy{
      
       this.authservice.currentUser$.subscribe(user => {
         this.currentRole = user?.role.translation_data[0].name;
-        this.merchantId =  user?.companyId;
-        console.log(this.currentRole, 'and', this.merchantId);
+        this.companyId =  user?.companyId;
+        console.log(this.currentRole, 'and', this.companyId);
         
       } );
       
 
-      if(this.currentRole !== 'Admin')
-          this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,query:'',status:'', company_id: this.merchantId}));
+      if(this.currentRole !== 'Admin' && this.companyId !== 1)
+          this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,query:'',status:'', company_id: this.companyId}));
       else
           this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,query:'',status:'', company_id: null}));
 
@@ -210,11 +210,11 @@ export class FormCouponComponent implements OnInit, OnDestroy{
       }
       this.cdr.detectChanges();
     });
-    if(this.currentRole !== 'Admin'){
-      console.log(this.merchantId);
-      this.formOffer.get('company_id').setValue(this.merchantId);
+    if(this.currentRole !== 'Admin' && this.companyId !== 1 ){
+      console.log(this.companyId);
+      this.formOffer.get('company_id').setValue(this.companyId);
       this.formOffer.get('company_id').clearValidators()
-      this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000,query:'', status:'', company_id: this.merchantId}));
+      this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000,query:'', status:'', company_id: this.companyId}));
       this.isLoading = true;
       
     }

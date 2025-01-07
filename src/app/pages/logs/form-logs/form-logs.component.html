@@ -43,9 +43,7 @@
                 </div><div class="col-md-6 mb-3">
                   <label for="ipAdress">{{'IP Address'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                   <input class="form-control" id="ipAdress" formControlName="ipAdress" type="text" readonly/>
-                  <div *ngIf="logForm.get('ipAdress').invalid && logForm.get('ipAdress').touched" class="text-danger">
-                      {{'Title in arabic is required'|translate}}
-                  </div>
+                  
               </div>
                        
                      

@@ -40,7 +40,7 @@
                       </div>
                      
                      
-                <div *ngIf="currentRole === 'Admin'" class="col-md-6 mb-3">
+                <div *ngIf="currentRole === 'Admin' || merchantId === 1" class="col-md-6 mb-3">
                   <div class="form-group ">
                      <label for="company_id" >{{'Merchant_Name' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                      <ng-select [readonly]="type === 'view'"  id="company_id"  placeholder="{{'Select_the_merchant' | translate}}" [items]="merchantList" bindLabel="translatedName" 

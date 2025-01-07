@@ -47,7 +47,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>{{ 'Permissions' | translate }}</th>
-                                    <th *ngIf="currentRole !== 'Admin'">{{'All' | translate }}</th>
+                                    <th *ngIf="currentRole !== 'Admin' && companyId !== 1">{{'All' | translate }}</th>
                                     <th *ngFor="let permission of permissionKeys">
                                         {{ permission | translate }}
                                     </th>
@@ -67,7 +67,7 @@
                                           <strong>{{ module | translate }}</strong>
                                       </td>
                                   </ng-template>
-                                  <td *ngIf="currentRole !== 'Admin'" >
+                                  <td *ngIf="currentRole !== 'Admin'&& companyId !== 1" >
                                     <input 
                                     type="checkbox" 
                                     [checked]=" hasAllPermission(module) "

@@ -127,7 +127,7 @@ export class FormStoreComponent implements OnInit, OnDestroy {
      
    
     // Append the value of the Merchant to company_id
-    if(this.currentRole !== 'Admin'){
+    if(this.currentRole !== 'Admin' &&  this.merchantId !== 1){
      
       this.storeForm.get('company_id').setValue(this.merchantId);
       this.storeForm.get('company_id').clearValidators();

@@ -22,7 +22,7 @@ export class SocketService {
       if (user) {
       
       this.currentRole = user.role.translation_data[0].name;
-      if(this.currentRole !== 'Admin'){
+      if(this.currentRole !== 'Admin' && user.companyId !== 1){
           this.userId =  user.merchantId;
       }
       else

@@ -31,6 +31,8 @@ export class StoresComponent implements OnInit {
   public Modules = Modules;
   public Permission = Permission;
   currentRole: string = '';
+  companyId: number;
+
   country_id: number = null;
   storeList$: Observable<Branch[]>;
   totalItems$: Observable<number>;
@@ -83,7 +85,7 @@ export class StoresComponent implements OnInit {
     }
 
   ngOnInit() {
-        if(this.currentRole=== 'Admin'){
+        if(this.currentRole === 'Admin' || this.companyId === 1){
           this.fetchMerchants();
         }
         this.fetchCities(); 

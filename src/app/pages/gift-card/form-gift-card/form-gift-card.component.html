@@ -45,16 +45,16 @@
                                 {{'Name is required'|translate}}
                             </div>
                         </div>
-                        <div  *ngIf="currentRole === 'Admin'"class="col-md-3 mb-3">
+                        <div  *ngIf="currentRole === 'Admin'|| companyId === 1"class="col-md-3 mb-3">
                           <label for="company_id">{{'Merchant Name'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                          <ng-select [readonly]="type === 'view'|| currentRole === 'Merchant'" id="company_id"  placeholder="{{'Select_the_merchant' |translate}}" [items]="merchantList" bindLabel="translatedName" 
+                          <ng-select [readonly]="type === 'view'" id="company_id"  placeholder="{{'Select_the_merchant' |translate}}" [items]="merchantList" bindLabel="translatedName" 
                           bindValue="id"  formControlName="company_id" (change)="onChangeMerchantSelection($event)" >
                           </ng-select>
                           <div *ngIf="formOffer.get('company_id').invalid && formOffer.get('company_id').touched">
                             {{'Merchant Name is required'|translate}}
                           </div>
                         </div>
-                        <div class="col-md-3 mb-3" *ngIf="currentRole === 'Admin'; else nonAdminStores">
+                        <div class="col-md-3 mb-3" *ngIf="currentRole === 'Admin' || companyId === 1; else nonAdminStores">
                         <label for="stores">{{'Stores'|translate}}</label>
                           <ng-select 
                           [readonly]="type === 'view'" 
@@ -200,9 +200,9 @@
                         <button type="button" class="btn btn-success" (click)="toggleViewMode()">{{ 'Go_Back' | translate }}</button>
                       </ng-container>
                       <ng-template #editModeButtons>
-                        <button *ngIf="(formOffer.get('status')?.value !== 'pending' &&currentRole ==='Admin') ||(formOffer.get('status')?.value === 'pending' && currentRole !=='Admin') ||(formOffer.get('status')?.value !== 'pending' && currentRole !=='Admin')" type="submit" class="btn btn-success me-2" (click)="onSubmit()"  > {{ (type === 'create' ? 'Add gift card' : 'Update_gift_card') | translate }}
+                        <button *ngIf="(formOffer.get('status')?.value !== 'pending') ||(formOffer.get('status')?.value === 'pending' && (currentRole !=='Admin' && companyId !== 1))" type="submit" class="btn btn-success me-2" (click)="onSubmit()"  > {{ (type === 'create' ? 'Add gift card' : 'Update_gift_card') | translate }}
                         </button>
-                      <div *ngIf="currentRole ==='Admin'">
+                      <div *ngIf="currentRole ==='Admin'|| companyId === 1">
                         <button *ngIf="formOffer.get('status')?.value === 'pending'" type="submit" class="btn btn-success me-2" (click)="onApprove()"  > {{ 'Approve' | translate }}
                         </button>
                         <button *ngIf="formOffer.get('status')?.value === 'pending'" type="submit" class="btn btn-danger me-2" (click)="onDecline()"  > {{ 'Decline' | translate }}

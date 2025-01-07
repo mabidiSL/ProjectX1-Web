@@ -30,6 +30,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
   rateStatics : any;
   rating: any;
   currentRole: string;
+  companyId: number;
   config:any = {
     backdrop: true,
     ignoreBackdropClick: true
@@ -51,6 +52,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
       this.authService.currentUser$.subscribe(user => {
         if (user) {
         this.currentRole = user.role.translation_data[0].name;
+        this.companyId =  user.companyId;
       }});
        
      if(this.currentRole && (this.currentRole === 'Admin' || this.currentRole === 'Merchant'))
@@ -94,7 +96,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
     }, 2000);
   }
   updateStatisticsData(){
-    if(this.currentRole == 'Admin'){
+    if(this.currentRole === 'Admin' || this.companyId === 1 ){
     this.statData = [
       {
         icon: "bx bx-store", 

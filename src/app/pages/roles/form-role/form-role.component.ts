@@ -40,6 +40,8 @@ export class FormRoleComponent implements OnInit, OnDestroy {
   public Permission: Permission;
   public Module: Modules;
   currentRole: string = '';
+  companyId: number;
+
   merchantClaims: any = null;
   moduleKeys: any[] = [];
   permissionKeys: any[] = [];
@@ -67,7 +69,7 @@ export class FormRoleComponent implements OnInit, OnDestroy {
         
       } );
       
-      if(this.currentRole !== 'Admin'){
+      if(this.currentRole !== 'Admin' && this.companyId !== 1){
         //Modify moduleskeys and permissions key when a merchant or an employee is logged in
          this.merchantClaims = this.currentUser?.role.claims;
          console.log(this.merchantClaims);
@@ -127,7 +129,7 @@ export class FormRoleComponent implements OnInit, OnDestroy {
             this.role = role;
             this.patchValueForm(role);
             this.claims = this.role.claims;
-            if(this.currentRole !== 'Admin')
+            if(this.currentRole !== 'Admin' && this.companyId !== 1)
               this.setAllCheckedModules(this.claims);
             this.originalRoleData = _.cloneDeep(role);
             
