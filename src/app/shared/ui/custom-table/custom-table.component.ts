@@ -351,10 +351,7 @@ sortData(column: string): void {
   }
 navigateToView(data: any) {
    
-    if(this.viewButtonLink.includes('invoices')){
-      console.log(this.viewButtonLink);
-      this.router.navigate([`${this.viewButtonLink}`]);}
-    else 
+   
       if(this.viewButtonLink.includes('orders')){
         console.log(this.viewButtonLink);
         this.onViewDetail.emit(data.id);

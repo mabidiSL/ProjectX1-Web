@@ -16,7 +16,7 @@ const routes: Routes = [
     component: InvoicesComponent
   },
   {
-      path: "view",
+      path: "view/:id",
       component: DetailComponent,
       canActivate: [RoleGuard],
       data: {

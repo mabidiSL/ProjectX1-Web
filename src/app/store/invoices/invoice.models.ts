@@ -13,12 +13,18 @@ export class Invoice{
   qrCode?: string;
   nbr_of_use_left?: number;
   items?: any[];
+  user?: any;
   order_id?: number;
+  companies: any;
   offer_id?: number;
   unit_amount?: number;
   status?: string;
   users?: any;
   offers?: any;
+  createdAt?: any;
+  totalAmount?: any;
+  pdf?: string;
+  orderItems?: any[];
 }
 
 
