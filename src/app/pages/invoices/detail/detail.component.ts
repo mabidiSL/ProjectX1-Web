@@ -22,6 +22,7 @@ export class DetailComponent implements OnInit, OnDestroy {
  Invoice: Invoice| null = null;
  loading$: Observable<boolean>;
  private destroy$ = new Subject<void>();
+ parentRoute: string = '';
 
  constructor(private route: ActivatedRoute, private store: Store) { 
         this.loading$ = this.store.pipe(select(selectDataLoading)); 
@@ -30,6 +31,7 @@ export class DetailComponent implements OnInit, OnDestroy {
 
  ngOnInit() {
    this.breadCrumbItems = [{ label: 'Invoices' }, { label: 'Detail', active: true }];
+   this.parentRoute = this.route.snapshot.params['path'];
    const InvoiceId = this.route.snapshot.params['id'];
          if (InvoiceId) {
           

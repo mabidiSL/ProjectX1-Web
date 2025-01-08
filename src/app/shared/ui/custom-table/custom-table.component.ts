@@ -22,6 +22,8 @@ export class CustomTableComponent implements OnInit, OnChanges  {
 
 
   @Input() pageTitle?: string;
+  @Input() path?: string;
+
   @Input() searchPlaceholder?: string;
 
   @Input() addButtonLink?: string;
@@ -350,7 +352,10 @@ sortData(column: string): void {
     }
   }
 navigateToView(data: any) {
-   
+  if(this.viewButtonLink.includes('invoices')){
+    this.router.navigate([`${this.viewButtonLink}`, this.path, data.id]);
+
+  }else{
    
       if(this.viewButtonLink.includes('orders')){
         console.log(this.viewButtonLink);
@@ -361,6 +366,7 @@ navigateToView(data: any) {
        }
         else
         this.router.navigate([`${this.viewButtonLink}`, data.id]);
+  }
   }
 selectStatus(event: any){
 

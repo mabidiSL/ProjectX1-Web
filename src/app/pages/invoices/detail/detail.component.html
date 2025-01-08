@@ -101,7 +101,7 @@
             <div class="float-end">
               <a [href]="Invoice?.pdf" class="btn btn-success me-1" target="_blank"><i class="fa fa-download"></i></a>
               <a href="javascript:window.print()" class="btn btn-success"><i class="fa fa-print"></i></a>
-              <a href="javascript: void(0);" class="btn btn-primary w-md ms-1">Send</a>
+              <a [routerLink]="['/private/invoices/list', parentRoute]" class="btn btn-primary w-md ms-1">Ok</a>
             </div>
           </div>
         </div>
