@@ -41,13 +41,14 @@ export class ErrorInterceptor implements HttpInterceptor {
                       const clonedRequest = this.addTokenHeader(request, response.result.accessToken);
                       return next.handle(clonedRequest);
                      }),
-                    catchError((error) => {
+                    catchError((error: HttpErrorResponse) => {
                       // Handle refresh token failure (e.g., logout the user)
-                     
-                      this.authService.clearSession();
-                      //this.router.navigate(['/auth/login']);
-                      location.reload();
-                      return throwError(() => error);
+                      if(error.status === 403){
+                        this.authService.clearSession();
+                        //this.router.navigate(['/auth/login']);
+                        location.reload();
+                        return throwError(() => error);
+                      }
                     })
                   );
                 }
