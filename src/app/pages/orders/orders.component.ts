@@ -27,7 +27,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   orderList$: Observable<any[]>;
   totalItems$: Observable<number>;
   loading$: Observable<any>;
-  modalRef?: BsModalRef;
+  modalRef?: BsModalRef | null = null;
   subTotal: number = null;
   searchTerm: string = '';
   searchPlaceholder: string ='Search By OrderID or Billing Name(fName, lName)'
@@ -155,7 +155,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
                 this.Order =  order;
                 //this.calculateSubtotal();
                 //console.log(order);
-                this.modalRef = this.modalService.show(this.showModal);
+                if(!this.modalRef){
+                  this.modalRef = this.modalService.show(this.showModal);
+                }
+                
                 //this.modalRef = this.modalService.show(this.showModal);
      
               }
@@ -163,9 +166,12 @@ export class OrdersComponent implements OnInit, OnDestroy {
         }
         closeModal() {
           if (this.modalRef) {
+            console.log('modal destroyed');
+            
             this.modalRef.hide();
             this.modalRef = null; // Reset modal reference on close
           }
+          
         }
 calculateSubtotal(): void {
           this.subTotal = this.Order.items.reduce((acc: number, item: any) => {
