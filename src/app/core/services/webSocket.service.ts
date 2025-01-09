@@ -42,7 +42,7 @@ export class SocketService {
     this.socket.on('connect', () => {
       if (this.userId) {
         console.log('Socket connected with userId:', this.userId);
-        this.registerUser(this.userId);
+        this.registerUser(this.userId.toString());
       } else {
         console.error('userId is not available!');
       }
