@@ -9,11 +9,20 @@
     color: #d4af37; /* Color on hover for parent item icon */
 }
 /* Hover effect for the primary menu item */
-#sidebar-menu .side-nav-link-ref:hover {
+#sidebar-menu .side-nav-link-ref:hover  {
     color: #d4af37; /* Color on hover for text */
    // background-color: #f8f9fa; /* Optional: Background color on hover */
 }
 
+/* Click effect for the primary menu item */
+#sidebar-menu .side-nav-link-ref.active  {
+    color: #d4af37; /* Color on hover for text */
+   // background-color: #f8f9fa; /* Optional: Background color on hover */
+}
+/* click effect for the primary menu item's icon */
+#sidebar-menu .side-nav-link-ref.active i {
+    color: #d4af37; /* Color on hover for the icon */
+}
 /* Hover effect for the primary menu item's icon */
 #sidebar-menu .side-nav-link-ref:hover i {
     color: #d4af37; /* Color on hover for the icon */
