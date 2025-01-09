@@ -14,8 +14,19 @@ export class ErrorInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(
             catchError((error: HttpErrorResponse) => {
+              console.log('i am in error handler',error);
+              
               if (error.status === 403) {
-                return this.handle403Error(request, next);
+                console.log('open handler403');
+                if(error.error?.result?.error === 'Invalid refresh token'){
+                  this.authService.clearSession();
+                  this.router.navigate(['/auth/login']);
+                  //location.reload();
+                  return throwError(() => error);
+
+                }
+                else                
+                  return this.handle403Error(request, next);
 
               } else if (error.status === 401) {
                 // Access denied
@@ -30,10 +41,16 @@ export class ErrorInterceptor implements HttpInterceptor {
         }
     private handle403Error(request: HttpRequest<any>, next: HttpHandler) {
                 const refreshToken = localStorage.getItem('refreshToken');  // Retrieve the refresh token
+                console.log(refreshToken);
+                
                 if (refreshToken) {
+                  console.log('call refresh api');
+                  
                   // Call refresh token API
                   return this.authService.refreshToken(refreshToken).pipe(
                     switchMap((response: any) => {
+                      console.log(response);
+                      
                       // Store the new token
                       localStorage.setItem('token',response.result.accessToken);
                       
@@ -42,13 +59,9 @@ export class ErrorInterceptor implements HttpInterceptor {
                       return next.handle(clonedRequest);
                      }),
                     catchError((error: HttpErrorResponse) => {
-                      // Handle refresh token failure (e.g., logout the user)
-                      if(error.status === 403){
-                        this.authService.clearSession();
-                        this.router.navigate(['/auth/login']);
-                        //location.reload();
-                        return throwError(() => error);
-                      }
+                      console.error('An error occurred during refresh token request:', error);
+                      return throwError(() => new Error('Error during refresh token request.'));
+
                     })
                   );
                 }

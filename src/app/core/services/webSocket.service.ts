@@ -12,7 +12,7 @@ export class SocketService {
   currentRole : string = '';
   userId : any;
  
-  private messagesSubject = new BehaviorSubject<{ userId: string; message: string }[]>([]);
+  private messagesSubject = new BehaviorSubject<any[]>([]);
   messages$ = this.messagesSubject.asObservable();
   
 
@@ -23,7 +23,7 @@ export class SocketService {
       
       this.currentRole = user.role.translation_data[0].name;
       if(this.currentRole !== 'Admin' && user.companyId !== 1){
-          this.userId =  user.merchantId;
+          this.userId =  user.companyId;
       }
       else
          this.userId =  user.id;
@@ -31,16 +31,30 @@ export class SocketService {
 
       }});
 
-    this.socket = io(SOCKET_SERVER_URL);
+    this.socket = io(SOCKET_SERVER_URL,{
+      transports: ['websocket'],  // Use both WebSocket and Polling (fallback)
+      reconnection: true,  // Enable automatic reconnections
+      reconnectionAttempts: Infinity,  // Unlimited reconnection attempts
+      reconnectionDelay: 1000,  // Reconnect after 1 second delay
+      reconnectionDelayMax: 5000  // Max 5 second delay between reconnections
+    });
     // Register with userId = 1 after connecting to the socket
     this.socket.on('connect', () => {
-      const userId = this.userId; // Hard-coded user ID
-      this.registerUser(userId);
+      if (this.userId) {
+        console.log('Socket connected with userId:', this.userId);
+        this.registerUser(this.userId);
+      } else {
+        console.error('userId is not available!');
+      }
     });
     this.listenForMessages();
   }
   private listenForMessages() {
-    this.socket.on('messageFromServer', (message: { userId: string; message: string }) => {
+    console.log('i am listening for messages');
+    
+    this.socket.on('messageFromServer', (message: any) => {
+      console.log(message);
+      
       this.messagesSubject.next([...this.messagesSubject.value, message]);
     });
   }
@@ -48,7 +62,7 @@ export class SocketService {
     this.socket.emit('registerUser', userId);
   }
   sendMessage(message: string) {
-    const messageData = { userId: '1', message }; // Send messages as userId = 1
+    const messageData = { userId: this.userId, message }; // Send messages as userId = 1
     this.socket.emit('messageFromClient', messageData);
   }
 }

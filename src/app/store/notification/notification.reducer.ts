@@ -117,6 +117,7 @@ on(updateNotificationlist, (state) => ({
    return {
       ...state,
       NotificationListdata: NotificationListUpdated,
+      unseen: NotificationListUpdated.filter(notification => !notification.seen).length,
       loading: false,
       error: null
     };

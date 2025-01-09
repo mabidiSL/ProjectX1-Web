@@ -50,6 +50,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
   maxHeight: number = 500;  // Maximum height for the container
   loading$: Observable<boolean>;
 
+
   // Define layoutMode as a property
 
   constructor(@Inject(DOCUMENT) private document: any, 
@@ -63,6 +64,8 @@ export class TopbarComponent implements OnInit, OnDestroy {
     public authService: AuthenticationService
     ) {
               this.loading$ = this.store.pipe(select(selectDataLoading)); 
+              this.notifications$ = this.store.pipe(select(selectDataNotification));
+              this.unseenNotif$ = this.store.pipe(select(selectDataUnseenCount));     
       
       this.authService.currentUser$.subscribe(user => {
         if (user) {
@@ -70,15 +73,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
         }
       });
         
-        
-      
-      this.fetchNotification();
-      this.updateHeight();
-      this.listenForMessages();
-
-      
-    
-      }
+    }
   updateHeight() {
         const baseHeight = 50;  // Assume each notification takes 50px height
         const calculatedHeight = this.notifications.length * baseHeight;
@@ -88,12 +83,9 @@ export class TopbarComponent implements OnInit, OnDestroy {
       }
   private fetchNotification(){
     this.store.dispatch(fetchMyNotificationlistData());
-    this.notifications$ = this.store.pipe(select(selectDataNotification));
-    this.unseenNotif$ = this.store.pipe(select(selectDataUnseenCount));     
-
     this.notifications$.subscribe( (data) => {
         if(data)  {
-          this.notifications = data
+          this.notifications = data.filter(notif =>  notif.seen === false);
         }
               
     });
@@ -101,6 +93,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
      
   private listenForMessages() {
      this.socketService.messages$.subscribe(message => {
+     console.log(message);
    
         if(message){
           this.fetchNotification();
@@ -124,8 +117,9 @@ export class TopbarComponent implements OnInit, OnDestroy {
   @Output() mobileMenuButtonClicked = new EventEmitter();
 
   ngOnInit() {
-    
-    this.updateHeight();
+    //this.fetchNotification();
+    this.listenForMessages();
+    //this.updateHeight();
 
     // this.initialAppState = initialState;
     this.store.select('layout').subscribe((data) => {
@@ -153,8 +147,10 @@ export class TopbarComponent implements OnInit, OnDestroy {
         return 'private/merchants/list';
       case 'coupon-approval-request':
         return 'private/coupons/list';
-      case 'giftCard-approval-request':
+      case 'giftcard-approval-request':
         return 'private/giftCards/list';
+      case 'offer-approved':
+        return 'private/coupons/list';
       
     //   default:
     //     return 'private/notifications/list'; // Default route if no match
@@ -163,11 +159,13 @@ export class TopbarComponent implements OnInit, OnDestroy {
 }
    navigateToNotification(notification: any) {
     // Update Notification to be set as Seen
+      this.socketService.sendMessage(notification.translation_data[0]?.title);
       notification.seen = true;
       const notifcationObject = {id : notification.id, seen: true};
       const route = this.getNotificationRoute(notification); // Get the route dynamically
+      this.router.navigate([route]);
       this.store.dispatch(updateNotificationlist({updatedData: notifcationObject, route:route}))
-      this.fetchNotification();
+     // this.fetchNotification();
     
    }
 
