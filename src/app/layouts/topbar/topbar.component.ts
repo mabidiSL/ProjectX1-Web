@@ -149,8 +149,10 @@ export class TopbarComponent implements OnInit, OnDestroy {
         return 'private/coupons/list';
       case 'giftcard-approval-request':
         return 'private/giftCards/list';
-      case 'offer-approved':
+      case 'coupon-approved':
         return 'private/coupons/list';
+      case 'giftcard-approved':
+        return 'private/giftCards/list';
       
     //   default:
     //     return 'private/notifications/list'; // Default route if no match
