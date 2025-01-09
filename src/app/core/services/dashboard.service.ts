@@ -11,9 +11,13 @@ import { Observable } from 'rxjs';
 export class DashboardService {
     constructor(private HttpClient: HttpClient) {
     }
-    getStatistics(rateDuration: string): Observable<any>{
-
-        return this.HttpClient.get<any>(`${environment.baseURL}/dashboard?rateDuration=${rateDuration}`);
+    getStatistics(rateDuration: string,offerViewImpressionDuration: string, offerViewImpressionPeriod: number): Observable<any>{
+        const params = {
+            rateDuration: rateDuration,
+            offerViewImpressionDuration: offerViewImpressionDuration,
+            offerViewImpressionPeriod: offerViewImpressionPeriod
+        };
+        return this.HttpClient.get<any>(`${environment.baseURL}/dashboard`, {params});
 
     }
 }

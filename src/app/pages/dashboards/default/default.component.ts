@@ -56,9 +56,10 @@ export class DefaultComponent implements OnInit, AfterViewInit {
       }});
        
      if(this.currentRole && (this.currentRole === 'Admin' || this.currentRole === 'Merchant'))
-      { this.dashboardService.getStatistics('week').subscribe(
+      { this.dashboardService.getStatistics('week','week', 6).subscribe(
         response =>{
           this.rateStatics = response.result
+          //this.updateVisitorStatistics();
           this.updateCustomerRatingChart();
           this.updateStatisticsData();
         });
@@ -183,6 +184,28 @@ export class DefaultComponent implements OnInit, AfterViewInit {
       twoStars.total, 
       oneStar.total 
     ];
+  }
+  private updateVisitorStatistics(){
+    if (!this.rateStatics ) {
+      return;
+    }
+      this.LinewithDataChart
+       const couponImpressions = this.rateStatics?.couponImpressons;
+       console.log(couponImpressions);
+       
+      // const viewedCoupons = this.rateStatics.result.viewedCoupons;
+      // const giftCardImpressions = this.rateStatics.result.giftCardsImpressons;
+      // const viewedGiftCards = this.rateStatics.result.viewedGiftCards;
+      const seriesData = this.LinewithDataChart.series[0] as any;
+      seriesData.data = couponImpressions.map(item => item.count) ;
+      this.LinewithDataChart.series[0] = seriesData;
+      console.log(seriesData.data);
+      
+      // Update the series with the data from the backend
+       //this.LinewithDataChart.series[0].data = couponImpressions.map(item => item.count) as number[]; // Coupons Impressions
+      // this.LinewithDataChart.series[1].data = viewedCoupons.map(item => item.count); // Coupons Views
+      // this.LinewithDataChart.series[2].data = giftCardImpressions.map(item => item.count); // Gift Cards Impressions
+      // this.LinewithDataChart.series[3].data = viewedGiftCards.map(item => item.count); // Gift Cards Views
   }
   
   /**

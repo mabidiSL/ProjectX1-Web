@@ -1,4 +1,4 @@
-import { ApexOptions } from 'ng-apexcharts';
+import { ApexAxisChartSeries, ApexOptions } from 'ng-apexcharts';
 import { ChartType } from './dashboard.model'; 
 
 export const CustomerRatingChart: ChartType = {
@@ -96,7 +96,7 @@ export const LinewithDataChart: ApexOptions = {
         name: 'Gift Cards Views',
         data: [10, 20, 25, 30, 35, 40, 45]  // Replace with dynamic data
       }
-    ],
+    ] as ApexAxisChartSeries,
     colors: ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'],  // Custom colors for each line
     title: {
       text: 'Visitor Statistics',  // Title for the chart
