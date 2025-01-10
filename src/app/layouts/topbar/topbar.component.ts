@@ -66,7 +66,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
               this.loading$ = this.store.pipe(select(selectDataLoading)); 
               this.notifications$ = this.store.pipe(select(selectDataNotification));
               this.unseenNotif$ = this.store.pipe(select(selectDataUnseenCount));     
-      
+      this.socketService.Connect();
       this.authService.currentUser$.subscribe(user => {
         if (user) {
           this.currentUser = user;

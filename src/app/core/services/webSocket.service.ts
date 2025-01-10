@@ -1,36 +1,38 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { AuthenticationService } from './auth.service';
 const SOCKET_SERVER_URL = 'https://legislative-eveleen-infiniteee-d57d0fbe.koyeb.app/'; // Your Socket.IO server URL
 @Injectable({
   providedIn: 'root',
 })
-export class SocketService {
+export class SocketService implements OnDestroy {
   private socket: Socket;
   currentRole : string = '';
-  userId : any;
+  userId : any = null;
  
   private messagesSubject = new BehaviorSubject<any[]>([]);
   messages$ = this.messagesSubject.asObservable();
-  
+  private authSubscription: Subscription;
+
 
   constructor( private authservice: AuthenticationService
   ) {
-    this.authservice.currentUser$.subscribe(user => {
+    this.authSubscription = this.authservice.currentUser$.subscribe(user => {
       if (user) {
       
       this.currentRole = user.role.translation_data[0].name;
-      if(this.currentRole !== 'Admin' && user.companyId !== 1){
-          this.userId =  user.companyId;
+       this.userId =  user.id;
+
+
       }
-      else
-         this.userId =  user.id;
-
-
-      }});
-
+    else{
+      console.log('User logged out. Disconnecting socket...');
+      this.disconnectSocket();
+    }});
+  }
+  Connect(){
     this.socket = io(SOCKET_SERVER_URL,{
       transports: ['websocket'],  // Use both WebSocket and Polling (fallback)
       reconnection: true,  // Enable automatic reconnections
@@ -41,7 +43,7 @@ export class SocketService {
     // Register with userId = 1 after connecting to the socket
     this.socket.on('connect', () => {
       if (this.userId) {
-        console.log('Socket connected with userId:', this.userId);
+        console.log('Hi Socket connected with userId:', this.userId);
         this.registerUser(this.userId.toString());
       } else {
         console.error('userId is not available!');
@@ -50,7 +52,6 @@ export class SocketService {
     this.listenForMessages();
   }
   private listenForMessages() {
-    console.log('i am listening for messages');
     
     this.socket.on('messageFromServer', (message: any) => {
       console.log(message);
@@ -61,8 +62,21 @@ export class SocketService {
   private registerUser(userId: number) {
     this.socket.emit('registerUser', userId);
   }
+  private disconnectSocket() {
+    if (this.socket && this.socket.connected) {
+      this.socket.disconnect();
+      console.log('Socket disconnected.');
+    }
+  }
   sendMessage(message: string) {
     const messageData = { userId: this.userId, message }; // Send messages as userId = 1
     this.socket.emit('messageFromClient', messageData);
+  }
+  ngOnDestroy() {
+    // Cleanup subscription and disconnect socket on service destruction
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
+    this.disconnectSocket();
   }
 }
