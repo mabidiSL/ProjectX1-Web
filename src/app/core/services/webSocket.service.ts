@@ -28,7 +28,7 @@ export class SocketService implements OnDestroy {
 
       }
     else{
-      console.log('User logged out. Disconnecting socket...');
+     // console.log('User logged out. Disconnecting socket...');
       this.disconnectSocket();
     }});
   }
@@ -43,7 +43,7 @@ export class SocketService implements OnDestroy {
     // Register with userId = 1 after connecting to the socket
     this.socket.on('connect', () => {
       if (this.userId) {
-        console.log('Hi Socket connected with userId:', this.userId);
+        //console.log('Hi Socket connected with userId:', this.userId);
         this.registerUser(this.userId.toString());
       } else {
         console.error('userId is not available!');

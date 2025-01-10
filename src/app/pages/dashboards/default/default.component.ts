@@ -36,8 +36,9 @@ export class DefaultComponent implements OnInit, AfterViewInit {
     ignoreBackdropClick: true
   };
   public currentUser: _User;
-
+  isLoading = false;
   isActive: string;
+  isActiveChartOption: string = 'month';
 
   @ViewChild('content') content;
   @ViewChild('center', { static: false }) center?: ModalDirective;
@@ -56,16 +57,25 @@ export class DefaultComponent implements OnInit, AfterViewInit {
       }});
        
      if(this.currentRole && (this.currentRole === 'Admin' || this.currentRole === 'Merchant'))
-      { this.dashboardService.getStatistics('week','week', 6).subscribe(
-        response =>{
-          this.rateStatics = response.result
-          //this.updateVisitorStatistics();
-          this.updateCustomerRatingChart();
-          this.updateStatisticsData();
-        });
+      { 
+        this.dashboardService.getStatistics('month','month', 6).subscribe(
+          response =>{
+            this.rateStatics = response.result
+            this.updateVisitorStatistics();
+            this.updateCustomerRatingChart();
+            this.updateStatisticsData();
+          });
       }
   }
-
+  fetchDashboardStatistics(period: string){
+    this.dashboardService.getStatistics(period,period, 6).subscribe(
+      response =>{
+        this.rateStatics = response.result;
+        this.isLoading = false;
+        this.updateVisitorStatistics();
+        
+      });
+  }
   ngOnInit() {
     
     /**
@@ -189,25 +199,45 @@ export class DefaultComponent implements OnInit, AfterViewInit {
     if (!this.rateStatics ) {
       return;
     }
-      this.LinewithDataChart
-       const couponImpressions = this.rateStatics?.couponImpressons;
-       console.log(couponImpressions);
-       
-      // const viewedCoupons = this.rateStatics.result.viewedCoupons;
-      // const giftCardImpressions = this.rateStatics.result.giftCardsImpressons;
-      // const viewedGiftCards = this.rateStatics.result.viewedGiftCards;
-      const seriesData = this.LinewithDataChart.series[0] as any;
-      seriesData.data = couponImpressions.map(item => item.count) ;
-      this.LinewithDataChart.series[0] = seriesData;
-      console.log(seriesData.data);
-      
-      // Update the series with the data from the backend
-       //this.LinewithDataChart.series[0].data = couponImpressions.map(item => item.count) as number[]; // Coupons Impressions
-      // this.LinewithDataChart.series[1].data = viewedCoupons.map(item => item.count); // Coupons Views
-      // this.LinewithDataChart.series[2].data = giftCardImpressions.map(item => item.count); // Gift Cards Impressions
-      // this.LinewithDataChart.series[3].data = viewedGiftCards.map(item => item.count); // Gift Cards Views
-  }
+    const seriesDataMapping = [
+      { key: 'viewedCoupons', name: 'Coupons Views' },
+      { key: 'viewedGiftCards', name: 'Gift Cards Views' },
+      { key: 'couponImpressons', name: 'Coupons Impressions' },
+      { key: 'giftCardsImpressons', name: 'Gift Cards Impressions' },
+    ];
   
+    // Extract periods once since they are the same for all series
+    const categories = this.rateStatics.couponImpressons?.map((item: any) => item.period);
+    if (categories) {
+      const range = this.dashboardService.getRangeDescription(categories);
+      this.setChartPeriod(range);
+      console.log('here is the range',range);
+    }
+  
+    this.LinewithDataChart.series = seriesDataMapping.map(({ key, name }) => {
+      const data = this.rateStatics[key]?.map((item: any) => item.count) || [];
+      return { name, data };
+    });
+    console.log(this.LinewithDataChart.series);
+    
+  }
+
+  setChartPeriod(period: any[]){
+
+    const title = (this.isActiveChartOption === 'year') 
+    ? 'Years' 
+    : (this.isActiveChartOption === 'month') 
+      ? 'Months' 
+      : 'Weeks';
+      const xaxis = {categories: period, title: {
+        text: title
+      }};
+      this.LinewithDataChart.xaxis = xaxis;
+    console.log('new category',this.LinewithDataChart.xaxis.categories);
+    console.log('new title text',this.LinewithDataChart.xaxis.title.text);
+
+
+  }
   /**
    * Fetches the data
    */
@@ -221,6 +251,24 @@ export class DefaultComponent implements OnInit, AfterViewInit {
       this.transactions = data.transactions;
       
     });
+  }
+  weeklyVisitorSatisticsReport() {
+    this.isActiveChartOption = 'week';
+    this.isLoading = true;
+    this.fetchDashboardStatistics('week');
+    
+  }
+  monthlyVisitorSatisticsReport() {
+    this.isActiveChartOption = 'month';
+    this.isLoading = true;
+    this.fetchDashboardStatistics('month');
+
+  }
+  yearlyVisitorSatisticsReport() {
+    this.isActiveChartOption = 'year';
+    this.isLoading = true;
+    this.fetchDashboardStatistics('year');
+
   }
   opencenterModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
@@ -239,7 +287,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
         data: [13, 23, 20, 8, 13, 27, 18, 22, 10, 16, 24, 22]
       }];
   }
-
+ 
   monthlyreport() {
     this.isActive = 'month';
     this.emailSentBarChart.series =

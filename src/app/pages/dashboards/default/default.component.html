@@ -107,15 +107,36 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
+                <div class="chart-container" style="position: relative;">
+                    <!-- Loading Spinner -->
+                    <div *ngIf="isLoading" class="loading-overlay">
+                      <div class="spinner"></div>
+                    </div>
                 <div class="card-body">
-                <h4 class="card-title mb-4">{{'Visitor Statistics' | translate}}</h4>
-                <apx-chart class="apex-charts" dir="ltr" [series]="LinewithDataChart.series" [chart]="LinewithDataChart.chart"
+                <div class="d-sm-flex flex-wrap">
+                    <h4 class="card-title mb-4">{{ 'Visitor Statistics' | translate }}</h4>
+                    <div class="ms-auto">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript: void(0);" [ngClass]="{'active': isActiveChartOption === 'week'}" (click)="weeklyVisitorSatisticsReport()">{{ 'Week' | translate }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript: void(0);" (click)="monthlyVisitorSatisticsReport()" [ngClass]="{'active': isActiveChartOption === 'month'}">{{ 'Month' | translate }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="javascript: void(0);" (click)="yearlyVisitorSatisticsReport()" [ngClass]="{'active': isActiveChartOption === 'year'}">{{ 'Year' | translate }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <apx-chart  class="apex-charts" dir="ltr"  [series]="LinewithDataChart.series" [chart]="LinewithDataChart.chart"
                     [colors]="LinewithDataChart.colors" [stroke]="LinewithDataChart.stroke"
                     [dataLabels]="LinewithDataChart.dataLabels" [title]="LinewithDataChart.title"
                     [responsive]="LinewithDataChart.responsive" [legend]="LinewithDataChart.legend"
                     [xaxis]="LinewithDataChart.xaxis" [yaxis]="LinewithDataChart.yaxis" [stroke]="LinewithDataChart.stroke"
                     [markers]="LinewithDataChart.markers">
                 </apx-chart>
+                </div>
                 </div>
             </div>
     </div>
