@@ -37,9 +37,9 @@
   
   
   <ng-template  #ViewContent role="document" let-modal>
-    <div class="modal-header" [attr.inert]="modalRef ? null : true">
+    <div class="modal-header" >
       <h5 class="modal-title mt-0" id="orderdetailsModalLabel">Order Details</h5>
-      <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modalRef?.hide()"></button>
     </div>
     <div class="modal-body">
       <div class="d-flex justify-content-between mb-2">
@@ -53,7 +53,7 @@
           class="badge"
           [ngClass]="{
             'bg-success': Order.status === 'paid',
-            'bg-warning': Order.status === 'unpaid'
+            'bg-danger': Order.status === 'unpaid'
           }">
           {{Order.status}}
       </span>
@@ -100,7 +100,7 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-secondary" (click)="closeModal()">Close</button>
+      <button class="btn btn-secondary" data-bs-dismiss="modal"(click)="modalRef?.hide()">Close</button>
     </div>
   </ng-template>
   

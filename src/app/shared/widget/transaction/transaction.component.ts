@@ -16,6 +16,10 @@ import { Order } from 'src/app/store/Order/order.models';
 export class TransactionComponent implements OnDestroy {
 
   modalRef?: BsModalRef;
+  config:any = {
+    backdrop: true,
+    ignoreBackdropClick: true
+  };
   selectedOrder : Order = null;
   loading$: Observable<any>;
   
@@ -60,10 +64,11 @@ export class TransactionComponent implements OnDestroy {
                       console.log(order.items);
                     
                       this.selectedOrder =  order;
-                      this.modalRef = this.modalService.show(content);
+                      
 
                     }
                   });
+                    this.modalRef = this.modalService.show(content, this.config);
     
   }
   ngOnDestroy() {

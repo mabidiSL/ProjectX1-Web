@@ -56,18 +56,30 @@
       <span class="visually-hidden">{{'Loading...' | translate}}</span>
     </div>
   </div> 
-  <ng-template   #content html="document" let-modal tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
+  <ng-template  #content role="document" let-modal >
+    
         <div class="modal-header">
           <h5 class="modal-title mt-0">{{'Order Details'| translate }}</h5>
-          <button type="button" class="btn-close" aria-hidden="true" (click)="content?.hide()"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modalRef?.hide()"></button>
         </div>
         <div class="modal-body">
-          <p class="mb-2">
-            Order Id:
-            <span class="text-primary">#{{selectedOrder?.id || 'N/A'}}</span>
-          </p>
+          <div class="d-flex justify-content-between mb-2">
+            <p id="orderlist-overview" class="m-0">
+              Order ID:
+              <span class="list-id text-primary">#{{selectedOrder?.id}}</span>
+            </p>
+            <p id="orderstatus">
+              Order Status:
+              <span
+              class="badge"
+              [ngClass]="{
+                'bg-success': selectedOrder?.status === 'paid',
+                'bg-danger': selectedOrder?.status === 'unpaid'
+              }">
+              {{selectedOrder?.status}}
+          </span>
+            </p>
+          </div>
           <p class="mb-4">
             Billing Name:
             <span class="text-primary">{{selectedOrder?.user?.translation_data[0].f_name|| 'N/A' +' '+ selectedOrder?.user?.translation_data[0].l_name || 'N/A'}}</span>
@@ -120,10 +132,9 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" (click)="content.hide()">{{'Close' | translate}}</button>
+          <button class="btn btn-secondary" data-bs-dismiss="modal" (click)="modalRef?.hide()">{{'Close' | translate}}</button>
         </div>
-      </div>
-    </div>
+     
   </ng-template>
 </div>
 <!-- end table -->

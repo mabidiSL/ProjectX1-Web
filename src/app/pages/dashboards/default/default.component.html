@@ -98,7 +98,7 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title mb-4">{{'Latest Merchant Transactions' | translate}}</h4>
-                    <app-transaction [transactions]="transactions"></app-transaction>
+                    <app-transaction [transactions]="orderList$ |async"></app-transaction>
                     <!-- end table -->
                 </div>
             </div>

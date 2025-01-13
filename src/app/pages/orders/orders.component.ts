@@ -38,7 +38,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
   filteredArray: any[] = [];
   originalArray: any[] = [];
   Order: Order = null;
-
+  config:any = {
+    backdrop: true,
+    ignoreBackdropClick: true
+  };
   itemPerPage: number = 10;
   currentPage : number = 1;
   @ViewChild('ViewContent', { static: false }) showModal?: TemplateRef<any>;
@@ -153,26 +156,14 @@ export class OrdersComponent implements OnInit, OnDestroy {
                 console.log(order.items);
               
                 this.Order =  order;
-                //this.calculateSubtotal();
-                //console.log(order);
-                if(!this.modalRef){
-                  this.modalRef = this.modalService.show(this.showModal);
-                }
-                
-                //this.modalRef = this.modalService.show(this.showModal);
+               
      
               }
             });
+            this.modalRef = this.modalService.show(this.showModal, this.config);
+
         }
-        closeModal() {
-          if (this.modalRef) {
-            console.log('modal destroyed');
-            
-            this.modalRef.hide();
-            this.modalRef = null; // Reset modal reference on close
-          }
-          
-        }
+       
 calculateSubtotal(): void {
           this.subTotal = this.Order.items.reduce((acc: number, item: any) => {
             return acc + item.offers.price;
