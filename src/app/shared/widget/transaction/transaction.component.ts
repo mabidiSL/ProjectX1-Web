@@ -12,16 +12,7 @@ export class TransactionComponent {
 
   modalRef?: BsModalRef;
 
-  @Input() transactions: Array<{
-    id?: string;
-    index?: number,
-    name?: string,
-    nbrCoupons?: number,
-    date?: string,
-    total?: string,
-    status?: string,
-    payment?: string[],
-  }>;
+  @Input() transactions: Array<any>;
 
   constructor(private modalService: BsModalService) { }
 

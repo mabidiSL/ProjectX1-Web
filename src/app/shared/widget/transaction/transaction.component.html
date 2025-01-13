@@ -10,7 +10,7 @@
         </th>
         <th class="align-middle">{{'Order ID' | translate}}</th>
         <th class="align-middle">{{'Billing Name' | translate}}</th>
-        <th class="align-middle">{{'Coupons' | translate}}</th>
+        <th class="align-middle">{{'Offers' | translate}}</th>
         <th class="align-middle">{{'Date' | translate}}</th>
         <th class="align-middle">{{'Total' | translate}}</th>
         <th class="align-middle">{{'Payment Status' | translate}}</th>
@@ -30,17 +30,17 @@
         <td>
           <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
         </td>
-        <td>{{data.name}}</td>
-        <td>{{data.nbrCoupons}}</td>
-        <td>{{data.date}}</td>
-        <td>{{data.total}}</td>
+        <td>{{data.user?.translation_data[0].f_name +' '+ data.user?.translation_data[0].l_name}}</td>
+        <td>{{data.items?.length}}</td>
+        <td>{{data.createdAt | date:'dd/MM/yyyy' }}</td>
+        <td>£{{data.totalAmount}}</td>
         <td>
-          <span class="badge badge-pill badge-soft-success font-size-11" [ngClass]=" { 'badge-soft-danger': data.status === 'Chargeback',
-                        'badge-soft-warning':data.status === 'Refund' }">{{data.status | translate}}</span>
+          <span class="badge badge-pill badge-soft-success font-size-11" [ngClass]=" { 'badge-soft-danger': data.status === 'unpaid',
+                        'badge-soft-success':data.status === 'paid' }">{{data.status | translate}}</span>
         </td>
         <td>
-          <i class="fab {{data.payment[0]}} me-1"></i>
-          {{data.payment[1]}}
+          <i [ngClass]="{'fa-cc-mastercard':data.payment_method === 'credit_card'}" class="me-1"></i>
+          Credit Card
         </td>
         <td>
           <!-- Button trigger modal -->

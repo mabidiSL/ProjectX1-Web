@@ -53,7 +53,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     { property: 'id', label: '#OrderID' },
     { property: 'billingName', label: 'Billing Name' },
     { property: 'createdAt', label: 'Date' },
-    { property: 'order_id', label: 'Total' },
+    { property: 'totalAmount', label: 'Total' },
     { property: 'status', label: 'Payment Status' },
     { property: 'payment_method', label: 'Payment Method' },
 

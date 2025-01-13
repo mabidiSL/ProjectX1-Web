@@ -11,6 +11,10 @@ import { CustomerRatingChart, LinewithDataChart, MostPaymentMethodChart } from '
 import { _User } from 'src/app/store/Authentication/auth.models';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { ApexOptions } from 'ng-apexcharts';
+import { fetchOrderlistData } from 'src/app/store/Order/order.actions';
+import { Observable } from 'rxjs';
+import { selectDataOrder } from 'src/app/store/Order/order-selector';
+import { select, Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-default',
@@ -39,6 +43,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
   isLoading = false;
   isActive: string;
   isActiveChartOption: string = 'month';
+  orderList$: Observable<any[]>;
 
   @ViewChild('content') content;
   @ViewChild('center', { static: false }) center?: ModalDirective;
@@ -46,16 +51,17 @@ export class DefaultComponent implements OnInit, AfterViewInit {
     private readonly configService: ConfigService,
      private readonly eventService: EventService,
     private readonly dashboardService: DashboardService,
-    private readonly authService: AuthenticationService
+    private readonly authService: AuthenticationService,
+    private readonly store: Store
   ) {
 
-      
+      this.orderList$ = this.store.pipe(select(selectDataOrder)); // Observing the Order list from Order
       this.authService.currentUser$.subscribe(user => {
         if (user) {
         this.currentRole = user.role.translation_data[0].name;
         this.companyId =  user.companyId;
       }});
-       
+      this.fetchTransactions();
      if(this.currentRole && (this.currentRole === 'Admin' || this.currentRole === 'Merchant'))
       { 
         this.dashboardService.getStatistics('month','month', 6).subscribe(
@@ -66,6 +72,10 @@ export class DefaultComponent implements OnInit, AfterViewInit {
             this.updateStatisticsData();
           });
       }
+  }
+  fetchTransactions(){
+    this.store.dispatch(fetchOrderlistData({ page: 1, itemsPerPage: 6, query: null, date: null,  status: null }));
+
   }
   fetchDashboardStatistics(period: string){
     this.dashboardService.getStatistics(period,period, 6).subscribe(
