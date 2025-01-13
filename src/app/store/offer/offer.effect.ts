@@ -52,7 +52,7 @@ export class OffersEffects {
             mergeMap(({ newData, offerType }) =>
                 this.CrudService.addData('/offers', newData).pipe(
                     map((newData) => {
-                        if (this.userRole === 'Admin') {
+                        if (this.userRole === 'Admin' || this.companyId === 1) {
                             this.toastr.success('The new Offer has been added successfully.');
                         } else {
                             this.toastr.success('The new Offer Request has been sent to Admin.');
@@ -147,10 +147,12 @@ export class OffersEffects {
         public toastr:ToastrService
     ) {
         this.authservice.currentUser$.subscribe(user => {
-        this.userRole = user?.role.translation_data[0].name;
+        this.userRole = user?.role.translation_data[0]?.name;
+        this.companyId = user?.companyId;
         console.log(this.userRole);
         
       } );
    }
   userRole : string = null;
+  companyId: number = null;
 }

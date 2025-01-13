@@ -19,7 +19,8 @@ export class HasClaimDirective implements OnChanges, OnInit {
   public permissions: any[] = [];
   private isViewCreated = false;
 
-  constructor(  private templateRef: TemplateRef<string>,     private authService: AuthenticationService,
+  constructor(  private templateRef: TemplateRef<string>, 
+        private authService: AuthenticationService,
 
     private viewContainerRef: ViewContainerRef) {
       
@@ -62,9 +63,12 @@ private hasPermission(claim: Claim[]): boolean {
   ngOnInit() {
     this.authService.currentUser$.subscribe(user => {
       if (user) {
-      this.permissions = user.role.claims;
+       
+      this.permissions = user.role.claims;   
       this.checkPermissions();
-    }});
+
+    }
+   });
   }
  
 }

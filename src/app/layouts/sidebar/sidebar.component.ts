@@ -48,12 +48,19 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
     this.menu = new MetisMenu(this.sideMenu.nativeElement);
     this._activateMenuDropdown();
   }
-  activeMenuItem: string = ''; // Keeps track of the active menu item
+  activeMenuItem: number = 1; // Keeps track of the active menu item
 
   // Function to set the active item
-  setActiveMenuItem(itemId: string) {
-    console.log(itemId);
-    this.activeMenuItem = itemId;
+  setActiveMenuItem(itemId: number) {
+    console.log('sidemeniitem',itemId);
+    console.log('activeItem',this.activeMenuItem);
+
+    if(this.activeMenuItem !== itemId){
+      this.activeMenuItem = itemId;
+    }
+    console.log('sidemeniitem',itemId);
+    console.log('activeItem',this.activeMenuItem);
+
   }
   toggleMenu(event) {
     event.currentTarget.nextElementSibling.classList.toggle('mm-show');

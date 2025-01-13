@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -7,16 +7,12 @@ import * as _ from 'lodash';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
-// import { fetchArealistData } from 'src/app/store/area/area.action';
-// import { fetchCitylistData } from 'src/app/store/City/city.action';
+
 import { fetchSectionlistData } from 'src/app/store/section/section.action';
 import { selectDataCountry } from 'src/app/store/country/country-selector';
-//import { selectDataArea } from 'src/app/store/area/area-selector';
 import { selectDataSection } from 'src/app/store/section/section-selector';
-//import { selectDataCity } from 'src/app/store/City/city-selector';
 import { Country } from 'src/app/store/country/country.model';
-// import { Area } from 'src/app/store/area/area.model';
-// import { City } from 'src/app/store/City/city.model';
+
 import { UploadEvent } from 'src/app/shared/widget/image-upload/image-upload.component';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { selectCompany, selectDataLoading } from 'src/app/store/Authentication/authentication-selector';
@@ -30,7 +26,7 @@ import { getCompanyProfile, updateCompanyProfile } from 'src/app/store/Authentic
   styleUrl: './admin-company-profile.component.scss',
   //encapsulation: ViewEncapsulation.None  // Disable view encapsulation
 })
-export class AdminCompanyProfileComponent implements OnInit{
+export class AdminCompanyProfileComponent implements OnInit, OnDestroy{
  
   adminForm: UntypedFormGroup;
   formError: string | null = null;
@@ -40,7 +36,7 @@ export class AdminCompanyProfileComponent implements OnInit{
   existantRegistrationFile: string = null;
   existantcompanyLogo: string = null
   loading$: Observable<boolean>;
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
 
   sectionlist:  any[] = [];
   
@@ -121,8 +117,6 @@ export class AdminCompanyProfileComponent implements OnInit{
 
   ngOnInit() {
     this.fetchCountry();
-    // this.fetchAreas();
-    // this.fetchCities();
     this.fetchSection();
    
     this.store
@@ -384,5 +378,8 @@ export class AdminCompanyProfileComponent implements OnInit{
     this.adminForm.reset();
     this.router.navigateByUrl('/private/dashboard');
   }
-  
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

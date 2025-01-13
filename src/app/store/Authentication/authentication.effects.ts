@@ -87,14 +87,16 @@ export class AuthenticationEffects {
               const user = response.result.user;
               const token = response.result.accessToken;
               const refreshToken = response.result.refreshToken;
+              //const claims = response.result.user.role.claims;
     
               // Delegate state update to the AuthenticationService
               this.AuthService.setCurrentUser(user);
               localStorage.setItem('token', token);
               localStorage.setItem('refreshToken', refreshToken);
+             // localStorage.setItem('claims', claims);
+
               const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/private';
               this.router.navigate([returnUrl]);
-              //this.router.navigate(['/private']);
               return loginSuccess({ user: user, token: token });
 
             }),
@@ -158,8 +160,8 @@ export class AuthenticationEffects {
         map((response:any) => {
           console.log(user.user);
           
-          this.AuthService.setCurrentUser(response.result);
-             //localStorage.setItem('currentUser', JSON.stringify(user.user));
+         // this.AuthService.setCurrentUser(response.result);
+            localStorage.setItem('currentUser', JSON.stringify(response.result));
             this.toastr.success('The profile was updated successfully.');
             this.router.navigate(['/private/dashboard']);
             return updateProfileSuccess({user:response.result});
@@ -182,11 +184,12 @@ export class AuthenticationEffects {
     exhaustMap(({company} ) => {
       return this.AuthService.updateCompanyProfile(company).pipe(
         map((response : any) => {
-            localStorage.setItem('currentUser', JSON.stringify(response.user));
-            this.AuthService.setCurrentUser(response.user);
-            this.toastr.success('The company profile was updated successfully.');
+              //this.AuthService.setCurrentUser(response.result.user);
+              localStorage.setItem('currentUser', JSON.stringify(response.result.user));
+
+              this.toastr.success('The company profile was updated successfully.');
             this.router.navigate(['/private/dashboard']);
-            return updateCompanyProfileSuccess({company:response});
+            return updateCompanyProfileSuccess({company:response.result});
           }
          
         ),

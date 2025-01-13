@@ -54,7 +54,7 @@ export class NotificationsComponent implements OnInit{
   ) {
     this.authService.currentUser$.subscribe(user => {
       if (user) {
-      this.currentRole = user.role.translation_data[0].name;
+      this.currentRole = user.role.translation_data[0]?.name;
       this.companyId =  user.id;
     }});
       this.notificationList$ = this.store.pipe(select(selectDataNotification)); // Observing the Notification list from Notification
