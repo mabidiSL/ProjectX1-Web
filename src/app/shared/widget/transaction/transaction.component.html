@@ -8,7 +8,7 @@
             <label class="form-check-label" for="transactionCheck01"></label>
           </div>
         </th>
-        <th class="align-middle">{{'Order ID' | translate}}</th>
+        <th class="align-middle">#{{'Order ID' | translate}}</th>
         <th class="align-middle">{{'Billing Name' | translate}}</th>
         <th class="align-middle">{{'Offers' | translate}}</th>
         <th class="align-middle">{{'Date' | translate}}</th>
@@ -39,20 +39,24 @@
                         'badge-soft-success':data.status === 'paid' }">{{data.status | translate}}</span>
         </td>
         <td>
-          <i [ngClass]="{'fa-cc-mastercard':data.payment_method === 'credit_card'}" class="me-1"></i>
+          <i [ngClass]="{'fab fa-cc-visa':data.payment_method === 'credit_card'}" class="me-1"></i>
           Credit Card
         </td>
         <td>
           <!-- Button trigger modal -->
-          <button type="button" class="btn btn-primary btn-sm btn-rounded" (click)="content.show()">{{'View
+          <button type="button" class="btn btn-primary btn-sm btn-rounded" (click)="openModal(data, content)">{{'View
             Details' | translate}}</button>
         </td>
       </tr>
       }
     </tbody>
   </table>
-
-  <div bsModal #content="bs-modal" class="modal fade" tabindex="-1">
+  <div id="elmLoader" class="loader" *ngIf="loading$ | async">
+    <div class="spinner-border text-primary avatar-sm" role="status">
+      <span class="visually-hidden">{{'Loading...' | translate}}</span>
+    </div>
+  </div> 
+  <ng-template   #content html="document" let-modal tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -61,12 +65,12 @@
         </div>
         <div class="modal-body">
           <p class="mb-2">
-            Product id:
-            <span class="text-primary">#SK2540</span>
+            Order Id:
+            <span class="text-primary">#{{selectedOrder?.id || 'N/A'}}</span>
           </p>
           <p class="mb-4">
             Billing Name:
-            <span class="text-primary">Neal Matthews</span>
+            <span class="text-primary">{{selectedOrder?.user?.translation_data[0].f_name|| 'N/A' +' '+ selectedOrder?.user?.translation_data[0].l_name || 'N/A'}}</span>
           </p>
           <div class="table-responsive">
             <table class="table table-centered table-nowrap">
@@ -78,39 +82,26 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr *ngFor="let item of selectedOrder?.items || []">
                   <th scope="row">
                     <div>
-                      <img src="assets/images/product/img-7.png" alt class="avatar-sm" />
+                      <img [src]="item?.offers?.image? item?.offers?.image : 'assets/images/product/product-dummy.png'" alt class="avatar-sm" />
                     </div>
                   </th>
                   <td>
                     <div>
-                      <h5 class="text-truncate font-size-14">Wireless Headphone (Black)</h5>
-                      <p class="text-muted mb-0">$ 225 x 1</p>
+                      <h5 class="text-truncate font-size-14">{{item?.offers?.translation_data[0]?.name}}</h5>
+                      <p class="text-muted mb-0">£ {{item?.offers?.price}} x {{item?.quantity}}</p>
                     </div>
                   </td>
-                  <td>$ 255</td>
+                  <td>£ {{item?.offers?.price * item?.quantity}}</td>
                 </tr>
-                <tr>
-                  <th scope="row">
-                    <div>
-                      <img src="assets/images/product/img-4.png" alt class="avatar-sm" />
-                    </div>
-                  </th>
-                  <td>
-                    <div>
-                      <h5 class="text-truncate font-size-14">Phone patterned cases</h5>
-                      <p class="text-muted mb-0">$ 145 x 1</p>
-                    </div>
-                  </td>
-                  <td>$ 145</td>
-                </tr>
+               
                 <tr>
                   <td colspan="2">
                     <h6 class="m-0">Sub Total:</h6>
                   </td>
-                  <td>$ 400</td>
+                  <td>£{{selectedOrder?.totalAmount}}</td>
                 </tr>
                 <tr>
                   <td colspan="2">
@@ -122,7 +113,7 @@
                   <td colspan="2">
                     <h6 class="m-0">Total:</h6>
                   </td>
-                  <td>$ 400</td>
+                  <td>£{{selectedOrder?.totalAmount}}</td>
                 </tr>
               </tbody>
             </table>
@@ -133,6 +124,6 @@
         </div>
       </div>
     </div>
-  </div>
+  </ng-template>
 </div>
 <!-- end table -->

@@ -16,8 +16,9 @@ export class Order{
   order_id?: number;
   offer_id?: number;
   unit_amount?: number;
+  totalAmount?: number;
   status?: string;
-  users?: any;
+  user?: any;
   offers?: any;
 }
 
