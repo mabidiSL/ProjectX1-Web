@@ -85,7 +85,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
     this.store.dispatch(fetchMyNotificationlistData());
     this.notifications$.subscribe( (data) => {
         if(data)  {
-          this.notifications = data.filter(notif =>  notif.seen === false);
+          this.notifications = data;
         }
               
     });

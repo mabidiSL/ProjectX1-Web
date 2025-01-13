@@ -160,8 +160,7 @@ export class AuthenticationEffects {
         map((response:any) => {
           console.log(user.user);
           
-         // this.AuthService.setCurrentUser(response.result);
-            localStorage.setItem('currentUser', JSON.stringify(response.result));
+          this.AuthService.setCurrentUser(response.result);
             this.toastr.success('The profile was updated successfully.');
             this.router.navigate(['/private/dashboard']);
             return updateProfileSuccess({user:response.result});
@@ -184,8 +183,7 @@ export class AuthenticationEffects {
     exhaustMap(({company} ) => {
       return this.AuthService.updateCompanyProfile(company).pipe(
         map((response : any) => {
-              //this.AuthService.setCurrentUser(response.result.user);
-              localStorage.setItem('currentUser', JSON.stringify(response.result.user));
+              this.AuthService.setCurrentUser(response.result.user);
 
               this.toastr.success('The company profile was updated successfully.');
             this.router.navigate(['/private/dashboard']);

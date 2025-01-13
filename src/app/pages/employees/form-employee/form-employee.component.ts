@@ -81,12 +81,15 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
     private formUtilService: FormUtilService,
     private store: Store){
       
+      // This will be applied when the issue of state user manager is resolved
       this.authservice.currentUser$.subscribe(user => {
         console.log(user);
         this.country_id = user?.country_id; 
         if(this.country_id)      
           this.store.dispatch(getCountryById({CountryId: this.country_id}));
       });
+     
+
       this.loading$ = this.store.pipe(select(selectDataLoading)); 
       this.loadingCities$ = this.store.pipe(select(selectDataLoadingCities));
 
