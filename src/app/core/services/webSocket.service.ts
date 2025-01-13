@@ -27,10 +27,11 @@ export class SocketService implements OnDestroy {
 
 
       }
-    else{
-     // console.log('User logged out. Disconnecting socket...');
-      this.disconnectSocket();
-    }});
+    // else{
+    //  // console.log('User logged out. Disconnecting socket...');
+    //   this.disconnectSocket();
+    // }
+    });
   }
   Connect(){
     this.socket = io(SOCKET_SERVER_URL,{

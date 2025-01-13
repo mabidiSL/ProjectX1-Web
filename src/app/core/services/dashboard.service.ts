@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 
 export class DashboardService {
-    constructor(private HttpClient: HttpClient) {
+    constructor(private readonly HttpClient: HttpClient) {
     }
     getStatistics(rateDuration: string,offerViewImpressionDuration: string, offerViewImpressionPeriod: number): Observable<any>{
         const params = {

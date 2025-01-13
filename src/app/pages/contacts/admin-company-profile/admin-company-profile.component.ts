@@ -62,6 +62,8 @@ export class AdminCompanyProfileComponent implements OnInit{
       
       this.authService.currentUser$.subscribe(user =>{
         this.currentUser = user;
+        console.log(this.currentUser);
+        
       });
       console.log(this.currentUser);
      
@@ -141,13 +143,10 @@ export class AdminCompanyProfileComponent implements OnInit{
     patchValueForm(company: any){
       this.adminForm.controls['country_id'].setValue(company.user?.country_id);
       this.adminForm.patchValue(company);
-      //this.adminForm.controls['country_id'].setValue(company.user.country_id);
-      // this.adminForm.controls['area_id'].setValue(company.user.city.area_id);
-      // this.adminForm.controls['city_id'].setValue(company.user.city_id);
       this.adminForm.patchValue({
-        name: company.translation_data[0].name,
+        name: company.translation_data[0]?.name,
         name_ar: company.translation_data[1]?.name,
-        description: company.translation_data[0].description,
+        description: company.translation_data[0]?.description,
         description_ar: company.translation_data[1]?.description,
       
 
@@ -335,7 +334,6 @@ export class AdminCompanyProfileComponent implements OnInit{
     }
       this.formError = null;
       const newData = this.adminForm.value;
-      //console.log(newData);
       if(this.existantcompanyLogo){
         newData.companyLogo = this.existantcompanyLogo;
       }

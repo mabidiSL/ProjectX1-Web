@@ -7,6 +7,7 @@ import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { deleteNotificationlist, fetchNotificationlistData, updateNotificationlist } from 'src/app/store/notification/notification.action';
 import { selectDataLoading, selectDataNotification, selectDataTotalItems } from 'src/app/store/notification/notification-selector';
 import { Notification } from 'src/app/store/notification/notification.model';
+import { AuthenticationService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-notifications',
@@ -25,6 +26,8 @@ export class NotificationsComponent implements OnInit{
   loading$: Observable<boolean>
   searchTerm: string = '';
   filterstatusTerm: string = '';
+  currentRole: string;
+  companyId: number = 1;
 
   searchPlaceholder: string ='Search By Title'
 
@@ -45,8 +48,15 @@ export class NotificationsComponent implements OnInit{
     { property: 'status', label: 'Status' },
   ];
 
-  constructor(private store: Store) {
-      
+  constructor(
+    private readonly store: Store, 
+    private readonly authService: AuthenticationService
+  ) {
+    this.authService.currentUser$.subscribe(user => {
+      if (user) {
+      this.currentRole = user.role.translation_data[0].name;
+      this.companyId =  user.id;
+    }});
       this.notificationList$ = this.store.pipe(select(selectDataNotification)); // Observing the Notification list from Notification
       this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
       this.loading$ = this.store.pipe(select(selectDataLoading));
@@ -55,7 +65,7 @@ export class NotificationsComponent implements OnInit{
 
   ngOnInit() {
           
-        this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:this.searchTerm, status: this.filterstatusTerm }));
+        this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, user_id: this.companyId, query:this.searchTerm, status: this.filterstatusTerm }));
         this.notificationList$.subscribe(data => {
         this.originalArray = data; // Notification the full Notification list
         this.filteredArray = [...this.originalArray];
@@ -69,25 +79,25 @@ export class NotificationsComponent implements OnInit{
          if(event.status && event.status !== 'all')
            this.filterstatusTerm = event.status;
         
-         this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,  query: this.searchTerm, status: this.filterstatusTerm }));
+         this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, user_id: this.companyId, query: this.searchTerm, status: this.filterstatusTerm }));
      
         }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: totalItems, query: this.searchTerm ,status: this.filterstatusTerm}));
+    this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: totalItems, user_id: this.companyId, query: this.searchTerm ,status: this.filterstatusTerm}));
    }
  
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm,status: this.filterstatusTerm }));
+    this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, user_id: this.companyId, query: this.searchTerm,status: this.filterstatusTerm }));
     
   }
 
   onSearchEvent(event: any){
     console.log(event);
     this.searchTerm = event;
-    this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status: this.filterstatusTerm }));
+    this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, user_id: this.companyId, query: this.searchTerm, status: this.filterstatusTerm }));
 
    }
   // Delete Notification

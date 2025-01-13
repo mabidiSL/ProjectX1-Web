@@ -35,8 +35,8 @@ export class NotificationsEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchNotificationlistData),
-            mergeMap(({ page, itemsPerPage, query , status}) =>
-                this.CrudService.fetchData('/notifications/',{ limit: itemsPerPage, page: page, query: query, status: status}).pipe(
+            mergeMap(({ page, itemsPerPage, user_id, query , status}) =>
+                this.CrudService.fetchData('/notifications/',{ limit: itemsPerPage, page: page,user_id: user_id, query: query, status: status}).pipe(
                     map((response: any) => fetchNotificationlistSuccess({ NotificationListdata : response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);

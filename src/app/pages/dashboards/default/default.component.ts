@@ -42,11 +42,11 @@ export class DefaultComponent implements OnInit, AfterViewInit {
 
   @ViewChild('content') content;
   @ViewChild('center', { static: false }) center?: ModalDirective;
-  constructor(private modalService: BsModalService, 
-    private configService: ConfigService,
-     private eventService: EventService,
-    private dashboardService: DashboardService,
-    private authService: AuthenticationService
+  constructor(private readonly modalService: BsModalService, 
+    private readonly configService: ConfigService,
+     private readonly eventService: EventService,
+    private readonly dashboardService: DashboardService,
+    private readonly authService: AuthenticationService
   ) {
 
       
