@@ -41,7 +41,7 @@ export class CustomerReviewsComponent implements OnInit {
   categoryList: any[] = [
     {category: 'all', label: 'All'},
     {category: 'offer', label: 'Offer'},
-    {category: 'company', label: 'Company'},
+    {category: 'merchant', label: 'Merchant'},
     {category: 'store', label: 'Store'}
   ];
   
