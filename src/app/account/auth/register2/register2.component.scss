@@ -27,7 +27,7 @@
   }
   
   .left-section {
-    width: 45%; /* Adjust as needed */
+    width: 48%; /* Adjust as needed */
     background-color: #fff; /* Example background color */
     padding: 20px;
     display: flex;
@@ -55,18 +55,18 @@
 //   max-width: 1200px; /* Set a max-width to prevent it from stretching too far */
 //   margin: 0 auto; /* Center the stepper horizontally */
 // }
-/* Fix the width of ng-select component */
-ng-select {
-  width: 380px; /* Set a fixed width here */
-}
+// /* Fix the width of ng-select component */
+// ng-select {
+//   width: 380px; /* Set a fixed width here */
+// }
 
-/* Fix the width of the ng-select container */
-ng-select .ng-select-container {
-  width: 100% !important; /* Ensure the container fills the width of ng-select */
-}
+// /* Fix the width of the ng-select container */
+// ng-select .ng-select-container {
+//   width: 100% !important; /* Ensure the container fills the width of ng-select */
+// }
 
-/* Fix the width of the ng-select dropdown */
-ng-select .ng-dropdown-panel {
-  width: 250px !important; /* Set dropdown width same as ng-select */
-  max-width: 100% !important; /* Prevent the dropdown from exceeding the width */
-}
+// /* Fix the width of the ng-select dropdown */
+// ng-select .ng-dropdown-panel {
+//   width: 250px !important; /* Set dropdown width same as ng-select */
+//   max-width: 100% !important; /* Prevent the dropdown from exceeding the width */
+//}

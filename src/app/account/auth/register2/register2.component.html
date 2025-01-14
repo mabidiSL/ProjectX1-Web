@@ -11,12 +11,11 @@
           <div *ngIf="formError" class="alert alert-danger">{{ formError | translate}}</div>
     <div class="mt-4">
             <ng-stepper #cdkStepper [linear]="true" class="wizard" >
-              <cdk-step [optional]="false"[completed]="isStepValid(0)" >
+              <cdk-step [optional]="false" >
                 <ng-template cdkStepLabel>
                   <span class="number">1.</span>
                   <span>{{'About Your Company' | translate}}</span>
                 </ng-template>
-                @if(cdkStepper.selectedIndex === 0){
                 <section>
                   <form [formGroup]="signupForm">
                     <div class="row"> 
@@ -64,15 +63,14 @@
                     <li class="next list-inline-item" aria-disabled="false"><button class="btn btn-primary" cdkStepperNext [disabled]="!isStepValid(0)">{{'Next' | translate}}</button></li>
                   </ul>
                 </section>
-                }
+                
               </cdk-step>
            
-              <cdk-step [optional]="false" [editable]="isStepValid(0)" [completed]="isStepValid(1)">
+              <cdk-step [optional]="true" >
                 <ng-template cdkStepLabel>
                   <span class="number">2.</span>
                   <span>{{'About You' | translate}}</span>
                 </ng-template>
-                @if(cdkStepper.selectedIndex === 1){
                 <section>
                   <form [formGroup]="signupForm">
                     <div class="row">
@@ -224,7 +222,7 @@
                       </div>
                   </ul>
                 </section>
-                }
+                
               </cdk-step>
             </ng-stepper>
      </div>  
