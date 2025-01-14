@@ -138,7 +138,8 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
         .pipe(select(selectedEmployee), takeUntil(this.destroy$))
         .subscribe(employee => {
           if (employee) {
-            this.isEditing = true;         
+            this.isEditing = true;   
+            this.phoneCode = employee.country?.ISO2;      
             this.employeeForm.controls['country_id'].setValue(employee.country_id);
             this.fetchCities(employee.country_id);
            
@@ -146,10 +147,7 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
             this.selectedRole = employee.role;
             this.patchValueForm(employee);
             this.mapClaimsToEnums(this.selectedRole?.claims);
-
-           // this.setPermissionsForRole();
-           // this.isPermissionsOpen = true;
-            
+           
             this.originalEmployeeData = { ...employee };
 
           }

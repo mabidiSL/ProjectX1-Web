@@ -61,24 +61,39 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
       delete this.itiOptions.i18n;
     }
   }
-  ngOnChanges(changes: SimpleChanges): void {
+  // ngOnChanges(changes: SimpleChanges): void {
 
-    if (changes['initialPhoneNumber']) {
-      // Reinitialize the intlTelInput if the initialPhoneNumber has changed
-      if (this.initialPhoneNumber && this.initialPhoneNumber !== '') {
-        //this.inputElement.value = this.initialPhoneNumber;
-        this.iti.setNumber( this.initialPhoneNumber);
-      }
-           //this.initializeIntlTelInput();
-    }
-    if (this.phoneCode && this.phoneCode !== '') {
-      console.log('Phone Code changed:', this.phoneCode);
-      if(!this.inputElement){
-        console.log('not initialized');
-        this.initializeIntlTelInput();
-      }
-      this.iti.setCountry(this.phoneCode); // Update the country code
+  //   if (changes['initialPhoneNumber']) {
+  //     // Reinitialize the intlTelInput if the initialPhoneNumber has changed
+  //     if (this.initialPhoneNumber && this.initialPhoneNumber !== '') {
+  //       //this.inputElement.value = this.initialPhoneNumber;
+  //       this.iti.setNumber( this.initialPhoneNumber);
+  //     }
+  //          //this.initializeIntlTelInput();
+  //   }
+  //   if (this.phoneCode && this.phoneCode !== '') {
+  //     console.log('Phone Code changed:', this.phoneCode);
+  //     if(!this.inputElement){
+  //       console.log('not initialized');
+  //       this.initializeIntlTelInput();
+  //     }
+  //     this.iti.setCountry(this.phoneCode); // Update the country code
       
+  //   }
+  // }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['phoneCode'] || changes['initialPhoneNumber']) {
+      // If either phoneCode or initialPhoneNumber changes, update the intl-tel-input
+      if (this.iti) {
+        if (this.phoneCode) {
+          this.iti.setCountry(this.phoneCode); // Update the country code
+        }
+        if (this.initialPhoneNumber) {
+          this.iti.setNumber(this.initialPhoneNumber); // Set the initial phone number
+        }
+      } else {
+        this.initializeIntlTelInput(); // Initialize if not already done
+      }
     }
   }
   clearError(): void {

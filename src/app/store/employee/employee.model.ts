@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PaginateModel, Translation } from "src/app/core/interfaces/core.interface";
 import {  Role } from "../Role/role.models";
 import { City } from "../City/city.model";
@@ -15,6 +16,7 @@ export interface Employee {
         password?: string;
         image?: string;
         country_id?:number;
+        country?: any;
         city_id?: number; // City;
         city?: City;
         bank_id?: number;
