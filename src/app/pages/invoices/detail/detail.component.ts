@@ -48,7 +48,6 @@ export class DetailComponent implements OnInit, OnDestroy {
          }
  }
  mapToNewOrderList(invoice: Invoice){
-  console.log(invoice.orderItems);
 
   invoice.orderItems = invoice.orderItems.reduce((acc, item) => {
     // Find if the item already exists in the accumulator array
@@ -65,7 +64,6 @@ export class DetailComponent implements OnInit, OnDestroy {
   
     return acc;
   }, [])
-  console.log(invoice.orderItems);
 
   this.Invoice =  invoice;
  }

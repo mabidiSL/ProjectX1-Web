@@ -74,7 +74,6 @@ export class NotificationsComponent implements OnInit{
         });
    }
      onFilterEvent(event: any){
-         console.log(event);
          this.filterstatusTerm = '';
          if(event.status && event.status !== 'all')
            this.filterstatusTerm = event.status;
@@ -95,7 +94,6 @@ export class NotificationsComponent implements OnInit{
   }
 
   onSearchEvent(event: any){
-    console.log(event);
     this.searchTerm = event;
     this.store.dispatch(fetchNotificationlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, user_id: this.companyId, query: this.searchTerm, status: this.filterstatusTerm }));
 

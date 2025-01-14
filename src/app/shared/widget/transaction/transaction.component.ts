@@ -44,7 +44,6 @@ export class TransactionComponent implements OnDestroy {
                 .pipe(select(selectOrderById), takeUntil(this.destroy$))
                 .subscribe(order => {
                   if (order) {
-                      console.log(order.items);
       
                       order.items = order.items.reduce((acc, item) => {
                         // Find if the item already exists in the accumulator array
@@ -61,7 +60,6 @@ export class TransactionComponent implements OnDestroy {
                       
                         return acc;
                       }, [])
-                      console.log(order.items);
                     
                       this.selectedOrder =  order;
                       

@@ -100,13 +100,11 @@ export class MerchantListComponent implements OnInit {
        });
      }
    onSearchEvent(event: any){
-    console.log(event);
     this.searchTerm = event;
     this.store.dispatch(fetchMerchantlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, country_id: this.filterCountryTerm, status: this.filterTerm }));
 
    }
    onFilterEvent(event: any){
-    console.log(event);
     if(event.status && event.status !== 'all')
       this.filterTerm = event.status;
     else

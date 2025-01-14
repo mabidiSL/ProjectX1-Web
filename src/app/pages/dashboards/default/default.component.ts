@@ -221,14 +221,12 @@ export class DefaultComponent implements OnInit, AfterViewInit {
     if (categories) {
       const range = this.dashboardService.getRangeDescription(categories);
       this.setChartPeriod(range);
-      console.log('here is the range',range);
     }
   
     this.LinewithDataChart.series = seriesDataMapping.map(({ key, name }) => {
       const data = this.rateStatics[key]?.map((item: any) => item.count) || [];
       return { name, data };
     });
-    console.log(this.LinewithDataChart.series);
     
   }
 
@@ -243,8 +241,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
         text: title
       }};
       this.LinewithDataChart.xaxis = xaxis;
-    console.log('new category',this.LinewithDataChart.xaxis.categories);
-    console.log('new title text',this.LinewithDataChart.xaxis.title.text);
+    
 
 
   }

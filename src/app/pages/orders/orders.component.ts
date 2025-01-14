@@ -82,7 +82,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
         });
    }
   onFilterEvent(event: any){
-       console.log(event);
        if(event.status !== 'all')
          this.filterTerm = event.status;
        else
@@ -103,7 +102,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
    }
 
    onSearchEvent(event: any){
-    console.log(event);
     this.searchTerm = event;
     this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, date: this.filterDateTerm,status:this.filterTerm}));
 
@@ -136,7 +134,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
             .pipe(select(selectOrderById), takeUntil(this.destroy$))
             .subscribe(order => {
               if (order) {
-                console.log(order.items);
 
                 order.items = order.items.reduce((acc, item) => {
                   // Find if the item already exists in the accumulator array
@@ -153,7 +150,6 @@ export class OrdersComponent implements OnInit, OnDestroy {
                 
                   return acc;
                 }, [])
-                console.log(order.items);
               
                 this.Order =  order;
                

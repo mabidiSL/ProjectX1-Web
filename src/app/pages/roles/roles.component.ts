@@ -63,7 +63,6 @@ export class RolesComponent  implements OnInit{
         });
    }
   onFilterEvent(event: any){
-       console.log(event);
        if(event.status !== 'all')
          this.filterTerm = event.status;
        else
@@ -78,7 +77,6 @@ export class RolesComponent  implements OnInit{
    }
 
    onSearchEvent(event: any){
-    console.log(event);
     this.searchTerm = event;
     this.store.dispatch(fetchRolelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:this.filterTerm}));
 

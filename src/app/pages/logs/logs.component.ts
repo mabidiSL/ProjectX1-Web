@@ -58,13 +58,11 @@ export class LogsComponent implements OnInit {
         this.logList$.subscribe(data => {
               this.originalArray = data; // Log the full Log list
               this.filteredArray = [...this.originalArray];
-              console.log(this.filteredArray);
                document.getElementById('elmLoader')?.classList.add('d-none');    
        
         });
    }
     onFilterEvent(event: any){
-         console.log(event);
          
          if(event.date )
            this.filterDateTerm = event.date.toLocaleDateString('en-CA');
@@ -76,7 +74,6 @@ export class LogsComponent implements OnInit {
      
         }
    onSearchEvent(event: any){
-    console.log(event);
     this.searchTerm = event;
     this.store.dispatch(fetchLoglistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, startDate: this.filterDateTerm }));
 

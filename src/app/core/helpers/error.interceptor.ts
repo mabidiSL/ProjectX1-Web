@@ -14,10 +14,8 @@ export class ErrorInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(
             catchError((error: HttpErrorResponse) => {
-              console.log('i am in error handler',error);
               
               if (error.status === 403) {
-                console.log('open handler403');
                 if(error.error?.result?.error === 'Invalid refresh token'){
                   this.authService.clearSession();
                   this.router.navigate(['/auth/login']);
@@ -41,15 +39,12 @@ export class ErrorInterceptor implements HttpInterceptor {
         }
     private handle403Error(request: HttpRequest<any>, next: HttpHandler) {
                 const refreshToken = localStorage.getItem('refreshToken');  // Retrieve the refresh token
-                console.log(refreshToken);
                 
                 if (refreshToken) {
-                  console.log('call refresh api');
                   
                   // Call refresh token API
                   return this.authService.refreshToken(refreshToken).pipe(
                     switchMap((response: any) => {
-                      console.log(response);
                       
                       // Store the new token
                       localStorage.setItem('token',response.result.accessToken);

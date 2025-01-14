@@ -52,14 +52,12 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
 
   // Function to set the active item
   setActiveMenuItem(itemId: number) {
-    console.log('sidemeniitem',itemId);
-    console.log('activeItem',this.activeMenuItem);
+    
 
     if(this.activeMenuItem !== itemId){
       this.activeMenuItem = itemId;
     }
-    console.log('sidemeniitem',itemId);
-    console.log('activeItem',this.activeMenuItem);
+    
 
   }
   toggleMenu(event) {

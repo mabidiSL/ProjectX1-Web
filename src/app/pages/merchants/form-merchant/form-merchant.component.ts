@@ -250,9 +250,7 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
     
   }
   setCountryByPhoneCode(code: string){
-    console.log(this.filteredCountries);
     const country = this.filteredCountries.find(c => c.phoneCode === code);
-    console.log(country);
     this.merchantForm.get('country_id').setValue(country?.id);
     this.onChangeCountrySelection(country);
   }

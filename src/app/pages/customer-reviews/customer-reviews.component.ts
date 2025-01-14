@@ -69,14 +69,12 @@ export class CustomerReviewsComponent implements OnInit {
         this.CustomerReviewList$.subscribe(data => {
         this.originalArray = data; // CustomerReview the full CustomerReview list
         this.filteredArray = [...this.originalArray];
-        console.log(this.filteredArray);
         
         document.getElementById('elmLoader')?.classList.add('d-none');
            
         });
    }
  onFilterEvent(event: any){
-      console.log(event);
 
       if(event.category && event.category !== 'all')
          this.filterTerm = event.category;
@@ -87,7 +85,6 @@ export class CustomerReviewsComponent implements OnInit {
    
     }
    onSearchEvent(event: any){
-        console.log(event);
         this.searchTerm = event;
         this.store.dispatch(fetchCustomerReviewlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, category: this.filterTerm}));
     

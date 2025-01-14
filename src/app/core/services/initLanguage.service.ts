@@ -20,7 +20,6 @@ export class LanguageInitService {
       } else {
         this.themeService.loadLtrStyles(); // LTR for English
       }
-      console.log(document.documentElement.dir);
       
       resolve();
     });

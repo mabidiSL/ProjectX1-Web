@@ -120,7 +120,6 @@ export class FormCustomerComponent  implements OnInit, OnDestroy{
         .pipe(select(selectedCustomer), takeUntil(this.destroy$))
         .subscribe(customer => {
           if (customer) {
-            console.log(customer);
             
             this.customerForm.controls['country_id'].setValue(customer.country_id);
             //this.customerForm.controls['area_id'].setValue(customer.city.area_id);

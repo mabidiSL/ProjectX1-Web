@@ -36,7 +36,6 @@ export class DashboardService {
           }
           return weekNumber;
      };
-      console.log(dateRanges);
       
       // Helper function to calculate the difference in days
       const getDaysDifference = (start, end) => {
@@ -75,7 +74,6 @@ export class DashboardService {
         .sort((a, b) => a.order - b.order) // Sort by order
         .map(item => item.value); // Extract the final values
       
-      console.log(mappedRanges);
       return mappedRanges;
       }
       

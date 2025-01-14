@@ -11,6 +11,8 @@ import { deleteCitylist, fetchCitylistData, updateCitylist } from 'src/app/store
 import { selectDataCity, selectDataLoadingCities, selectDataTotalItems } from 'src/app/store/City/city-selector';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { City } from 'src/app/store/City/city.model';
+import { fetchCountrylistData } from 'src/app/store/country/country.action';
+import { selectDataCountry } from 'src/app/store/country/country-selector';
 
 
 @Component({
@@ -30,6 +32,7 @@ export class CityComponent  implements OnInit {
   loading$: Observable<boolean>;
   searchTerm: string = '';
   filterTerm: string = '';
+  countryList:  any[] = null;
 
   searchPlaceholder: string ='Search By Name'
 
@@ -52,6 +55,7 @@ export class CityComponent  implements OnInit {
   ];
   
   constructor(public store: Store) {
+      this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 1000,query:'', status: 'active' }));
       
       this.citiesList$ = this.store.pipe(select(selectDataCity)); 
       this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
@@ -61,7 +65,7 @@ export class CityComponent  implements OnInit {
   }
 
   ngOnInit() {
-   
+   this.fetchCountries();
     this.store.dispatch(fetchCitylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:this.filterTerm }));
     this.citiesList$.subscribe(data => {
       this.originalArray = data; // City the full City list
@@ -72,8 +76,22 @@ export class CityComponent  implements OnInit {
     });
        
   }
+  fetchCountries(){
+     this.store.select(selectDataCountry).subscribe((data) => { 
+             this.countryList =  [...data].map(country =>{
+               const translatedName = country.translation_data && country.translation_data[0]?.name || 'No name available';
+           
+               return {
+                 ...country,  
+                 translatedName 
+               };
+             }).sort((a, b) => {
+               // Sort by translatedName
+               return a.translatedName.localeCompare(b.translatedName);
+             });
+           });
+  }
   onFilterEvent(event: any){
-           console.log(event);
     
           if(event.status && event.status !== 'all')
              this.filterTerm = event.status;
@@ -85,7 +103,6 @@ export class CityComponent  implements OnInit {
        
         }
   onSearchEvent(event: any){
-    console.log(event);
     this.searchTerm = event;
     this.store.dispatch(fetchCitylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:this.filterTerm}));
 

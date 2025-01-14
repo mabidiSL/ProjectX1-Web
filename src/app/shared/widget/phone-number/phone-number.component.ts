@@ -128,7 +128,6 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
             }
             // 
             if (this.phoneCode && this.phoneCode !== '') {
-              console.log('Phone Code changed:', this.phoneCode);
               this.iti.setCountry(this.phoneCode); // Update the country code
             }
             this.inputElement.addEventListener('input', () => {
@@ -152,7 +151,6 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
 
               // Validate the current input without resetting the number
               if (this.iti.isValidNumber()) {
-                console.log('Valid phone number:', this.iti.getNumber());
                 this.clearError(); // Clear error messages
               } 
               else
@@ -166,8 +164,7 @@ export class PhoneNumberComponent implements  OnChanges, OnDestroy, AfterViewChe
               const countryData = this.iti.getSelectedCountryData();
               const countryCode = countryData.dialCode;
           
-              console.log('Formatted number:', formattedNumber);
-              console.log('Country code:', countryCode);              // Emit the valid phone number with the country code
+                      // Emit the valid phone number with the country code
               this.phoneNumberChanged.emit({
                 number: formattedNumber,
                 countryCode: countryCode,

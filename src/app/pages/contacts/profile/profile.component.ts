@@ -59,7 +59,6 @@ export class ProfileComponent  {
   
     // fill up the form for updating the profile
     this.authService.currentUser$.subscribe(user =>{
-      console.log(user);
       this.currentUser = user;
       this.originalProfileData = _.cloneDeep(user);
 
@@ -174,7 +173,6 @@ passwordMatchValidator(formGroup: FormGroup) {
         const changedData =  this.createProfileFromForm(this.profileForm.value);
         
         delete changedData.email;  
-        console.log(changedData);
         this.store.dispatch(updateProfile({ user: changedData }));
          
       

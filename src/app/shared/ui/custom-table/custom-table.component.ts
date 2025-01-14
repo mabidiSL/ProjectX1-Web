@@ -359,7 +359,6 @@ navigateToView(data: any) {
   }else{
    
       if(this.viewButtonLink.includes('orders')){
-        console.log(this.viewButtonLink);
         this.onViewDetail.emit(data.id);
       }
       else if(this.viewButtonLink.includes('reviews')){
@@ -390,7 +389,6 @@ selectRole(event: any){
   
 }
 selectCity(event: any){
-  console.log('i am on the filter by city', event);
   
   if(event ){
     this.filterByCity = event.id;
@@ -412,48 +410,40 @@ selectMerchant(event: any){
   
 }
 selectDate(event: any){
-  console.log(' date selected');
-  console.log(event);
+
   
   if(event){
     const formattedDate = new Date(event);
     this.filterByDate = formattedDate;
-     console.log(this.filterByDate);
   }
   
 }
 selectStartDate(event: any){
-  console.log('start date selected');
-  console.log(event);
+  
   
   if(event){
     const formattedDate = new Date(event);
 
     this.filterByStartDate = formattedDate;
-     console.log(this.filterByStartDate);
   }
   
 }
 selectEndDate(event: any){
-  console.log('end date selected');
-  console.log(event);
+  
   
   if(event){
     const formattedDate = new Date(event);
 
     this.filterByEndDate = formattedDate;
-    console.log(this.filterByEndDate);
   }
   
 }
 Filter(){
   if(this.filterByStatus || this.filterByStartDate || this.filterByEndDate || this.filterByRole || this.filterByCity || this.filterByCountry || this.filterByMerchant || this.filterByDate || this.filterByCategory){
-    console.log('onFilter');
     this.onFilter.emit({status:this.filterByStatus, startdate:this.filterByStartDate, enddate: this.filterByEndDate, company: this.filterByMerchant, country:  this.filterByCountry, city: this.filterByCity , role: this.filterByRole, date: this.filterByDate, category: this.filterByCategory} );
   }
 }
 isFilterApplied(): boolean {
- // console.log(  !!this.filterByStatus || !!this.filterByDate || !!this.filterByStartDate || !!this.filterByEndDate|| !!this.filterByMerchant || !!this.filterByCountry|| !!this.filterByCity|| !!this.filterByRole || !!this.filterByCategory   );
   
   return !!this.filterByStatus || !!this.filterByDate || !!this.filterByStartDate || !!this.filterByEndDate|| !!this.filterByMerchant || !!this.filterByCountry|| !!this.filterByCity|| !!this.filterByRole || !!this.filterByCategory ;
 }

@@ -80,7 +80,6 @@ export class InvoicesComponent implements OnInit, OnDestroy {
     });
    }
   onFilterEvent(event: any){
-       console.log(event);
        if(event.status !== 'all')
          this.filterTerm = event.status;
        else
@@ -100,7 +99,6 @@ export class InvoicesComponent implements OnInit, OnDestroy {
    }
 
    onSearchEvent(event: any){
-    console.log(event);
     this.searchTerm = event;
     this.store.dispatch(fetchInvoicelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, category: this.category_invoice, dueDate: this.filterDateTerm,status:this.filterTerm}));
 

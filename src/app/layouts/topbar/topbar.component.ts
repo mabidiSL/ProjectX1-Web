@@ -93,7 +93,6 @@ export class TopbarComponent implements OnInit, OnDestroy {
      
   private listenForMessages() {
      this.socketService.messages$.subscribe(message => {
-     console.log(message);
    
         if(message){
           this.fetchNotification();

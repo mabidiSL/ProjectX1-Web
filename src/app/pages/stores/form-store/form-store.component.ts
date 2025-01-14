@@ -91,7 +91,6 @@ export class FormStoreComponent implements OnInit, OnDestroy {
       this.authservice.currentUser$.subscribe(user => {
         this.currentRole = user?.role.translation_data[0].name;
         this.merchantId =  user?.companyId;
-        console.log(this.currentRole, 'and', this.merchantId);
         
       } );
       
@@ -140,7 +139,6 @@ export class FormStoreComponent implements OnInit, OnDestroy {
             const merchant_country_id = selectMerchant.user.country_id;
             //Set the country Code for phone number
             this.setPhoneCode(selectMerchant);
-            console.log('Merchant country ID:', merchant_country_id);
             
             // Return the observable for cities filtered by merchant's country
             return this.store.select(selectDataCity).pipe(
@@ -185,7 +183,6 @@ export class FormStoreComponent implements OnInit, OnDestroy {
         .subscribe(Store => {
           if (Store) {
             this.isEditing = true;
-            console.log(Store);
             this.uploadedFiles = Store.images;
             this.fetchCities(Store.company.user.country_id);
 
@@ -205,7 +202,6 @@ export class FormStoreComponent implements OnInit, OnDestroy {
   async setPhoneCode(merchant: Merchant){
   try {
     this.phoneCode = await this.countrCodeService.getCountryByCodeOrIso(merchant?.user.country.phoneCode);
-    console.log(this.phoneCode);
   } catch (error) {
     console.error('Error fetching country code:', error);
   }
@@ -253,7 +249,6 @@ private getNavigationState(){
   }
  fetchCities(id: number){
   if(id){
-    console.log(' i am in fetch cities', id);
     this.store.dispatch(getCityByCountryId({page:1, itemsPerPage:1000,country_id:id}));
     this.store.select(selectDataCity).subscribe((data) => {
       this.filteredCities = [...data].map(city =>{
@@ -281,9 +276,7 @@ private getNavigationState(){
       this.filteredCities = [];
       this.storeForm.get('city_id').setValue(null);
       const country_id = selectMerchant.user.country_id;
-      console.log(country_id);
       
-      console.log(selectMerchant);
       this.setPhoneCode(selectMerchant);
       this.fetchCities(country_id);
     }
@@ -309,7 +302,6 @@ private getNavigationState(){
   }
   createStoreFromForm(formValue): Branch {
     const branch = formValue;
-     console.log(branch);
   
     branch.translation_data = [];
     const enFields = [
@@ -346,7 +338,6 @@ private getNavigationState(){
     delete branch.description;
     delete branch.description_ar;
     delete branch.area_id;
-    console.log(branch);
 
    return branch;
 }
@@ -381,7 +372,6 @@ private getNavigationState(){
         {           
               delete newData.id;
               newData = this.createStoreFromForm(newData);
-              console.log(newData);
 
               delete newData.status;
               //Dispatch Action

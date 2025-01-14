@@ -39,7 +39,6 @@ export class ImageService {
     const images =
       direction.toLowerCase() === 'ltr' ? this.images_ltr : this.images_rtl;
     const randomIndex = Math.floor(Math.random() * images.length);
-    console.log(images[randomIndex]);
     
     return images[randomIndex];
   }

@@ -158,7 +158,6 @@ export class AuthenticationEffects {
     exhaustMap((user : any ) => {
       return this.AuthService.updateProfile(user.user).pipe(
         map((response:any) => {
-          console.log(user.user);
           
           this.AuthService.setCurrentUser(response.result);
             this.toastr.success('The profile was updated successfully.');
@@ -204,7 +203,6 @@ export class AuthenticationEffects {
     this.actions$.pipe(
     ofType(getCompanyProfile),
     exhaustMap(({companyId}) => {
-      console.log(companyId);
       return this.AuthService.getCompanyProfile(companyId).pipe(
         map((response : any) => {
             

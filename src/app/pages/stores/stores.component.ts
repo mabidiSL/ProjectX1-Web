@@ -127,7 +127,6 @@ export class StoresComponent implements OnInit {
       });
     }
    onFilterEvent(event: any){
-       console.log(event);
 
       if(event.status && event.status !== 'all')
          this.filterTerm = event.status;
@@ -148,7 +147,6 @@ export class StoresComponent implements OnInit {
    
     }
    onSearchEvent(event: any){
-    console.log(event);
     this.searchTerm = event;
     this.store.dispatch(fetchStorelistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:this.filterTerm, city_id: this.filterCityTerm ,company_id:this.filterMerchantTerm }));
 

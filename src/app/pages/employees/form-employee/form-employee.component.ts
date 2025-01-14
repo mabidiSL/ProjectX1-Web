@@ -83,7 +83,6 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
       
       // This will be applied when the issue of state user manager is resolved
       this.authservice.currentUser$.subscribe(user => {
-        console.log(user);
         this.country_id = user?.country_id; 
         if(this.country_id)      
           this.store.dispatch(getCountryById({CountryId: this.country_id}));
@@ -239,10 +238,8 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
      })
      .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
      });
-     console.log(this.filteredCities);
      
-    //  if(this.isEditing)
-    //   this.employeeForm.controls['city_id'].setValue(city_id);
+    
    });
   }
  
@@ -364,11 +361,9 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
     
   }
   setCountryByPhoneCode(code: string){
-    console.log(code);
-    console.log(this.countrylist);
+   
     
     const country = this.countrylist?.find(c => c.phoneCode === code);
-    console.log(country);
     this.employeeForm.get('country_id').setValue(country?.id);
     this.onChangeCountrySelection(country);
   }
@@ -419,8 +414,7 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
             this.permissions[module][permission] = this.hasPermission(module, permission);
           });
         });
-    console.log(this.moduleKeys);
-    console.log(this.permissionKeys);
+ 
     
     
 

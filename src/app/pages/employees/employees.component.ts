@@ -71,7 +71,6 @@ export class EmployeesComponent implements OnInit {
                 t.id === value.id && t.name === value.name
               ))
             );
-        console.log(this.roleList);
         this.filteredArray = [...this.originalArray];
         document.getElementById('elmLoader')?.classList.add('d-none');
     
@@ -79,7 +78,6 @@ export class EmployeesComponent implements OnInit {
    }
 
    onFilterEvent(event: any){
-      console.log(event);
       this.filterStatusTerm = '';
       if(event.status && event.status !== 'all')
         this.filterStatusTerm = event.status;

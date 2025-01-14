@@ -55,7 +55,6 @@ export class SocketService implements OnDestroy {
   private listenForMessages() {
     
     this.socket.on('messageFromServer', (message: any) => {
-      console.log(message);
       
       this.messagesSubject.next([...this.messagesSubject.value, message]);
     });
@@ -66,7 +65,6 @@ export class SocketService implements OnDestroy {
   private disconnectSocket() {
     if (this.socket && this.socket.connected) {
       this.socket.disconnect();
-      console.log('Socket disconnected.');
     }
   }
   sendMessage(message: string) {

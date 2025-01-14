@@ -129,7 +129,6 @@ createCountryFromForm(formValue): Country{
         });
       delete country.name;
       delete country.name_ar;
-      console.log(country);
       return country;
 
       

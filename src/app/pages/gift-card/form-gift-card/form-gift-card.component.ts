@@ -74,7 +74,6 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
       this.authservice.currentUser$.subscribe(user => {
         this.currentRole = user?.role.translation_data[0].name;
         this.companyId =  user?.companyId;
-        console.log(this.currentRole, 'and', this.companyId);
         
       } );
 
@@ -97,9 +96,7 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
   }
   dateValidator(control: AbstractControl): { [key: string]: boolean } | null {
     const startDate = new Date(control.get('startDate')?.value);
-    console.log(startDate);
     const endDate = new Date(control.get('endDate')?.value);
-    console.log(endDate);
 
     const currentDate = new Date();
    // Normalize currentDate to midnight (00:00:00)
@@ -214,7 +211,6 @@ export class FormGiftCardComponent implements OnInit, OnDestroy{
             }
             Offer.startDate = new Date(Offer.startDate);
             Offer.endDate = new Date(Offer.endDate);
-            console.log(Offer);
             
             this.patchValueForm(Offer);
             this.originalOfferData = { ...Offer };
@@ -334,7 +330,6 @@ createOfferFromForm(formValue): Offer{
     //delete offer.termsAndConditions_ar;
  
 
-  console.log(offer);
   return offer;
 
   
@@ -358,14 +353,12 @@ onSubmit(){
           //Dispatch Action
           delete newData.id;
           newData = this.createOfferFromForm(newData);
-          console.log(newData);
           this.store.dispatch(addOfferlist({ newData, offerType: 'gift-card' }));
       }
       else{
         const updatedDta = this.formUtilService.detectChanges(this.formOffer, this.originalOfferData);
         if (Object.keys(updatedDta).length > 0) {
           const changedData = this.createOfferFromForm(updatedDta);
-          console.log(changedData);
           changedData.id =  this.formOffer.value.id;
           this.store.dispatch(updateOfferlist({ updatedData: changedData , offerType: 'gift-card'}));
         }

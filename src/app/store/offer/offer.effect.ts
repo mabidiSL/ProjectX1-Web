@@ -149,7 +149,6 @@ export class OffersEffects {
         this.authservice.currentUser$.subscribe(user => {
         this.userRole = user?.role.translation_data[0]?.name;
         this.companyId = user?.companyId;
-        console.log(this.userRole);
         
       } );
    }

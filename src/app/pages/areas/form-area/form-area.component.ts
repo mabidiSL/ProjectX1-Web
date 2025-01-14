@@ -135,7 +135,6 @@ export class FormAreaComponent implements OnInit, OnDestroy {
         }
       });
     
-    console.log(area);
     return area;
 
     

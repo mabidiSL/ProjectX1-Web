@@ -74,7 +74,6 @@ export class CouponsComponent  implements OnInit {
        
   }
   onFilterEvent(event: any){
-    console.log(event);
     this.filterstatusTerm = '';
     if(event.status && event.status !== 'all')
       this.filterstatusTerm = event.status;
@@ -91,7 +90,6 @@ export class CouponsComponent  implements OnInit {
     
   }
   onSearchEvent(event: any){
-    console.log(event);
     this.searchTerm = event;
     this.store.dispatch(fetchOfferlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, category: 'coupon',query: this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterendDateTerm, status:this.filterstatusTerm }));
 

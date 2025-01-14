@@ -143,7 +143,6 @@ export class FormCityComponent  implements OnInit, OnDestroy {
           }
         });
       delete city.name;
-      console.log(city);
       return city;
      
     }

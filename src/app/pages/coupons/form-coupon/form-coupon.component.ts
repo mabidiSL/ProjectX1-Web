@@ -82,7 +82,6 @@ export class FormCouponComponent implements OnInit, OnDestroy{
       this.authservice.currentUser$.subscribe(user => {
         this.currentRole = user?.role.translation_data[0].name;
         this.companyId =  user?.companyId;
-        console.log(this.currentRole, 'and', this.companyId);
         
       } );
       
@@ -197,7 +196,6 @@ export class FormCouponComponent implements OnInit, OnDestroy{
 
     this.formOffer.get('couponType').valueChanges.subscribe(value => {
       if (value === 'free') {
-        console.log('Value of coupon', value);
         this.formOffer.get('price').reset();
         this.formOffer.get('price').disable();
         this.formOffer.get('discount').reset();
@@ -211,7 +209,6 @@ export class FormCouponComponent implements OnInit, OnDestroy{
       this.cdr.detectChanges();
     });
     if(this.currentRole !== 'Admin' && this.companyId !== 1 ){
-      console.log(this.companyId);
       this.formOffer.get('company_id').setValue(this.companyId);
       this.formOffer.get('company_id').clearValidators()
       this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000,query:'', status:'', company_id: this.companyId}));
@@ -233,7 +230,6 @@ export class FormCouponComponent implements OnInit, OnDestroy{
         .subscribe(offer => {
           if (offer) {
           
-            console.log(offer);
             
             this.existantofferLogo = offer.image;
             if(offer.image){
@@ -372,7 +368,6 @@ createOfferFromForm(formValue): Offer{
   onSubmit(){
 
     this.formSubmitted = true;
-    console.log(this.formOffer.value);
 
     if (this.formOffer.invalid) {
       this.formError = 'Please complete all required fields.';
@@ -386,7 +381,6 @@ createOfferFromForm(formValue): Offer{
       let newData = this.formOffer.value;
       newData.price = this.formOffer.get('price').value;
       newData.couponType = this.formOffer.get('couponType').value;
-      console.log(newData);
       
       if(this.offerLogoBase64){
         newData.image = this.offerLogoBase64;

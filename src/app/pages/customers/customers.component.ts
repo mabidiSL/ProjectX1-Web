@@ -67,7 +67,6 @@ export class CustomersComponent implements OnInit {
         });
    }
  onFilterEvent(event: any){
-       console.log(event);
 
       if(event.status && event.status !== 'all')
          this.filterTerm = event.status;
@@ -79,7 +78,6 @@ export class CustomersComponent implements OnInit {
    
     }
      onSearchEvent(event: any){
-        console.log(event);
         this.searchTerm = event;
         this.store.dispatch(fetchCustomerlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, role:3, query: this.searchTerm, status: this.filterTerm}));
     

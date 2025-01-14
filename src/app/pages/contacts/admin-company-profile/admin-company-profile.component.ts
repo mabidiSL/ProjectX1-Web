@@ -58,15 +58,11 @@ export class AdminCompanyProfileComponent implements OnInit, OnDestroy{
       
       this.authService.currentUser$.subscribe(user =>{
         this.currentUser = user;
-        console.log(this.currentUser);
         
       });
-      console.log(this.currentUser);
      
      
-      console.log('***********');
       this.loading$ = this.store.pipe(select(selectDataLoading));
-      console.log('***********');
  
       this.store.dispatch(getCompanyProfile({companyId: this.currentUser.companyId}))
       this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 1000, query:'', status: 'active' }));
@@ -123,7 +119,6 @@ export class AdminCompanyProfileComponent implements OnInit, OnDestroy{
           .pipe(select(selectCompany), takeUntil(this.destroy$))
           .subscribe(company => {
             if (company) {
-              console.log(company);
               
               this.existantcompanyLogo = company.companyLogo;
               this.patchValueForm(company);
@@ -254,7 +249,6 @@ export class AdminCompanyProfileComponent implements OnInit, OnDestroy{
     // }
     setCountryByPhoneCode(code: string){
       const country = this.filteredCountries.find(c => c.phoneCode === code);
-      console.log(country);
       this.adminForm.get('country_id').setValue(country?.id);
     }
   
@@ -315,7 +309,6 @@ export class AdminCompanyProfileComponent implements OnInit, OnDestroy{
    * On submit form
    */
   onSubmit() {
-    console.log('on submit');
     this.formSubmitted = true;
 
     if (this.adminForm.invalid) {
@@ -333,17 +326,14 @@ export class AdminCompanyProfileComponent implements OnInit, OnDestroy{
       }
           
       const updatedDta = this.formUtilService.detectChanges(this.adminForm, this.originalCompanyData);
-      console.log(updatedDta);
 
       if (Object.keys(updatedDta).length > 0) {
         const changedData = this.createProfileFromForm(updatedDta);
-        console.log(changedData);
         
         if(this.existantcompanyLogo !== this.originalCompanyData.companyLogo)
           changedData.companyLogo = this.existantcompanyLogo;
         
         changedData.id = newData.id;
-        console.log(changedData);
         this.store.dispatch(updateCompanyProfile({ company: changedData }));
       }
       else

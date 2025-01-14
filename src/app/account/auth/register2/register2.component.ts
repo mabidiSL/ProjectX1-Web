@@ -196,15 +196,12 @@ export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
     this.signupForm.get('phone').setValue(event.number);
   }
   async getCountryCode(country_id: number) {
-    console.log(country_id);
-    console.log(this.countrylist);
+    
     
     const country = this.countrylist.find(c => c.id === country_id);
-    console.log(country?.phoneCode);
     
     try {
       this.phoneCode = await this.countrCodeService.getCountryByCodeOrIso(country?.phoneCode);
-      console.log(this.phoneCode);
     } catch (error) {
       console.error('Error fetching country code:', error);
     }
@@ -260,7 +257,6 @@ export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
    */
   onSubmit() {
     this.formSubmitted = true;
-    console.log('i am on register submit');
 
     if (this.signupForm.invalid) {
       this.formError = 'Please complete all required fields.';
@@ -276,7 +272,6 @@ export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
       const newData = this.signupForm.value;
       delete newData.confpassword;
       const register = this.createMerchantFromForm(newData);
-      console.log(register);
       
       //Dispatch Action
       this.store.dispatch(Register({ newData: register }));
