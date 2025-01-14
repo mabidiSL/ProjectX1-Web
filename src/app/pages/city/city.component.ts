@@ -33,7 +33,7 @@ export class CityComponent  implements OnInit {
   searchTerm: string = '';
   filterTerm: string = '';
   countryList:  any[] = null;
-
+  filterCountryTerm: number = null;
   searchPlaceholder: string ='Search By Name'
 
   isDropdownOpen : boolean = false;
@@ -66,7 +66,7 @@ export class CityComponent  implements OnInit {
 
   ngOnInit() {
    this.fetchCountries();
-    this.store.dispatch(fetchCitylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:this.filterTerm }));
+    this.store.dispatch(fetchCitylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, country_id:this.filterCountryTerm, status:this.filterTerm }));
     this.citiesList$.subscribe(data => {
       this.originalArray = data; // City the full City list
       this.filteredArray = [...this.originalArray];
@@ -97,24 +97,29 @@ export class CityComponent  implements OnInit {
              this.filterTerm = event.status;
           else
             this.filterTerm = '';
-       
+          if(event.country)
+          {
+            console.log(event.country);
+            this.filterCountryTerm = event.country;}
+          else
+              this.filterCountryTerm = null;
     
-          this.store.dispatch(fetchCitylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status: this.filterTerm }));
+          this.store.dispatch(fetchCitylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, country_id:this.filterCountryTerm, status: this.filterTerm }));
        
         }
   onSearchEvent(event: any){
     this.searchTerm = event;
-    this.store.dispatch(fetchCitylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status:this.filterTerm}));
+    this.store.dispatch(fetchCitylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm,country_id:this.filterCountryTerm, status:this.filterTerm}));
 
    }
   onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchCitylistData({ page: this.currentPage, itemsPerPage: totalItems, query: this.searchTerm, status:this.filterTerm }));
+    this.store.dispatch(fetchCitylistData({ page: this.currentPage, itemsPerPage: totalItems, query: this.searchTerm, country_id:this.filterCountryTerm,status:this.filterTerm }));
    }
    // pagechanged
    onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchCitylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, status: this.filterTerm }));
+    this.store.dispatch(fetchCitylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, country_id:this.filterCountryTerm,status: this.filterTerm }));
     
   }
 

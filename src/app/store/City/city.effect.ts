@@ -34,8 +34,8 @@ export class CityEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchCitylistData),
-            mergeMap(({ page, itemsPerPage , query, status }) =>
-                this.CrudService.fetchData('/cities',{ limit: itemsPerPage, page: page,query: query, status: status}).pipe(
+            mergeMap(({ page, itemsPerPage , country_id, query, status }) =>
+                this.CrudService.fetchData('/cities',{ limit: itemsPerPage, page: page,query: query, country_id: country_id, status: status}).pipe(
                     map((response: any) => fetchCitylistSuccess({ CityListdata: response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
