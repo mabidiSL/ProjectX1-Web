@@ -83,52 +83,85 @@
 
     
         <!--Notification's component-->
-      <div class="dropdown d-inline-block" dropdown>
-        <button type="button" class="btn header-item noti-icon" id="page-header-notifications-dropdown" dropdownToggle>
-          <i class="bx bx-bell bx-tada"></i>
-          <span *ngIf="(unseenNotif$ |async) !==0"class="badge bg-danger rounded-pill">{{unseenNotif$ |async}}</span>
-        </button>
-        <div *ngIf="notifications.length > 0">
-          <div  class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown" *dropdownMenu>
-            <div class="p-3">
-              <div class="row align-items-center">
-                <div class="col">
-                  <h6 class="m-0">{{ 'HEADER.NOTIFICATIONS.TITLE' | translate}} </h6>
-                </div>
-                <div class="col-auto">
-                  <a routerLink="/private/notifications/list" class="small">{{ 'HEADER.NOTIFICATIONS.VIEW_ALL' | translate}}</a>
+        <div class="dropdown d-inline-block" dropdown>
+          <button
+            type="button"
+            class="btn header-item noti-icon"
+            id="page-header-notifications-dropdown"
+            dropdownToggle
+          >
+            <i class="bx bx-bell bx-tada"></i>
+            <span *ngIf="(unseenNotif$ | async) !== 0" class="badge bg-danger rounded-pill">
+              {{ unseenNotif$ | async }}
+            </span>
+          </button>
+        
+          <div
+            class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
+            aria-labelledby="page-header-notifications-dropdown"
+            *dropdownMenu
+          >
+            <!-- Notifications Content -->
+            <ng-container *ngIf="notifications.length > 0; else noNotifications">
+              <div class="p-3">
+                <div class="row align-items-center">
+                  <div class="col">
+                    <h6 class="m-0">{{ 'HEADER.NOTIFICATIONS.TITLE' | translate }}</h6>
+                  </div>
+                  <div class="col-auto">
+                    <a routerLink="/private/notifications/list" class="small">
+                      {{ 'HEADER.NOTIFICATIONS.VIEW_ALL' | translate }}
+                    </a>
+                  </div>
                 </div>
               </div>
-            </div>
-            <ngx-simplebar style="max-height: 300px; overflow-y: auto;">
-              <ng-container *ngFor="let notification of notifications">
-                <a  tabindex="0" style="cursor: pointer;" [ngClass]="{ 'unseen-notification': !notification.seen }"   class="text-reset notification-item" (click)="navigateToNotification(notification)" (keydown.enter)="navigateToNotification(notification)" (keydown.space)="navigateToNotification(notification)">
-                  <div class="d-flex">
-                    <div class="avatar-xs me-3">
-                      <span class="avatar-title bg-primary rounded-circle font-size-16">
-                        <i class="bx bx-bell-plus" ></i>
-                      </span>
-                    </div>
-                    <div class="flex-grow-1">
-                      <h6 class="mb-1">{{ notification.translation_data[0].title }}</h6>
-                      <div class="font-size-12 text-muted">
-                        <p class="mb-1">{{ notification.translation_data[0].description }}</p> 
-                        <p class="mb-0"><i class="mdi mdi-clock-outline"></i> {{ notification.createdAt | date: 'short' }}</p>
+              <ngx-simplebar style="max-height: 300px; overflow-y: auto;">
+                <ng-container *ngFor="let notification of notifications">
+                  <a
+                    tabindex="0"
+                    style="cursor: pointer;"
+                    [ngClass]="{ 'unseen-notification': !notification.seen }"
+                    class="text-reset notification-item"
+                    (click)="navigateToNotification(notification)"
+                    (keydown.enter)="navigateToNotification(notification)"
+                    (keydown.space)="navigateToNotification(notification)"
+                  >
+                    <div class="d-flex">
+                      <div class="avatar-xs me-3">
+                        <span class="avatar-title bg-primary rounded-circle font-size-16">
+                          <i class="bx bx-bell-plus"></i>
+                        </span>
+                      </div>
+                      <div class="flex-grow-1">
+                        <h6 class="mb-1">{{ notification.translation_data[0].title }}</h6>
+                        <div class="font-size-12 text-muted">
+                          <p class="mb-1">{{ notification.translation_data[0].description }}</p>
+                          <p class="mb-0">
+                            <i class="mdi mdi-clock-outline"></i> {{ notification.createdAt | date: 'short' }}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </a>
+                </ng-container>
+              </ngx-simplebar>
+              <div class="p-2 border-top d-grid">
+                <a class="btn btn-sm btn-link font-size-14 text-center" routerLink="/private/notifications/list">
+                  <i class="mdi mdi-arrow-right-circle me-1"></i>
+                  <span key="t-view-more">{{ 'HEADER.NOTIFICATIONS.LOAD_MORE' | translate }}</span>
                 </a>
-              </ng-container>
-            </ngx-simplebar>
-            <div class="p-2 border-top d-grid">
-              <a class="btn btn-sm btn-link font-size-14 text-center" routerLink="/private/notifications/list">
-                <i class="mdi mdi-arrow-right-circle me-1"></i> <span key="t-view-more">{{
-                  'HEADER.NOTIFICATIONS.LOAD_MORE' | translate}}</span>
-              </a>
-            </div>
+              </div>
+            </ng-container>
+        
+            <!-- No Notifications Template -->
+            <ng-template #noNotifications>
+              <div class="p-3 text-center">
+                <h6 class="m-0">{{ 'HEADER.NOTIFICATIONS.NO_NOTIFICATIONS' | translate }}</h6>
+              </div>
+            </ng-template>
           </div>
         </div>
-      </div>
+        
 
       <div class="dropdown d-inline-block" dropdown>
         <button type="button" class="btn header-item" dropdownToggle id="page-header-user-dropdown">
