@@ -25,10 +25,9 @@
             }
           </a>}
           @else{
-          <a routerLink="{{item.link}}" class="side-nav-link-ref"    [ngClass]="{'active': activeMenuItem === item.id}"
-          routerLinkActive="active" (click)="setActiveMenuItem(item.id)">
+          <a routerLink="{{item.link}}" class="side-nav-link-ref"  routerLinkActive="active" >
             @if(item.icon){
-            <i class="bx {{ item.icon }}" [ngClass]="{'active': activeMenuItem === item.id}"></i>
+            <i class="bx {{ item.icon }}" ></i>
             }
             <span> {{ item.label | translate }}</span>
             @if(item.badge){
@@ -88,26 +87,19 @@
     </ul>
   </div>
 </ng-template>
-<!-- Sidebar -->
 
-<!-- <div class="vertical-menu" >
-  <ngx-simplebar class="h-100" #componentRef>
-    @if(isCondensed){
-    <div>
-      <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
-    </div>
-    }@else {
-    <div>
-      <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
-    </div>
-    }
-  </ngx-simplebar>
-</div> -->
 <div class="vertical-menu" >
   <ngx-simplebar class="h-100" #componentRef>
-    <div>
-      <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
-    </div>
-  </ngx-simplebar>
+    
+    @if(isCondensed){
+      <div>
+        <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+      </div>
+      }@else {
+      <div>
+        <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+      </div>
+      }
+    </ngx-simplebar>
 </div>
 <!-- Left Sidebar End -->

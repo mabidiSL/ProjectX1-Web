@@ -33,7 +33,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
     router.events.forEach((event) => {
       if (event instanceof NavigationEnd) {
         this._activateMenuDropdown();
-        this._scrollElement();
+       // this._scrollElement();
       }
     });
   }
@@ -41,7 +41,7 @@ export class SidebarComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnInit() {
    
     this.initialize();
-    this._scrollElement();
+    //this._scrollElement();
   }
   
   ngAfterViewInit() {
