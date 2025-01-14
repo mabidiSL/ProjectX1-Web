@@ -189,12 +189,13 @@
                   <!-- Show Data for non-flag properties -->
                   <ng-template #showData>
                     <ng-container *ngIf="getProperty(data, column.property) !== null && getProperty(data, column.property) !== undefined">
-                      <ng-container *ngIf="column.property === 'description'; else showText">
-                        <textarea 
-                        class="form-control" 
-                        rows="2" 
-                        [(ngModel)]="data[column.property]" >
-                        </textarea>
+                      <ng-container *ngIf="column.property.includes('description'); else showText">
+                        
+                        <h5 class="font-size-14 scrollable-vertical  mb-1">
+                          <a href="javascript: void(0);" class="text-dark ">
+                            {{ getProperty(data, column.property) }}
+                          </a>
+                        </h5>
                     </ng-container>
                     <ng-template #showText >
                       <ng-container *ngIf="column.property === 'rating'; else showText1">
@@ -209,8 +210,8 @@
                               Credit Card
                             </ng-container>
                           <ng-template #showText2>
-                          <h5 class="font-size-14 mb-1">
-                          <a href="javascript: void(0);" class="text-dark">
+                          <h5 class="font-size-14  mb-1">
+                          <a href="javascript: void(0);" class="text-dark ">
                             {{ getProperty(data, column.property) }}
                           </a>
                         </h5>

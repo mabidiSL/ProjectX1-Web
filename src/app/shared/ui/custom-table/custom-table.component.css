@@ -13,3 +13,25 @@
     word-wrap: break-word;
     white-space: pre-wrap;
   }
+
+  .scrollable-vertical {
+    max-width: 300px;
+    max-height: 40px; 
+    overflow-y: auto;
+    overflow-x: hidden;
+    white-space: normal;
+    word-wrap: break-word;
+
+  }
+  .scrollable-vertical {
+    max-width: 300px;
+    max-height: 50px; 
+    overflow-y: auto; /* Scrollbar only when needed */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    white-space: normal; /* Allow text to wrap to the next line */
+    word-wrap: break-word; /* Break words that are too long */
+    
+}
+.scrollable-vertical::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Edge: Hides scrollbar */
+}

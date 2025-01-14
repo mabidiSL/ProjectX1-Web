@@ -261,10 +261,7 @@ private getNavigationState(){
      })
      .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
      });
-    //  if(this.isEditing){
-    //   console.log(this.filteredCities);
-    //   this.storeForm.controls['city_id'].setValue(city_id);
-    //  }
+   
    });
   }
   }
