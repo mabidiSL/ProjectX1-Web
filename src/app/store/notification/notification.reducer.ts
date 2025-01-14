@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/app/Notificationlist.reducer.ts
 import { createReducer, on } from '@ngrx/store';
 import {  addNotificationlist, addNotificationlistFailure, addNotificationlistSuccess, deleteNotificationlist, deleteNotificationlistFailure, deleteNotificationlistSuccess, fetchMyNotificationlistData, fetchMyNotificationlistFail, fetchMyNotificationlistSuccess, fetchNotificationlistData, fetchNotificationlistFail, fetchNotificationlistSuccess, getNotificationById, getNotificationByIdFailure, getNotificationByIdSuccess, updateNotificationlist, updateNotificationlistFailure, updateNotificationlistSuccess } from './notification.action';
@@ -5,6 +6,7 @@ import { Notification } from './notification.model';
 
 export interface NotificationlistState {
   NotificationListdata: Notification[];
+  MyNotification: any[];
   currentPage: number;
   totalItems: number;
   selectedNotification: Notification;
@@ -15,6 +17,7 @@ export interface NotificationlistState {
 
 export const initialState: NotificationlistState = {
   NotificationListdata: [],
+  MyNotification: [],
   currentPage: 1,
   totalItems: 0,
   selectedNotification: null,
@@ -52,7 +55,7 @@ export const NotificationListReducer = createReducer(
   })),
   on(fetchMyNotificationlistSuccess, (state, { NotificationListdata }) => ({
     ...state,
-    NotificationListdata: NotificationListdata.notifications,
+    MyNotification: NotificationListdata.notifications,
     unseen: NotificationListdata.unseen,
     loading: false,
     error: null 

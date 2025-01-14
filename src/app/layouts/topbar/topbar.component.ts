@@ -14,7 +14,7 @@ import { _User } from 'src/app/store/Authentication/auth.models';
 import { logout } from 'src/app/store/Authentication/authentication.actions';
 import { SocketService } from 'src/app/core/services/webSocket.service';
 import { fetchMyNotificationlistData, updateNotificationlist } from 'src/app/store/notification/notification.action';
-import { selectDataNotification, selectDataUnseenCount } from 'src/app/store/notification/notification-selector';
+import { selectDataMyNotification,  selectDataUnseenCount } from 'src/app/store/notification/notification-selector';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { Notification } from 'src/app/store/notification/notification.model';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
@@ -64,7 +64,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
     public authService: AuthenticationService
     ) {
               this.loading$ = this.store.pipe(select(selectDataLoading)); 
-              this.notifications$ = this.store.pipe(select(selectDataNotification));
+              this.notifications$ = this.store.pipe(select(selectDataMyNotification));
               this.unseenNotif$ = this.store.pipe(select(selectDataUnseenCount));     
       this.socketService.Connect();
       this.authService.currentUser$.subscribe(user => {
@@ -116,11 +116,8 @@ export class TopbarComponent implements OnInit, OnDestroy {
   @Output() mobileMenuButtonClicked = new EventEmitter();
 
   ngOnInit() {
-    //this.fetchNotification();
     this.listenForMessages();
-    //this.updateHeight();
 
-    // this.initialAppState = initialState;
     this.store.select('layout').subscribe((data) => {
       this.theme = data.DATA_LAYOUT;
     })
@@ -153,9 +150,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
       case 'giftcard-approved':
         return 'private/giftCards/list';
       
-    //   default:
-    //     return 'private/notifications/list'; // Default route if no match
-    // }
+   
   }
 }
    navigateToNotification(notification: any) {
