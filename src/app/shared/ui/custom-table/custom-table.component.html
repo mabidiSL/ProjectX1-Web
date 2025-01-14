@@ -204,11 +204,17 @@
                         </span>
                       </ng-container>
                         <ng-template #showText1>
+                          <ng-container *ngIf="column.property === 'payment_method' else showText2">
+                              <i class="fab fa-cc-visa me-1"></i>
+                              Credit Card
+                            </ng-container>
+                          <ng-template #showText2>
                           <h5 class="font-size-14 mb-1">
                           <a href="javascript: void(0);" class="text-dark">
                             {{ getProperty(data, column.property) }}
                           </a>
                         </h5>
+                      </ng-template>
                       </ng-template>
                     </ng-template>
                     </ng-container>
