@@ -1,10 +1,6 @@
 <div class="container-fluid">
 
-  <!-- start page title -->
-
-  <app-page-title title="Detail" [breadcrumbItems]="breadCrumbItems"></app-page-title>
-
-  <!-- end page title -->
+  
 
   <div class="row">
     <div class="col-lg-12">
@@ -70,11 +66,11 @@
               <tbody>
                 <tr *ngFor="let item of Invoice?.orderItems; let i = index">
                   <td>{{i+1}}</td>
-                  <td>{{item.offers.translation_data[0]?.name}}</td>
-                  <td class="text-end">{{item.offers.translation_data[0]?.description}}</td>
-                  <td class="text-end">£{{item.offers.price}}</td>
+                  <td>{{item.offers?.translation_data[0]?.name}}</td>
+                  <td class="text-end">{{item.offers?.translation_data[0]?.description}}</td>
+                  <td class="text-end">£{{item.offers?.price}}</td>
                   <td class="text-end">{{item.quantity}}</td>
-                  <td class="text-end">£{{item.quantity*item.offers.price}}</td>
+                  <td class="text-end">£{{item.quantity*item.offers?.price}}</td>
                 </tr>
 
                 

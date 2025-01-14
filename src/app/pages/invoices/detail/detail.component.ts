@@ -30,7 +30,7 @@ export class DetailComponent implements OnInit, OnDestroy {
  }
 
  ngOnInit() {
-   this.breadCrumbItems = [{ label: 'Invoices' }, { label: 'Detail', active: true }];
+   //this.breadCrumbItems = [{ label: 'Invoices' }, { label: 'Detail', active: true }];
    this.parentRoute = this.route.snapshot.params['path'];
    const InvoiceId = this.route.snapshot.params['id'];
          if (InvoiceId) {
