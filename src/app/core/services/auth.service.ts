@@ -28,8 +28,10 @@ export class AuthenticationService {
     
       setCurrentUser(user: _User | null): void {
         if (user) {
+         
           localStorage.setItem('currentUser', JSON.stringify(user));
         } else {
+
           localStorage.removeItem('currentUser');
         }
         this.currentUserSubject.next(user);

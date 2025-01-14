@@ -28,6 +28,7 @@ import { NgStepperModule } from 'angular-ng-stepper';
 import { CdkStepperModule } from '@angular/cdk/stepper';
 import { ThemeService } from 'src/app/core/services/theme.service';
 import { CountryService } from 'src/app/core/services/country-code.service';
+import { ConfigService } from 'src/app/core/services/config.service';
 
 
 
@@ -52,7 +53,7 @@ import { CountryService } from 'src/app/core/services/country-code.service';
     AuthRoutingModule,
     SlickCarouselModule
   ],
-  providers: [RandomBackgroundService,ImageService, LanguageService, CountryService]
+  providers: [RandomBackgroundService,ImageService, LanguageService, CountryService, ConfigService]
 })
 export class AuthModule { 
 constructor(

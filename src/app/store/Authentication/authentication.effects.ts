@@ -36,8 +36,7 @@ export class AuthenticationEffects {
           return this.AuthService.register(newData ).pipe(
             map((user) => {
               if(user){
-              //this.toastr.success('Registration completed, Check you Inbox soon!!!');
-              //this.router.navigate(['/auth/login']);
+             
               return RegisterSuccess({ user })
               }
             }),
@@ -61,7 +60,6 @@ export class AuthenticationEffects {
             map((message: any) => {
               if(message){
               this.toastr.success('Email Verified');
-             // this.router.navigate(['/auth/login']);
               return verifyEmailSuccess({ message: message.result })
               }
             }),
@@ -87,13 +85,13 @@ export class AuthenticationEffects {
               const user = response.result.user;
               const token = response.result.accessToken;
               const refreshToken = response.result.refreshToken;
-              //const claims = response.result.user.role.claims;
-    
+              const companyId = response.result.user.companyId;
               // Delegate state update to the AuthenticationService
               this.AuthService.setCurrentUser(user);
               localStorage.setItem('token', token);
               localStorage.setItem('refreshToken', refreshToken);
-             // localStorage.setItem('claims', claims);
+              localStorage.setItem('companyId', companyId);
+
 
               const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/private';
               this.router.navigate([returnUrl]);
@@ -182,9 +180,13 @@ export class AuthenticationEffects {
     exhaustMap(({company} ) => {
       return this.AuthService.updateCompanyProfile(company).pipe(
         map((response : any) => {
-              this.AuthService.setCurrentUser(response.result.user);
-
-              this.toastr.success('The company profile was updated successfully.');
+            const user = response.result.user;
+            const companyId = localStorage.getItem('companyId');
+            user.companyId = companyId;
+            console.log(user);
+            
+            this.AuthService.setCurrentUser(user);
+            this.toastr.success('The company profile was updated successfully.');
             this.router.navigate(['/private/dashboard']);
             return updateCompanyProfileSuccess({company:response.result});
           }

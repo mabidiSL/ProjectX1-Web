@@ -25,6 +25,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ModalsComponent } from 'src/app/shared/ui/modals/modals.component';
 import { passwordValidator } from 'src/app/shared/validator/passwordValidator';
 import { CountryService } from 'src/app/core/services/country-code.service';
+import { ConfigService } from 'src/app/core/services/config.service';
 
 @Component({
   selector: 'app-register2',
@@ -56,21 +57,24 @@ export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
 
   sectionlist:  SectionListModel[] = [];
   modalRef?: BsModalRef;
+  showTerms: boolean = false;
 
   filteredAreas :  Area[] = [];
   filteredCities:  City[] = [];
   @ViewChild('cdkStepper') cdkStepper: CdkStepper;
   @ViewChild('rightsection') rightsection: ElementRef<HTMLElement>;
   phoneCode!: string;
- 
+  termsText: string = ''; 
+
   constructor  (
-    private formBuilder: UntypedFormBuilder, 
-    private router: Router,
-    private randomBackgroundService: RandomBackgroundService,
-    private backgroundService: BackgroundService, 
-    private modalService: BsModalService,
-    private countrCodeService: CountryService,
-    private formUtilService: FormUtilService,
+    private readonly formBuilder: UntypedFormBuilder, 
+    private readonly router: Router,
+    private readonly randomBackgroundService: RandomBackgroundService,
+    private readonly backgroundService: BackgroundService, 
+    private readonly modalService: BsModalService,
+    private readonly countrCodeService: CountryService,
+    private readonly configService: ConfigService,
+    private readonly  formUtilService: FormUtilService,
     public store: Store) { 
 
       this.loading$ = this.store.pipe(select(selectDataLoading));
@@ -96,6 +100,8 @@ export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
       merchantName:['', Validators.required],
       section_id:[null, Validators.required],
       website: [null],
+      termsAndConditions: [false, Validators.requiredTrue] 
+
       
 
     }, {validators: [this.passwordMatchValidator]});
@@ -106,6 +112,12 @@ export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
   fileName2: string = ''; 
 
   ngOnInit() {
+    this.configService.loadTermsAndConditions().subscribe(
+      (terms)=>{
+        this.termsText = terms;
+        console.log(this.termsText);
+        
+      });
     document.body.classList.add("auth-body-bg");
 
     this.store.pipe(select(selectRegistrationSuccess)).subscribe((success) => {
@@ -134,10 +146,13 @@ export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
       );
     }
   }
+  onTermsChange(event: Event) {
+    this.showTerms = (event.target as HTMLInputElement).checked;
+  }
   fetchCountry(){
     this.store.select(selectDataCountry).subscribe((data) =>{
       this.countrylist = [...data].map(country =>{
-        const translatedName = country.translation_data && country.translation_data[0]?.name || 'No name available';
+        const translatedName = country.translation_data?.[0]?.name || 'No name available';
     
         return {
           ...country,  
@@ -153,7 +168,7 @@ export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
     this.store.select(selectDataSection).subscribe((data) => {
       this.sectionlist = [...data].map(section => {
         // Extract the translated name (assuming translation_data[0] exists)
-        const translatedName = section.translation_data && section.translation_data[0]?.name || 'No name available';
+        const translatedName = section.translation_data?.[0]?.name || 'No name available';
     
         return {
           ...section,  // Spread the original section data
@@ -233,11 +248,7 @@ export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
       merchant.translation_data.push(enTranslation);
     }
    
-    // // Create the Arabic translation if valid
-    // const arTranslation = this.formUtilService.createTranslation(merchant,'ar', arFields );
-    // if (arTranslation) {
-    //   merchant.translation_data.push(arTranslation);
-    // }
+    
     if(merchant.translation_data.length <= 0)
       delete merchant.translation_data;
     // Dynamically remove properties that are undefined or null at the top level of city object

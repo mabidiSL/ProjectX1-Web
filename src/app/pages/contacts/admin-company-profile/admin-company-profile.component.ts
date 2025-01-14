@@ -146,7 +146,7 @@ export class AdminCompanyProfileComponent implements OnInit, OnDestroy{
     fetchCountry(){
       this.store.select(selectDataCountry).subscribe((data) =>{
         this.filteredCountries = [...data].map(country =>{
-          const translatedName = country.translation_data && country.translation_data[0]?.name || 'No name available';
+          const translatedName = country.translation_data?.[0]?.name || 'No name available';
       
           return {
             ...country,  
@@ -162,7 +162,7 @@ export class AdminCompanyProfileComponent implements OnInit, OnDestroy{
       this.store.select(selectDataSection).subscribe((data) => {
         this.sectionlist = [...data].map(section => {
           // Extract the translated name (assuming translation_data[0] exists)
-          const translatedName = section.translation_data && section.translation_data[0]?.name || 'No name available';
+          const translatedName =  section.translation_data?.[0]?.name || 'No name available';
       
           return {
             ...section,  // Spread the original section data
@@ -175,78 +175,8 @@ export class AdminCompanyProfileComponent implements OnInit, OnDestroy{
       });
   
     }
-    // fetchAreas(){
-    //   this.store.select(selectDataArea).subscribe(data =>
-    //     this.filteredAreas =  [...data].map(area =>{
-    //     const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
-    //     return {
-    //       ...area,  
-    //       translatedName 
-    //     };
-    //   })
-    //   .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-    //   }));
-    // }
-    // fetchCities(){
-    //   this.store.select(selectDataCity).subscribe((data) => {
-    //     this.filteredCities = [...data].map(city =>{
-    //      const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
-     
-    //      return {
-    //        ...city,  
-    //        translatedName 
-    //      };
-    //    })
-    //    .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-    //    });
-    //  });
-    // }
-
-    // onChangeCountrySelection(event: Country){
-    //   const country = event;
-    //   this.adminForm.get('area_id').setValue(null);
-    //   this.adminForm.get('city_id').setValue(null);
-    //   this.filteredAreas = [];
-    //   this.filteredCities = [];
-  
-    //   if(country){
-    //     this.store.select(selectDataArea).subscribe(data =>
-    //       this.filteredAreas =  [...data].map(area =>{
-    //       const translatedName = area.translation_data && area.translation_data[0]?.name || 'No name available';
-    //       return {
-    //         ...area,  
-    //         translatedName 
-    //       };
-    //     })
-    //     .filter(area => area.country_id === country.id)
-    //     .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-    //     }));
-    //   }
-     
-      
-    // }
-    // onChangeAreaSelection(event: Area){
-    //   const area = event;
-    //   this.filteredCities = [];
-    //   this.adminForm.get('city_id').setValue(null);
-  
-    //   if(area){
-    //     this.store.select(selectDataCity).subscribe((data) => {
-    //       this.filteredCities = [...data].map(city =>{
-    //        const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
        
-    //        return {
-    //          ...city,  
-    //          translatedName 
-    //        };
-    //      })
-    //      .filter(city => city.area_id === area.id)
-    //      .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-    //      });
-    //    });
-    //   }
-        
-    // }
+   
     setCountryByPhoneCode(code: string){
       const country = this.filteredCountries.find(c => c.phoneCode === code);
       this.adminForm.get('country_id').setValue(country?.id);
@@ -299,8 +229,7 @@ export class AdminCompanyProfileComponent implements OnInit, OnDestroy{
    delete company.description;  
    delete company.description_ar;  
   
-   //delete company.area_id;
-  // delete company.country_id;
+  
 
    return company;
 }

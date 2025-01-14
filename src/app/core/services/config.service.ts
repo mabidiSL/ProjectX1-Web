@@ -10,9 +10,14 @@ import { Observable } from 'rxjs';
 export class ConfigService {
 
   URL = 'assets/dashboard.json';
+  url = 'assets/terms-conditions.html';
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
   getConfig(): Observable<any> {
     return this.http.get<any>(`${this.URL}`)
+  }
+  loadTermsAndConditions():Observable<any> {
+    return this.http.get(`${this.url}`)
+     
   }
 }

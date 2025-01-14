@@ -204,7 +204,24 @@
                             </div>
                           </div>
                         </div>
-                              
+                        <div class="col-md-12 mb-3">
+                          <div class="form-group">
+                            <label for="termsAndConditions">
+                              <input type="checkbox" id="termsAndConditions" formControlName="termsAndConditions" (change)="onTermsChange($event)">
+                              {{ 'I agree to the terms and conditions' | translate }} <span class="text-danger">*</span>
+                            </label>
+                            <div *ngIf="signupForm.get('termsAndConditions').touched && signupForm.get('termsAndConditions').invalid" class="invalid-feedback d-block">
+                              <span *ngIf="signupForm.get('termsAndConditions').errors?.['required']">{{'You must agree to the terms and conditions' | translate}}.</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12 mb-3" *ngIf="showTerms">
+                          <div class="form-group">
+                            <label for="termsText">{{ 'Terms and Conditions' | translate }}</label>
+                            <div [innerHTML]="termsText"></div>
+                            <!-- <textarea id="termsText" class="form-control" rows="5" readonly>{{ termsText | translate }}</textarea> -->
+                          </div>
+                        </div> 
                          
 
                   </div>
