@@ -2,6 +2,7 @@
 import { Translation } from "src/app/core/interfaces/core.interface";
 import { City } from "../City/city.model";
 import {  Role } from "../Role/role.models";
+import { Country } from "intl-tel-input/data";
 
 export class User {
   userId?: string;
@@ -36,7 +37,7 @@ referCount?: string;
 totalOrder?: number;
 url?: string;
 phone?: string;
-country?: string;
+country?: Country;
 user?: any;
 city_id?: number;
 status?: string;

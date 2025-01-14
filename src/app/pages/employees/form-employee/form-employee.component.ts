@@ -13,8 +13,8 @@ import { Area } from 'src/app/store/area/area.model';
 import { selectDataCity, selectDataLoadingCities } from 'src/app/store/City/city-selector';
 import { getCityByCountryId } from 'src/app/store/City/city.action';
 import { City } from 'src/app/store/City/city.model';
-import { selectDataCountry, selectedCountry } from 'src/app/store/country/country-selector';
-import { fetchCountrylistData, getCountryById } from 'src/app/store/country/country.action';
+import { selectDataCountry } from 'src/app/store/country/country-selector';
+import { fetchCountrylistData } from 'src/app/store/country/country.action';
 import { Country } from 'src/app/store/country/country.model';
 import { selectDataLoading, selectedEmployee } from 'src/app/store/employee/employee-selector';
 import { addEmployeelist, getEmployeeById, updateEmployeelist } from 'src/app/store/employee/employee.action';
@@ -54,7 +54,7 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
   citylist$:  Observable<City[]> ;
   loading$: Observable<boolean>;
   loadingCities$: Observable<boolean>;
-  country_id!: number;
+  country: any = null;
 
   moduleKeys: any[] = [];
   permissionKeys: any[] = [];
@@ -83,9 +83,8 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
       
       // This will be applied when the issue of state user manager is resolved
       this.authservice.currentUser$.subscribe(user => {
-        this.country_id = user?.country_id; 
-        if(this.country_id)      
-          this.store.dispatch(getCountryById({CountryId: this.country_id}));
+        this.country = user?.country; 
+        
       });
      
 
@@ -120,9 +119,9 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
       });
     }
   ngOnInit() {
+    this.setPhoneCodeByCountry();
     this.fetchCountry();
     this.fetchRoles();
-    this.setPhoneCodeByCountry();
      
     const employeeId = this.route.snapshot.params['id'];
     if (employeeId) {
@@ -155,13 +154,13 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
        
   }
   setPhoneCodeByCountry(){
-    this.store.select(selectedCountry).subscribe(
-      (country)  => {
-        if(country)
-          this.phoneCode = country.ISO2;
-          this.employeeForm.controls['country_id'].setValue(country.id);
-          this.fetchCities(country.id);
-      });
+    // this.store.select(selectedCountry).subscribe(
+    //   (country)  => {
+        if(this.country)
+          this.phoneCode = this.country.ISO2;
+          this.employeeForm.controls['country_id'].setValue(this.country.id);
+          this.fetchCities(this.country.id);
+     // });
   }
   /**
    * Open modal
