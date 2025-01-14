@@ -383,27 +383,29 @@ selectCategory(event: any){
 }
 selectRole(event: any){
   if(event ){
-    this.filterByRole = event.category;
+    this.filterByRole = event.id;
   }
   
   
 }
 selectCity(event: any){
+  console.log('i am on the filter by city', event);
+  
   if(event ){
-    this.filterByCity = event.category;
+    this.filterByCity = event.id;
   }
  
 }
 selectCountry(event: any){
   if(event ){
-    this.filterByCountry = event.category;
+    this.filterByCountry = event.id;
   }
     
 }
 selectMerchant(event: any){
 
   if(event ){
-    this.filterByMerchant = event.category;
+    this.filterByMerchant = event.id;
   }  
    
   
