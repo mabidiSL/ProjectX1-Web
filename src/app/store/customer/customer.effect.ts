@@ -17,8 +17,8 @@ export class CustomerEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchCustomerlistData),
-            mergeMap(({ page, itemsPerPage,query, role, status }) =>
-                this.CrudService.fetchData('/users', { limit:itemsPerPage , page: page,query: query, role: role, status: status}).pipe(
+            mergeMap(({ page, itemsPerPage,query, createdBy, role, status }) =>
+                this.CrudService.fetchData('/users', { limit:itemsPerPage , page: page,query: query,createdBy: createdBy, role: role, status: status}).pipe(
                     map((response: any) => fetchCustomerlistSuccess({ CustomerListdata : response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);

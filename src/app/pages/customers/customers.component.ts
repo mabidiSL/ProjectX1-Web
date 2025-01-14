@@ -58,7 +58,7 @@ export class CustomersComponent implements OnInit {
 
   ngOnInit() {
           
-        this.store.dispatch(fetchCustomerlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, role:3 , query: this.searchTerm, status: this.filterTerm}));
+        this.store.dispatch(fetchCustomerlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, role:3 , createdBy:'all', query: this.searchTerm, status: this.filterTerm}));
         this.CustomerList$.subscribe(data => {
         this.originalArray = data; // Customer the full Customer list
         this.filteredArray = [...this.originalArray];
@@ -74,17 +74,17 @@ export class CustomersComponent implements OnInit {
         this.filterTerm = '';
 
       
-      this.store.dispatch(fetchCustomerlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,  role:3, query: this.searchTerm, status: this.filterTerm}));
+      this.store.dispatch(fetchCustomerlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage,  role:3, createdBy:'all', query: this.searchTerm, status: this.filterTerm}));
    
     }
      onSearchEvent(event: any){
         this.searchTerm = event;
-        this.store.dispatch(fetchCustomerlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, role:3, query: this.searchTerm, status: this.filterTerm}));
+        this.store.dispatch(fetchCustomerlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, role:3,  createdBy:'all', query: this.searchTerm, status: this.filterTerm}));
     
        }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchCustomerlistData({ page: this.currentPage, itemsPerPage: totalItems, role:3, query: this.searchTerm, status: this.filterTerm }));
+    this.store.dispatch(fetchCustomerlistData({ page: this.currentPage, itemsPerPage: totalItems, role:3,  createdBy:'all', query: this.searchTerm, status: this.filterTerm }));
    }
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
