@@ -1,6 +1,6 @@
 import { ChartType } from './dashboard.model';
 
-const emailSentBarChart: ChartType = {
+const offerSalesBarChart: ChartType = {
     chart: {
         height: 340,
         type: 'bar',
@@ -22,19 +22,12 @@ const emailSentBarChart: ChartType = {
     dataLabels: {
         enabled: false
     },
-    series: [{
-        name: 'Coupons',
-        data: [44, 55, 41, 67, 22, 43, 36, 52, 24, 18, 36, 48]
-    }, {
-        name: 'Flash Deals',
-        data: [13, 23, 20, 8, 13, 27, 18, 22, 10, 16, 24, 22]
-    }, {
-        name: 'Featured Deals',
-        data: [11, 17, 15, 15, 21, 14, 11, 18, 17, 12, 20, 18]
-    }],
+    series: [       
+    ],
     xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        categories: [],
     },
+    
     colors: ['#d4af37', '#f1b44c', '#34c38f'],
     legend: {
         position: 'bottom',
@@ -198,4 +191,4 @@ const CustomerRatingChart: ChartType = {
 
 
 
-export { emailSentBarChart, monthlyEarningChart, transactions, statData, CustomerRatingChart };
+export { offerSalesBarChart, monthlyEarningChart, transactions, statData, CustomerRatingChart };

@@ -11,11 +11,21 @@ import { Observable } from 'rxjs';
 export class DashboardService {
     constructor(private readonly HttpClient: HttpClient) {
     }
-    getStatistics(rateDuration: string,offerViewImpressionDuration: string, offerViewImpressionPeriod: number): Observable<any>{
+    getStatistics(
+       rateDuration: string,
+       offerViewImpressionDuration: string,
+       chartPeriod: number,
+       couponSalesDuration: string,
+       giftCardSalesDuration: string,
+      ): Observable<any>{
         const params = {
             rateDuration: rateDuration,
             offerViewImpressionDuration: offerViewImpressionDuration,
-            offerViewImpressionPeriod: offerViewImpressionPeriod
+            offerViewImpressionPeriod: chartPeriod,
+            couponSalesDuration : couponSalesDuration ,
+            couponSalesPeriod: chartPeriod,
+            giftCardSalesDuration : giftCardSalesDuration,
+            giftCardSalesPeriod: chartPeriod
         };
         return this.HttpClient.get<any>(`${environment.baseURL}/dashboard`, {params});
 

@@ -43,28 +43,42 @@
         <div class="col-12 col-sm-6 col-lg-9 col-xl-9">
            
             <div class="card">
+                <div class="chart-container" style="position: relative;">
+                    <!-- Loading Spinner -->
+                    <div *ngIf="isLoadingSales" class="loading-overlay">
+                      <div class="spinner"></div>
+                    </div>
                 <div class="card-body">
                     <div class="d-sm-flex flex-wrap">
-                        <h4 class="card-title mb-4">{{ 'Coupons Sales' | translate }}</h4>
+                        <h4 class="card-title mb-4">{{ 'Offer Sales' | translate }}</h4>
                         <div class="ms-auto">
                             <ul class="nav nav-pills">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="javascript: void(0);" [ngClass]="{'active': isActive === 'week'}" (click)="weeklyreport()">{{ 'Week' | translate }}</a>
+                                    <a class="nav-link" href="javascript: void(0);" [ngClass]="{'active': isActive === 'week'}" (click)="setOfferSalesDuration('week')">{{ 'Week' | translate }}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="javascript: void(0);" (click)="monthlyreport()" [ngClass]="{'active': isActive === 'month'}">{{ 'Month' | translate }}</a>
+                                    <a class="nav-link" href="javascript: void(0);" (click)="setOfferSalesDuration('month')" [ngClass]="{'active': isActive === 'month'}">{{ 'Month' | translate }}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="javascript: void(0);" (click)="yearlyreport()" [ngClass]="{'active': isActive === 'year'}">{{ 'Year' | translate }}</a>
+                                    <a class="nav-link" href="javascript: void(0);" (click)="setOfferSalesDuration('year')" [ngClass]="{'active': isActive === 'year'}">{{ 'Year' | translate }}</a>
                                 </li>
                             </ul>
                         </div>
                     </div>
-                    <apx-chart  class="apex-charts" [chart]="emailSentBarChart.chart" [series]="emailSentBarChart.series" [legend]="emailSentBarChart.legend" [colors]="emailSentBarChart.colors" [fill]="emailSentBarChart.fill" [dataLabels]="emailSentBarChart.dataLabels" [xaxis]="emailSentBarChart.xaxis" [plotOptions]="emailSentBarChart.plotOptions">
+                    <apx-chart  class="apex-charts" 
+                    [chart]="offerSalesBarChart.chart" 
+                    [series]="offerSalesBarChart.series" 
+                    [legend]="offerSalesBarChart.legend" 
+                    [colors]="offerSalesBarChart.colors" 
+                    [fill]="offerSalesBarChart.fill" 
+                    [dataLabels]="offerSalesBarChart.dataLabels" 
+                    [xaxis]="offerSalesBarChart.xaxis" 
+                    [plotOptions]="offerSalesBarChart.plotOptions">
                     </apx-chart>
                 </div>
+                </div>
             </div>
-            <div class="card">
+            <!-- <div class="card">
                 <div class="card-body">
                     <div class="d-sm-flex flex-wrap">
                         <h4 class="card-title mb-4">{{ 'Gift Card Sales' | translate }}</h4>
@@ -82,10 +96,10 @@
                             </ul>
                         </div>
                     </div>
-                    <apx-chart  class="apex-charts" [chart]="emailSentBarChart.chart" [series]="emailSentBarChart.series" [legend]="emailSentBarChart.legend" [colors]="emailSentBarChart.colors" [fill]="emailSentBarChart.fill" [dataLabels]="emailSentBarChart.dataLabels" [xaxis]="emailSentBarChart.xaxis" [plotOptions]="emailSentBarChart.plotOptions">
+                    <apx-chart  class="apex-charts" [chart]="offerSalesBarChart.chart" [series]="offerSalesBarChart.series" [legend]="offerSalesBarChart.legend" [colors]="offerSalesBarChart.colors" [fill]="offerSalesBarChart.fill" [dataLabels]="offerSalesBarChart.dataLabels" [xaxis]="offerSalesBarChart.xaxis" [plotOptions]="offerSalesBarChart.plotOptions">
                     </apx-chart>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
     <!-- end row -->
@@ -118,13 +132,13 @@
                     <div class="ms-auto">
                         <ul class="nav nav-pills">
                             <li class="nav-item">
-                                <a class="nav-link" href="javascript: void(0);" [ngClass]="{'active': isActiveChartOption === 'week'}" (click)="weeklyVisitorSatisticsReport()">{{ 'Week' | translate }}</a>
+                                <a class="nav-link" href="javascript: void(0);" (click)="setVisitorOffersSatisticsDuration('week')" [ngClass]="{'active': VisitorStatisticsDuration === 'week'}" >{{ 'Week' | translate }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="javascript: void(0);" (click)="monthlyVisitorSatisticsReport()" [ngClass]="{'active': isActiveChartOption === 'month'}">{{ 'Month' | translate }}</a>
+                                <a class="nav-link" href="javascript: void(0);" (click)="setVisitorOffersSatisticsDuration('month')" [ngClass]="{'active': VisitorStatisticsDuration === 'month'}">{{ 'Month' | translate }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="javascript: void(0);" (click)="yearlyVisitorSatisticsReport()" [ngClass]="{'active': isActiveChartOption === 'year'}">{{ 'Year' | translate }}</a>
+                                <a class="nav-link" href="javascript: void(0);" (click)="setVisitorOffersSatisticsDuration('year')" [ngClass]="{'active': VisitorStatisticsDuration === 'year'}">{{ 'Year' | translate }}</a>
                             </li>
                         </ul>
                     </div>

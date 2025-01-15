@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit, TemplateRef, ViewChild, AfterViewInit } from '@angular/core';
-import {  emailSentBarChart, monthlyEarningChart } from './data';
+import {  offerSalesBarChart } from './data';
 import { ChartType } from './dashboard.model';
 import { BsModalService, BsModalRef, ModalDirective } from 'ngx-bootstrap/modal';
 import { EventService } from '../../../core/services/event.service';
@@ -27,7 +27,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
   MostPaymentMethodChart : ChartType = MostPaymentMethodChart;
   LinewithDataChart: ApexOptions = LinewithDataChart;
   CustomerRatingChart: ChartType = CustomerRatingChart;
-  emailSentBarChart: ChartType;
+  offerSalesBarChart: ChartType;
   monthlyEarningChart: ChartType;
   transactions: any;
   statData: any;
@@ -41,9 +41,17 @@ export class DefaultComponent implements OnInit, AfterViewInit {
   };
   public currentUser: _User;
   isLoading = false;
-  isActive: string;
-  isActiveChartOption: string = 'month';
+  isLoadingSales = false;
+  isActive: string = 'month';
   orderList$: Observable<any[]>;
+
+// statistic params
+  ChartPeriod: number = 6;
+  offerViewImpressionDuration: string = 'month';
+  VisitorStatisticsDuration: string = 'month';
+  rateDuration: string = 'month';
+  coupouSalesDuration: string = 'month';
+  giftcardSalesDuration: string = 'month';
 
   @ViewChild('content') content;
   @ViewChild('center', { static: false }) center?: ModalDirective;
@@ -63,13 +71,18 @@ export class DefaultComponent implements OnInit, AfterViewInit {
       }});
       this.fetchTransactions();
      if(this.currentRole && (this.currentRole === 'Admin' || this.currentRole === 'Merchant'))
-      { 
-        this.dashboardService.getStatistics('month','month', 6).subscribe(
+      { this.isLoading = true;
+        this.isLoadingSales = true;
+        this.dashboardService.getStatistics(this.rateDuration,this.VisitorStatisticsDuration,this.ChartPeriod,this.coupouSalesDuration, this.giftcardSalesDuration).subscribe(
           response =>{
+            this.isLoading = false;
+            this.isLoadingSales = false;
             this.rateStatics = response.result
             this.updateVisitorStatistics();
             this.updateCustomerRatingChart();
             this.updateStatisticsData();
+            this.updateOfferSalesChart();
+
           });
       }
   }
@@ -77,12 +90,21 @@ export class DefaultComponent implements OnInit, AfterViewInit {
     this.store.dispatch(fetchOrderlistData({ page: 1, itemsPerPage: 6, query: null, date: null,  status: null }));
 
   }
-  fetchDashboardStatistics(period: string){
-    this.dashboardService.getStatistics(period,period, 6).subscribe(
+  fetchDashboardStatistics(chartType: string,
+    rateDuration: string,
+    offerViewImpressionDuration: string,
+    period: number,
+    couponSalesDuration: string,
+    giftCardSalesDuration : string){
+    this.dashboardService.getStatistics(rateDuration, offerViewImpressionDuration,  period, couponSalesDuration,  giftCardSalesDuration).subscribe(
       response =>{
         this.rateStatics = response.result;
         this.isLoading = false;
-        this.updateVisitorStatistics();
+        this.isLoadingSales = false;
+        if(chartType === 'visitor')
+          this.updateVisitorStatistics();
+        else if(chartType === 'offer-sales')
+          this.updateOfferSalesChart();
         
       });
   }
@@ -205,6 +227,32 @@ export class DefaultComponent implements OnInit, AfterViewInit {
       oneStar.total 
     ];
   }
+  private updateOfferSalesChart() {
+    if (!this.rateStatics ) {
+      return;
+    }
+    const dataMappingSeries = [
+      { key: 'couponSales', name: 'Coupons Sales'},
+      { key: 'giftCardSales', name: 'GiftCards Sales'}
+      ];
+      console.log(dataMappingSeries);
+      
+      // Extract periods once since they are the same for all serie
+     const categories = this.rateStatics.couponSales?.map((item: any) => item.period);
+     console.log(categories);
+     
+    if (categories) {
+      const range = this.dashboardService.getRangeDescription(categories);
+      this.setChartDuration(range, 'sales');
+    }
+  
+    this.offerSalesBarChart.series = dataMappingSeries.map(({ key, name }) => {
+      const data = this.rateStatics[key]?.map((item: any) => item.count).reverse() || [];
+      return { name, data };
+    });
+    console.log(this.offerSalesBarChart.series);
+
+  }
   private updateVisitorStatistics(){
     if (!this.rateStatics ) {
       return;
@@ -220,27 +268,39 @@ export class DefaultComponent implements OnInit, AfterViewInit {
     const categories = this.rateStatics.couponImpressons?.map((item: any) => item.period);
     if (categories) {
       const range = this.dashboardService.getRangeDescription(categories);
-      this.setChartPeriod(range);
+      this.setChartDuration(range, 'visitor');
     }
   
     this.LinewithDataChart.series = seriesDataMapping.map(({ key, name }) => {
-      const data = this.rateStatics[key]?.map((item: any) => item.count) || [];
+      const data = this.rateStatics[key]?.map((item: any) => item.count).reverse() || [];
       return { name, data };
     });
     
   }
 
-  setChartPeriod(period: any[]){
+  setChartDuration(period: any[], chartTitle: string){
 
-    const title = (this.isActiveChartOption === 'year') 
+    if(chartTitle === 'visitor'){
+    const title = (this.VisitorStatisticsDuration === 'year') 
     ? 'Years' 
-    : (this.isActiveChartOption === 'month') 
+    : (this.VisitorStatisticsDuration === 'month') 
       ? 'Months' 
       : 'Weeks';
       const xaxis = {categories: period, title: {
         text: title
       }};
       this.LinewithDataChart.xaxis = xaxis;
+    }else if(chartTitle === 'sales'){
+      const title = (this.coupouSalesDuration === 'year') 
+    ? 'Years' 
+    : (this.coupouSalesDuration === 'month') 
+      ? 'Months' 
+      : 'Weeks';
+      const xaxis = {categories: period, title: {
+        text: title
+      }};
+      this.offerSalesBarChart.xaxis = xaxis;
+    }
     
 
 
@@ -250,80 +310,35 @@ export class DefaultComponent implements OnInit, AfterViewInit {
    */
   private fetchData() {
     this.MostPaymentMethodChart.series = [200,30,10,50];
-    this.emailSentBarChart = emailSentBarChart;
-    this.monthlyEarningChart = monthlyEarningChart;
+    this.offerSalesBarChart = offerSalesBarChart;
+    //this.monthlyEarningChart = monthlyEarningChart;
 
-    this.isActive = 'year';
-    this.configService.getConfig().subscribe(data => {
-      this.transactions = data.transactions;
+   // this.isActive = 'month';
+    // this.configService.getConfig().subscribe(data => {
+    //   this.transactions = data.transactions;
       
-    });
+    // });
   }
-  weeklyVisitorSatisticsReport() {
-    this.isActiveChartOption = 'week';
+  setVisitorOffersSatisticsDuration(duration: string) {
+    this.VisitorStatisticsDuration = duration;
     this.isLoading = true;
-    this.fetchDashboardStatistics('week');
+    this.fetchDashboardStatistics('visitor',this.rateDuration,this.VisitorStatisticsDuration,this.ChartPeriod,this.coupouSalesDuration, this.giftcardSalesDuration);
     
   }
-  monthlyVisitorSatisticsReport() {
-    this.isActiveChartOption = 'month';
-    this.isLoading = true;
-    this.fetchDashboardStatistics('month');
+   
+  setOfferSalesDuration(duration: string) {
+    this.isActive = duration;
+    this.isLoadingSales = true;
+    this.coupouSalesDuration = duration;
+    this.giftcardSalesDuration = duration;
+    this.fetchDashboardStatistics('offer-sales',this.rateDuration,this.VisitorStatisticsDuration,this.ChartPeriod,this.coupouSalesDuration, this.giftcardSalesDuration);
 
   }
-  yearlyVisitorSatisticsReport() {
-    this.isActiveChartOption = 'year';
-    this.isLoading = true;
-    this.fetchDashboardStatistics('year');
-
-  }
+  
   opencenterModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
-  weeklyreport() {
-    this.isActive = 'week';
-    this.emailSentBarChart.series =
-      [{
-        name: 'Coupons',
-        data: [44, 55, 41, 67, 22, 43, 36, 52, 24, 18, 36, 48]
-      }, {
-        name: 'Flash Deals',
-        data: [11, 17, 15, 15, 21, 14, 11, 18, 17, 12, 20, 18]
-      }, {
-        name: 'Featured Deals',
-        data: [13, 23, 20, 8, 13, 27, 18, 22, 10, 16, 24, 22]
-      }];
-  }
- 
-  monthlyreport() {
-    this.isActive = 'month';
-    this.emailSentBarChart.series =
-      [{
-        name: 'Coupons',
-        data: [44, 55, 41, 67, 22, 43, 36, 52, 24, 18, 36, 48]
-      }, {
-        name: 'Flash Deals',
-        data: [13, 23, 20, 8, 13, 27, 18, 22, 10, 16, 24, 22]
-      }, {
-        name: 'Featured Deals',
-        data: [11, 17, 15, 15, 21, 14, 11, 18, 17, 12, 20, 18]
-      }];
-  }
-
-  yearlyreport() {
-    this.isActive = 'year';
-    this.emailSentBarChart.series =
-      [{
-        name: 'Coupons',
-        data: [13, 23, 20, 8, 13, 27, 18, 22, 10, 16, 24, 22]
-      }, {
-        name: 'Flash Deals',
-        data: [11, 17, 15, 15, 21, 14, 11, 18, 17, 12, 20, 18]
-      }, {
-        name: 'Featured Deals',
-        data: [44, 55, 41, 67, 22, 43, 36, 52, 24, 18, 36, 48]
-      }];
-  }
+  
 
 
   /**
