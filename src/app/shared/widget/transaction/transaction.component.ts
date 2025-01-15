@@ -14,6 +14,7 @@ import { Order } from 'src/app/store/Order/order.models';
   styleUrls: ['./transaction.component.scss']
 })
 export class TransactionComponent implements OnDestroy {
+[x: string]: any;
 
   modalRef?: BsModalRef;
   config:any = {

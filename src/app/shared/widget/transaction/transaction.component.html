@@ -1,3 +1,4 @@
+<!-- eslint-disable @angular-eslint/template/no-negated-async -->
 <div class="table-responsive mb-0">
   <table class="table table-centered table-nowrap">
     <thead class="table-light">
@@ -31,7 +32,7 @@
           <a href="javascript: void(0);" class="text-body fw-bold">{{data.id}}</a>
         </td>
         <td>{{data.user?.translation_data[0].f_name +' '+ data.user?.translation_data[0].l_name}}</td>
-        <td>{{data.items?.length}}</td>
+        <td>{{data.offres}}</td>
         <td>{{data.createdAt | date:'dd/MM/yyyy' }}</td>
         <td>£{{data.totalAmount}}</td>
         <td>

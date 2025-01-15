@@ -13,8 +13,7 @@ import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { ApexOptions } from 'ng-apexcharts';
 import { fetchOrderlistData } from 'src/app/store/Order/order.actions';
 import { Observable } from 'rxjs';
-import { selectDataOrder } from 'src/app/store/Order/order-selector';
-import { select, Store } from '@ngrx/store';
+import {  Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-default',
@@ -52,6 +51,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
   rateDuration: string = 'month';
   coupouSalesDuration: string = 'month';
   giftcardSalesDuration: string = 'month';
+  latestTransactions: any[]= [];
 
   @ViewChild('content') content;
   @ViewChild('center', { static: false }) center?: ModalDirective;
@@ -63,13 +63,13 @@ export class DefaultComponent implements OnInit, AfterViewInit {
     private readonly store: Store
   ) {
 
-      this.orderList$ = this.store.pipe(select(selectDataOrder)); // Observing the Order list from Order
+      //this.orderList$ = this.store.pipe(select(selectDataOrder)); // Observing the Order list from Order
       this.authService.currentUser$.subscribe(user => {
         if (user) {
         this.currentRole = user.role.translation_data[0].name;
         this.companyId =  user.companyId;
       }});
-      this.fetchTransactions();
+      //this.fetchTransactions();
      if(this.currentRole && (this.currentRole === 'Admin' || this.currentRole === 'Merchant'))
       { this.isLoading = true;
         this.isLoadingSales = true;
@@ -78,6 +78,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
             this.isLoading = false;
             this.isLoadingSales = false;
             this.rateStatics = response.result
+            this.latestTransactions = this.rateStatics.latestCustomerTransactions;
             this.updateVisitorStatistics();
             this.updateCustomerRatingChart();
             this.updateStatisticsData();
