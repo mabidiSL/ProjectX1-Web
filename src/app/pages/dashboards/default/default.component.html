@@ -16,94 +16,114 @@
     <div class="row ">
         <div class="col-12 col-sm-6 col-lg-3 col-xl-3">
             <div class="row">
-                <div  *ngFor="let stat of statData; track $index">
-                    <app-stat [link]="stat.link" [title]="stat.title" [value]="stat.value" [icon]="stat.icon"></app-stat>
+                <div class="col-12 col-sm-6 col-lg-3 col-xl-6" *ngFor="let stat of statData; track $index">
+                    <div class="card mini-stats-wid" >
+                        <div class="card-body">
+                          <a [routerLink]="stat.link" class="text-reset">
+                            <div class="d-flex justify-content-between">
+                            <div class="flex-grow-1">
+                              <p class="text-muted fw-medium">{{stat.title | translate}}</p>
+                              <h4 class="mb-0">{{stat.value}}</h4>
+                            </div>
+                            <div class="flex-shrink-0 align-self-center">
+                              <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
+                                <span class="avatar-title">
+                                  <i class="bx {{stat.icon}} font-size-24"></i>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          </a>
+                        </div>
+                        <!-- end card-body -->
+                      </div>
                 </div>
-            </div>
-            <div class="row">
-
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title mb-4">{{ 'YTD payment methods' | translate }}</h4>
-                    <div>
-                        <apx-chart class="apex-charts" dir="ltr" 
-                        [series]="MostPaymentMethodChart.series" 
-                        [chart]="MostPaymentMethodChart.chart" 
-                        [colors]="MostPaymentMethodChart.colors" 
-                        [plotOptions]="MostPaymentMethodChart.plotOptions" 
-                        [legend]="MostPaymentMethodChart.legend" 
-                        [responsive]="MostPaymentMethodChart.responsive" 
-                        [labels]="MostPaymentMethodChart.labels">
-                        </apx-chart>
-                    </div>
-                </div>
-            </div>
-            </div>
-        </div>
-        <div class="col-12 col-sm-6 col-lg-9 col-xl-9">
+                <div class="col-12 col-sm-6 col-lg-9 col-xl-6">
            
-            <div class="card">
-                <div class="chart-container" style="position: relative;">
-                    <!-- Loading Spinner -->
-                    <div *ngIf="isLoadingSales" class="loading-overlay">
-                      <div class="spinner"></div>
-                    </div>
-                <div class="card-body">
-                    <div class="d-sm-flex flex-wrap">
-                        <h4 class="card-title mb-4">{{ 'Offer Sales' | translate }}</h4>
-                        <div class="ms-auto">
-                            <ul class="nav nav-pills">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript: void(0);" [ngClass]="{'active': isActive === 'week'}" (click)="setOfferSalesDuration('week')">{{ 'Week' | translate }}</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript: void(0);" (click)="setOfferSalesDuration('month')" [ngClass]="{'active': isActive === 'month'}">{{ 'Month' | translate }}</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript: void(0);" (click)="setOfferSalesDuration('year')" [ngClass]="{'active': isActive === 'year'}">{{ 'Year' | translate }}</a>
-                                </li>
-                            </ul>
+                    <div class="card">
+                        <div class="chart-container" style="position: relative;">
+                            <!-- Loading Spinner -->
+                            <div *ngIf="isLoadingSales" class="loading-overlay">
+                              <div class="spinner"></div>
+                            </div>
+                        <div class="card-body">
+                            <div class="d-sm-flex flex-wrap">
+                                <h4 class="card-title mb-4">{{ 'Offer Sales' | translate }}</h4>
+                                <div class="ms-auto">
+                                    <ul class="nav nav-pills">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="javascript: void(0);" [ngClass]="{'active': isActive === 'week'}" (click)="setOfferSalesDuration('week')">{{ 'Week' | translate }}</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="javascript: void(0);" (click)="setOfferSalesDuration('month')" [ngClass]="{'active': isActive === 'month'}">{{ 'Month' | translate }}</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="javascript: void(0);" (click)="setOfferSalesDuration('year')" [ngClass]="{'active': isActive === 'year'}">{{ 'Year' | translate }}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <apx-chart  class="apex-charts" 
+                            [chart]="offerSalesBarChart.chart" 
+                            [series]="offerSalesBarChart.series" 
+                            [legend]="offerSalesBarChart.legend" 
+                            [colors]="offerSalesBarChart.colors" 
+                            [fill]="offerSalesBarChart.fill" 
+                            [dataLabels]="offerSalesBarChart.dataLabels" 
+                            [xaxis]="offerSalesBarChart.xaxis" 
+                            [plotOptions]="offerSalesBarChart.plotOptions">
+                            </apx-chart>
+                        </div>
                         </div>
                     </div>
-                    <apx-chart  class="apex-charts" 
-                    [chart]="offerSalesBarChart.chart" 
-                    [series]="offerSalesBarChart.series" 
-                    [legend]="offerSalesBarChart.legend" 
-                    [colors]="offerSalesBarChart.colors" 
-                    [fill]="offerSalesBarChart.fill" 
-                    [dataLabels]="offerSalesBarChart.dataLabels" 
-                    [xaxis]="offerSalesBarChart.xaxis" 
-                    [plotOptions]="offerSalesBarChart.plotOptions">
-                    </apx-chart>
-                </div>
+                    <!-- <div class="card">
+                        <div class="card-body">
+                            <div class="d-sm-flex flex-wrap">
+                                <h4 class="card-title mb-4">{{ 'Gift Card Sales' | translate }}</h4>
+                                <div class="ms-auto">
+                                    <ul class="nav nav-pills">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="javascript: void(0);" [ngClass]="{'active': isActive === 'week'}" (click)="weeklyreport()">{{ 'Week' | translate }}</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="javascript: void(0);" (click)="monthlyreport()" [ngClass]="{'active': isActive === 'month'}">{{ 'Month' | translate }}</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="javascript: void(0);" (click)="yearlyreport()" [ngClass]="{'active': isActive === 'year'}">{{ 'Year' | translate }}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <apx-chart  class="apex-charts" [chart]="offerSalesBarChart.chart" [series]="offerSalesBarChart.series" [legend]="offerSalesBarChart.legend" [colors]="offerSalesBarChart.colors" [fill]="offerSalesBarChart.fill" [dataLabels]="offerSalesBarChart.dataLabels" [xaxis]="offerSalesBarChart.xaxis" [plotOptions]="offerSalesBarChart.plotOptions">
+                            </apx-chart>
+                        </div>
+                    </div> -->
                 </div>
             </div>
-            <!-- <div class="card">
-                <div class="card-body">
-                    <div class="d-sm-flex flex-wrap">
-                        <h4 class="card-title mb-4">{{ 'Gift Card Sales' | translate }}</h4>
-                        <div class="ms-auto">
-                            <ul class="nav nav-pills">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript: void(0);" [ngClass]="{'active': isActive === 'week'}" (click)="weeklyreport()">{{ 'Week' | translate }}</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript: void(0);" (click)="monthlyreport()" [ngClass]="{'active': isActive === 'month'}">{{ 'Month' | translate }}</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript: void(0);" (click)="yearlyreport()" [ngClass]="{'active': isActive === 'year'}">{{ 'Year' | translate }}</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <apx-chart  class="apex-charts" [chart]="offerSalesBarChart.chart" [series]="offerSalesBarChart.series" [legend]="offerSalesBarChart.legend" [colors]="offerSalesBarChart.colors" [fill]="offerSalesBarChart.fill" [dataLabels]="offerSalesBarChart.dataLabels" [xaxis]="offerSalesBarChart.xaxis" [plotOptions]="offerSalesBarChart.plotOptions">
-                    </apx-chart>
-                </div>
-            </div> -->
+            
         </div>
+       
     </div>
     <!-- end row -->
+    <div class="row">
 
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">{{ 'YTD payment methods' | translate }}</h4>
+                <div>
+                    <apx-chart class="apex-charts" dir="ltr" 
+                    [series]="MostPaymentMethodChart.series" 
+                    [chart]="MostPaymentMethodChart.chart" 
+                    [colors]="MostPaymentMethodChart.colors" 
+                    [plotOptions]="MostPaymentMethodChart.plotOptions" 
+                    [legend]="MostPaymentMethodChart.legend" 
+                    [responsive]="MostPaymentMethodChart.responsive" 
+                    [labels]="MostPaymentMethodChart.labels">
+                    </apx-chart>
+                </div>
+            </div>
+        </div>
+        </div>
     
 
    

@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, TemplateRef, ViewChild } from '@angular/c
 import { Store, select } from '@ngrx/store';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { filter, Observable, Subject, take, takeUntil } from 'rxjs';
 import { selectDataLoading, selectDataOrder, selectDataTotalItems, selectOrderById } from 'src/app/store/Order/order-selector';
 import { fetchOrderlistData, deleteOrderlist, updateOrderlist, getOrderById } from 'src/app/store/Order/order.actions';
 import { Order } from 'src/app/store/Order/order.models';
@@ -131,7 +131,12 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.store.dispatch(getOrderById({OrderId: event }));
         // Subscribe to the selected order from the store
         this.store
-            .pipe(select(selectOrderById), takeUntil(this.destroy$))
+            .pipe(
+              select(selectOrderById),
+              filter(order => !!order && order.id === event), // Ensure the order is loaded and matches the current ID
+              take(1), // Take only the first emission
+              takeUntil(this.destroy$)
+            )
             .subscribe(order => {
               if (order) {
 
@@ -152,11 +157,15 @@ export class OrdersComponent implements OnInit, OnDestroy {
                 }, [])
               
                 this.Order =  order;
+                order = null;
                
      
               }
             });
             this.modalRef = this.modalService.show(this.showModal, this.config);
+            this.modalRef.onHidden?.subscribe(() => {
+              this.Order = null;
+            });
 
         }
        

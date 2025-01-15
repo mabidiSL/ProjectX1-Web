@@ -3,7 +3,7 @@ import { Component, Input, OnDestroy, TemplateRef } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { filter, Observable, Subject, take, takeUntil } from 'rxjs';
 import { selectDataLoading, selectOrderById } from 'src/app/store/Order/order-selector';
 import { getOrderById } from 'src/app/store/Order/order.actions';
 import { Order } from 'src/app/store/Order/order.models';
@@ -39,14 +39,24 @@ export class TransactionComponent implements OnDestroy {
    * @param content modal content
    */
   openModal(data: any, content: TemplateRef<any>) {
+    console.log('Open Modal for ', data);
+    
     this.store.dispatch(getOrderById({OrderId: data.id }));
             // Subscribe to the selected order from the store
             this.store
-                .pipe(select(selectOrderById), takeUntil(this.destroy$))
-                .subscribe(order => {
+            .pipe(
+              select(selectOrderById),
+              filter(order => !!order && order.id === data.id), // Ensure the order is loaded and matches the current ID
+              take(1), // Take only the first emission
+              takeUntil(this.destroy$)
+            )
+            .subscribe(order => {
                   if (order) {
-      
+                    console.log('retreived order',order);
+                    console.log('i am in open modal for ', order.items);
+
                       order.items = order.items.reduce((acc, item) => {
+                        console.log('start accumulator function');
                         // Find if the item already exists in the accumulator array
                         const existingItem = acc.find(i => i.offer_id === item.offer_id);
                       
@@ -60,14 +70,18 @@ export class TransactionComponent implements OnDestroy {
                         }
                       
                         return acc;
-                      }, [])
-                    
-                      this.selectedOrder =  order;
-                      
-
+                      }, []);
+                      console.log('order after modification', order.items);
+                      this.selectedOrder =  order; 
+                      order = null;           
                     }
                   });
-                    this.modalRef = this.modalService.show(content, this.config);
+       
+           this.modalRef = this.modalService.show(content, this.config);
+           this.modalRef.onHidden?.subscribe(() => {
+            this.selectedOrder = null;
+          });
+        
     
   }
   ngOnDestroy() {

@@ -11,7 +11,6 @@ import { CustomerRatingChart, LinewithDataChart, MostPaymentMethodChart } from '
 import { _User } from 'src/app/store/Authentication/auth.models';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { ApexOptions } from 'ng-apexcharts';
-import { fetchOrderlistData } from 'src/app/store/Order/order.actions';
 import { Observable } from 'rxjs';
 import {  Store } from '@ngrx/store';
 
@@ -63,13 +62,11 @@ export class DefaultComponent implements OnInit, AfterViewInit {
     private readonly store: Store
   ) {
 
-      //this.orderList$ = this.store.pipe(select(selectDataOrder)); // Observing the Order list from Order
       this.authService.currentUser$.subscribe(user => {
         if (user) {
         this.currentRole = user.role.translation_data[0].name;
         this.companyId =  user.companyId;
       }});
-      //this.fetchTransactions();
      if(this.currentRole && (this.currentRole === 'Admin' || this.currentRole === 'Merchant'))
       { this.isLoading = true;
         this.isLoadingSales = true;
@@ -87,10 +84,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
           });
       }
   }
-  fetchTransactions(){
-    this.store.dispatch(fetchOrderlistData({ page: 1, itemsPerPage: 6, query: null, date: null,  status: null }));
-
-  }
+  
   fetchDashboardStatistics(chartType: string,
     rateDuration: string,
     offerViewImpressionDuration: string,

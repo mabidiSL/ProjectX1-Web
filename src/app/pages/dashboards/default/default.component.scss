@@ -29,4 +29,12 @@
       transform: rotate(360deg);
     }
   }
+  .mini-stats-wid {
+    min-height: 140px; /* Set a consistent minimum height */
+  }
+  .text-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   

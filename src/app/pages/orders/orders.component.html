@@ -45,23 +45,23 @@
       <div class="d-flex justify-content-between mb-2">
         <p id="orderlist-overview" class="m-0">
           Order ID:
-          <span class="list-id text-primary">#{{Order.id}}</span>
+          <span class="list-id text-primary">#{{Order?.id}}</span>
         </p>
         <p id="orderstatus">
           Order Status:
           <span
           class="badge"
           [ngClass]="{
-            'bg-success': Order.status === 'paid',
-            'bg-danger': Order.status === 'unpaid'
+            'bg-success': Order?.status === 'paid',
+            'bg-danger': Order?.status === 'unpaid'
           }">
-          {{Order.status}}
+          {{Order?.status}}
       </span>
         </p>
       </div>
       <p class="mb-4">
         Billing Name:
-        <span class="orderlist-customer text-primary">{{Order.user?.translation_data[0]?.f_name}} {{Order.user?.translation_data[0]?.l_name}}</span>
+        <span class="orderlist-customer text-primary">{{Order?.user?.translation_data[0]?.f_name}} {{Order?.user?.translation_data[0]?.l_name}}</span>
       </p>
       <div class="table-responsive">
         <table class="table table-centered table-nowrap">
@@ -73,7 +73,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of Order.items">
+            <tr *ngFor="let item of Order?.items">
               <th scope="row">
                 <div>
                   <img [src]="item.offers.image? item.offers?.image : 'assets/images/product/product-dummy.png'" alt class="avatar-sm" />
@@ -81,7 +81,7 @@
               </th>
               <td>
                 <div>
-                  <h5 class="text-truncate font-size-14">{{item.offers.translation_data[0]?.name}}</h5>
+                  <h5 class="text-truncate font-size-14">{{item.offers?.translation_data[0]?.name}}</h5>
                   <p class="text-muted mb-0">£ {{item.offers.price}} x {{item.quantity}}</p>
                 </div>
               </td>
@@ -92,7 +92,7 @@
               <td colspan="2">
                 <h6 class="m-0">Total:</h6>
               </td>
-              <td>£{{Order.totalAmount}}</td>
+              <td>£{{Order?.totalAmount}}</td>
             </tr>
            
           </tbody>
