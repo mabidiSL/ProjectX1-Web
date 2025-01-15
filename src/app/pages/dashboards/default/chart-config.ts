@@ -97,7 +97,7 @@ export const LinewithDataChart: ApexOptions = {
         data: [10, 20, 25, 30, 35, 40, 45]  // Replace with dynamic data
       }
     ] as ApexAxisChartSeries,
-    colors: ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'],  // Custom colors for each line
+    colors: ['#D4AF37','#C39797','#F0E68C','#E6BE8A'],  // Custom colors for each line
     title: {
       text: 'Visitor Statistics',  // Title for the chart
       align: 'center'
@@ -119,7 +119,7 @@ export const LinewithDataChart: ApexOptions = {
     },
     markers: {
       size: 5,  // Size of the data point markers
-      colors: ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'],
+      colors: ['#D4AF37','#C39797','#F0E68C','#E6BE8A'],
       strokeWidth: 2
     },
     dataLabels: {

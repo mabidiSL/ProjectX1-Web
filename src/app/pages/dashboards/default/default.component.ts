@@ -66,6 +66,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
         if (user) {
         this.currentRole = user.role.translation_data[0].name;
         this.companyId =  user.companyId;
+       
       }});
      if(this.currentRole && (this.currentRole === 'Admin' || this.currentRole === 'Merchant'))
       { this.isLoading = true;
@@ -104,7 +105,77 @@ export class DefaultComponent implements OnInit, AfterViewInit {
       });
   }
   ngOnInit() {
-    
+    if(this.companyId === 1){
+      this.statData = [
+        {
+          icon: "bx bx-store", 
+          title: "Merchants",
+          link: "/private/merchants/list",
+          value: 0
+        },
+        {
+          icon: "bx bx-store",
+          title: "Merchant Branches",
+          link: "/private/stores/list",
+          value: 0
+        },
+        {
+          icon: "bx bxs-coupon",
+          title: "Coupons",
+          link: "/private/coupons/list",
+          value: 0
+        },
+        {
+          icon: 'bx bxs-gift',
+          title: "Gift Cards",
+          link:'/private/giftCards/list',
+          value: 0
+        },
+        {
+          icon: "bxs-user-detail",
+          title: "Customers",
+          link: "/private/customers/list",
+          value: 0
+        },
+        {
+          icon: "bxs-user-detail",
+          title: "Employees",
+          link: "/private/employees/list",
+          value: 0
+        }
+       
+      ];
+    }
+    else{
+      this.statData = [
+  
+        {
+          icon: "bx bx-store",
+          title: "Merchant Branches",
+          link: "/private/stores/list",
+          value: 0
+        },
+        {
+          icon: "bxs-user-detail",
+          title: "Merchant Employees",
+          link: "/private/employees/list",
+          value: 0
+        },
+        {
+          icon: "bx bxs-coupon",
+          title: "Live Coupons",
+          link: "/private/coupons/list",
+          value: 0
+        },
+        {
+          icon: 'bx bxs-gift',
+          title: "Live Gift Cards",
+          link:'/private/giftCards/list',
+          value: 0
+        }
+       
+      ];
+    }
     /**
      * horizontal-vertical layput set
      */
@@ -135,74 +206,37 @@ export class DefaultComponent implements OnInit, AfterViewInit {
   }
   updateStatisticsData(){
     if(this.currentRole === 'Admin' || this.companyId === 1 ){
-    this.statData = [
-      {
-        icon: "bx bx-store", 
-        title: "Merchants",
-        link: "/private/merchants/list",
-        value: this.rateStatics.totalMerchants
-      },
-      {
-        icon: "bx bx-store",
-        title: "Merchant Branches",
-        link: "/private/stores/list",
-        value: this.rateStatics.totalStores
-      },
-      {
-        icon: "bx bxs-coupon",
-        title: "Coupons",
-        link: "/private/coupons/list",
-        value: this.rateStatics.totalCoupons
-      },
-      {
-        icon: 'bx bxs-gift',
-        title: "Gift Cards",
-        link:'/private/giftCards/list',
-        value: this.rateStatics.totalGiftCards
-      },
-      {
-        icon: "bxs-user-detail",
-        title: "Customers",
-        link: "/private/customers/list",
-        value: this.rateStatics.totalCustomers
-      },
-      {
-        icon: "bxs-user-detail",
-        title: "Employees",
-        link: "/private/employees/list",
-        value: this.rateStatics.totalEmployees
+      if (this.rateStatics) {
+        this.statData.forEach(stat => {
+          switch (stat.title) {
+            case "Merchants":
+              stat.value = this.rateStatics.totalMerchants;
+              break;
+            case "Merchant Branches":
+              stat.value = this.rateStatics.totalStores;
+              break;
+            case "Coupons":
+              stat.value = this.rateStatics.totalCoupons;
+              break;
+            case "Gift Cards":
+              stat.value = this.rateStatics.totalGiftCards;
+              break;
+            case "Customers":
+              stat.value = this.rateStatics.totalCustomers;
+              break;
+            case "Employees":
+              stat.value = this.rateStatics.totalEmployees;
+              break;
+            case "Live Coupons":
+              stat.value = this.rateStatics.totalCoupons; // Adjust as needed
+              break;
+            case "Live Gift Cards":
+              stat.value = this.rateStatics.totalGiftCards; // Adjust as needed
+              break;
+          }
+        });
       }
-     
-    ];
-  } else {
-    this.statData = [
-      
-      {
-        icon: "bx bx-store",
-        title: "Merchant Branches",
-        link: "/private/stores/list",
-        value: this.rateStatics.totalStores
-      },
-      {
-        icon: "bxs-user-detail",
-        title: "Merchant Employees",
-        link: "/private/employees/list",
-        value: this.rateStatics.totalEmployees
-      },
-      {
-        icon: "bx bxs-coupon",
-        title: "Live Coupons",
-        link: "/private/coupons/list",
-        value: this.rateStatics.totalCoupons
-      },
-      {
-        icon: 'bx bxs-gift',
-        title: "Live Gift Cards",
-        link:'/private/giftCards/list',
-        value: this.rateStatics.totalGiftCards
-      }
-     
-    ];}
+  }
 
   }
 
