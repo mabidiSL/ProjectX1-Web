@@ -70,3 +70,7 @@
 //   width: 250px !important; /* Set dropdown width same as ng-select */
 //   max-width: 100% !important; /* Prevent the dropdown from exceeding the width */
 //}
+.html-container{
+  height: 30vh; /* Fixed height for the parent container */
+  overflow-y: auto; /* Ensures scroll for parent */
+}

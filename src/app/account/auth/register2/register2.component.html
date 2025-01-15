@@ -217,9 +217,7 @@
                         </div>
                         <div class="col-md-12 mb-3" *ngIf="showTerms">
                           <div class="form-group">
-                            <label for="termsText">{{ 'Terms and Conditions' | translate }}</label>
-                            <div [innerHTML]="termsText"></div>
-                            <!-- <textarea id="termsText" class="form-control" rows="5" readonly>{{ termsText | translate }}</textarea> -->
+                            <div class="html-container" [innerHTML]="termsText"></div>
                           </div>
                         </div> 
                          
@@ -229,7 +227,6 @@
   
                   <ul class="list-inline wizard d-flex justify-content-end mt-5">
                     <li class="previous list-inline-item" aria-disabled="true"><button class="btn btn-primary" cdkStepperPrevious>{{'Previous' | translate}}</button></li>
-                    <!-- <li class="next list-inline-item" aria-disabled="false"><button class="btn btn-primary" cdkStepperNext [disabled]="!isStepValid(1)" >{{'Finish' | translate}}</button></li> -->
                     <li class="next list-inline-item" aria-disabled="false">
                       <button class="btn btn-primary" [disabled]="!isStepValid(1)" (click)="onSubmit()" >{{'Finish' | translate}}</button></li>
                       <div id="elmLoader" class="loader" *ngIf="loading$ | async">

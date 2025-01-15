@@ -14,10 +14,10 @@ export class ConfigService {
 
   constructor(private readonly http: HttpClient) { }
   getConfig(): Observable<any> {
-    return this.http.get<any>(`${this.URL}`)
+    return this.http.get<any>(`${this.URL}`);
   }
   loadTermsAndConditions():Observable<any> {
-    return this.http.get(`${this.url}`)
+    return this.http.get(`${this.url}`, { responseType: 'text' });
      
   }
 }
