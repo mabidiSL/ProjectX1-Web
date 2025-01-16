@@ -42,7 +42,6 @@
          <div class="col-12 col-sm-6 col-lg-8 col-xl-8">
            
                     <div class="card">
-                        <div class="chart-container" style="position: relative;">
                             <!-- Loading Spinner -->
                             <div *ngIf="isLoadingSales" class="loading-overlay">
                               <div class="spinner"></div>
@@ -75,30 +74,8 @@
                             [plotOptions]="offerSalesBarChart.plotOptions">
                             </apx-chart>
                         </div>
-                        </div>
                     </div>
-                    <!-- <div class="card">
-                        <div class="card-body">
-                            <div class="d-sm-flex flex-wrap">
-                                <h4 class="card-title mb-4">{{ 'Gift Card Sales' | translate }}</h4>
-                                <div class="ms-auto">
-                                    <ul class="nav nav-pills">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="javascript: void(0);" [ngClass]="{'active': isActive === 'week'}" (click)="weeklyreport()">{{ 'Week' | translate }}</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="javascript: void(0);" (click)="monthlyreport()" [ngClass]="{'active': isActive === 'month'}">{{ 'Month' | translate }}</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="javascript: void(0);" (click)="yearlyreport()" [ngClass]="{'active': isActive === 'year'}">{{ 'Year' | translate }}</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <apx-chart  class="apex-charts" [chart]="offerSalesBarChart.chart" [series]="offerSalesBarChart.series" [legend]="offerSalesBarChart.legend" [colors]="offerSalesBarChart.colors" [fill]="offerSalesBarChart.fill" [dataLabels]="offerSalesBarChart.dataLabels" [xaxis]="offerSalesBarChart.xaxis" [plotOptions]="offerSalesBarChart.plotOptions">
-                            </apx-chart>
-                        </div>
-                    </div> -->
+                    
           </div>
             
             
@@ -106,13 +83,13 @@
        
     <!-- end row -->
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-4">
 
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title mb-4">{{ 'YTD payment methods' | translate }}</h4>
                 <div>
-                    <apx-chart class="apex-charts" dir="ltr" 
+                    <apx-chart class="apex-charts"
                     [series]="MostPaymentMethodChart.series" 
                     [chart]="MostPaymentMethodChart.chart" 
                     [colors]="MostPaymentMethodChart.colors" 
@@ -125,15 +102,8 @@
             </div>
         </div>
         </div>
-    </div>
-    
-
-   
-    
-    <div class="row">
-        <div class="col-lg-12">
+        <div class="col-12 col-sm-6 col-lg-8 col-xl-8">
             <div class="card">
-                <div class="chart-container" style="position: relative;">
                     <!-- Loading Spinner -->
                     <div *ngIf="isLoading" class="loading-overlay">
                       <div class="spinner"></div>
@@ -155,6 +125,7 @@
                         </ul>
                     </div>
                 </div>
+                
                 <apx-chart  class="apex-charts" dir="ltr"  [series]="LinewithDataChart.series" [chart]="LinewithDataChart.chart"
                     [colors]="LinewithDataChart.colors" [stroke]="LinewithDataChart.stroke"
                     [dataLabels]="LinewithDataChart.dataLabels" [title]="LinewithDataChart.title"
@@ -164,9 +135,13 @@
                 </apx-chart>
                 </div>
                 </div>
-            </div>
+        </div>
+
     </div>
-    </div>
+    
+
+   
+    
     <div *ngIf="currentRole === 'Admin' || companyId === 1" class="row">
         <div class="col-lg-12">
             <div class="card">
