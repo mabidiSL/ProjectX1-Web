@@ -64,6 +64,7 @@
                           <label for="officeTel">{{'Company Phone' | translate}} </label><br>
                           <app-phone-number
                           *ngIf="adminForm"
+                          [phoneCode]="phoneCode"
                           [initialPhoneNumber]="adminForm.get('officeTel').value"
                           [disabled]="type === 'view'"
                           [inputId]="'officeTel'"
@@ -71,6 +72,9 @@
                           (phoneNumberChanged)="onPhoneNumberChanged($event)" >
                          </app-phone-number> 
                           
+                        </div>
+                        <div *ngIf="errorMessage" class="invalid-feedback d-block">
+                          {{ errorMessage }}
                         </div>
                       </div>
                     </div>
@@ -174,7 +178,7 @@
                         <div class="form-group">
                             <label for="country_id" >{{'Country' | translate}} <span class="text-danger">*</span></label>
                             <ng-select    class="custom-dropdown" id="country_id" placeholder="{{'Select_the_Country' | translate}}" [items]="filteredCountries" bindLabel="translatedName" 
-                            bindValue="id" formControlName="country_id"  >
+                            bindValue="id" formControlName="country_id"  (change)="onCountryChange($event)">
                            </ng-select>  
                              <div *ngIf="adminForm.get('country_id').touched && adminForm.get('country_id').invalid" class="invalid-feedback d-block">
                               <span *ngIf="adminForm.get('country_id').errors?.['required']">{{'Country is required'| translate}}.</span>

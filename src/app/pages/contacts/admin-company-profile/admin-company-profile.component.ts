@@ -3,6 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from '@angular/co
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
+import { PhoneNumberUtil } from 'google-libphonenumber';
 
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
@@ -47,8 +48,11 @@ export class AdminCompanyProfileComponent implements OnInit, OnDestroy{
 
   @ViewChild('formElement', { static: false }) formElement: ElementRef;
   currentUser: _User = null;
-
- 
+  phoneCode: string = null;
+  errorMessage: string = null;
+  phoneUtil = PhoneNumberUtil.getInstance();
+  countryCode: string = null;
+  selectedCompany : any = null;
   constructor(
     private formBuilder: UntypedFormBuilder, 
     private authService: AuthenticationService, 
@@ -71,6 +75,22 @@ export class AdminCompanyProfileComponent implements OnInit, OnDestroy{
       this.initForm();
       
      }
+
+
+ getCountryCodeFromPhoneNumber(phoneNumber: string): string {
+  try {
+    // Parse the phone number
+    const number = this.phoneUtil.parse(phoneNumber);
+    
+    // Get the country code (without the leading '+')
+    const countryCode = number.getCountryCode().toString();
+
+    return countryCode;
+  } catch (error) {
+    console.error('Error parsing phone number:', error);
+    return '';
+  }
+}
     
    private initForm() {
     this.adminForm = this.formBuilder.group({
@@ -119,16 +139,55 @@ export class AdminCompanyProfileComponent implements OnInit, OnDestroy{
           .pipe(select(selectCompany), takeUntil(this.destroy$))
           .subscribe(company => {
             if (company) {
-              
-              this.existantcompanyLogo = company.companyLogo;
-              this.patchValueForm(company);
-              this.originalCompanyData = _.cloneDeep(company);
+              this.selectedCompany = company; 
+              console.log(this.selectedCompany);
+              if (this.selectedCompany?.user?.country?.phoneCode) {
+                this.countryCode = this.selectedCompany.user.country.phoneCode;
+                console.log('Country code set:', this.countryCode);
               }
+              this.phoneCodeVsCountryValidity(this.selectedCompany);
+              this.existantcompanyLogo = this.selectedCompany.companyLogo;
+              this.patchValueForm(this.selectedCompany);
+              this.originalCompanyData = _.cloneDeep(this.selectedCompany);
+              
+            }
           });
          
 
     }
-   
+    checkPhoneNumberMismatch(code1: string){
+          
+      if(code1 !== this.countryCode) {
+        console.log(code1);
+        console.log('********');
+        console.log(this.countryCode);
+       
+        this.adminForm.get('officeTel').setErrors({ 'invalidPhone': true });
+        this.errorMessage = 'You have to modify the phone number according to the country Selected';
+      } 
+      else
+      {
+       this.adminForm.get('officeTel').setErrors(null);
+       this.errorMessage = null;
+      }
+    }
+    phoneCodeVsCountryValidity(company: any){
+      if(company?.user?.country){
+        console.log(company.user.country);
+       
+        if(!company.officeTel)
+           this.phoneCode = company.user.country.ISO2;
+        else {
+        console.log('the office tel is not empty',company?.user?.country?.phoneCode );
+         const countryCode = this.getCountryCodeFromPhoneNumber(company?.officeTel);
+         if (this.countryCode && countryCode) {
+          this.checkPhoneNumberMismatch(countryCode);
+        }
+        // this.checkPhoneNumberMismatch(countryCode, this.countryCode);     
+         
+        }
+       }
+    }
     patchValueForm(company: any){
       this.adminForm.controls['country_id'].setValue(company.user?.country_id);
       this.adminForm.patchValue(company);
@@ -137,9 +196,7 @@ export class AdminCompanyProfileComponent implements OnInit, OnDestroy{
         name_ar: company.translation_data[1]?.name,
         description: company.translation_data[0]?.description,
         description_ar: company.translation_data[1]?.description,
-      
-
-        
+             
       });
     
     }
@@ -180,13 +237,31 @@ export class AdminCompanyProfileComponent implements OnInit, OnDestroy{
     setCountryByPhoneCode(code: string){
       const country = this.filteredCountries.find(c => c.phoneCode === code);
       this.adminForm.get('country_id').setValue(country?.id);
+      this.adminForm.get('country_id').markAsDirty();
+
     }
   
    
   onPhoneNumberChanged(event: { number: string; countryCode: string }) {
     this.adminForm.get('officeTel').setValue(event.number);
+    this.countryCode = event.countryCode;
     this.setCountryByPhoneCode(event.countryCode);
+    this.checkPhoneNumberMismatch(event.countryCode);
 
+  }
+  onCountryChange(event: any){
+    if(event){
+      this.countryCode = event.phoneCode;
+      console.log(event);
+      if(this.adminForm.get('officeTel').value){
+        const countryCode = this.getCountryCodeFromPhoneNumber(this.adminForm.get('officeTel').value);
+        this.checkPhoneNumberMismatch(countryCode);
+        
+      }
+      else
+        this.phoneCode = event.ISO2;
+
+    }
   }
  
   createProfileFromForm(formValue): any {

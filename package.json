@@ -50,6 +50,7 @@
     "cors": "^2.8.5",
     "express": "^4.21.1",
     "flatpickr": "^4.6.13",
+    "google-libphonenumber": "^3.2.40",
     "html2canvas": "^1.4.1",
     "intl-tel-input": "^24.4.0",
     "jquery": "^3.7.1",
