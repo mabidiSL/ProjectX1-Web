@@ -4,6 +4,10 @@ import { Store, select } from '@ngrx/store';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { filter, Observable, Subject, take, takeUntil } from 'rxjs';
+import { AuthenticationService } from 'src/app/core/services/auth.service';
+import { selectDataMerchant } from 'src/app/store/merchantsList/merchantlist1-selector';
+import { fetchMerchantlistData } from 'src/app/store/merchantsList/merchantlist1.action';
+import { Merchant } from 'src/app/store/merchantsList/merchantlist1.model';
 import { selectDataLoading, selectDataOrder, selectDataTotalItems, selectOrderById } from 'src/app/store/Order/order-selector';
 import { fetchOrderlistData, deleteOrderlist, updateOrderlist, getOrderById } from 'src/app/store/Order/order.actions';
 import { Order } from 'src/app/store/Order/order.models';
@@ -17,7 +21,7 @@ import { Modules, Permission } from 'src/app/store/Role/role.models';
 export class OrdersComponent implements OnInit, OnDestroy {
 
 
-    private destroy$ = new Subject<void>();
+    private readonly destroy$ = new Subject<void>();
   
   // bread crumb items
   breadCrumbItems: Array<object>;
@@ -33,6 +37,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   searchPlaceholder: string ='Search By OrderID or Billing Name(fName, lName)'
   filterTerm: string = '';
   filterDateTerm: string = null;
+  currentRole: string = '';
 
   isDropdownOpen : boolean = false;
   filteredArray: any[] = [];
@@ -42,10 +47,14 @@ export class OrdersComponent implements OnInit, OnDestroy {
     backdrop: true,
     ignoreBackdropClick: true
   };
+  
   itemPerPage: number = 10;
   currentPage : number = 1;
   @ViewChild('ViewContent', { static: false }) showModal?: TemplateRef<any>;
-  companyId : number = null;
+  companyId : number = 1;
+  merchantList:  Merchant[] = null;
+  
+  
   statusList: any[] = [
     {status: 'all', label: 'All'},
     {status: 'paid', label: 'Paid'},
@@ -62,8 +71,19 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   ];
 
-  constructor(private store: Store, private modalService: BsModalService  ) {
-      
+  constructor(
+    private store: Store, 
+    private authService: AuthenticationService, 
+    private modalService: BsModalService  ) {
+    
+      this.authService.currentUser$.subscribe(user => {
+        if (user) {
+          if(user.companyId !== 1){
+             this.companyId = user.companyId;
+             this.currentRole = user?.role?.translation_data[0]?.name;
+            }
+        }
+      });
       this.orderList$ = this.store.pipe(select(selectDataOrder)); // Observing the Order list from Order
       this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
       this.loading$ = this.store.pipe(select(selectDataLoading));
@@ -72,7 +92,10 @@ export class OrdersComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit() {
-          
+        if(this.currentRole === 'Admin' || this.companyId === 1){
+          this.fetchMerchants();
+        }
+        this.store.dispatch(fetchMerchantlistData({page: 1, itemsPerPage: 1000,query:'', status: 'active' }));
         this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, company_id: this.companyId,  date: this.filterDateTerm,status:this.filterTerm }));
         this.orderList$.subscribe(data => {
         this.originalArray = data; // Order the full Order list
@@ -81,6 +104,21 @@ export class OrdersComponent implements OnInit, OnDestroy {
        
         });
    }
+    fetchMerchants(){
+          this.store.select(selectDataMerchant).subscribe((data) => { 
+            this.merchantList =  [...data].map(merchant =>{
+              const translatedName = merchant.translation_data?.[0]?.name || 'No name available';
+          
+              return {
+                ...merchant,  
+                translatedName 
+              };
+            }).sort((a, b) => {
+              // Sort by translatedName
+              return a.translatedName.localeCompare(b.translatedName);
+            });
+          });
+        }
   onFilterEvent(event: any){
        if(event.status !== 'all')
          this.filterTerm = event.status;
@@ -88,9 +126,13 @@ export class OrdersComponent implements OnInit, OnDestroy {
          this.filterTerm = '';
        if(event.date )
        this.filterDateTerm = event.date.toLocaleDateString('en-CA'); // Outputs in YYYY-MM-DD format
-
        else
           this.filterDateTerm = null;
+       if(event.company){
+          this.companyId = event.company;
+       }
+       else
+          this.companyId = 1;
    
        this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm,  company_id: this.companyId, date: this.filterDateTerm,  status: this.filterTerm }));
    

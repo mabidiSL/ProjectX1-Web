@@ -100,7 +100,7 @@ export class StoresComponent implements OnInit {
    fetchMerchants(){
        this.store.select(selectDataMerchant).subscribe((data) => { 
          this.merchantList =  [...data].map(merchant =>{
-           const translatedName = merchant.translation_data && merchant.translation_data[0]?.name || 'No name available';
+           const translatedName =  merchant.translation_data?.[0]?.name || 'No name available';
        
            return {
              ...merchant,  
@@ -115,7 +115,7 @@ export class StoresComponent implements OnInit {
     fetchCities(){
        this.store.select(selectDataCity).subscribe((data) => {
          this.citylist = [...data].map(city =>{
-          const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
+          const translatedName = city.translation_data?.[0]?.name || 'No name available';
       
           return {
             ...city,  

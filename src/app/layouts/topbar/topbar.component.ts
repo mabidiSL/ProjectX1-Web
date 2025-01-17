@@ -151,6 +151,8 @@ export class TopbarComponent implements OnInit, OnDestroy {
         return 'private/giftCards/list';
       case 'coupon-purchase':
          return `private/orders/list`;
+      case 'giftcard-purchase':
+         return `private/orders/list`;
       
    
   }
