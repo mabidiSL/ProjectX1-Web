@@ -151,13 +151,13 @@ export class DefaultComponent implements OnInit, AfterViewInit {
   
         {
           icon: "bx bx-store",
-          title: "Merchant Branches",
+          title: "Branches",
           link: "/private/stores/list",
           value: 0
         },
         {
           icon: "bxs-user-detail",
-          title: "Merchant Employees",
+          title: "Employees",
           link: "/private/employees/list",
           value: 0
         },
@@ -227,6 +227,22 @@ export class DefaultComponent implements OnInit, AfterViewInit {
             case "Employees":
               stat.value = this.rateStatics.totalEmployees;
               break;
+           
+          }
+        });
+      }
+    }
+    else
+      if (this.rateStatics) {
+        this.statData.forEach(stat => {
+          switch (stat.title) {
+            
+            case "Branches":
+              stat.value = this.rateStatics.totalStores;
+              break;
+            case "Employees":
+              stat.value = this.rateStatics.totalEmployees;
+              break;
             case "Live Coupons":
               stat.value = this.rateStatics.totalCoupons; // Adjust as needed
               break;
@@ -235,7 +251,7 @@ export class DefaultComponent implements OnInit, AfterViewInit {
               break;
           }
         });
-      }
+      
   }
 
   }

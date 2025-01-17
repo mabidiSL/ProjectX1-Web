@@ -81,11 +81,11 @@ export class GiftCardComponent implements OnInit {
       if(event.status && event.status !== 'all')
         this.filterstatusTerm = event.status;
       if(event.startdate )
-        this.filterstartDateTerm = event.startdate.toISOString().split('T')[0];
+        this.filterstartDateTerm = event.startdate.toLocaleDateString("en-CA");
       else
         this.filterstartDateTerm = null;
       if(event.enddate )
-          this.filterendDateTerm = event.enddate.toISOString().split('T')[0];
+          this.filterendDateTerm = event.enddate.toLocaleDateString("en-CA");
        else
           this.filterendDateTerm = null;
        

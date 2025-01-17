@@ -84,6 +84,7 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
       // This will be applied when the issue of state user manager is resolved
       this.authservice.currentUser$.subscribe(user => {
         this.country = user?.country; 
+        this.phoneCode = this.country.ISO2;
         
       });
      
@@ -98,6 +99,10 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
 
     }
   
+    /**
+     * Initializes the employee form with default values and validators
+     * @private
+     */
     private initForm() {
       this.employeeForm = this.formBuilder.group({
         id: [null],
@@ -137,7 +142,7 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
         .subscribe(employee => {
           if (employee) {
             this.isEditing = true;   
-            this.phoneCode = employee.country?.ISO2;      
+            //this.phoneCode = employee.country?.ISO2;      
             this.employeeForm.controls['country_id'].setValue(employee.country_id);
             this.fetchCities(employee.country_id);
            
@@ -153,6 +158,9 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
     }
        
   }
+  /**
+   * Sets the phone code based on the user's country from authentication
+   */
   setPhoneCodeByCountry(){
     // this.store.select(selectedCountry).subscribe(
     //   (country)  => {
@@ -163,12 +171,16 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
      // });
   }
   /**
-   * Open modal
-   * @param content modal content
+   * Opens a modal dialog
+   * @param content The modal content to display
    */
   openViewModal(content: any) {
     this.modalRef = this.modalService.show(content);
   }
+  /**
+   * Updates form values with employee data
+   * @param employee The employee data to populate the form with
+   */
   patchValueForm(employee: Employee){
     this.employeeForm.patchValue(employee);
     this.employeeForm.patchValue({
@@ -180,6 +192,9 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
     });
   
   }
+  /**
+   * Fetches and sorts the list of roles from the store
+   */
   fetchRoles(){
     this.store.select(selectDataRole).subscribe(
       (data)  => {
@@ -197,6 +212,9 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
     });
 
   }
+  /**
+   * Fetches and sorts the list of countries from the store
+   */
   fetchCountry(){
     this.store.select(selectDataCountry).subscribe((data) =>{
       this.countrylist = [...data].map(country =>{
@@ -224,6 +242,10 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
   //   .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
   //   }));
   // }
+  /**
+   * Fetches cities based on country ID
+   * @param id The country ID to fetch cities for
+   */
   fetchCities(id: number){
     this.store.dispatch(getCityByCountryId({page:1, itemsPerPage:1000, country_id:id}));
     this.store.select(selectDataCity).subscribe((data) => {
@@ -242,6 +264,10 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
    });
   }
  
+  /**
+   * Handles country selection change event
+   * @param event Selected country object
+   */
   onChangeCountrySelection(event: Country){
     const country = event;
     this.employeeForm.get('city_id').setValue(null);
@@ -252,31 +278,14 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
     }
        
   }
-  // onChangeAreaSelection(event: Area){
-  //   const area = event;
-  //   this.filteredCities = [];
-  //   this.employeeForm.get('city_id').setValue(null);
-  //   if(area){
-  //     this.store.select(selectDataCity).subscribe((data) => {
-  //       this.filteredCities = [...data].map(city =>{
-  //        const translatedName = city.translation_data && city.translation_data[0]?.name || 'No name available';
-     
-  //        return {
-  //          ...city,  
-  //          translatedName 
-  //        };
-  //      })
-  //      .filter(city => city.area_id === area.id)
-  //      .sort((a, b) => {return a.translatedName.localeCompare(b.translatedName);
-  //      });
-  //    });
-          
-      
-  //   }
-    
-    
-  // }
+
+ 
   
+  /**
+   * Creates an Employee object from form values
+   * @param formValue The raw form values
+   * @returns Employee object with translations
+   */
   createEmployeeFromForm(formValue): Employee {
     const employee = formValue;
     employee.translation_data = [];
@@ -324,6 +333,9 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
 }
 
   
+  /**
+   * Handles form submission for creating or updating employee
+   */
   onSubmit() {
 
     this.formSubmitted = true;
@@ -359,6 +371,10 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
         }
     
   }
+  /**
+   * Sets the country based on phone code
+   * @param code The phone country code
+   */
   setCountryByPhoneCode(code: string){
    
     
@@ -366,6 +382,10 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
     this.employeeForm.get('country_id').setValue(country?.id);
     this.onChangeCountrySelection(country);
   }
+  /**
+   * Handles phone number changes and updates country if needed
+   * @param event Object containing phone number and country code
+   */
   onPhoneNumberChanged(event: { number: string; countryCode: string }) {
     this.employeeForm.get('phone').setValue(event.number);
     if(this.type === 'create'){
@@ -373,6 +393,10 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
     }
 
   }
+  /**
+   * Handles role selection changes and updates permissions
+   * @param event Selected role object
+   */
   onChangeRoleSelection(event: Role){
     const role = event;
         if(role){
@@ -387,6 +411,10 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
       }
     }
   }
+  /**
+   * Maps role claims to module and permission enums
+   * @param claims Array of role claims to map
+   */
   mapClaimsToEnums(claims: any[]) {
     this.moduleKeys = [];
     this.permissionKeys = [];
@@ -421,8 +449,13 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
 }
  
 
-  // Check if the selected role has permission for a module and permission
-hasPermission(module: string, permission: string): boolean {
+  /**
+   * Checks if selected role has specific permission for a module
+   * @param module The module to check
+   * @param permission The permission to check
+   * @returns boolean indicating if permission exists
+   */
+  hasPermission(module: string, permission: string): boolean {
     const moduleEnum = Modules[module as keyof typeof Modules];
     const permissionEnum = Permission[permission as keyof typeof Permission];
     
@@ -451,10 +484,16 @@ onToggle(event: any){
     this.destroy$.next();
     this.destroy$.complete();
   }
+  /**
+   * Cancels form editing and navigates back to list
+   */
   onCancel(){
     this.employeeForm.reset();
     this.router.navigateByUrl('/private/employees/list');
   }
+  /**
+   * Toggles view mode and navigates back to list
+   */
   toggleViewMode(){
     this.router.navigateByUrl('/private/employees/list');
 }
