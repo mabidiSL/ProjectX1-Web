@@ -31,8 +31,8 @@ export class OrdersEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchOrderlistData),
-            mergeMap(({ page, itemsPerPage, query,date, status }) =>
-                this.CrudService.fetchData('/orders',{ limit: itemsPerPage, page: page,query: query, date: date,status: status}).pipe(
+            mergeMap(({ page, itemsPerPage, query,company_id, date, status }) =>
+                this.CrudService.fetchData('/orders',{ limit: itemsPerPage, page: page,query: query, company_id: company_id, date: date,status: status}).pipe(
                     map((response: any) => fetchOrderlistSuccess({ OrderListdata : response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);

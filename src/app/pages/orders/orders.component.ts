@@ -45,7 +45,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   itemPerPage: number = 10;
   currentPage : number = 1;
   @ViewChild('ViewContent', { static: false }) showModal?: TemplateRef<any>;
-
+  companyId : number = null;
   statusList: any[] = [
     {status: 'all', label: 'All'},
     {status: 'paid', label: 'Paid'},
@@ -73,7 +73,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
           
-        this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, date: this.filterDateTerm,status:this.filterTerm }));
+        this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, company_id: this.companyId,  date: this.filterDateTerm,status:this.filterTerm }));
         this.orderList$.subscribe(data => {
         this.originalArray = data; // Order the full Order list
         this.filteredArray = [...this.originalArray];
@@ -87,30 +87,29 @@ export class OrdersComponent implements OnInit, OnDestroy {
        else
          this.filterTerm = '';
        if(event.date )
-          //this.filterDateTerm = event.date.toISOString().split('T')[0];
        this.filterDateTerm = event.date.toLocaleDateString('en-CA'); // Outputs in YYYY-MM-DD format
 
        else
           this.filterDateTerm = null;
    
-       this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, date: this.filterDateTerm,  status: this.filterTerm }));
+       this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm,  company_id: this.companyId, date: this.filterDateTerm,  status: this.filterTerm }));
    
     }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
-    this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: totalItems, query: this.searchTerm, date: this.filterDateTerm,status:this.filterTerm }));
+    this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: totalItems, query: this.searchTerm,  company_id: this.companyId, date: this.filterDateTerm,status:this.filterTerm }));
    }
 
    onSearchEvent(event: any){
     this.searchTerm = event;
-    this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm, date: this.filterDateTerm,status:this.filterTerm}));
+    this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm,  company_id: this.companyId, date: this.filterDateTerm,status:this.filterTerm}));
 
    }
  
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm,date: this.filterDateTerm, status:this.filterTerm}));
+    this.store.dispatch(fetchOrderlistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm,  company_id: this.companyId, date: this.filterDateTerm, status:this.filterTerm}));
     
   }
 

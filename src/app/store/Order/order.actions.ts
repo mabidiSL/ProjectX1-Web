@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { Order, OrderListModel } from './order.models';
 
 // fetch all list
-export const fetchOrderlistData = createAction('[Data] fetch Orderlist',props<{ page?: number; itemsPerPage?: number, query?: string, date?:string, status?: string}>());
+export const fetchOrderlistData = createAction('[Data] fetch Orderlist',props<{ page?: number; itemsPerPage?: number, query?: string, company_id?: number,date?:string, status?: string}>());
 export const fetchOrderlistSuccess = createAction('[Data] fetch Orderlist success', props<{ OrderListdata: OrderListModel }>())
 export const fetchOrderlistFail = createAction('[Data fetch Orderlist failed]', props<{ error: string }>())
 
