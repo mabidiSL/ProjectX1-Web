@@ -282,6 +282,7 @@ export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
       
       const newData = this.signupForm.value;
       delete newData.confpassword;
+      delete newData.termsAndConditions;
       const register = this.createMerchantFromForm(newData);
       
       //Dispatch Action
