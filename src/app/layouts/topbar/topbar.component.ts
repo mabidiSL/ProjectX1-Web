@@ -137,42 +137,26 @@ export class TopbarComponent implements OnInit, OnDestroy {
    
   }
   getNotificationRoute(notification: any): string {
-    // Map notification types to routes
-    switch (notification.type) {
-      case 'merchant-registration':
-        return 'private/merchants/list';
-      case 'coupon-approval-request':
-        return 'private/coupons/list';
-      case 'giftcard-approval-request':
-        return 'private/giftCards/list';
-      case 'coupon-approved':
-        return 'private/coupons/list';
-      case 'giftcard-approved':
-        return 'private/giftCards/list';
-      case 'coupon-purchase':
-         return `private/orders/list`;
-      case 'giftcard-purchase':
-         return `private/orders/list`;
-      
-   
-  }
-//   const notif_ref = notification.type;
-//   switch (notification.type) {
-//     case 'merchant-registration':
-//       return `private/merchants/view/${notif_ref}`;
-//     case 'coupon-approval-request':
-//       return `private/coupons/view/${notif_ref}`;
-//     case 'giftcard-approval-request':
-//       return `private/giftCards/view/${notif_ref}`;
-//     case 'coupon-approved':
-//       return `private/coupons/view/${notif_ref}`;
-//     case 'giftcard-approved':
-//       return `private/giftCards/view/${notif_ref}`;
-//     case 'coupon-purchase':
-//        return `private/orders/view/${notif_ref}`;
-    
  
-// }
+  
+  const notif_ref = notification.ref;
+  switch (notification.type) {
+    case 'merchant-registration':
+      return `private/merchants/view/${notif_ref}`;
+    case 'coupon-approval-request':
+      return `private/coupons/view/${notif_ref}`;
+    case 'giftcard-approval-request':
+      return `private/giftCards/view/${notif_ref}`;
+    case 'coupon-approved':
+      return `private/coupons/view/${notif_ref}`;
+    case 'giftcard-approved':
+      return `private/giftCards/view/${notif_ref}`;
+    case 'coupon-purchase':
+       return `private/orders/view/${notif_ref}`;
+    case 'giftcard-purchase':
+       return `private/orders/view/${notif_ref}`;
+ 
+}
 }
    navigateToNotification(notification: any) {
     // Update Notification to be set as Seen

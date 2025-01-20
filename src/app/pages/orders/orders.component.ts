@@ -72,9 +72,9 @@ export class OrdersComponent implements OnInit, OnDestroy {
   ];
 
   constructor(
-    private store: Store, 
-    private authService: AuthenticationService, 
-    private modalService: BsModalService  ) {
+    private readonly store: Store, 
+    private readonly authService: AuthenticationService, 
+    private readonly modalService: BsModalService  ) {
     
       this.authService.currentUser$.subscribe(user => {
         if (user) {
@@ -218,6 +218,6 @@ calculateSubtotal(): void {
 ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
-        }
+    }
   }
 

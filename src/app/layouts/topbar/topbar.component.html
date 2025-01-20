@@ -156,7 +156,12 @@
             <!-- No Notifications Template -->
             <ng-template #noNotifications>
               <div class="p-3 text-center">
-                <h6 class="m-0">{{ 'HEADER.NOTIFICATIONS.NO_NOTIFICATIONS' | translate }}</h6>
+                <!-- Add icon container with styling -->
+                <div class="no-notifications-icon mb-3">
+                  <i class="fas fa-bell-slash text-muted"></i>
+                  <h6 class="m-0">{{ 'HEADER.NOTIFICATIONS.NO_NOTIFICATIONS' | translate }}</h6>
+
+                </div>
               </div>
             </ng-template>
           </div>
