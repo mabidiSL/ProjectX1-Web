@@ -37,11 +37,14 @@
       .fc-today-button {
         display: none;
       }
+     
     }
 
     .btn {
       text-transform: capitalize;
+      
     }
+    
 
   }
 
@@ -133,6 +136,8 @@
 
   td.fc-today {
     background: lighten($gray-200, 2%);
+    // background-color: #ed7e7e !important;  /* Slightly darker background for today's date cell */
+    // border: 1px solid #ddd;
   }
 }
 
@@ -144,7 +149,9 @@
   box-shadow: none;
   padding: 6px 12px !important;
   height: auto !important;
+  
 }
+
 
 .fc-state-down,
 .fc-state-active,

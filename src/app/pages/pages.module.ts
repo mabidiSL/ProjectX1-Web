@@ -22,14 +22,16 @@ import { ContactsModule } from './contacts/contacts.module';
 import { HttpClientModule } from '@angular/common/http';
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageService } from '../core/services/language.service';
+import { CalendarComponent } from './calendar/calendar.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [CalendarComponent],
   imports: [
     CommonModule,
     TranslateModule,
     FormsModule,
+    
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     PagesRoutingModule,

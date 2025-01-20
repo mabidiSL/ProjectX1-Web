@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { DefaultComponent } from './dashboards/default/default.component';
 import { RoleGuard } from '../core/guards/role.guard';
+import { CalendarComponent } from './calendar/calendar.component';
 
 const routes: Routes = [
    //{ path: '', redirectTo: 'dashboard' },
@@ -29,7 +30,7 @@ const routes: Routes = [
   { path: 'payment', loadChildren: () => import('./payment/payment.module').then(m => m.PaymentModule), canActivate: [RoleGuard] },
   { path: 'orders', loadChildren: () => import('./orders/orders.module').then(m => m.OrdersModule), canActivate: [RoleGuard] },
   { path: 'invoices', loadChildren: () => import('./invoices/invoices.module').then(m => m.InvoicesModule), canActivate: [RoleGuard] },
-
+  { path: 'calendar', component: CalendarComponent, canActivate: [RoleGuard] },
 ];
 
 @NgModule({

@@ -11,6 +11,7 @@ export const MENU: MenuItem[] = [
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Dashboard, claimValue: [Permission.All,Permission.ViewAll]}]
         
     },
+    
     {
         id: 2,
         isLayout: true
@@ -213,6 +214,14 @@ export const MENU: MenuItem[] = [
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Coupons, claimValue: [Permission.All, Permission.Create, Permission.ViewAll,Permission.Approve , Permission.Decline]},{claimType: Modules.Gift_Cards, claimValue: [Permission.ViewAll, Permission.Create, Permission.Approve, Permission.Decline]}],
         isTitle: true
     }, 
+    {
+        id: 37,
+        label: 'MENUITEMS.CALENDAR.TEXT',
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Calendar, claimValue: [Permission.All, Permission.ViewAll]}],
+        icon: 'bx-calendar',
+        link:'/private/calendar',
+                
+    },
     {
                 id: 18,
                 label: 'MENUITEMS.PRODUCTMANAGEMENT.COUPONS.TEXT',

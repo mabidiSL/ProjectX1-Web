@@ -57,6 +57,7 @@ export  enum Modules
         Social_Media = 35,
         Complaints = 33,
         Logs = 37,
+        Calendar = 38,
        
         
        

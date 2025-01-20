@@ -1,0 +1,369 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Component, OnInit, ViewChild, ViewEncapsulation, TemplateRef } from '@angular/core';
+import { UntypedFormBuilder, Validators, UntypedFormGroup } from '@angular/forms';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import interactionPlugin from '@fullcalendar/interaction';
+import { CalendarOptions, EventClickArg, EventApi, EventInput } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { category,  createEventId } from './data';
+
+import Swal from 'sweetalert2';
+import { select, Store } from '@ngrx/store';
+import { selectDataLoading, selectDataOffer } from 'src/app/store/offer/offer-selector';
+import { Observable } from 'rxjs';
+import { fetchOfferlistData } from 'src/app/store/offer/offer.action';
+import { Offer } from 'src/app/store/offer/offer.model';
+import multiMonthPlugin from '@fullcalendar/multimonth';
+import { FullCalendarComponent } from '@fullcalendar/angular';
+@Component({
+  selector: 'app-calendar',
+  templateUrl: './calendar.component.html',
+  styleUrls: ['./calendar.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+})
+export class CalendarComponent implements OnInit {
+
+  modalRef?: BsModalRef;
+
+  // bread crumb items
+  breadCrumbItems: Array<object>;
+
+  @ViewChild('modalShow') modalShow: TemplateRef<any>;
+  @ViewChild('editmodalShow') editmodalShow: TemplateRef<any>;
+  @ViewChild(FullCalendarComponent) calendarComponent: FullCalendarComponent;
+
+
+  formEditData: UntypedFormGroup;
+  submitted = false;
+  category: any[];
+  newEventDate: any;
+  editEvent: any;
+  calendarEvents: any[] = [];
+  offerList: any[] = [];
+  loading$: Observable<boolean>;
+  offerList$: Observable<Offer[]>;
+
+  currentDay: string = null;
+  startDateofcurrentDay: string = null;
+  endDateofcurrentDay: string = null;
+  // event form
+  formData: UntypedFormGroup;
+
+  calendarOptions: CalendarOptions = {
+    plugins: [
+      multiMonthPlugin,
+      interactionPlugin,
+      dayGridPlugin,
+      timeGridPlugin,
+      listPlugin,
+    ],
+    headerToolbar: {
+      left: 'multiMonth12Month,dayGridMonth,dayGridWeek,timeGridDay, todayButton',
+      center: 'title',
+      right: 'special, coupon, giftcard, prevYear,prev,next,nextYear'
+    },
+    buttonText: {
+      multiMonth12Month: 'Year',
+      dayGridMonth: 'Month',
+      dayGridWeek: 'Week',
+      dayGridDay: 'Day',
+    },
+    customButtons: {
+      todayButton: {
+        text: 'Today',  // Define the text for the "Today" button
+        click: () => {
+          this.calendarComponent.getApi().today();  // Go to today when clicked
+       },
+       
+     },
+     coupon: {
+      text: 'Coupon',
+      click: () => {
+        this._fetchOffers('coupon');  // Go to today when clicked
+     },
+     // Add a render function to style the button
+   
+     },
+     special: {
+      text: 'Special Days',
+      click: () => {
+        this._fetchOffers('coupon');  // Go to today when clicked
+     }
+    }
+     ,
+     giftcard: {
+      text: 'Gift Card',
+      click: () => {
+        this._fetchOffers('gift-card');  // Go to today when clicked
+     }
+     },
+     
+     
+
+},
+    nowIndicator: true,
+    initialView: "dayGridMonth",
+    views: {
+      multiMonth12Month: {
+        type: 'multiMonth',
+        duration: { months: 12 }
+      }
+    },
+    themeSystem: "bootstrap",
+    initialEvents: this.offerList,
+    weekends: true,
+    editable: true,
+    selectable: true,
+    selectMirror: true,
+    dayMaxEvents: true,
+    dateClick: this.openModal.bind(this),
+    eventClick: this.handleEventClick.bind(this),
+    eventsSet: this.handleEvents.bind(this),
+    eventTimeFormat: { // like '14:30:00'
+      hour: '2-digit',
+      minute: '2-digit',
+      meridiem: false,
+      hour12: true
+    }
+  };
+  currentEvents: EventApi[] = [];
+  constructor(
+    private readonly store: Store,
+    private readonly modalService: BsModalService,
+    private readonly formBuilder: UntypedFormBuilder
+  ) {   
+      this.loading$ = this.store.select(selectDataLoading);
+      this.offerList$ = this.store.pipe(select(selectDataOffer)); 
+
+    //  const  startCurrentMonthDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toLocaleDateString('en-CA');
+    //  const endCurrentMonthDate = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).toLocaleDateString('en-CA');
+    //  console.log(startCurrentMonthDate, endCurrentMonthDate);
+     this.currentDay = new Date().toLocaleDateString('en-CA');
+     this.startDateofcurrentDay = new Date(this.currentDay).toLocaleDateString('en-CA');
+     this.endDateofcurrentDay = new Date(this.currentDay).toLocaleDateString('en-CA');
+    }
+  ngOnInit(): void {
+    this._fetchOffers(null);
+    this.formData = this.formBuilder.group({
+      title: ['', [Validators.required]],
+      category: ['', [Validators.required]],
+    });
+
+    this.formEditData = this.formBuilder.group({
+      editTitle: ['', [Validators.required]],
+      editCategory: [],
+    });
+
+  }
+  private _fetchOffers(category: string) {
+    this.store.dispatch(fetchOfferlistData({ page: null, itemsPerPage: null, category: category, query:null, startDate: null, endDate: null,  status: 'active' }));
+    this.offerList$.subscribe(data => {
+      this.offerList = this._mapOffersToEvents(data); // Offer the full Offer list
+      console.log(this.offerList);
+      this._fetchData();
+      
+    });
+  }
+  _
+  _getEventColor(category: string): string {
+    switch (category) {
+      case 'gift-card':
+        return 'bg-success text-white';
+      case 'coupon':
+        return 'bg-info text-white';
+      default:
+        return 'bg-info text-white';
+    }
+  }
+  
+  // Function to map offers to calendar events
+  _mapOffersToEvents(offers: any[]): EventInput[] {
+    return offers.map(offer => {
+      const translatedName = offer.translation_data?.[0]?.name || 'Unnamed Offer';
+      const storeName = offer.stores?.[0]?.translation_data?.[0]?.name || 'No Store';
+      
+      return {
+        id: offer.id.toString(),
+        title: `${translatedName} - ${storeName} [ ${new Date(offer.startDate).toLocaleDateString('en-CA')} to ${new Date(offer.endDate).toLocaleDateString('en-CA')}]`,
+        start: new Date(offer.startDate),
+        end: new Date(offer.endDate),
+        className: this._getEventColor(offer.category),
+        extendedProps: {
+          category: offer.category,
+          price: offer.price,
+          quantity: offer.quantity,
+          status: offer.status,
+          description: offer.translation_data?.[0]?.description,
+          image: offer.image,
+          company: offer.companies?.translation_data?.[0]?.name
+        }
+      };
+    });
+  }
+  /**
+   * Event click modal show
+   */
+  handleEventClick(clickInfo: EventClickArg) {
+    this.editEvent = clickInfo.event;
+    const category = clickInfo.event.classNames;
+    this.formEditData = this.formBuilder.group({
+      editTitle: clickInfo.event.title,
+      editCategory: category instanceof Array ? clickInfo.event.classNames[0] : clickInfo.event.classNames,
+    });
+    this.modalRef = this.modalService.show(this.editmodalShow);
+  }
+
+  /**
+   * Events bind in calander
+   * @param events events
+   */
+  handleEvents(events: EventApi[]) {
+    this.currentEvents = events;
+
+  }
+
+ 
+
+  get form() {
+    return this.formData.controls;
+  }
+
+  /**
+   * Delete-confirm
+   */
+  confirm() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#34c38f',
+      cancelButtonColor: '#f46a6a',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.value) {
+        this.deleteEventData();
+        Swal.fire('Deleted!', 'Event has been deleted.', 'success');
+      }
+    });
+  }
+
+  position() {
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Event has been saved',
+      showConfirmButton: false,
+      timer: 1000,
+    });
+  }
+
+  /**
+   * Event add modal
+   */
+  openModal(event?: any) {
+    this.newEventDate = event;
+    this.modalRef = this.modalService.show(this.modalShow);
+  }
+
+  /**
+   * save edit event data
+   */
+  editEventSave() {
+    const editTitle = this.formEditData.get('editTitle').value;
+    const editCategory = this.formEditData.get('editCategory').value;
+
+    const editId = this.calendarEvents.findIndex(
+      (x) => x.id + '' === this.editEvent.id + ''
+    );
+
+    this.editEvent.setProp('title', editTitle);
+    this.editEvent.setProp('classNames', editCategory);
+
+    this.calendarEvents[editId] = {
+      ...this.editEvent,
+      title: editTitle,
+      id: this.editEvent.id,
+      classNames: editCategory + ' ' + 'text-white',
+    };
+
+    this.position();
+    this.formEditData = this.formBuilder.group({
+      editTitle: '',
+      editCategory: '',
+    });
+    this.modalService.hide();
+  }
+
+  /**
+   * Delete event
+   */
+  deleteEventData() {
+    this.editEvent.remove();
+    this.modalService.hide();
+  }
+
+  /**
+   * Close event modal
+   */
+  closeEventModal() {
+    this.formData = this.formBuilder.group({
+      title: '',
+      category: '',
+    });
+    this.modalService.hide();
+  }
+
+  /**
+   * Save the event
+   */
+  saveEvent() {
+    if (this.formData.valid) {
+      const title = this.formData.get('title').value;
+      const className = this.formData.get('category').value;
+      const calendarApi = this.newEventDate.view.calendar;
+      calendarApi.addEvent({
+        id: createEventId(),
+        title,
+        start: this.newEventDate.date,
+        end: this.newEventDate.date,
+        className: className + ' ' + 'text-white'
+      });
+      this.position();
+      this.formData = this.formBuilder.group({
+        title: '',
+        category: '',
+      });
+      this.modalService.hide();
+    }
+    this.submitted = true;
+  }
+
+  /**
+   * Fetches the data
+   */
+  private _fetchData() {
+    // Event category
+    this.category = category;
+    // Calender Event Data
+   // this.calendarEvents = calendarEvents;
+   //this.calendarEvents = this.offerList;
+
+    // form submit
+    this.submitted = false;
+  }
+
+  dropList(event: CdkDragDrop<string[]>): void {
+    moveItemInArray(this.listItems, event.previousIndex, event.currentIndex);
+  }
+  listItems = ['Event 1', 'Event 2', 'Event 3'];
+  handleDrop(event: any): void {
+    this.calendarEvents.push({
+      title: event.item.data,
+      date: event.dateStr,
+    });
+  }
+}
