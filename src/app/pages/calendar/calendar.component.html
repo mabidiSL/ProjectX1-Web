@@ -8,7 +8,9 @@
         <div class="card-body">
           <div class="app-calendar">
             <!-- calendar -->
-            <full-calendar [options]="calendarOptions"  [events]="offerList" cdkDropList (cdkDropListDropped)="handleDrop($event)"></full-calendar>
+            <!-- <full-calendar [options]="calendarOptions"  [events]="offerList" cdkDropList (cdkDropListDropped)="handleDrop($event)"></full-calendar> -->
+            <full-calendar [options]="calendarOptions"  [events]="offerList" ></full-calendar>
+
           </div>
         </div>
       </div>
@@ -57,6 +59,19 @@
             </div>}
           </div>
         </div>
+        <div class="col-12">
+          <div class="mb-3">
+            <label class="control-label" for="event-category">
+             Event Description
+            </label>
+            <textarea id="event-description" class="form-control" name="description" formControlName="description" [ngClass]="{'is-invalid': submitted && form.description.errors }"></textarea>
+            @if(submitted && form.description.errors){
+            <div class="invalid-feedback">
+              @if(form.description.errors.required){
+              <div>This value is required</div>}
+            </div>}
+          </div>
+        </div>
       </div>
 
       <div class="text-end mt-2">
@@ -93,22 +108,34 @@
         <div class="col-12">
           <div class="mb-3">
             <label class="control-label" for="edit-event-category">Event category</label>
-            <select id="edit-event-category" class="form-control" name="ecategory" formControlName="editCategory" required>
+            <input id="edit-event-category" class="form-control" placeholder="Insert Category Name" type="text" name="ecategory" formControlName="editCategory">
+
+            <!-- <select id="edit-event-category" class="form-control" name="ecategory" formControlName="editCategory" required>
               @for (option of category; track $index) {
               <option value="{{ option.value }}"> {{ option.name }}
               </option>
               }
-            </select>
+            </select> -->
           </div>
         </div>
       </div>
-      <div class="row mt-2">
-        <div class="col-6">
-          <button type="button" class="btn btn-danger delete-event ms-1" (click)="confirm()">Delete</button>
+      <div class="row">
+        <div class="col-12">
+          <div class="mb-3">
+            <label class="control-label" for="edit-event-description">Event Description</label>
+            <textarea id="edit-event-description" class="form-control" name="editDescription" formControlName="editDescription"></textarea>
+
+          </div>
         </div>
-        <div class="col-6 text-end">
+      </div>
+       
+      <div class="row mt-2">
+        <!-- <div class="col-6">
+          <button type="button" class="btn btn-danger delete-event ms-1" (click)="confirm()">Delete</button>
+        </div> -->
+        <div class="col-12 text-end">
           <button type="button" class="btn btn-light" (click)="modalRef?.hide()">Close</button>
-          <button type="submit" class="btn btn-success ms-1">Save</button>
+          <!-- <button type="submit" class="btn btn-success ms-1">Save</button> -->
         </div>
       </div>
     </form>

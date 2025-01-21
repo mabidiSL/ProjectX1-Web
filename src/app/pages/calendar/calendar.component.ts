@@ -119,7 +119,7 @@ export class CalendarComponent implements OnInit {
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
-    dateClick: this.openModal.bind(this),
+    /*dateClick: this.openModal.bind(this),*/
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this),
     eventTimeFormat: { // like '14:30:00'
@@ -190,6 +190,7 @@ export class CalendarComponent implements OnInit {
         title: `${translatedName} - ${storeName} [ ${new Date(offer.startDate).toLocaleDateString('en-CA')} to ${new Date(offer.endDate).toLocaleDateString('en-CA')}]`,
         start: new Date(offer.startDate),
         end: new Date(offer.endDate),
+        description: offer.translation_data?.[0]?.description,
         className: this._getEventColor(offer.category),
         extendedProps: {
           category: offer.category,
@@ -208,16 +209,17 @@ export class CalendarComponent implements OnInit {
    */
   handleEventClick(clickInfo: EventClickArg) {
     this.editEvent = clickInfo.event;
-    const category = clickInfo.event.classNames;
     this.formEditData = this.formBuilder.group({
       editTitle: clickInfo.event.title,
-      editCategory: category instanceof Array ? clickInfo.event.classNames[0] : clickInfo.event.classNames,
+      editCategory: clickInfo.event.extendedProps.category,
+      editDescription: clickInfo.event.extendedProps.description,
+
     });
     this.modalRef = this.modalService.show(this.editmodalShow);
   }
 
   /**
-   * Events bind in calander
+   * Events bind in calender
    * @param events events
    */
   handleEvents(events: EventApi[]) {
