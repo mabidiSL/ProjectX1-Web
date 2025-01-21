@@ -333,6 +333,9 @@
             "GIFTCARDS": "Gift Cards List",
             "APPROVALGIFTCARDS": "Pending Gift Cards"
           }
+        },
+        "SPECIALDAYS": {
+          "TEXT": "Special Days"
         }
 
       }
@@ -779,7 +782,12 @@
         "App_secret is required": "App Secret is required",
         "Customer_List": "Customer List",
         "customer-invoice": "Customer Invoices",
-        "merchant-invoice": "Merchant Invoices"
+        "merchant-invoice": "Merchant Invoices",
+        "SpecialDays_List": "Special Days",
+        "New_SpecialDay": "New Special Day",
+        "Edit_SpecialDay": "Edit Special Day",
+        "View_SpecialDay": "View Special Day"
+        
 
 
 

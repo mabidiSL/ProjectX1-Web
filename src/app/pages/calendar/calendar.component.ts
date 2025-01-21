@@ -45,6 +45,7 @@ export class CalendarComponent implements OnInit {
   offerList: any[] = [];
   loading$: Observable<boolean>;
   offerList$: Observable<Offer[]>;
+  specialDaysList$: Observable<Offer[]>;
 
   currentDay: string = null;
   startDateofcurrentDay: string = null;
@@ -61,9 +62,9 @@ export class CalendarComponent implements OnInit {
       listPlugin,
     ],
     headerToolbar: {
-      left: 'multiMonth12Month,dayGridMonth,dayGridWeek,timeGridDay, todayButton',
+      left: 'multiMonth12Month,dayGridMonth,dayGridWeek,timeGridDay today',
       center: 'title',
-      right: 'special, coupon, giftcard, prevYear,prev,next,nextYear'
+      right: 'special coupon giftcard prevYear,prev,next,nextYear'
     },
     buttonText: {
       multiMonth12Month: 'Year',
@@ -72,13 +73,13 @@ export class CalendarComponent implements OnInit {
       dayGridDay: 'Day',
     },
     customButtons: {
-      todayButton: {
-        text: 'Today',  // Define the text for the "Today" button
-        click: () => {
-          this.calendarComponent.getApi().today();  // Go to today when clicked
-       },
+    //   todayButton: {
+    //     text: 'Today',  // Define the text for the "Today" button
+    //     click: () => {
+    //       this.calendarComponent.getApi().today();  // Go to today when clicked
+    //    },
        
-     },
+    //  },
      coupon: {
       text: 'Coupon',
       click: () => {
@@ -88,16 +89,17 @@ export class CalendarComponent implements OnInit {
    
      },
      special: {
+
       text: 'Special Days',
       click: () => {
-        this._fetchOffers('coupon');  // Go to today when clicked
+        this._fetchSpecialDays();  
      }
     }
      ,
      giftcard: {
       text: 'Gift Card',
       click: () => {
-        this._fetchOffers('gift-card');  // Go to today when clicked
+        this._fetchOffers('gift-card');  
      }
      },
      
@@ -157,6 +159,15 @@ export class CalendarComponent implements OnInit {
       editCategory: [],
     });
 
+  }
+  private _fetchSpecialDays() {
+    //this.store.dispatch(fetchSpecialDayslistData({ page: null, itemsPerPage: null, category: category, query:null, startDate: null, endDate: null,  status: 'active' }));
+    this.specialDaysList$.subscribe(data => {
+      this.offerList = this._mapOffersToEvents(data); // Offer the full Offer list
+      console.log(this.offerList);
+      this._fetchData();
+      
+    });
   }
   private _fetchOffers(category: string) {
     this.store.dispatch(fetchOfferlistData({ page: null, itemsPerPage: null, category: category, query:null, startDate: null, endDate: null,  status: 'active' }));

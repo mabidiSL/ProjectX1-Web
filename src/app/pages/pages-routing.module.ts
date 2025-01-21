@@ -31,6 +31,7 @@ const routes: Routes = [
   { path: 'orders', loadChildren: () => import('./orders/orders.module').then(m => m.OrdersModule), canActivate: [RoleGuard] },
   { path: 'invoices', loadChildren: () => import('./invoices/invoices.module').then(m => m.InvoicesModule), canActivate: [RoleGuard] },
   { path: 'calendar', component: CalendarComponent, canActivate: [RoleGuard] },
+  { path: 'special-day', loadChildren: () => import('./special-day/special-day.module').then(m => m.SpecialDayModule), canActivate: [RoleGuard] },
 ];
 
 @NgModule({

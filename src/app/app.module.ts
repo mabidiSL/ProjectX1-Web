@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -71,7 +71,6 @@ import { CustomersModule } from './pages/customers/customers.module';
 import { PaymentModule } from './pages/payment/payment.module';
 import { PaymentEffects } from './store/payment/payment.effect';
 import { AccountModule } from './account/account.module';
-import { APP_INITIALIZER } from '@angular/core';
 import { LanguageInitService } from './core/services/initLanguage.service';
 import { GiftCardModule } from './pages/gift-card/gift-card.module';
 import { OrdersModule } from './pages/orders/orders.module';
@@ -81,6 +80,7 @@ import { CustomerReviewsModule } from './pages/customer-reviews/customer-reviews
 import { CustomerReviewEffects } from './store/customer-reviews/customer-review.effect';
 import { InvoicesEffects } from './store/invoices/invoice.effects';
 import { ErrorInterceptor } from './core/helpers/error.interceptor';
+import { SpecialDaysEffects } from './store/specialDay/special.effect';
 
 
 // Register the Arabic locale
@@ -171,7 +171,8 @@ export function createTranslateLoader(http: HttpClient): any {
       PaymentEffects,
       OrdersEffects,
       CustomerReviewEffects,
-      InvoicesEffects
+      InvoicesEffects,
+      SpecialDaysEffects
 
       
     ]),

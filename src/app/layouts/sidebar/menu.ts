@@ -215,7 +215,7 @@ export const MENU: MenuItem[] = [
         isTitle: true
     }, 
     {
-        id: 37,
+        id: 38,
         label: 'MENUITEMS.CALENDAR.TEXT',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Calendar, claimValue: [Permission.All, Permission.ViewAll]}],
         icon: 'bx-calendar',
@@ -240,6 +240,15 @@ export const MENU: MenuItem[] = [
                
             }
         ,
+        {
+            id: 39,
+            label: 'MENUITEMS.PRODUCTMANAGEMENT.SPECIALDAYS.TEXT',
+            icon: 'fas fa-birthday-cake',
+            claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.SpecialDay, claimValue: [Permission.All, Permission.ViewAll, Permission.Create]}],
+            link:'/private/special-day/list',
+           
+        }
+    ,
            
         {
             id: 20,

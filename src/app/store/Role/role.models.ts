@@ -58,6 +58,7 @@ export  enum Modules
         Complaints = 33,
         Logs = 37,
         Calendar = 38,
+        SpecialDay = 40
        
         
        
