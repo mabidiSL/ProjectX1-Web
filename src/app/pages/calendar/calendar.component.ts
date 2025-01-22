@@ -169,6 +169,7 @@ export class CalendarComponent implements OnInit {
     });
 
   }
+    
   private _fetchSpecialDays() {
     this.store.dispatch(fetchSpecialDaylistData({ page: null, itemsPerPage: null, query:null, startDate: null, endDate: null }));
     this.specialDaysList$.subscribe(data => {
