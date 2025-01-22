@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { SpecialDay, SpecialDayListModel } from './special.model';
 
 // fetch all list
-export const fetchSpecialDaylistData = createAction('[Data] fetch SpecialDaylist',props<{ page: number; itemsPerPage: number,query: string, startDate?: string, endDate?: string }>());
+export const fetchSpecialDaylistData = createAction('[Data] fetch SpecialDaylist',props<{ page: number; itemsPerPage: number,query: string, startDate?: string, endDate?: string, company_id?: number }>());
 export const fetchSpecialDaylistSuccess = createAction('[Data] fetch SpecialDaylist success', props<{ SpecialDayListdata: SpecialDayListModel }>())
 export const fetchSpecialDaylistFail = createAction('[Data fetch SpecialDaylist failed]', props<{ error: string }>())
 

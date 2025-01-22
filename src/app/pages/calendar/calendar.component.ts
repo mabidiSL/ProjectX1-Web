@@ -20,6 +20,7 @@ import multiMonthPlugin from '@fullcalendar/multimonth';
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import { fetchSpecialDaylistData } from 'src/app/store/specialDay/special.action';
 import { selectDataLoadingSpecial, selectDataSpecialDay } from 'src/app/store/specialDay/special-selector';
+import { AuthenticationService } from 'src/app/core/services/auth.service';
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -37,7 +38,7 @@ export class CalendarComponent implements OnInit {
   @ViewChild('editmodalShow') editmodalShow: TemplateRef<any>;
   @ViewChild(FullCalendarComponent) calendarComponent: FullCalendarComponent;
 
-
+  companyId: number =  1;
   formEditData: UntypedFormGroup;
   submitted = false;
   category: any[];
@@ -138,10 +139,13 @@ export class CalendarComponent implements OnInit {
   };
   currentEvents: EventApi[] = [];
   constructor(
+    private readonly authservice: AuthenticationService,
     private readonly store: Store,
     private readonly modalService: BsModalService,
     private readonly formBuilder: UntypedFormBuilder
   ) {   
+    
+   
       this.loading$ = this.store.select(selectDataLoading);
       this.loadingDays$ = this.store.select(selectDataLoadingSpecial);
       this.loadingState$ = combineLatest([this.loading$, this.loadingDays$]).pipe(
@@ -157,6 +161,12 @@ export class CalendarComponent implements OnInit {
      this.endDateofcurrentDay = new Date(this.currentDay).toLocaleDateString('en-CA');
     }
   ngOnInit(): void {
+    this.authservice.currentUser$.subscribe(user => {
+      this.companyId =  user?.companyId;
+      console.log(this.companyId);
+     
+     
+     });
     this._fetchOffers(null);
     this.formData = this.formBuilder.group({
       title: ['', [Validators.required]],
@@ -171,7 +181,10 @@ export class CalendarComponent implements OnInit {
   }
     
   private _fetchSpecialDays() {
-    this.store.dispatch(fetchSpecialDaylistData({ page: null, itemsPerPage: null, query:null, startDate: null, endDate: null }));
+
+    console.log('companyId', this.companyId);
+    
+    this.store.dispatch(fetchSpecialDaylistData({ page: null, itemsPerPage: null, query:null, startDate: null, endDate: null, company_id: this.companyId }));
     this.specialDaysList$.subscribe(data => {
       this.offerList = this._mapSpecialDaysToEvents(data); // Offer the full Special Days list
       console.log(this.offerList);
@@ -206,7 +219,10 @@ export class CalendarComponent implements OnInit {
      })
   }
   private _fetchOffers(category: string) {
-    this.store.dispatch(fetchOfferlistData({ page: null, itemsPerPage: null, category: category, query:null, startDate: null, endDate: null,  status: 'active' }));
+    if(this.companyId === 1){
+      this.companyId = null;
+    }
+    this.store.dispatch(fetchOfferlistData({ page: null, itemsPerPage: null, category: category, query:null, startDate: null, endDate: null, company_id: this.companyId, status: 'active' }));
     this.offerList$.subscribe(data => {
       this.offerList = this._mapOffersToEvents(data); // Offer the full Offer list
       console.log(this.offerList);

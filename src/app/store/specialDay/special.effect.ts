@@ -32,8 +32,8 @@ export class SpecialDaysEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchSpecialDaylistData),
-            mergeMap(({ page, itemsPerPage, query,  startDate, endDate }) =>
-                this.CrudService.fetchData('/special-days',{ limit: itemsPerPage, page: page, query: query,  startDate: startDate, endDate: endDate}).pipe(
+            mergeMap(({ page, itemsPerPage, query,  startDate, endDate, company_id }) =>
+                this.CrudService.fetchData('/special-days',{ limit: itemsPerPage, page: page, query: query,  startDate: startDate, endDate: endDate, company_id: company_id}).pipe(
                     map((response: any) => fetchSpecialDaylistSuccess({ SpecialDayListdata : response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);

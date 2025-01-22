@@ -8,6 +8,7 @@ import { selectDataSpecialDay, selectDataLoadingSpecial, selectDataTotalItems } 
 import { deleteSpecialDaylist, fetchSpecialDaylistData, updateSpecialDaylist } from 'src/app/store/specialDay/special.action';
 import { SpecialDay } from 'src/app/store/specialDay/special.model';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
+import { AuthenticationService } from 'src/app/core/services/auth.service';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class SpecialDayComponent implements OnInit{
  totalItems$: Observable<number>;
  loading$: Observable<boolean>
  searchTerm: string = '';
+ companyId: number =  null;
 
  filterstatusTerm: string = '';
  filterstartDateTerm: string = null;
@@ -47,9 +49,13 @@ export class SpecialDayComponent implements OnInit{
   ];
 
  constructor(
+    private readonly authservice: AuthenticationService,
    public toastr:ToastrService,
    public store: Store) {
-     
+    this.authservice.currentUser$.subscribe(user => {
+      this.companyId =  user?.companyId;
+      
+    } );
      this.specialDayList$ = this.store.pipe(select(selectDataSpecialDay)); 
      this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
      this.loading$ = this.store.pipe(select(selectDataLoadingSpecial));
@@ -58,7 +64,7 @@ export class SpecialDayComponent implements OnInit{
 
  ngOnInit() {
   
-   this.store.dispatch(fetchSpecialDaylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterstartDateTerm}));
+   this.store.dispatch(fetchSpecialDaylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterstartDateTerm, company_id: this.companyId}));
    this.specialDayList$.subscribe(data => {
      this.originalArray = data; // SpecialDay the full SpecialDay list
      this.filteredArray = [...this.originalArray];
@@ -79,22 +85,22 @@ export class SpecialDayComponent implements OnInit{
      this.filterstartDateTerm = null;
    
    
-    this.store.dispatch(fetchSpecialDaylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterstartDateTerm}));
+    this.store.dispatch(fetchSpecialDaylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterstartDateTerm, company_id: this.companyId}));
    
  }
  onSearchEvent(event: any){
    this.searchTerm = event;
-   this.store.dispatch(fetchSpecialDaylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterstartDateTerm}));
+   this.store.dispatch(fetchSpecialDaylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterstartDateTerm , company_id: this.companyId}));
 
   }
  onPageSizeChanged(event: any): void {
    const totalItems =  event.target.value;
-   this.store.dispatch(fetchSpecialDaylistData({ page: this.currentPage, itemsPerPage: totalItems, query:this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterstartDateTerm}));
+   this.store.dispatch(fetchSpecialDaylistData({ page: this.currentPage, itemsPerPage: totalItems, query:this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterstartDateTerm, company_id: this.companyId}));
   }
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
    this.currentPage = event.page;
-   this.store.dispatch(fetchSpecialDaylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterstartDateTerm}));
+   this.store.dispatch(fetchSpecialDaylistData({ page: this.currentPage, itemsPerPage: this.itemPerPage, query:this.searchTerm, startDate: this.filterstartDateTerm, endDate: this.filterstartDateTerm, company_id: this.companyId}));
    
  }
 
