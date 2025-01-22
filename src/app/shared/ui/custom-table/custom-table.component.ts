@@ -156,7 +156,11 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   }
   
   getProperty(data: any, propertyPath: string): any {
-    
+    if (propertyPath === 'dayName') {
+      const startDate = new Date(data.startDate);  // Ensure data.startDate is a valid date string
+      const dayName = startDate.toLocaleDateString('en-US', { weekday: 'long' });  // 'long' returns the full day name like 'Monday'
+      return dayName;
+     }
     if (propertyPath === 'totalAmount') {
       return '£ '+ data.totalAmount;
     }

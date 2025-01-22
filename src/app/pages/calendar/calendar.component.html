@@ -8,22 +8,20 @@
         <div class="card-body">
           <div class="app-calendar">
             <!-- calendar -->
-            <!-- <full-calendar [options]="calendarOptions"  [events]="offerList" cdkDropList (cdkDropListDropped)="handleDrop($event)"></full-calendar> -->
             <full-calendar [options]="calendarOptions"  [events]="offerList" ></full-calendar>
-
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<div id="elmLoader" class="loader" *ngIf="loading$ | async">
+<div id="elmLoader" class="loader" *ngIf="loadingState$ | async">
   <div class="spinner-border text-primary avatar-sm" role="status">
     <span class="visually-hidden">{{'Loading...' | translate}}</span>
   </div>
 </div>  
 <!-- Add New Event MODAL -->
-<ng-template #modalShow let-modal>
+<!-- <ng-template #modalShow let-modal>
   <div class="modal-header">
     <h5 class="modal-title" id="modal-title">Add New Event</h5>
     <button type="button" class="btn-close" aria-label="Close" (click)="closeEventModal()"></button>
@@ -85,14 +83,14 @@
     </form>
   </div>
   <!-- end modal dialog-->
-</ng-template>
+<!--</ng-template> -->
 <!-- end modal-->
 
 <!-- Edit event modal -->
 <ng-template #editmodalShow let-modal>
   <div class="modal-header">
     <h5 class="modal-title">Edit Event</h5>
-    <button type="button" class="btn-close" aria-hidden="true" (click)="modalRef?.hide()"></button>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef?.hide()"></button>
   </div>
   <div class="modal-body p-4">
     <form [formGroup]="formEditData" (ngSubmit)="editEventSave()">
@@ -108,8 +106,7 @@
         <div class="col-12">
           <div class="mb-3">
             <label class="control-label" for="edit-event-category">Event category</label>
-            <input id="edit-event-category" class="form-control" placeholder="Insert Category Name" type="text" name="ecategory" formControlName="editCategory">
-
+            <input type="text" id="edit-event-category"  class="form-control"  name="ecategory" formControlName="editCategory" required>
             <!-- <select id="edit-event-category" class="form-control" name="ecategory" formControlName="editCategory" required>
               @for (option of category; track $index) {
               <option value="{{ option.value }}"> {{ option.name }}
@@ -135,7 +132,7 @@
         </div> -->
         <div class="col-12 text-end">
           <button type="button" class="btn btn-light" (click)="modalRef?.hide()">Close</button>
-          <!-- <button type="submit" class="btn btn-success ms-1">Save</button> -->
+          <button type="submit" class="btn btn-success ms-1">Save</button>
         </div>
       </div>
     </form>

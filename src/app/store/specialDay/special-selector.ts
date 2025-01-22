@@ -16,7 +16,7 @@ export const selectedSpecialDay = createSelector(
     selectDataState,
     (state: SpecialDaylistState) =>  state?.selectedSpecialDay || null
 );
-export const selectDataLoading = createSelector(
+export const selectDataLoadingSpecial = createSelector(
   selectDataState,
   (state: SpecialDaylistState) => state?.loading || false
 );

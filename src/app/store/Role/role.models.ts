@@ -45,8 +45,10 @@ export  enum Modules
         Merchant_Wallet = 11,
         Merchant_Invoices = 12,
         Merchant_Commissions = 13,
+        Calendar = 38,
         Coupons = 6,
         Gift_Cards = 7,
+        SpecialDay = 40,
         Orders = 15,
         Marketing_Compaigns = 27,
         Marketing_Offers = 28,
@@ -56,9 +58,7 @@ export  enum Modules
         System_Administration = 30,     
         Social_Media = 35,
         Complaints = 33,
-        Logs = 37,
-        Calendar = 38,
-        SpecialDay = 40
+        Logs = 37
        
         
        

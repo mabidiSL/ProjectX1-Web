@@ -24,6 +24,7 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class SpecialDaysEffects {
@@ -51,13 +52,9 @@ export class SpecialDaysEffects {
             mergeMap(({ newData }) =>
                 this.CrudService.addData('/special-days', newData).pipe(
                     map((newData) => {
-                        if (this.userRole === 'Admin' || this.companyId === 1) {
-                            this.toastr.success('The new SpecialDay has been added successfully.');
-                        } else {
-                            this.toastr.success('The new SpecialDay Request has been sent to Admin.');
-                        }
-                        
-
+                      
+                        this.toastr.success('The new SpecialDay has been added successfully.');
+                        this.router.navigate(['/private/special-day/list']);
                         // Dispatch the action to fetch the updated SpecialDay list after adding a new SpecialDay
                         return addSpecialDaylistSuccess({newData});
                       }),
@@ -79,7 +76,7 @@ export class SpecialDaysEffects {
               map(() => {
                 
                 this.toastr.success('The SpecialDay has been updated successfully.');
-                
+                this.router.navigate(['/private/special-day/list']);
                 return updateSpecialDaylistSuccess({ updatedData }); // Make sure to return the action
               }),
               catchError((error) => {
@@ -134,7 +131,7 @@ export class SpecialDaysEffects {
     constructor(
         private readonly actions$: Actions,
         private readonly CrudService: CrudService,
-       
+        private readonly router: Router,
         private readonly formUtilService: FormUtilService,
         private readonly authservice: AuthenticationService,
         public toastr:ToastrService

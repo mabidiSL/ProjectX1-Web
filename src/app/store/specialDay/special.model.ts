@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { PaginateModel, Translation } from  'src/app/core/interfaces/core.interface' ;
+import { Country } from '../country/country.model';
 
 export interface SpecialDayListModel  extends PaginateModel
 {   
@@ -9,24 +10,11 @@ export interface SpecialDay {
     
         id?: number;
         translation_data?: Translation[];    
-        category? :  string ,
-        quantity? : number,
+        countries?: Country[],
         company_id? : number,
         startDate? :  any ,
-        endDate? :  any ,
-        image? : string,
-        contractRepName? : string ,
-        stores? : any[],
-        price?: number,
-        giftCardValue? : number,
-        discount? : number,
-        nbr_of_use? : number,
-        couponType? :  string ,
-        couponValueBeforeDiscount? : number,
-        couponValueAfterDiscount? : number,
-        paymentDiscountRate? : number,
-        isElectronic? : boolean,
-        status?: string
+        endDate? :  any,
+        recursAnnually? : boolean,
         
         }
          

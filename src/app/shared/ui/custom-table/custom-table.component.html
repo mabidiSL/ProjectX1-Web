@@ -214,10 +214,10 @@
                               <span class="badge"
                               [ngClass]="{
                                 'bg-success': getProperty(data, column.property) === true ,
-                                'bg-danger': getProperty(data, column.property) === false
+                                'bg-danger': getProperty(data, column.property) === false 
                               }"
                               style="font-size: 0.7rem;">
-                          {{ getProperty(data, column.property) }}
+                          {{ getProperty(data, column.property) === true ? 'Yes' : 'No' }}
                         </span>
                             </ng-container>
                               <ng-template #showText3>

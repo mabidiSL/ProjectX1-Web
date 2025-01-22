@@ -13,11 +13,13 @@ import { category,  createEventId } from './data';
 import Swal from 'sweetalert2';
 import { select, Store } from '@ngrx/store';
 import { selectDataLoading, selectDataOffer } from 'src/app/store/offer/offer-selector';
-import { Observable } from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
 import { fetchOfferlistData } from 'src/app/store/offer/offer.action';
 import { Offer } from 'src/app/store/offer/offer.model';
 import multiMonthPlugin from '@fullcalendar/multimonth';
 import { FullCalendarComponent } from '@fullcalendar/angular';
+import { fetchSpecialDaylistData } from 'src/app/store/specialDay/special.action';
+import { selectDataLoadingSpecial, selectDataSpecialDay } from 'src/app/store/specialDay/special-selector';
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -44,6 +46,8 @@ export class CalendarComponent implements OnInit {
   calendarEvents: any[] = [];
   offerList: any[] = [];
   loading$: Observable<boolean>;
+  loadingDays$: Observable<boolean>;
+  loadingState$: Observable<boolean>;
   offerList$: Observable<Offer[]>;
   specialDaysList$: Observable<Offer[]>;
 
@@ -117,17 +121,18 @@ export class CalendarComponent implements OnInit {
     themeSystem: "bootstrap",
     initialEvents: this.offerList,
     weekends: true,
-    editable: true,
+    editable: false,
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
-    /*dateClick: this.openModal.bind(this),*/
+    //dateClick: this.openModal.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this),
+    timeZone: 'UTC',
     eventTimeFormat: { // like '14:30:00'
       hour: '2-digit',
       minute: '2-digit',
-      meridiem: false,
+      meridiem: true,
       hour12: true
     }
   };
@@ -138,8 +143,12 @@ export class CalendarComponent implements OnInit {
     private readonly formBuilder: UntypedFormBuilder
   ) {   
       this.loading$ = this.store.select(selectDataLoading);
+      this.loadingDays$ = this.store.select(selectDataLoadingSpecial);
+      this.loadingState$ = combineLatest([this.loading$, this.loadingDays$]).pipe(
+        map(([loading, loadingDays]) => loading || loadingDays)
+      );
       this.offerList$ = this.store.pipe(select(selectDataOffer)); 
-
+      this.specialDaysList$ = this.store.pipe(select(selectDataSpecialDay));
     //  const  startCurrentMonthDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toLocaleDateString('en-CA');
     //  const endCurrentMonthDate = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).toLocaleDateString('en-CA');
     //  console.log(startCurrentMonthDate, endCurrentMonthDate);
@@ -161,13 +170,39 @@ export class CalendarComponent implements OnInit {
 
   }
   private _fetchSpecialDays() {
-    //this.store.dispatch(fetchSpecialDayslistData({ page: null, itemsPerPage: null, category: category, query:null, startDate: null, endDate: null,  status: 'active' }));
+    this.store.dispatch(fetchSpecialDaylistData({ page: null, itemsPerPage: null, query:null, startDate: null, endDate: null }));
     this.specialDaysList$.subscribe(data => {
-      this.offerList = this._mapOffersToEvents(data); // Offer the full Offer list
+      this.offerList = this._mapSpecialDaysToEvents(data); // Offer the full Special Days list
       console.log(this.offerList);
       this._fetchData();
       
     });
+  }
+  //function to map special days to events
+  private _mapSpecialDaysToEvents(specialDays: any[]): EventInput[] {
+    console.log(specialDays);
+    
+     return specialDays.map(special =>{
+      const translatedName = special.translation_data?.[0]?.name || 'Unnamed Special Day';
+      return {
+        id: special.id.toString(),
+        title: translatedName,
+        start: new Date(special.startDate).toISOString(),
+        end: new Date(special.endDate).toISOString(),
+        description: special.translation_data?.[0]?.description,
+        className:  'bg-warning text-white',
+        extendedProps: {
+          category: 'Special Day',
+          price: 'No Pricing',
+          quantity: 0,
+          status: null,
+          description: special.translation_data?.[0]?.description,
+          image: null,
+          company: special.company_id
+        }
+        
+      }
+     })
   }
   private _fetchOffers(category: string) {
     this.store.dispatch(fetchOfferlistData({ page: null, itemsPerPage: null, category: category, query:null, startDate: null, endDate: null,  status: 'active' }));
@@ -220,6 +255,8 @@ export class CalendarComponent implements OnInit {
    */
   handleEventClick(clickInfo: EventClickArg) {
     this.editEvent = clickInfo.event;
+    console.log(clickInfo.event);
+    
     this.formEditData = this.formBuilder.group({
       editTitle: clickInfo.event.title,
       editCategory: clickInfo.event.extendedProps.category,
