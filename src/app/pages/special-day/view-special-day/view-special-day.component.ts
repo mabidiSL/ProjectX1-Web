@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-view-special-day',
@@ -8,8 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ViewSpecialDayComponent implements OnInit {
   breadCrumbItems: Array<object>;
-
+  @Input() data: number;
   ngOnInit() {
-    this.breadCrumbItems = [{ label: 'Special Days' }, { label: 'Update Special Day', active: true }];
+    this.breadCrumbItems = [{ label: 'Special Days' }, { label: 'View Special Day', active: true }];
   }
 }

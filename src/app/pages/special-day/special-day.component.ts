@@ -9,6 +9,10 @@ import { deleteSpecialDaylist, fetchSpecialDaylistData, updateSpecialDaylist } f
 import { SpecialDay } from 'src/app/store/specialDay/special.model';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { CreateSpecialDayComponent } from './create-special-day/create-special-day.component';
+import { EditSpecialDayComponent } from './edit-special-day/edit-special-day.component';
+import { ViewSpecialDayComponent } from './view-special-day/view-special-day.component';
 
 
 @Component({
@@ -36,6 +40,7 @@ export class SpecialDayComponent implements OnInit{
  isDropdownOpen : boolean = false;
  filteredArray: SpecialDay[] = [];
  originalArray: SpecialDay[] = [];
+ modalRef: BsModalRef;
 
  itemPerPage: number = 10;
  currentPage : number = 1;
@@ -49,7 +54,8 @@ export class SpecialDayComponent implements OnInit{
   ];
 
  constructor(
-    private readonly authservice: AuthenticationService,
+   private readonly modalService: BsModalService,
+   private readonly authservice: AuthenticationService,
    public toastr:ToastrService,
    public store: Store) {
     this.authservice.currentUser$.subscribe(user => {
@@ -109,7 +115,37 @@ export class SpecialDayComponent implements OnInit{
    this.store.dispatch(deleteSpecialDaylist({ SpecialDayId: id }));
  }
 
-
+onClick(event: any) {
+  if (event.type === 'special-day') {
+    if (event.event === 'add') {
+      this.openAddModal();
+    } else if (event.event === 'edit') {
+      this.openEditModal(event.data);
+    }else if (event.event === 'view') {
+      this.openViewModal(event.data);
+    }}
+  }
+  openAddModal() {
+    this.modalRef = this.modalService.show(CreateSpecialDayComponent, {
+     
+      //class: 'modal-sm',  // Optional: Adjust modal size
+      backdrop: 'static', // Optional: Prevent closing when clicking outside
+      keyboard: false     // Optional: Prevent closing with ESC key
+    });
+  }
+  openEditModal(data: any) {
+    this.modalRef = this.modalService.show(EditSpecialDayComponent, {
+      initialState: {
+        data: data // Pass the data to configure the form with existing data
+      },
+    });
+  }
+  openViewModal(data: any) {
+    this.modalRef = this.modalService.show(ViewSpecialDayComponent, {
+      initialState: {
+        data: data // Pass the data to configure the form with existing data
+  }});
+}
  onChangeEvent( event: any) {
    const newStatus = event.event.checked ? 'active' : 'inactive'; 
    const newData = {id: event.data.id, status: newStatus }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-edit-special-day',
@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditSpecialDayComponent implements OnInit {
   breadCrumbItems: Array<object>;
-
+  @Input() data: number;
   ngOnInit() {
     this.breadCrumbItems = [{ label: 'Special Days' }, { label: 'Update Special Day', active: true }];
   }

@@ -1,49 +1,46 @@
                   
-<div id="elmLoader" class="loader" *ngIf="loading$ | async">
-    <div class="spinner-border text-primary avatar-sm" role="status">
-      <span class="visually-hidden">{{'Loading...' | translate}}</span>
-    </div>
-  </div> 
+
+  <div class="modal-header">
+    <h5  class="modal-title mt-0">{{title}}</h5>
+    <button type="button" data-bs-dismiss="modal" class="btn-close" aria-label="Close" (click)="onClose()">
+    </button>
+  </div>
+  
+  <div class="modal-body">
   <div #formElement class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
+    
                 <form [formGroup]="formSpecialDay"  >
                   <div *ngIf="formError" class="alert alert-danger">{{ formError | translate }}</div>
                    
-                  <div class="row">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
+                  
+                        <div class=" mb-3">
                             <label for="name">{{'Special Day Name'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                             <input class="form-control" id="name" formControlName="name" placeholder="{{'Enter Special Day Name' |translate}}" type="text" [readonly]="type==='view'"/>
                             <div *ngIf="formSpecialDay.get('name').invalid && formSpecialDay.get('name').touched" class="text-danger">
                                 {{'Special Day Name is required'|translate}}
                             </div>
                         </div>
-                        </div>
-                      <div class="row">
-                        <div class="col-md-6 mb-3">
+                        
+                        <div class="  mb-3">
                           <label for="description">{{'Special Day Description'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                           <textarea class="form-control" id="description" formControlName="description" placeholder="{{'Enter Description' |translate}}" rows="2" [readonly]="type==='view'"></textarea>
                           <div *ngIf="formSpecialDay.get('description').invalid && formSpecialDay.get('description').touched" class="text-danger">
                               {{'Special Day Description is required'|translate}}
                           </div>
                       </div>
-                      </div>
-                       
-                    <div class="row">
-                          <div class="col-md-6 mb-3">
+                     
+                          <div class="  mb-3">
                             <label for="startDate">{{'Date'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
-                            <input bsDatepicker class="form-control" id="startDate" placeholder="yyyy-mm-dd" formControlName="startDate" [bsConfig]="bsConfig" (bsValueChange)="onDateChange($event)" />
+                            <input bsDatepicker class="form-control" id="startDate" placeholder="yyyy-mm-dd" formControlName="startDate" [bsConfig]="bsConfig" />
                             <div *ngIf="formSpecialDay.get('startDate').invalid && formSpecialDay.get('startDate').touched && formSpecialDay.get('startDate').dirty" class="text-danger">
                               {{'Start Date is required'|translate}}
                             </div>
                           </div>
                         
                           
-                    </div>
+                    
                   <div *ngIf="companyId === 1" class="row">
-                    <div class="col-md-6 mb-3">   
+                    <div class="  mb-3">   
                     <label>
                           <input type="checkbox" formControlName="internalSpecialDay" />
                           Internal Special Day 
@@ -63,19 +60,20 @@
                   </div> 
                   
                 </div>
-                <div class="row">
-                  <div class="col-md-6 mb-3">  
+               
+                  <div class="  mb-3">  
                         <label>
                             <input type="checkbox" formControlName="recursAnnually" />
                             Recurs Annually
                           </label>
                     </div>
-                  </div>
-                  </div>
+                  </form>
+                  <div class="modal-footer">
+
                   <div class="col-12  mt-4">
                     <div class="d-flex justify-content-end">
                       <ng-container *ngIf="type ==='view'; else editModeButtons">
-                        <button type="button" class="btn btn-success" (click)="toggleViewMode()">{{ 'Go_Back' | translate }}</button>
+                        <button type="button" class="btn btn-success" (click)="toggleViewMode()">{{ 'Ok' | translate }}</button>
                       </ng-container>
                       <ng-template #editModeButtons>
                         <button  type="submit" class="btn btn-success me-2" (click)="onSubmit()"  > {{ (type === 'create' ? 'Add Special Day' : 'Update Special Day') | translate }}
@@ -91,10 +89,7 @@
                        </ng-template>
                     </div>
                   </div>
-                </form>
-            </div>
-        </div>
-    </div> <!-- end col -->
+                  </div>
   </div>
   
   

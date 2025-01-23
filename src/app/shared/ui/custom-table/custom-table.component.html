@@ -8,7 +8,7 @@
         <div class="d-flex align-items-center">
            <h5 class="mb-0 card-title font-size-18 flex-grow-1">{{pageTitle}}</h5> 
           <div class="flex-shrink-0 d-flex gap-1">
-            <button *hasClaim="addButtonPermission" [routerLink]="addButtonLink" type="button" class="btn btn-primary btn-rounded">
+            <button *hasClaim="addButtonPermission" (click)="_onClick(addButtonLink, 'add')"  type="button" class="btn btn-primary btn-rounded">
               <i class="mdi mdi-plus me-1"></i> {{ addButtonLabel | translate }}
             </button>
           </div>
@@ -283,10 +283,10 @@
               <div style="display: flex; justify-content: center;">
               <ul class="list-unstyled hstack gap-1 mb-0">
                  <li data-bs-toggle="tooltip" data-bs-placement="top" title="{{'View'|translate}}">
-                   <a [routerLink]="[viewButtonLink, data.id]" class="btn btn-sm btn-soft-primary" *hasClaim="viewButtonPermission" (click)="$event.stopPropagation()"><i class="mdi mdi-eye-outline"></i></a>
+                   <a  (click)="_onClick(viewButtonLink, 'view', data)" class="btn btn-sm btn-soft-primary" *hasClaim="viewButtonPermission" (click)="$event.stopPropagation()"><i class="mdi mdi-eye-outline"></i></a>
                  </li> 
                  <li data-bs-toggle="tooltip" data-bs-placement="top" title="{{'Edit'|translate}}">
-                   <a [routerLink]="[editButtonLink, data.id]" class="btn btn-sm btn-soft-info" *hasClaim="editButtonPermission" (click)="$event.stopPropagation()"><i class="mdi mdi-pencil-outline"></i></a>
+                   <a  (click)="_onClick(editButtonLink, 'edit', data)" class="btn btn-sm btn-soft-info" *hasClaim="editButtonPermission" (click)="$event.stopPropagation()"><i class="mdi mdi-pencil-outline"></i></a>
  
                  </li>
                  <li data-bs-toggle="tooltip" data-bs-placement="top" title="{{'Delete'| translate}}">

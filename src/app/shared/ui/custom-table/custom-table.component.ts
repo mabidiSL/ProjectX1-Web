@@ -83,6 +83,8 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   @Output() onApprove? = new EventEmitter();
   @Output() onFilter? = new EventEmitter();
   @Output() onViewDetail? = new EventEmitter();
+  @Output() onClick: EventEmitter<{event: string, type: string, data?: number}> = new EventEmitter();
+
 
 
   public currentUser: Observable<_User>;
@@ -158,7 +160,7 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   getProperty(data: any, propertyPath: string): any {
     if (propertyPath === 'dayName') {
       const startDate = new Date(data.startDate);  // Ensure data.startDate is a valid date string
-      const dayName = startDate.toLocaleDateString('en-US', { weekday: 'long' });  // 'long' returns the full day name like 'Monday'
+      const dayName = startDate.toLocaleDateString('en-CA', { weekday: 'long' });  // 'long' returns the full day name like 'Monday'
       return dayName;
      }
     if (propertyPath === 'totalAmount') {
@@ -356,7 +358,24 @@ sortData(column: string): void {
       });
     }
   }
+ 
+  _onClick(link: string, type: string, data?: any) {
+    //emits event to open modal
+    if (link.includes('special-day')) {
+      //emits event to open modal
+      if(type === 'add'){
+      this.onClick.emit({event:type, type:'special-day'});
+      }
+      else
+      this.onClick.emit({event:type, type:'special-day', data: data.id});
+
+    } else {
+      this.router.navigate([link, data?.id]);
+    }
+
+  }
 navigateToView(data: any) {
+  
   if(this.viewButtonLink.includes('invoices')){
     this.router.navigate([`${this.viewButtonLink}`, this.path, data.id]);
 
@@ -368,8 +387,11 @@ navigateToView(data: any) {
       else if(this.viewButtonLink.includes('reviews')){
           console.log(this.viewButtonLink);
        }
-        else
-        this.router.navigate([`${this.viewButtonLink}`, data.id]);
+        else if(this.viewButtonLink.includes('special-day')){
+          this.onClick.emit({event:'view', type:'special-day', data: data.id});
+        }else{
+          this.router.navigate([`${this.viewButtonLink}`, data.id]);
+        }
   }
   }
 selectStatus(event: any){

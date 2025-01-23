@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef, TemplateRef } from '@angular/core';
 import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
@@ -21,6 +21,7 @@ import { Merchant } from 'src/app/store/merchantsList/merchantlist1.model';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
 import { Country } from 'src/app/store/country/country.model';
 import { selectDataCountry } from 'src/app/store/country/country-selector';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-form-special-day',
@@ -45,7 +46,7 @@ export class FormSpecialDayComponent implements OnInit, OnDestroy{
   companyId: number =  null;
   currentRole: string = '';
   bsConfig: Partial<BsDatepickerConfig>;
-
+  @Input() title: string;
 
   public currentUser: Observable<_User>;
 
@@ -60,12 +61,15 @@ export class FormSpecialDayComponent implements OnInit, OnDestroy{
   isLoading = false;
   originalSpecialDayData: SpecialDay = {};
   @ViewChild('formElement', { static: false }) formElement: ElementRef;
+  @Input() data: number;
 
 
 
 
   constructor(
+    public modalRef: BsModalRef,
     private readonly store: Store, 
+    private readonly modalService: BsModalService, 
     private readonly formBuilder: UntypedFormBuilder, 
     private readonly router: Router,
     private readonly datepickerConfigService: DatepickerConfigService,
@@ -88,6 +92,11 @@ export class FormSpecialDayComponent implements OnInit, OnDestroy{
       this.setReadonlyConfig();
 
        
+  }
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, {
+      class: 'modal-lg' // You can adjust the modal size here
+    });
   }
   setReadonlyConfig() {
     if (this.type === 'view') {
@@ -149,7 +158,8 @@ export class FormSpecialDayComponent implements OnInit, OnDestroy{
     this.fetchCountries();
    
      
-    const specialId = this.route.snapshot.params['id'];
+    const specialId = this.data;
+    //this.route.snapshot.params['id'];
     if (specialId) {
       if (this.type === 'view') {
         this.formUtilService.disableFormControls(this.formSpecialDay);
@@ -178,10 +188,10 @@ onDateChange(event: any){
   
   const startDate = new Date(event);
   startDate.setHours(0, 0, 0, 0);
-  this.formSpecialDay.get('startDate').setValue(startDate);
+  this.formSpecialDay.get('startDate').setValue(startDate,{ emitEvent: false });
   const endDate = new Date(event);
   endDate.setHours(23, 59, 59, 999);
-  this.formSpecialDay.get('endDate').setValue(endDate);
+  this.formSpecialDay.get('endDate').setValue(endDate,{ emitEvent: false });
 }
 onChangeCountrySelection(event: Country){
   const country = event;
@@ -332,6 +342,14 @@ createSpecialDayFromForm(formValue): SpecialDay{
     return special;
  
 }
+setTheDate(newData: SpecialDay){
+  console.log(newData.startDate);
+  const startDate = new Date(newData.startDate);
+  newData.startDate = startDate.toLocaleDateString('en-CA');
+  const endDate = new Date(newData.startDate);
+  newData.endDate = endDate.toLocaleDateString('en-CA');
+  return newData;
+}
 
   onSubmit(){
 
@@ -346,8 +364,9 @@ createSpecialDayFromForm(formValue): SpecialDay{
       return;
     }
       this.formError = null;
+
       let newData = this.formSpecialDay.value;
-      
+      newData = this.setTheDate(newData);
       if(!this.isEditing)
       {
          delete newData.id;
@@ -355,6 +374,8 @@ createSpecialDayFromForm(formValue): SpecialDay{
          console.log(newData);
          
          this.store.dispatch(addSpecialDaylist({ newData }));
+         this.modalRef?.hide();
+
       }
       else
       {
@@ -364,6 +385,8 @@ createSpecialDayFromForm(formValue): SpecialDay{
           changedData.id =  this.formSpecialDay.value.id;
           
           this.store.dispatch(updateSpecialDaylist({ updatedData: changedData }));
+          this.modalRef?.hide();
+
         }
         else{
           this.formError = 'Nothing has been changed!!!';
@@ -371,14 +394,15 @@ createSpecialDayFromForm(formValue): SpecialDay{
         }
       }
       
-   
+
     }
 
 
 
   onCancel(){
     this.formSpecialDay.reset();
-    this.router.navigateByUrl('/private/special-days/list');
+    this.modalRef.hide();
+    //this.router.navigateByUrl('/private/special-days/list');
   }
   ngOnDestroy() {
     this.destroy$.next();
@@ -386,12 +410,17 @@ createSpecialDayFromForm(formValue): SpecialDay{
   }
  
   toggleViewMode(){
-   
-    this.router.navigateByUrl('/private/special-days/list');
+    this.modalRef.hide();
+
+    //this.router.navigateByUrl('/private/special-days/list');
 
   }
   onChangeEventEmit(event: any){
     console.log(event);
 
+  }
+  onClose(): void {
+    // Close the modal when the close button or cancel button is clicked
+    this.modalRef.hide();
   }
 }
