@@ -13,7 +13,7 @@ import { category,  createEventId } from './data';
 import Swal from 'sweetalert2';
 import { select, Store } from '@ngrx/store';
 import { selectDataLoading, selectDataOffer } from 'src/app/store/offer/offer-selector';
-import { combineLatest, map, Observable } from 'rxjs';
+import { combineLatest, filter, map, Observable, take } from 'rxjs';
 import { fetchOfferlistData } from 'src/app/store/offer/offer.action';
 import { Offer } from 'src/app/store/offer/offer.model';
 import multiMonthPlugin from '@fullcalendar/multimonth';
@@ -145,7 +145,13 @@ export class CalendarComponent implements OnInit {
     private readonly formBuilder: UntypedFormBuilder
   ) {   
     
-   
+    this.authservice.currentUser$.pipe(
+      filter(user => user?.companyId != null),  // Ensure we only proceed when companyId is not null
+      take(1)  // Take the first emitted value and unsubscribe after that
+    ).subscribe(user => {
+      this.companyId = user?.companyId;
+      console.log('Company ID:', this.companyId);
+    });
       this.loading$ = this.store.select(selectDataLoading);
       this.loadingDays$ = this.store.select(selectDataLoadingSpecial);
       this.loadingState$ = combineLatest([this.loading$, this.loadingDays$]).pipe(
@@ -161,12 +167,7 @@ export class CalendarComponent implements OnInit {
      this.endDateofcurrentDay = new Date(this.currentDay).toLocaleDateString('en-CA');
     }
   ngOnInit(): void {
-    this.authservice.currentUser$.subscribe(user => {
-      this.companyId =  user?.companyId;
-      console.log(this.companyId);
-     
-     
-     });
+   
     this._fetchOffers(null);
     this.formData = this.formBuilder.group({
       title: ['', [Validators.required]],
@@ -181,9 +182,9 @@ export class CalendarComponent implements OnInit {
   }
     
   private _fetchSpecialDays() {
+if(this.companyId === null){
+  this.companyId = 1;}
 
-    console.log('companyId', this.companyId);
-    
     this.store.dispatch(fetchSpecialDaylistData({ page: null, itemsPerPage: null, query:null, startDate: null, endDate: null, company_id: this.companyId }));
     this.specialDaysList$.subscribe(data => {
       this.offerList = this._mapSpecialDaysToEvents(data); // Offer the full Special Days list
