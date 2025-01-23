@@ -333,6 +333,14 @@ export const MENU: MenuItem[] = [
     },
     {
         id: 30,
+        label: 'MENUITEMS.FILEMANAGER.TEXT',
+        icon: 'bx bx-file',
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.File_Manager, claimValue: [Permission.All,Permission.ViewAll]}],
+        link: '/private/file-manager',
+               
+    },
+    {
+        id: 30,
         label: 'MENUITEMS.COUNTRIES.TEXT',
         icon: 'bx bx-globe',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.System_Administration, claimValue: [Permission.All,Permission.ViewAll]}],

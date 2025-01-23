@@ -369,11 +369,15 @@ sortData(column: string): void {
       else
       this.onClick.emit({event:type, type:'special-day', data: data.id});
 
-    } else {
-      this.router.navigate([link, data?.id]);
+    } else if(!data){
+        this.router.navigate([`${link}`]);
+      }
+      else{
+      this.router.navigate([`${link}`, data?.id]);}
+
     }
 
-  }
+  
 navigateToView(data: any) {
   
   if(this.viewButtonLink.includes('invoices')){

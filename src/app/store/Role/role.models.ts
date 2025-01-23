@@ -55,7 +55,8 @@ export  enum Modules
         Special_Coupons = 9,
         Notification_Management = 19,
         Payment = 20, 
-        System_Administration = 30,     
+        System_Administration = 30,  
+        File_Manager = 41,   
         Social_Media = 35,
         Complaints = 33,
         Logs = 37

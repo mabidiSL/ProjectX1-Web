@@ -32,6 +32,7 @@ const routes: Routes = [
   { path: 'invoices', loadChildren: () => import('./invoices/invoices.module').then(m => m.InvoicesModule), canActivate: [RoleGuard] },
   { path: 'calendar', component: CalendarComponent, canActivate: [RoleGuard] },
   { path: 'special-day', loadChildren: () => import('./special-day/special-day.module').then(m => m.SpecialDayModule), canActivate: [RoleGuard] },
+  { path: 'file-manager', loadChildren: () => import('./file-manager/file-manager.module').then(m => m.FileManagerModule), canActivate: [RoleGuard] },
 ];
 
 @NgModule({

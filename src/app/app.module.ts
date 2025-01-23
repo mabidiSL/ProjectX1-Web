@@ -81,7 +81,8 @@ import { CustomerReviewEffects } from './store/customer-reviews/customer-review.
 import { InvoicesEffects } from './store/invoices/invoice.effects';
 import { ErrorInterceptor } from './core/helpers/error.interceptor';
 import { SpecialDaysEffects } from './store/specialDay/special.effect';
-
+import { FileManagersEffects } from './store/fileManager/file-manager.effect';
+import { FileManagerModule } from './pages/file-manager/file-manager.module';
 
 // Register the Arabic locale
 registerLocaleData(localeAr, 'ar');
@@ -137,6 +138,7 @@ export function createTranslateLoader(http: HttpClient): any {
     CustomersModule,
     PaymentModule,
     LogsModule,
+    FileManagerModule,
     NotificationsModule,
     TranslateModule,
     AppRoutingModule,
@@ -172,7 +174,8 @@ export function createTranslateLoader(http: HttpClient): any {
       OrdersEffects,
       CustomerReviewEffects,
       InvoicesEffects,
-      SpecialDaysEffects
+      SpecialDaysEffects,
+      FileManagersEffects
 
       
     ]),
