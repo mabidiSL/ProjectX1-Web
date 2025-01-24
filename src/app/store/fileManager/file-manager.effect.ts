@@ -11,12 +11,12 @@ import {
     addFileManagerlistFailure,
     addFileManagerlistSuccess,
     addFileManagerlist,
-    updateFileManagerlistFailure,
+    /*updateFileManagerlistFailure,
     updateFileManagerlistSuccess,
     updateFileManagerlist,
-    deleteFileManagerlistFailure,
+   deleteFileManagerlistFailure,
     deleteFileManagerlistSuccess,
-    deleteFileManagerlist,
+    deleteFileManagerlist,*/
     getFileManagerById,
     getFileManagerByIdSuccess,
     getFileManagerByIdFailure
@@ -34,7 +34,7 @@ export class FileManagersEffects {
             ofType(fetchFileManagerlistData),
             mergeMap(({ folderName }) =>
                 this.CrudService.fetchData('/storage/files-and-folders',{ folderName: folderName }).pipe(
-                    map((response: any) => fetchFileManagerlistSuccess({ FileManagerListdata : response.result })),
+                    map((response: any) => fetchFileManagerlistSuccess({ FileManagerListdata : response })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
                       this.toastr.error(errorMessage); 
@@ -49,14 +49,14 @@ export class FileManagersEffects {
     addData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(addFileManagerlist),
-            mergeMap(({ newData }) =>
-                this.CrudService.addData('/storage/folders', newData).pipe(
-                    map((newData) => {
+            mergeMap(({ folderName }) =>
+                this.CrudService.addData('/storage/folders', {folderName: folderName}).pipe(
+                    map(() => {
                       
                         this.toastr.success('The new FileManager has been added successfully.');
                         this.router.navigate(['/private/file-manager']);
                         // Dispatch the action to fetch the updated FileManager list after adding a new FileManager
-                        return addFileManagerlistSuccess({newData});
+                        return addFileManagerlistSuccess({folderName: folderName});
                       }),
                     catchError((error) => {
                       const errorMessage = this.formUtilService.getErrorMessage(error);
@@ -68,25 +68,25 @@ export class FileManagersEffects {
     );
    
 
-    updateData$ = createEffect(() =>
-        this.actions$.pipe(
-          ofType(updateFileManagerlist),
-          mergeMap(({ updatedData }) =>
-            this.CrudService.updateData(`/special-days/${updatedData.id}`, updatedData).pipe(
-              map(() => {
+    // updateData$ = createEffect(() =>
+    //     this.actions$.pipe(
+    //       ofType(updateFileManagerlist),
+    //       mergeMap(({ updatedData }) =>
+    //         this.CrudService.updateData(`/special-days/${updatedData.id}`, updatedData).pipe(
+    //           map(() => {
                 
-                this.toastr.success('The FileManager has been updated successfully.');
-                this.router.navigate(['/private/file-manager']);
-                return updateFileManagerlistSuccess({ updatedData }); // Make sure to return the action
-              }),
-              catchError((error) => {
-                const errorMessage = this.formUtilService.getErrorMessage(error);
-                this.toastr.error(errorMessage); 
-                return of(updateFileManagerlistFailure({ error: errorMessage }));}) // Catch errors and return the failure action
-            )
-          )
-        )
-      );
+    //             this.toastr.success('The FileManager has been updated successfully.');
+    //             this.router.navigate(['/private/file-manager']);
+    //             return updateFileManagerlistSuccess({ updatedData }); // Make sure to return the action
+    //           }),
+    //           catchError((error) => {
+    //             const errorMessage = this.formUtilService.getErrorMessage(error);
+    //             this.toastr.error(errorMessage); 
+    //             return of(updateFileManagerlistFailure({ error: errorMessage }));}) // Catch errors and return the failure action
+    //         )
+    //       )
+    //     )
+    //   );
       
     
    getFileManagerById$ = createEffect(() =>
@@ -108,24 +108,24 @@ export class FileManagersEffects {
       })
     )
   );
-   deleteData$ = createEffect(() =>
+  //  deleteData$ = createEffect(() =>
     
-        this.actions$.pipe(
-            ofType(deleteFileManagerlist),
-            mergeMap(({ FileManagerId }) =>
-                    this.CrudService.deleteData(`/files-or-folders/${FileManagerId}`).pipe(
-                        map(() => {
-                          this.toastr.success('FileManager deleted successfully.');
-                          return deleteFileManagerlistSuccess({ FileManagerId });
-                          }),
-                    catchError((error) => {
-                      const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage); 
-                      return  of(deleteFileManagerlistFailure({ error: errorMessage }))})
-                )
-            )
-        )
-    );
+  //       this.actions$.pipe(
+  //           ofType(deleteFileManagerlist),
+  //           mergeMap(({ FileManagerId }) =>
+  //                   this.CrudService.deleteData(`/files-or-folders/${FileManagerId}`).pipe(
+  //                       map(() => {
+  //                         this.toastr.success('FileManager deleted successfully.');
+  //                         return deleteFileManagerlistSuccess({ FileManagerId });
+  //                         }),
+  //                   catchError((error) => {
+  //                     const errorMessage = this.formUtilService.getErrorMessage(error);
+  //                     this.toastr.error(errorMessage); 
+  //                     return  of(deleteFileManagerlistFailure({ error: errorMessage }))})
+  //               )
+  //           )
+  //       )
+  //   );
     
     
     constructor(

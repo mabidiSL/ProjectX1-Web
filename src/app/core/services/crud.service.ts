@@ -81,6 +81,7 @@ export class CrudService {
       // Helper function to remove null/undefined values from the payload
     private removeNullValues(payload: any): any {
         // Create a new object and only keep properties with non-null/undefined values
+        
         const cleanedPayload = Object.keys(payload).reduce((acc, key) => {
         if (payload[key] !== null && payload[key] !== undefined) {
             acc[key] = payload[key];

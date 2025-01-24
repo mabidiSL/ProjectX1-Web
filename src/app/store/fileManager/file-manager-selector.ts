@@ -6,7 +6,7 @@ export const selectDataState = createFeatureSelector<FileManagerlistState>('File
 
 export const selectDataFileManager = createSelector(
   selectDataState,
-  (state: FileManagerlistState) => state?.FileManagerListdata || []
+  (state: FileManagerlistState) => state?.FileManagerListdata || null
 );
 export const selectDataTotalItems = createSelector(
   selectDataState,
@@ -16,7 +16,11 @@ export const selectedFileManager = createSelector(
     selectDataState,
     (state: FileManagerlistState) =>  state?.selectedFileManager || null
 );
-export const selectDataLoadingSpecial = createSelector(
+export const selectDataRootFolder = createSelector(
+  selectDataState,
+  (state: FileManagerlistState) => state?.rootFolder || 'MyFiles'
+);
+export const selectDataLoading = createSelector(
   selectDataState,
   (state: FileManagerlistState) => state?.loading || false
 );

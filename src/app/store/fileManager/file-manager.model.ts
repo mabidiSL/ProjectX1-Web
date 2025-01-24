@@ -3,11 +3,15 @@ import { PaginateModel } from  'src/app/core/interfaces/core.interface' ;
 
 export interface FileManagerListModel  extends PaginateModel
 {   
-    data?: FileManager[]; 
+    result?: FileManager; 
 }
 export interface FileManager {
     
-   
+   folders?: any[]; 
+   files?: any[];
+       
+    }
+export interface Folder {
         id?: number;
         name?: string;
         date?: string;
