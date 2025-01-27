@@ -443,6 +443,12 @@
         <!-- Subfolder and files structure -->
         <div class="ms-4" *ngIf="folder.isExpanded">
             <ul class="list-unstyled mb-0">
+                <!-- Loading indicator -->
+                <li *ngIf="(loading$ | async)" class="text-center py-2">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </li>
                 <!-- Show subfolders -->
                 <ng-container *ngIf="folder.subFolders?.length">
                     <ng-container *ngTemplateOutlet="folderTreeTemplate; context: { $implicit: folder.subFolders }">

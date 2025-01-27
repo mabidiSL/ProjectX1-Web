@@ -122,38 +122,41 @@ export class FileManagerComponent implements OnInit {
     fetchSubFolders(folderPath: string) {
       this.store.dispatch(fetchFileManagerlistData({ folderName: folderPath }));
       
+      // Don't update the UI immediately, wait for the backend response
       this.FolderList$.subscribe(data => {
-        // Convert the retrieved data into folder nodes
-        const folders = data.folders?.map(folderPath => {
-          const pathParts = folderPath.split('/');
-          const name = pathParts[pathParts.length - 1];
-          return {
-            name,
-            path: folderPath,
-            isExpanded: false,
-            subFolders: [],
-            files: []
-          } as FolderNode;
-        }) || [];
+        if (data?.folders) {  // Only process if we have data from backend
+          // Convert the retrieved data into folder nodes
+          const folders = data.folders.map(folderPath => {
+            const pathParts = folderPath.split('/');
+            const name = pathParts[pathParts.length - 1];
+            return {
+              name,
+              path: folderPath,
+              isExpanded: false,
+              subFolders: [],
+              files: []
+            } as FolderNode;
+          });
 
-        const files = data.files?.map(file => ({
-          name: file.name.split('/').pop(),
-          key: file.Key,
-          lastModified: new Date(file.LastModified).toLocaleDateString('en-CA'),
-          size: file.Size
-        })) || [];
+          const files = data.files?.map(file => ({
+            name: file.name.split('/').pop(),
+            key: file.Key,
+            lastModified: new Date(file.LastModified).toLocaleDateString('en-CA'),
+            size: file.Size
+          })) || [];
 
-        // Update the tree structure with the new data
-        this.updateFolderTree(this.folderTree, folderPath, folders, files);
-        
-        // Update the current view
-        const currentFolder = this.findFolderByPath(this.folderTree, folderPath);
-        if (currentFolder) {
-          this.folderList = folders.map(f => f.name);
-          this.fileList = files;
-          currentFolder.isExpanded = true;
+          // Update the tree structure with the new data
+          this.updateFolderTree(this.folderTree, folderPath, folders, files);
+          
+          // Update the current view only if we have data
+          const currentFolder = this.findFolderByPath(this.folderTree, folderPath);
+          if (currentFolder) {
+            this.folderList = folders.map(f => f.name);
+            this.fileList = files;
+            currentFolder.isExpanded = true;
+          }
+          this.currentPath = folderPath;
         }
-        this.currentPath = folderPath;
       });
     }
 
