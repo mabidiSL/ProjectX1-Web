@@ -16,6 +16,10 @@ export const selectedFileManager = createSelector(
     selectDataState,
     (state: FileManagerlistState) =>  state?.selectedFileManager || null
 );
+export const selectStorageQuota = createSelector(
+    selectDataState,
+    (state: FileManagerlistState) =>  state?.storageQuota || null
+);
 export const selectDataRootFolder = createSelector(
   selectDataState,
   (state: FileManagerlistState) => state?.rootFolder || 'MyFiles'

@@ -19,7 +19,16 @@ import {
     deleteFileManagerlist,*/
     getFileManagerById,
     getFileManagerByIdSuccess,
-    getFileManagerByIdFailure
+    getFileManagerByIdFailure,
+    // updateFileManagerlist,
+    // updateFileManagerlistSuccess,
+    // updateFileManagerlistFailure
+    deleteFileManagerlist,
+    deleteFileManagerlistSuccess,
+    deleteFileManagerlistFailure,
+    getStorageQuota,
+    getStorageQuotaSuccess,
+    getStorageQuotaFailure
 } from './file-manager.action';
 import { ToastrService } from 'ngx-toastr';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
@@ -71,20 +80,21 @@ export class FileManagersEffects {
     // updateData$ = createEffect(() =>
     //     this.actions$.pipe(
     //       ofType(updateFileManagerlist),
-    //       mergeMap(({ updatedData }) =>
-    //         this.CrudService.updateData(`/special-days/${updatedData.id}`, updatedData).pipe(
+    //       mergeMap(({ updatedData }) => {
+    //         const { oldPath, newPath } = JSON.parse(updatedData);
+    //         return this.CrudService.renameFolder(oldPath, newPath).pipe(
     //           map(() => {
-                
     //             this.toastr.success('The FileManager has been updated successfully.');
     //             this.router.navigate(['/private/file-manager']);
-    //             return updateFileManagerlistSuccess({ updatedData }); // Make sure to return the action
+    //             return updateFileManagerlistSuccess({ folderName: newPath });
     //           }),
     //           catchError((error) => {
     //             const errorMessage = this.formUtilService.getErrorMessage(error);
     //             this.toastr.error(errorMessage); 
-    //             return of(updateFileManagerlistFailure({ error: errorMessage }));}) // Catch errors and return the failure action
-    //         )
-    //       )
+    //             return of(updateFileManagerlistFailure({ error: errorMessage }));
+    //           })
+    //         );
+    //       })
     //     )
     //   );
       
@@ -108,24 +118,42 @@ export class FileManagersEffects {
       })
     )
   );
-  //  deleteData$ = createEffect(() =>
-    
-  //       this.actions$.pipe(
-  //           ofType(deleteFileManagerlist),
-  //           mergeMap(({ FileManagerId }) =>
-  //                   this.CrudService.deleteData(`/files-or-folders/${FileManagerId}`).pipe(
-  //                       map(() => {
-  //                         this.toastr.success('FileManager deleted successfully.');
-  //                         return deleteFileManagerlistSuccess({ FileManagerId });
-  //                         }),
-  //                   catchError((error) => {
-  //                     const errorMessage = this.formUtilService.getErrorMessage(error);
-  //                     this.toastr.error(errorMessage); 
-  //                     return  of(deleteFileManagerlistFailure({ error: errorMessage }))})
-  //               )
-  //           )
-  //       )
-  //   );
+  getStorageQuota$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getStorageQuota),
+      mergeMap(() => this.CrudService.fetchData('/storage/size').pipe(
+        map((response: any) => getStorageQuotaSuccess({ storageQuota: response.result })),
+        catchError((error) => {
+            const errorMessage = this.formUtilService.getErrorMessage(error);
+            this.toastr.error(errorMessage); 
+            return of(getStorageQuotaFailure({ error: errorMessage }));
+          })
+        )
+      )
+    )
+  );
+
+  deleteData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteFileManagerlist),
+      mergeMap(({ key, typeFile }) => {
+        // Replace forward slash with %2F for the API call if key contains project-x1/
+        const encodedKey = key.includes('/') ? key.replace('/', '%2F') : key;
+        
+        return this.CrudService.deleteData(`/storage/files-or-folders/${encodedKey}`).pipe(
+          map(() => {
+            this.toastr.success(`${typeFile === 'file' ? 'File' : 'Folder'} deleted successfully.`);
+            return deleteFileManagerlistSuccess({ key: key, typeFile: typeFile });
+          }),
+          catchError((error) => {
+            const errorMessage = this.formUtilService.getErrorMessage(error);
+            this.toastr.error(errorMessage); 
+            return of(deleteFileManagerlistFailure({ error: errorMessage }));
+          })
+        );
+      })
+    )
+  );
     
     
     constructor(

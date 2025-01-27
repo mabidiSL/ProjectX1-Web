@@ -18,4 +18,10 @@ export interface Folder {
         size?: string;
         actions?: string;
     }
+export interface StorageQuota {
+    size?: string;
+    storageLimit?: string;
+    percentage?: string;
+    
+}
          

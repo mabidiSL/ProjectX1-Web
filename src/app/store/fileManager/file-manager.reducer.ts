@@ -1,14 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // src/app/FileManagerlist.reducer.ts
 import { createReducer, on } from '@ngrx/store';
-import {  addFileManagerlist, addFileManagerlistFailure, addFileManagerlistSuccess, /*deleteFileManagerlist, deleteFileManagerlistFailure, deleteFileManagerlistSuccess,*/ fetchFileManagerlistData, fetchFileManagerlistFail, fetchFileManagerlistSuccess, getFileManagerById, getFileManagerByIdFailure, getFileManagerByIdSuccess  /* updateFileManagerlist, updateFileManagerlistFailure, updateFileManagerlistSuccess */} from './file-manager.action';
-import { FileManager, Folder } from './file-manager.model';
+import {  addFileManagerlist, addFileManagerlistFailure, addFileManagerlistSuccess, deleteFileManagerlistFailure, deleteFileManagerlist, deleteFileManagerlistSuccess, /*deleteFileManagerlist, deleteFileManagerlistFailure, deleteFileManagerlistSuccess,*/ fetchFileManagerlistData, fetchFileManagerlistFail, fetchFileManagerlistSuccess, getFileManagerById, getFileManagerByIdFailure, getFileManagerByIdSuccess, getStorageQuota, getStorageQuotaSuccess, getStorageQuotaFailure,  /* updateFileManagerlist, updateFileManagerlistFailure, updateFileManagerlistSuccess */
+/*updateFileManagerlist,
+updateFileManagerlistFailure,
+updateFileManagerlistSuccess*/
+} from './file-manager.action';
+import { FileManager, Folder, StorageQuota } from './file-manager.model';
 
 export interface FileManagerlistState {
   FileManagerListdata: FileManager;
   currentFolder: string;
   rootFolder: string;
   totalItems: number;
+  storageQuota: StorageQuota;
   selectedFileManager: Folder | any;
   loading: boolean;
   error: string;
@@ -18,6 +23,7 @@ export const initialState: FileManagerlistState = {
   FileManagerListdata: null,
   currentFolder: null,
   rootFolder: null,
+  storageQuota: null,
   totalItems: 0,
   selectedFileManager: null,
   loading: false,
@@ -94,21 +100,47 @@ on(getFileManagerByIdFailure, (state, { error }) => ({
   error,
   loading: false, 
 })),
-// // Handle updating Coupon list
+// Handle updating Coupon list
 // on(updateFileManagerlist, (state) => ({
 //   ...state,
 //   loading: true,
 //   error: null 
 // })),
 //  // Handle updating FileManager status
-//   on(updateFileManagerlistSuccess, (state, { updatedData }) => {
-//    const FileManagerListUpdated = updatedData
-//    //state.FileManagerListdata.map(item => item.id === updatedData.id ? updatedData : item );
-//    return {
+// on(updateFileManagerlistSuccess, (state, { oldName, newNamefolderName }) => {
+//     // Find the folder to update in the list
+//     const updatedFolders = state.FileManagerListdata.folders.map(folder => {
+//       const oldPath = folder.split('/');
+//       const newPath = folderName.split('/');
+      
+//       // If this is the folder being renamed or a subfolder
+//       if (folder.startsWith(oldPath[0])) {
+//         // Replace the old folder name with the new one while keeping the same structure
+//         return folder.replace(oldPath[0], newPath[newPath.length - 1]);
+//       }
+//       return folder;
+//     });
+
+//     // Update files paths if they were in the renamed folder
+//     const updatedFiles = state.FileManagerListdata.files.map(file => {
+//       if (file.name.startsWith(folderName)) {
+//         return {
+//           ...file,
+//           name: file.name.replace(folderName.split('/')[0], folderName.split('/')[newPath.length - 1])
+//         };
+//       }
+//       return file;
+//     });
+
+//     return {
 //       ...state,
-//       FileManagerListdata: FileManagerListUpdated,
+//       FileManagerListdata: {
+//         ...state.FileManagerListdata,
+//         folders: updatedFolders,
+//         files: updatedFiles
+//       },
 //       loading: false,
-//       error: null 
+//       error: null
 //     };
 //   }),
 //    // Handle updating FileManager failure
@@ -117,26 +149,58 @@ on(getFileManagerByIdFailure, (state, { error }) => ({
 //     error,
 //     loading: false 
 //   })),
-//   // Handle deleting FileManager 
-//   on(deleteFileManagerlist, (state) => ({
-//     ...state,
-//     loading: true,
-//     error: null 
-//   })),
-//   // Handle the success of deleting a FileManager
-//   on(deleteFileManagerlistSuccess, (state, { FileManagerId }) => {
-//     const updatedFileManagerList = FileManagerId
-//     //state.FileManagerListdata.filter(FileManager => FileManager.id !== FileManagerId);
-//     return { 
-//     ...state,
-//     FileManagerListdata: updatedFileManagerList,
-//     loading: false,
-//     error: null};
-//   }),
-//   // Handle failure of deleting a FileManager
-//   on(deleteFileManagerlistFailure, (state, { error }) => ({
-//     ...state,
-//     error,
-//     loading: false
-//   }))
+
+  on(getStorageQuota, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
+  })),
+  on(getStorageQuotaSuccess, (state, { storageQuota }) => ({
+    ...state,
+    storageQuota,
+    loading: false,
+    error: null
+  })),
+  on(getStorageQuotaFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false
+  })),
+
+  // Handle deleting FileManager 
+  on(deleteFileManagerlist, (state) => ({
+    ...state,
+    loading: true,
+    error: null 
+  })),
+  // Handle the success of deleting a FileManager
+  on(deleteFileManagerlistSuccess, (state, { key, typeFile }) => {
+    if (typeFile === 'file') {
+      return {
+        ...state,
+        FileManagerListdata: {
+          ...state.FileManagerListdata,
+          files: state.FileManagerListdata.files.filter(file => file.name !== key)
+        },
+        loading: false,
+        error: null
+      };
+    } else {
+      return {
+        ...state,
+        FileManagerListdata: {
+          ...state.FileManagerListdata,
+          folders: state.FileManagerListdata.folders.filter(folder => !folder.startsWith(key))
+        },
+        loading: false,
+        error: null
+      };
+    }
+  }),
+  // Handle failure of deleting a FileManager
+  on(deleteFileManagerlistFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false
+  }))
  );
