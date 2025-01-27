@@ -381,7 +381,7 @@
     </div>
   </div>
 
-<!-- Replace the existing folderTreeTemplate with this simpler version -->
+<!-- Replace the existing folderTreeTemplate with this updated version -->
 <ng-template #folderTreeTemplate let-folders>
     <li *ngFor="let folder of folders">
         <div class="d-flex align-items-center folder-item">
@@ -427,8 +427,8 @@
                         <i class="mdi mdi-delete"></i>
                     </button>
                 </div>
-                <i *ngIf="folder.subFolders?.length || !folder.isExpanded" 
-                   class="mdi " 
+                <i *ngIf="folder.subFolders?.length || folder.files?.length || !folder.isExpanded" 
+                   class="mdi" 
                    [class.mdi-chevron-down]="folder.isExpanded"
                    [class.mdi-chevron-right]="!folder.isExpanded"
                    (click)="toggleFolder(folder, $event)"
@@ -440,11 +440,36 @@
             </a>
         </div>
         
-        <!-- Subfolder structure -->
-        <div class="ms-4" *ngIf="folder.isExpanded && folder.subFolders?.length">
+        <!-- Subfolder and files structure -->
+        <div class="ms-4" *ngIf="folder.isExpanded">
             <ul class="list-unstyled mb-0">
-                <ng-container *ngTemplateOutlet="folderTreeTemplate; context: { $implicit: folder.subFolders }">
+                <!-- Show subfolders -->
+                <ng-container *ngIf="folder.subFolders?.length">
+                    <ng-container *ngTemplateOutlet="folderTreeTemplate; context: { $implicit: folder.subFolders }">
+                    </ng-container>
                 </ng-container>
+                
+                <!-- Show files -->
+                <li *ngFor="let file of folder.files" class="file-item">
+                    <div class="d-flex align-items-center">
+                        <div class="file-name-container">
+                            <i class="mdi mdi-file-document font-size-13 text-primary me-2"></i>
+                            <span class="font-size-12">{{file.name}}</span>
+                        </div>
+                        <div class="file-actions ms-auto">
+                            <button class="btn btn-link text-muted p-1" 
+                                    (click)="renameItem(file)"
+                                    title="Rename">
+                                <i class="mdi mdi-pencil"></i>
+                            </button>
+                            <button class="btn btn-link text-danger p-1" 
+                                    (click)="deleteItem(file, $event)"
+                                    title="Delete">
+                                <i class="mdi mdi-delete"></i>
+                            </button>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </div>
     </li>

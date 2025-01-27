@@ -109,11 +109,13 @@ export class FileManagerComponent implements OnInit {
         this.folderTree = rootFolders;
         this.folderList = rootFolders.map(f => f.name);
         this.fileList = data?.files?.map(file => ({
+         
           name: file.name.split('/').pop(),
           key: file.Key,
           lastModified: new Date(file.LastModified).toLocaleDateString('en-CA'),
           size: file.Size
         })) || [];
+        console.log(this.fileList);
       });
     }
 
@@ -489,8 +491,33 @@ export class FileManagerComponent implements OnInit {
       
       // Update the chart
       if (this.radialoptions) {
-        this.radialoptions.updateSeries([percentage]);
+        this.radialoptions.series = [percentage];
       }
     }
   }
+
+  formatFileSize(bytes: number): string {
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
+  // downloadFile(file: FileNode): void {
+  //   // Create a download URL using the file's key
+  //   const downloadUrl = `/api/storage/download/${encodeURIComponent(file.key)}`;
+    
+  //   // Create a temporary anchor element
+  //   const link = document.createElement('a');
+  //   link.href = downloadUrl;
+  //   link.download = file.name; // Set the download filename
+    
+  //   // Append to body, click, and remove
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+  // }
 }
