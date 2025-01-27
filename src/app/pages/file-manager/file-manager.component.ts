@@ -61,6 +61,9 @@ export class FileManagerComponent implements OnInit {
     isRenamingFile: boolean = false;
     editingFile: FileNode = null;
     storageQuota: StorageQuota = null;
+    currentLevel: number = 0;
+    parentFolderPath: string = '';
+    showBackButton: boolean = false;
 
     constructor(
       public router: Router,
@@ -120,12 +123,22 @@ export class FileManagerComponent implements OnInit {
     }
 
     fetchSubFolders(folderPath: string) {
+      const pathParts = folderPath.split('/').filter(p => p);
+      const level = pathParts.length;
+
+      // Store parent path for back navigation
+      if (level > 1) {
+        this.parentFolderPath = pathParts.slice(0, -1).join('/');
+        this.showBackButton = true;
+      } else {
+        this.parentFolderPath = '';
+        this.showBackButton = false;
+      }
+
       this.store.dispatch(fetchFileManagerlistData({ folderName: folderPath }));
       
-      // Don't update the UI immediately, wait for the backend response
       this.FolderList$.subscribe(data => {
-        if (data?.folders) {  // Only process if we have data from backend
-          // Convert the retrieved data into folder nodes
+        if (data?.folders) {
           const folders = data.folders.map(folderPath => {
             const pathParts = folderPath.split('/');
             const name = pathParts[pathParts.length - 1];
@@ -145,17 +158,25 @@ export class FileManagerComponent implements OnInit {
             size: file.Size
           })) || [];
 
-          // Update the tree structure with the new data
-          this.updateFolderTree(this.folderTree, folderPath, folders, files);
-          
-          // Update the current view only if we have data
-          const currentFolder = this.findFolderByPath(this.folderTree, folderPath);
-          if (currentFolder) {
-            this.folderList = folders.map(f => f.name);
-            this.fileList = files;
-            currentFolder.isExpanded = true;
-          }
+          // Update the current view
+          this.folderList = folders.map(f => f.name);
+          this.fileList = files;
           this.currentPath = folderPath;
+
+          // Only update tree if we're at level 1 or less
+          if (level <= 1) {
+            this.updateFolderTree(this.folderTree, folderPath, folders, files);
+          } else {
+            // For deeper levels, just update the expanded state of the parent folders
+            let currentLevel = this.folderTree;
+            for (let i = 0; i < level - 1; i++) {
+              const folder = currentLevel.find(f => f.name === pathParts[i]);
+              if (folder) {
+                folder.isExpanded = true;
+                currentLevel = folder.subFolders;
+              }
+            }
+          }
         }
       });
     }
@@ -330,11 +351,18 @@ export class FileManagerComponent implements OnInit {
 
   toggleFolder(folder: FolderNode, event: Event): void {
     event.stopPropagation();
-    if (folder.subFolders?.length) {
-      folder.isExpanded = !folder.isExpanded;
-    } else if (!folder.isExpanded) {
-      // Only fetch if we're expanding and don't have subfolders yet
+    const pathParts = folder.path.split('/').filter(p => p);
+    const level = pathParts.length;
+
+    if (level > 1) {
+      // For deeper levels, just fetch the contents
       this.fetchSubFolders(folder.path);
+    } else {
+      // For first level, toggle expansion and fetch if needed
+      folder.isExpanded = !folder.isExpanded;
+      if (!folder.subFolders?.length && folder.isExpanded) {
+        this.fetchSubFolders(folder.path);
+      }
     }
   }
 
@@ -523,4 +551,12 @@ export class FileManagerComponent implements OnInit {
   //   link.click();
   //   document.body.removeChild(link);
   // }
+
+  navigateToParent(): void {
+    if (this.parentFolderPath) {
+      this.fetchSubFolders(this.parentFolderPath);
+    } else {
+      this.fetchFolders();
+    }
+  }
 }

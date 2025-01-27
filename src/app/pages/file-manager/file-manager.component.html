@@ -71,7 +71,16 @@
                                 <div class="row mb-3">
                                     <div class="col-xl-3 col-sm-6">
                                         <div class="mt-2">
-                                            <h5>My Files</h5>
+                                            <div class="d-flex align-items-center">
+                                                <button *ngIf="showBackButton" 
+                                                        class="btn btn-link p-0 me-2"
+                                                        (click)="navigateToParent()">
+                                                    <i class="mdi mdi-arrow-left font-size-20"></i>
+                                                </button>
+                                                <h5 class="mb-0">
+                                                    {{ currentPath ? currentPath.split('/').pop() : 'My Files' }}
+                                                </h5>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-xl-9 col-sm-6">
@@ -443,12 +452,6 @@
         <!-- Subfolder and files structure -->
         <div class="ms-4" *ngIf="folder.isExpanded">
             <ul class="list-unstyled mb-0">
-                <!-- Loading indicator -->
-                <li *ngIf="(loading$ | async)" class="text-center py-2">
-                    <div class="spinner-border spinner-border-sm text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                </li>
                 <!-- Show subfolders -->
                 <ng-container *ngIf="folder.subFolders?.length">
                     <ng-container *ngTemplateOutlet="folderTreeTemplate; context: { $implicit: folder.subFolders }">

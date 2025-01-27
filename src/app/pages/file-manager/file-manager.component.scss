@@ -248,3 +248,22 @@
     margin-bottom: 0.5rem;
   }
 }
+
+.btn-link {
+  color: inherit;
+  text-decoration: none;
+  
+  &:hover {
+    color: var(--bs-primary);
+  }
+  
+  i {
+    line-height: 1;
+  }
+}
+
+.current-path {
+  color: var(--bs-gray-600);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
