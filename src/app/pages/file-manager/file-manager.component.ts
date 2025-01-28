@@ -123,8 +123,12 @@ export class FileManagerComponent implements OnInit {
     }
 
     fetchSubFolders(folderPath: string) {
+      console.log('fetchSubFolders', folderPath);
+      
       const pathParts = folderPath.split('/').filter(p => p);
       const level = pathParts.length;
+      console.log('level', level);
+      const clickedFolderName = pathParts[pathParts.length - 1];
 
       // Store parent path for back navigation
       if (level > 1) {
@@ -135,21 +139,52 @@ export class FileManagerComponent implements OnInit {
         this.showBackButton = false;
       }
 
+      // For levels deeper than 2, only update the view, not the tree
+      if (level > 2) {
+        this.store.dispatch(fetchFileManagerlistData({ folderName: folderPath }));
+        this.FolderList$.subscribe(data => {
+          if (data?.folders) {
+            // Update only the view (right panel)
+            this.folderList = data.folders.map(path => path.split('/').pop());
+            this.fileList = data.files?.map(file => ({
+              name: file.name.split('/').pop(),
+              key: file.Key,
+              lastModified: new Date(file.LastModified).toLocaleDateString('en-CA'),
+              size: file.Size
+            })) || [];
+            this.currentPath = folderPath;
+          }
+        });
+        return;
+      }
+
+      // For levels 1 and 2, handle tree updates
+      const clickedFolder = this.findFolderByPath(this.folderTree, folderPath);
+      if (clickedFolder) {
+        clickedFolder.isExpanded = !clickedFolder.isExpanded;
+        // If we're collapsing, no need to fetch
+        if (!clickedFolder.isExpanded) {
+          return;
+        }
+      }
+
       this.store.dispatch(fetchFileManagerlistData({ folderName: folderPath }));
       
       this.FolderList$.subscribe(data => {
         if (data?.folders) {
-          const folders = data.folders.map(folderPath => {
-            const pathParts = folderPath.split('/');
-            const name = pathParts[pathParts.length - 1];
-            return {
-              name,
-              path: folderPath,
-              isExpanded: false,
-              subFolders: [],
-              files: []
-            } as FolderNode;
-          });
+          const folders = data.folders
+            .map(folderPath => {
+              const pathParts = folderPath.split('/');
+              const name = pathParts[pathParts.length - 1];
+              return {
+                name,
+                path: folderPath,
+                isExpanded: false,
+                subFolders: [],
+                files: []
+              } as FolderNode;
+            })
+            .filter(folder => folder.name !== clickedFolderName);
 
           const files = data.files?.map(file => ({
             name: file.name.split('/').pop(),
@@ -163,6 +198,27 @@ export class FileManagerComponent implements OnInit {
           this.fileList = files;
           this.currentPath = folderPath;
 
+          // Update tree only for levels 1 and 2
+          // if (level === 1) {
+          //   console.log('level 1');
+            
+          //   // For root level folders
+          //   this.updateFolderTree(this.folderTree, folderPath, folders, files);}
+          // } else if (level === 2) {
+          //   console.log('level 2');
+            
+          //   // For first level subfolders
+          //   const parentPath = pathParts[0];
+          //   const parentFolder = this.findFolderByPath(this.folderTree, parentPath);
+          //   if (parentFolder) {
+          //     const clickedFolder = parentFolder.subFolders.find(f => f.name === clickedFolderName);
+          //     if (clickedFolder) {
+          //       clickedFolder.subFolders = folders;
+          //       clickedFolder.files = files;
+          //       clickedFolder.isExpanded = true;
+          //     }
+          //   }
+          // }
           // Only update tree if we're at level 1 or less
           if (level <= 1) {
             this.updateFolderTree(this.folderTree, folderPath, folders, files);
@@ -177,7 +233,7 @@ export class FileManagerComponent implements OnInit {
               }
             }
           }
-        }
+        } 
       });
     }
 
@@ -354,15 +410,16 @@ export class FileManagerComponent implements OnInit {
     const pathParts = folder.path.split('/').filter(p => p);
     const level = pathParts.length;
 
-    if (level > 1) {
-      // For deeper levels, just fetch the contents
+    // For levels deeper than 2, only update the view
+    if (level > 2) {
       this.fetchSubFolders(folder.path);
-    } else {
-      // For first level, toggle expansion and fetch if needed
-      folder.isExpanded = !folder.isExpanded;
-      if (!folder.subFolders?.length && folder.isExpanded) {
-        this.fetchSubFolders(folder.path);
-      }
+      return;
+    }
+
+    // For levels 1 and 2, handle expansion
+    folder.isExpanded = !folder.isExpanded;
+    if (!folder.subFolders?.length && folder.isExpanded) {
+      this.fetchSubFolders(folder.path);
     }
   }
 
