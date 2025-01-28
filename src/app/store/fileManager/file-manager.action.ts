@@ -11,8 +11,8 @@ export const addFileManagerlist = createAction('[Data] Add FileManagerlist',  pr
 export const addFileManagerlistSuccess = createAction('[Data] Add FileManagerlist Success', props<{ folderName: string }>());
 export const addFileManagerlistFailure = createAction('[Data] Add FileManagerlist Failure', props<{ error: string }>());
 //Add File 
-export const addFile = createAction('[Data] Add File',  props<{ folderName: string, fileName: any[]}>());
-export const addFileSuccess = createAction('[Data] Add File Success', props<{ folderName: string, fileName: any[]}>());
+export const addFile = createAction('[Data] Add File',  props<{ formData: any  }>());
+export const addFileSuccess = createAction('[Data] Add File Success', props<{ formData: any}>());
 export const addFileFailure = createAction('[Data] Add File Failure', props<{ error: string }>());
 
 //get FileManager by ID

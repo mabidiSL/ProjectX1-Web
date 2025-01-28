@@ -65,7 +65,7 @@ export class FileManagersEffects {
                 this.CrudService.addData('/storage/folders', {folderName: folderName}).pipe(
                     map(() => {
                       
-                        this.toastr.success('The new FileManager has been added successfully.');
+                        this.toastr.success('The new Folder has been added successfully.');
                         this.router.navigate(['/private/file-manager']);
                         // Dispatch the action to fetch the updated FileManager list after adding a new FileManager
                         return addFileManagerlistSuccess({folderName: folderName});
@@ -81,23 +81,23 @@ export class FileManagersEffects {
     addDataFile$ = createEffect(() =>
       this.actions$.pipe(
           ofType(addFile),
-          mergeMap(({ folderName, fileName }) =>
-              this.CrudService.addData('/storage/files', {folderName: folderName, fileName: fileName}).pipe(
+          mergeMap(({ formData }) => {
+              // files is already a FormData object, send it directly
+              return this.CrudService.addData('/storage/files', formData).pipe(
                   map(() => {
-                    
-                      this.toastr.success('The new File has been added successfully.');
+                      this.toastr.success('Files uploaded successfully.');
                       this.router.navigate(['/private/file-manager']);
-                      // Dispatch the action to fetch the updated FileManager list after adding a new FileManager
-                      return addFileSuccess({folderName: folderName, fileName: fileName});
-                    }),
+                      return addFileSuccess({ formData });
+                  }),
                   catchError((error) => {
                     const errorMessage = this.formUtilService.getErrorMessage(error);
                     this.toastr.error(errorMessage); 
-                    return of(addFileFailure({ error: errorMessage }));})
-              )
-          )
+                    return of(addFileFailure({ error: errorMessage }));
+                  })
+              );
+          })
       )
-  );
+    );
 
     // updateData$ = createEffect(() =>
     //     this.actions$.pipe(

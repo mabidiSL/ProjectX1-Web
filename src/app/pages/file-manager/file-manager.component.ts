@@ -6,7 +6,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { RootReducerState } from 'src/app/store';
 import { selectDataFileManager, selectDataLoading, selectStorageQuota } from 'src/app/store/fileManager/file-manager-selector';
-import { addFileManagerlist, fetchFileManagerlistData, deleteFileManagerlist, getStorageQuota } from 'src/app/store/fileManager/file-manager.action';
+import { addFileManagerlist, fetchFileManagerlistData, deleteFileManagerlist, getStorageQuota, addFile } from 'src/app/store/fileManager/file-manager.action';
 
 interface FolderNode {
   name: string;
@@ -19,6 +19,7 @@ interface FolderNode {
 interface FileNode {
   name: string;
   key: string;
+  path: string;
   lastModified: string;
   size: number;
 }
@@ -88,6 +89,7 @@ export class FileManagerComponent implements OnInit {
       this.initializeRadialChart();
     }
     fetchFolders(folderName?: string | null) {
+      this.currentPath = folderName || '';
       this.store.dispatch(fetchFileManagerlistData({ folderName: folderName }));  
       this.FolderList$.subscribe(data => {
         // Group folders by their parent path
@@ -129,7 +131,7 @@ export class FileManagerComponent implements OnInit {
           key: file.Key,
           lastModified: new Date(file.LastModified).toLocaleDateString('en-CA'),
           size: file.Size,
-          path: file.Key
+          path: file.name
         })) || [];
         console.log('files list after first load',this.fileList);
       });
@@ -137,7 +139,7 @@ export class FileManagerComponent implements OnInit {
 
     fetchSubFolders(folderPath: string) {
       console.log('fetchSubFolders', folderPath);
-      
+      this.currentPath = folderPath;
       const pathParts = folderPath.split('/').filter(p => p);
       const level = pathParts.length;
       console.log('level', level);
@@ -322,10 +324,10 @@ export class FileManagerComponent implements OnInit {
         const confirmDelete = await this.showDeleteConfirmDialog(itemType, item.name);
         
         if (confirmDelete) {
-          // this.store.dispatch(deleteFileManagerlist({ 
-          //   key: isFile ? (item).key : (item).path,
-          //   typeFile: isFile ? 'file' : 'folder'
-          // }));
+          this.store.dispatch(deleteFileManagerlist({ 
+            key: item.path,
+            typeFile: isFile ? 'file' : 'folder'
+          }));
 
           // Update local tree structure
           if (isFile) {
@@ -591,7 +593,7 @@ export class FileManagerComponent implements OnInit {
   }
 
   openFileUploadModal(folderPath?: string) {
-    this.currentPath = folderPath;
+   // this.currentPath = folderPath;
     console.log('currentPath', this.currentPath);
     
     this.isFileUploadModalOpen = false;
@@ -646,25 +648,35 @@ export class FileManagerComponent implements OnInit {
   }
 
   async uploadFiles() {
-    console.log(this.selectedFiles);
-    console.log('currentPath', this.currentPath);
+    console.log('Selected Files:', this.selectedFiles);
+    console.log('Current Path:', this.currentPath);
     if (this.selectedFiles.length === 0) return;
-    const filesToSend: any[] = [];
 
     try {
-      for (const file of this.selectedFiles) {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('path', this.currentPath || '');
-       
-        console.log(this.parentFolderPath);
-        console.log(file);
-        filesToSend.push(formData);
-
-        
-      }
-      // Dispatch upload action here
-       // this.store.dispatch(addFileManagerlist({ folderName: this.currentPath }));
+      // Create a single FormData for all files
+      const formData = new FormData();
+      
+      // Add folderName to FormData
+      formData.append('folderName', this.currentPath || '');
+      
+      // Append each file with a unique key
+      Array.from(this.selectedFiles).forEach((file, index) => {
+        formData.append(`files`, file);
+      });
+      
+      // Log the FormData contents
+      formData.forEach((value, key) => {
+        if (value instanceof File) {
+          console.log(key, ':', value.name);
+        } else {
+          console.log(key, ':', value);
+        }
+      });
+      
+      this.store.dispatch(addFile({ 
+        formData: formData
+      }));
+      
       this.closeFileUploadModal();
       // Refresh the file list after upload
       this.fetchFolders(this.currentPath);

@@ -154,7 +154,7 @@ on(addFile, (state) => ({
   loading: true,
   error: null   
 })),
-on(addFileSuccess, (state, { folderName, fileName }) => ({
+on(addFileSuccess, (state, { formData }) => ({
   ...state,
   loading: false,
   error: null 
