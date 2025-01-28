@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // src/app/FileManagerlist.reducer.ts
 import { createReducer, on } from '@ngrx/store';
-import {  addFileManagerlist, addFileManagerlistFailure, addFileManagerlistSuccess, deleteFileManagerlistFailure, deleteFileManagerlist, deleteFileManagerlistSuccess, /*deleteFileManagerlist, deleteFileManagerlistFailure, deleteFileManagerlistSuccess,*/ fetchFileManagerlistData, fetchFileManagerlistFail, fetchFileManagerlistSuccess, getFileManagerById, getFileManagerByIdFailure, getFileManagerByIdSuccess, getStorageQuota, getStorageQuotaSuccess, getStorageQuotaFailure,  /* updateFileManagerlist, updateFileManagerlistFailure, updateFileManagerlistSuccess */
+import {  addFileManagerlist, addFileManagerlistFailure, addFileManagerlistSuccess, deleteFileManagerlistFailure, deleteFileManagerlist, deleteFileManagerlistSuccess, /*deleteFileManagerlist, deleteFileManagerlistFailure, deleteFileManagerlistSuccess,*/ fetchFileManagerlistData, fetchFileManagerlistFail, fetchFileManagerlistSuccess, getFileManagerById, getFileManagerByIdFailure, getFileManagerByIdSuccess, getStorageQuota, getStorageQuotaSuccess, getStorageQuotaFailure, addFile, addFileFailure, addFileSuccess,  /* updateFileManagerlist, updateFileManagerlistFailure, updateFileManagerlistSuccess */
 /*updateFileManagerlist,
 updateFileManagerlistFailure,
 updateFileManagerlistSuccess*/
@@ -149,7 +149,21 @@ on(getFileManagerByIdFailure, (state, { error }) => ({
 //     error,
 //     loading: false 
 //   })),
-
+on(addFile, (state) => ({
+  ...state,
+  loading: true,
+  error: null   
+})),
+on(addFileSuccess, (state, { folderName, fileName }) => ({
+  ...state,
+  loading: false,
+  error: null 
+})),
+on(addFileFailure, (state, { error }) => ({
+  ...state,
+  loading: false,
+  error
+})),
   on(getStorageQuota, (state) => ({
     ...state,
     loading: true,

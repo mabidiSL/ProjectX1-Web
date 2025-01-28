@@ -28,7 +28,10 @@ import {
     deleteFileManagerlistFailure,
     getStorageQuota,
     getStorageQuotaSuccess,
-    getStorageQuotaFailure
+    getStorageQuotaFailure,
+    addFile,
+    addFileFailure,
+    addFileSuccess
 } from './file-manager.action';
 import { ToastrService } from 'ngx-toastr';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
@@ -75,7 +78,26 @@ export class FileManagersEffects {
             )
         )
     );
-   
+    addDataFile$ = createEffect(() =>
+      this.actions$.pipe(
+          ofType(addFile),
+          mergeMap(({ folderName, fileName }) =>
+              this.CrudService.addData('/storage/files', {folderName: folderName, fileName: fileName}).pipe(
+                  map(() => {
+                    
+                      this.toastr.success('The new File has been added successfully.');
+                      this.router.navigate(['/private/file-manager']);
+                      // Dispatch the action to fetch the updated FileManager list after adding a new FileManager
+                      return addFileSuccess({folderName: folderName, fileName: fileName});
+                    }),
+                  catchError((error) => {
+                    const errorMessage = this.formUtilService.getErrorMessage(error);
+                    this.toastr.error(errorMessage); 
+                    return of(addFileFailure({ error: errorMessage }));})
+              )
+          )
+      )
+  );
 
     // updateData$ = createEffect(() =>
     //     this.actions$.pipe(

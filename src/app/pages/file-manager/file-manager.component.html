@@ -98,9 +98,10 @@
                                                 </a>
 
                                                 <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
-                                                    <a class="dropdown-item" href="javascript: void(0);">Share Files</a>
+                                                    <a class="dropdown-item" href="javascript: void(0);" (click)="openFileUploadModal()">Upload Files</a>
+                                                    <!-- <a class="dropdown-item" href="javascript: void(0);">Share Files</a>
                                                     <a class="dropdown-item" href="javascript: void(0);">Share with me</a>
-                                                    <a class="dropdown-item" href="javascript: void(0);">Other Actions</a>
+                                                    <a class="dropdown-item" href="javascript: void(0);">Other Actions</a> -->
                                                 </div>
                                             </div>
                                         </form>
@@ -108,6 +109,8 @@
                                 </div>
                             </div>
                             <div>
+                               
+
                                 <div *ngIf="folderList && folderList.length > 0" class="row">
                                     <div *ngFor="let folder of folderList" class="col-xl-4 col-sm-6">
                                         <div class="card shadow-none border">
@@ -121,9 +124,18 @@
 
                                                             <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
                                                                 <a class="dropdown-item" 
-                                                                   (click)="fetchSubFolders(folder)"
-                                                                   (keydown.enter)="fetchSubFolders(folder)"
-                                                                   (keydown.space)="fetchSubFolders(folder)"
+                                                                   (click)="openFileUploadModal(folder.path)"
+                                                                   (keydown.enter)="openFileUploadModal(folder.path)"
+                                                                   (keydown.space)="openFileUploadModal(folder.path)"
+                                                                   tabindex="0"
+                                                                   role="button">
+                                                                   <i class="mdi mdi-upload me-2"></i>Upload Files
+                                                                </a>                                                            
+
+                                                                <a class="dropdown-item" 
+                                                                   (click)="fetchSubFolders(folder.path)"
+                                                                   (keydown.enter)="fetchSubFolders(folder.path)"
+                                                                   (keydown.space)="fetchSubFolders(folder.path)"
                                                                    tabindex="0"
                                                                    role="button">
                                                                     <i class="mdi mdi-folder-open me-2"></i>Open
@@ -156,28 +168,72 @@
                                                     <div class="d-flex">
                                                         <div class="overflow-hidden me-auto">
                                                             <h5 class="font-size-14 text-truncate mb-1">
-                                                                <a (click)="fetchSubFolders(folder)" 
-                                                                   (keydown.enter)="fetchSubFolders(folder)"
-                                                                   (keydown.space)="fetchSubFolders(folder)"
+                                                                <a (click)="fetchSubFolders(folder.path)" 
+                                                                   (keydown.enter)="fetchSubFolders(folder.path)"
+                                                                   (keydown.space)="fetchSubFolders(folder.path)"
                                                                    tabindex="0"
                                                                    role="button"
-                                                                   class="text-body">{{folder}}</a>
+                                                                   class="text-body">{{folder?.name}}</a>
                                                             </h5>
-                                                            <p class="text-muted text-truncate mb-0" *ngIf="folder.subFolders">
-                                                                {{folder.subFolders.length}} Subfolders
-                                                            </p>
+                                                            <!-- <p class="text-muted text-truncate mb-0">
+                                                                {{folder.path}}
+                                                            </p> -->
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                     <!-- end col -->
 
+                                </div>
                                 
-
+                                <div *ngIf="fileList && fileList.length > 0" class="row">
+                                    <div *ngFor="let file of fileList" class="col-xl-4 col-sm-6">
+                                        <div class="card shadow-none border">
+                                            <div class="card-body p-3">
+                                                <div class="">
+                                                    <div class="float-end ms-2">
+                                                        <div class="dropdown mb-2" dropdown>
+                                                            <a class="font-size-16 text-muted dropdown-toggle" dropdownToggle role="button">
+                                                                <i class="mdi mdi-dots-horizontal"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
+                                                                <a class="dropdown-item" 
+                                                                   (click)="renameItem(file, $event)"
+                                                                   (keydown.enter)="renameItem(file)"
+                                                                   (keydown.space)="renameItem(file)"
+                                                                   tabindex="0"
+                                                                   role="button">
+                                                                    <i class="mdi mdi-pencil me-2"></i>Rename
+                                                                </a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a class="dropdown-item text-danger" 
+                                                                   (click)="deleteItem(file, $event)"
+                                                                   (keydown.enter)="deleteItem(file)"
+                                                                   (keydown.space)="deleteItem(file)"
+                                                                   tabindex="0"
+                                                                   role="button">
+                                                                    <i class="mdi mdi-delete me-2"></i>Delete
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="avatar-xs me-3 mb-3">
+                                                        <div class="avatar-title bg-transparent rounded">
+                                                            <i class="bx bx-file font-size-24 text-info"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex">
+                                                        <div class="overflow-hidden me-auto">
+                                                            <h5 class="font-size-14 text-truncate mb-1">{{file?.name}}</h5>
+                                                            <p class="text-muted font-size-13 mb-0">{{file?.size | number}} bytes • {{file?.lastModified}}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <!-- end row -->
 
@@ -365,6 +421,79 @@
     </div>
     <!-- end row -->
 </div>
+
+<!-- File Upload Modal -->
+<div class="modal" tabindex="-1" role="dialog" [ngClass]="{'show': isFileUploadModalOpen}" [style.display]="isFileUploadModalOpen ? 'block' : 'none'">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload Files</h5>
+                <button type="button" class="btn-close" (click)="closeFileUploadModal()"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Drag and Drop Zone -->
+                <div class="upload-zone p-4 text-center border rounded" 
+                     [ngClass]="{'dragging': isDragging}"
+                     (dragover)="onDragOver($event)"
+                     (dragleave)="onDragLeave($event)"
+                     (drop)="onDrop($event)">
+                    <i class="mdi mdi-cloud-upload font-size-24 text-primary mb-2"></i>
+                    <h5>Drag and drop files here</h5>
+                    <p class="text-muted">or</p>
+                    <div class="mt-2">
+                        <input type="file" 
+                               #fileInput 
+                               multiple 
+                               class="d-none" 
+                               (change)="onFileSelected($event)">
+                        <button type="button" 
+                                class="btn btn-primary" 
+                                (click)="fileInput.click()">
+                            Browse Files
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Selected Files List -->
+                <div class="selected-files mt-4" *ngIf="selectedFiles.length > 0">
+                    <h6>Selected Files:</h6>
+                    <div class="list-group">
+                        <div class="list-group-item d-flex justify-content-between align-items-center" 
+                             *ngFor="let file of selectedFiles; let i = index">
+                            <div>
+                                <i class="mdi mdi-file me-2"></i>
+                                {{ file.name }}
+                                <small class="text-muted ms-2">{{ (file.size / 1024).toFixed(2) }} KB</small>
+                            </div>
+                            <button type="button" 
+                                    class="btn btn-link text-danger p-0" 
+                                    (click)="removeFile(i)">
+                                <i class="mdi mdi-close"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" 
+                        class="btn btn-light" 
+                        (click)="closeFileUploadModal()">
+                    Cancel
+                </button>
+                <button type="button" 
+                        class="btn btn-primary" 
+                        [disabled]="selectedFiles.length === 0"
+                        (click)="uploadFiles()">
+                    Upload Files
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Backdrop -->
+<div class="modal-backdrop fade show" *ngIf="isFileUploadModalOpen"></div>
+
 <div class="modal" tabindex="-1" role="dialog" [ngClass]="{'show': isCreateFolderModalOpen}" [style.display]="isCreateFolderModalOpen ? 'block' : 'none'">
     <div class="modal-dialog" role="document">
       <div class="modal-content">

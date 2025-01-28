@@ -10,6 +10,10 @@ export const fetchFileManagerlistFail = createAction('[Data fetch FileManagerlis
 export const addFileManagerlist = createAction('[Data] Add FileManagerlist',  props<{ folderName: string}>());
 export const addFileManagerlistSuccess = createAction('[Data] Add FileManagerlist Success', props<{ folderName: string }>());
 export const addFileManagerlistFailure = createAction('[Data] Add FileManagerlist Failure', props<{ error: string }>());
+//Add File 
+export const addFile = createAction('[Data] Add File',  props<{ folderName: string, fileName: any[]}>());
+export const addFileSuccess = createAction('[Data] Add File Success', props<{ folderName: string, fileName: any[]}>());
+export const addFileFailure = createAction('[Data] Add File Failure', props<{ error: string }>());
 
 //get FileManager by ID
 export const getFileManagerById = createAction('[Data] get FileManager', props<{ FileManagerId: number }>());

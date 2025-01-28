@@ -178,7 +178,7 @@
 }
 
 .modal-backdrop {
-  opacity: 0.5;
+    opacity: 0.5;
 }
 
 .storage-info {
@@ -266,4 +266,25 @@
   color: var(--bs-gray-600);
   font-size: 0.875rem;
   margin-top: 0.25rem;
+}
+
+.upload-zone {
+    min-height: 200px;
+    border: 2px dashed #e9ecef;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &.dragging {
+        border-color: #556ee6;
+        background-color: rgba(85, 110, 230, 0.05);
+    }
+
+    .mdi {
+        display: block;
+    }
+}
+
+.selected-files {
+    max-height: 300px;
+    overflow-y: auto;
 }
