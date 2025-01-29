@@ -1,9 +1,5 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
-<div id="elmLoader" class="loader" *ngIf="loading$ | async">
-    <div class="spinner-border text-primary avatar-sm" role="status">
-      <span class="visually-hidden">{{'Loading...' | translate}}</span>
-    </div>
-  </div>
+
 <div class="container-fluid">
     <app-page-title title="File Manager" [breadcrumbItems]="breadCrumbItems"></app-page-title>
    
@@ -22,7 +18,7 @@
                                         </button>
                                         <!-- <div class="dropdown-menu" *dropdownMenu>
                                             <a class="dropdown-item" href="javascript: void(0);" (click)="openCreateFolderModal()"><i class="bx bx-folder me-1"></i> Folder</a>
-                                            <!-- <a class="dropdown-item" href="javascript: void(0);"><i class="bx bx-file me-1"></i> File</a> -->
+                                            <a class="dropdown-item" href="javascript: void(0);"><i class="bx bx-file me-1"></i> File</a> -->
                                       <!--  </div> -->
                                     </div>
                                 </div>
@@ -128,7 +124,9 @@
 
                                 <div *ngIf="folderList && folderList.length > 0" class="row">
                                     <div *ngFor="let folder of folderList" class="col-xl-4 col-sm-6">
-                                        <div class="card shadow-none border">
+                                        <div class="card shadow-none border" 
+                                             [class.bg-light]="folder.isSelected"
+                                             (click)="selectFolder(folder, $event)">
                                             <div class="card-body p-3">
                                                 <div class="">
                                                     <div class="float-end ms-2">
@@ -136,7 +134,6 @@
                                                             <a class="font-size-16 text-muted dropdown-toggle" dropdownToggle role="button">
                                                                 <i class="mdi mdi-dots-horizontal"></i>
                                                             </a>
-
                                                             <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
                                                                 <a class="dropdown-item" 
                                                                    (click)="openFileUploadModal(folder.path)"
@@ -145,12 +142,11 @@
                                                                    tabindex="0"
                                                                    role="button">
                                                                    <i class="mdi mdi-upload me-2"></i>Upload Files
-                                                                </a>                                                            
-
+                                                                </a>
                                                                 <a class="dropdown-item" 
-                                                                   (click)="fetchSubFolders(folder.path)"
-                                                                   (keydown.enter)="fetchSubFolders(folder.path)"
-                                                                   (keydown.space)="fetchSubFolders(folder.path)"
+                                                                   (click)="selectFolder(folder, $event)"
+                                                                   (keydown.enter)="selectFolder(folder)"
+                                                                   (keydown.space)="selectFolder(folder)"
                                                                    tabindex="0"
                                                                    role="button">
                                                                     <i class="mdi mdi-folder-open me-2"></i>Open
@@ -183,16 +179,8 @@
                                                     <div class="d-flex">
                                                         <div class="overflow-hidden me-auto">
                                                             <h5 class="font-size-14 text-truncate mb-1">
-                                                                <a (click)="fetchSubFolders(folder.path)" 
-                                                                   (keydown.enter)="fetchSubFolders(folder.path)"
-                                                                   (keydown.space)="fetchSubFolders(folder.path)"
-                                                                   tabindex="0"
-                                                                   role="button"
-                                                                   class="text-body">{{folder?.name}}</a>
+                                                                <a class="text-body">{{folder?.name}}</a>
                                                             </h5>
-                                                            <!-- <p class="text-muted text-truncate mb-0">
-                                                                {{folder.path}}
-                                                            </p> -->
                                                         </div>
                                                     </div>
                                                 </div>
@@ -537,15 +525,18 @@
 <!-- Replace the existing folderTreeTemplate with this updated version -->
 <ng-template #folderTreeTemplate let-folders>
     <li *ngFor="let folder of folders">
-        <div class="d-flex align-items-center folder-item">
-            <a (click)="fetchSubFolders(folder.path)" 
+        <div class="d-flex align-items-center folder-item" [class.bg-light]="folder.isSelected">
+            <a (click)="fetchSubFolders(folder.path, $event)" 
                (keydown.enter)="fetchSubFolders(folder.path)" 
                (keydown.space)="fetchSubFolders(folder.path)" 
                tabindex="0" 
                role="button" 
                class="d-flex align-items-center flex-grow-1">
                 <div class="folder-name-container">
-                    <i class="mdi mdi-folder font-size-13 text-warning me-2"></i>
+                    <i class="mdi mdi-folder me-2" 
+                       [class.text-warning]="!folder.isSelected"
+                       [class.text-primary]="folder.isSelected"
+                       ></i>
                     <ng-container *ngIf="!isRenamingFolder || editingFolder?.path !== folder.path">
                         <span class="font-size-12 me-auto">{{folder.name}}</span>
                     </ng-container>
@@ -564,7 +555,7 @@
                         />
                     </ng-container>
                 </div>
-                <div class="folder-actions">
+                <div class="folder-actions ms-auto me-2">
                     <button class="btn btn-link text-muted p-1" 
                             (click)="renameItem(folder, $event)"
                             (keydown.enter)="renameItem(folder)"
@@ -593,16 +584,13 @@
             </a>
         </div>
         
-        <!-- Subfolder and files structure -->
         <div class="ms-4" *ngIf="folder.isExpanded">
             <ul class="list-unstyled mb-0">
-                <!-- Show subfolders -->
                 <ng-container *ngIf="folder.subFolders?.length">
                     <ng-container *ngTemplateOutlet="folderTreeTemplate; context: { $implicit: folder.subFolders }">
                     </ng-container>
                 </ng-container>
                 
-                <!-- Show files -->
                 <li *ngFor="let file of folder.files" class="file-item">
                     <div class="d-flex align-items-center">
                         <div class="file-name-container">
@@ -611,7 +599,7 @@
                         </div>
                         <div class="file-actions ms-auto">
                             <button class="btn btn-link text-muted p-1" 
-                                    (click)="renameItem(file)"
+                                    (click)="renameItem(file, $event)"
                                     title="Rename">
                                 <i class="mdi mdi-pencil"></i>
                             </button>

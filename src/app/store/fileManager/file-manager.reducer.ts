@@ -42,8 +42,8 @@ export const FileManagerListReducer = createReducer(
     ...state,
     FileManagerListdata: 
     {
-      folders: FileManagerListdata.result?.folders, // Map the folders from backend response
-      files: FileManagerListdata.result?.files, // Map the files from backend response
+      folders: FileManagerListdata.result?.folders || [], // Map the folders from backend response
+      files: FileManagerListdata.result?.files || [], // Map the files from backend response
     },
     rootFolder: FileManagerListdata.result?.folders? FileManagerListdata.result?.folders?.[0]?.split('/')[0]: 'MyFiles',
     totalItems: FileManagerListdata.totalItems,

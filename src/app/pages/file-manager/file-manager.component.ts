@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil, skip, take } from 'rxjs/operators';
 import { RootReducerState } from 'src/app/store';
 import { selectDataFileManager, selectDataLoading, selectStorageQuota } from 'src/app/store/fileManager/file-manager-selector';
 import { addFileManagerlist, fetchFileManagerlistData, deleteFileManagerlist, getStorageQuota, addFile } from 'src/app/store/fileManager/file-manager.action';
@@ -12,6 +13,7 @@ interface FolderNode {
   name: string;
   path: string;
   isExpanded: boolean;
+  isSelected: boolean;
   subFolders?: FolderNode[];
   files?: FileNode[];
 }
@@ -35,7 +37,7 @@ interface StorageQuota {
   templateUrl: './file-manager.component.html',
   styleUrls: ['./file-manager.component.scss']
 })
-export class FileManagerComponent implements OnInit {
+export class FileManagerComponent implements OnInit, OnDestroy {
 
     breadCrumbItems: Array<object>;
     radialoptions: any;
@@ -65,6 +67,7 @@ export class FileManagerComponent implements OnInit {
     currentLevel: number = 0;
     parentFolderPath: string = '';
     showBackButton: boolean = false;
+    destroy$: Subject<void> = new Subject<void>();
 
     // File upload related properties
     isFileUploadModalOpen: boolean = false;
@@ -90,81 +93,43 @@ export class FileManagerComponent implements OnInit {
     }
     fetchFolders(folderName?: string | null) {
       this.currentPath = folderName || '';
-      this.store.dispatch(fetchFileManagerlistData({ folderName: folderName }));  
-      this.FolderList$.subscribe(data => {
-        // Group folders by their parent path
-        const foldersByParent = new Map<string, FolderNode[]>();
-        
-        data?.folders?.forEach(folderPath => {
-          const parts = folderPath.split('/');
-          const name = parts[parts.length - 1];
-          const parentPath = parts.slice(0, -1).join('/');
-          
-          const folder: FolderNode = {
-            name,
-            path: folderPath,
-            isExpanded: false,
-            subFolders: [],
-            files: []
-          };
-
-          if (!foldersByParent.has(parentPath)) {
-            foldersByParent.set(parentPath, []);
+      this.showBackButton = !!folderName;
+      
+      this.store.dispatch(fetchFileManagerlistData({ folderName: folderName }));
+      
+      this.FolderList$.pipe(
+        takeUntil(this.destroy$)
+      ).subscribe({
+        next: (data) => {
+          if (!data?.folders?.length && !data?.files?.length) {
+            this.folderTree = [];
+            this.folderList = [];
+            this.fileList = [];
+            return;
           }
-          foldersByParent.get(parentPath).push(folder);
-        });
 
-        // Create root level folders
-        const rootFolders = foldersByParent.get('') || [];
-        this.folderTree = rootFolders;
-        
-        // Update folderList to include full path objects
-        this.folderList = data?.folders?.map(folderPath => ({
-          name: folderPath.split('/').pop(),
-          path: folderPath
-        })) || [];
-        console.log('folder list after first load',this.folderList);
-        
+          // Process folders for the tree
+          const rootFolders = data?.folders?.map(folderPath => {
+            const parts = folderPath.split('/');
+            const name = parts[parts.length - 1];
+            return {
+              name,
+              path: folderPath,
+              isExpanded: folderPath === folderName,
+              isSelected: folderPath === folderName,
+              subFolders: [],
+              files: []
+            } as FolderNode;
+          }) || [];
 
-        this.fileList = data?.files?.map(file => ({
-          name: file.name.split('/').pop(),
-          key: file.Key,
-          lastModified: new Date(file.LastModified).toLocaleDateString('en-CA'),
-          size: file.Size,
-          path: file.name
-        })) || [];
-        console.log('files list after first load',this.fileList);
-      });
-    }
+          // Update folderList for the current view
+          this.folderList = data?.folders?.map(folderPath => ({
+            name: folderPath.split('/').pop(),
+            path: folderPath
+          })) || [];
 
-    fetchSubFolders(folderPath: string) {
-      console.log('fetchSubFolders', folderPath);
-      this.currentPath = folderPath;
-      const pathParts = folderPath.split('/').filter(p => p);
-      const level = pathParts.length;
-      console.log('level', level);
-      const clickedFolderName = pathParts[pathParts.length - 1];
-
-      // Store parent path for back navigation
-      if (level > 1) {
-        this.parentFolderPath = pathParts.slice(0, -1).join('/');
-        this.showBackButton = true;
-      } else {
-        this.parentFolderPath = '';
-        this.showBackButton = false;
-      }
-
-      // For all levels, fetch and update the view
-      this.store.dispatch(fetchFileManagerlistData({ folderName: folderPath }));
-      this.FolderList$.subscribe(data => {
-        if (data?.folders) {
-          // Update the view (right panel) with full path information
-          this.folderList = data.folders.map(path => ({
-            name: path.split('/').pop(),
-            path: path
-          }));
-
-          this.fileList = data.files?.map(file => ({
+          // Update fileList
+          this.fileList = data?.files?.map(file => ({
             name: file.name.split('/').pop(),
             key: file.Key,
             lastModified: new Date(file.LastModified).toLocaleDateString('en-CA'),
@@ -172,84 +137,192 @@ export class FileManagerComponent implements OnInit {
             path: file.name
           })) || [];
 
-          this.currentPath = folderPath;
-          console.log('Updated folder list:', this.folderList);
-          console.log('Updated file list:', this.fileList);
-
-          // Update tree structure for levels 1 and 2
-          if (level <= 2) {
-            const folders = data.folders
-              .map(path => {
-                const parts = path.split('/');
-                const name = parts[parts.length - 1];
-                return {
-                  name,
-                  path: path,
-                  isExpanded: false,
-                  subFolders: [],
-                  files: []
-                } as FolderNode;
-              })
-              .filter(folder => folder.name !== clickedFolderName);
-
-            if (level <= 1) {
-              this.updateFolderTree(this.folderTree, folderPath, folders, this.fileList);
-            } else {
-              // For level 2, update the expanded state of parent folders
-              let currentLevel = this.folderTree;
-              for (let i = 0; i < level - 1; i++) {
-                const folder = currentLevel.find(f => f.name === pathParts[i]);
-                if (folder) {
-                  folder.isExpanded = true;
-                  currentLevel = folder.subFolders;
-                }
-              }
-            }
+          // Initialize or update the folder tree
+          if (!folderName) {
+            // At root level, set the entire tree
+            this.folderTree = rootFolders;
+            console.log('INITIAL TREE this.folderTree', this.folderTree);
+          } else {
+            // Update existing tree with new data
+            this.updateFolderTree(folderName, rootFolders, this.fileList);
           }
+        },
+        error: (error) => {
+          console.error('Error fetching folders:', error);
         }
       });
     }
 
-    private updateFolderTree(tree: FolderNode[], path: string, folders: FolderNode[], files: FileNode[]) {
-      console.log('updateFolderTree', tree, path, folders, files);
+    fetchSubFolders(folderPath: string, event?: Event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      this.currentPath = folderPath;
+      const pathParts = folderPath.split('/').filter(p => p);
+      const level = pathParts.length;
+      console.log('level in subfolders', level);
+      const clickedFolderName = pathParts[pathParts.length - 1];
+
+      // Store parent path for back navigation
+      const parentPath = pathParts.slice(0, -1).join('/');
+      this.parentFolderPath = parentPath;
+      this.showBackButton = true;
+
+      const currentTree = [...this.folderTree];
+      console.log('Current tree before update:', currentTree);
+      // For all levels, fetch and update the view
+      this.store.dispatch(fetchFileManagerlistData({ folderName: folderPath }));
+
+      // Create a new subscription after dispatch
+      this.FolderList$.pipe(
+        takeUntil(this.destroy$),
+        skip(1),
+        take(1)
+      ).subscribe(data => {
+        console.log('data in subfolders after dispatch', data);
+        
+        if(data) {
+          // Process folders for the current level
+          const folders = data?.folders?.map(path => {
+            const parts = path.split('/');
+            const name = parts[parts.length - 1];
+            return {
+              name,
+              path,
+              isExpanded: false,
+              isSelected: false,
+              subFolders: [],
+              files: []
+            } as FolderNode;
+          }) || [];
+
+          // Process files for the current level
+          const files = data?.files?.map(file => ({
+            name: file.name.split('/').pop(),
+            key: file.Key,
+            lastModified: new Date(file.LastModified).toLocaleDateString('en-CA'),
+            size: file.Size,
+            path: file.name
+          })) || [];
+
+          // Update the current view lists
+          this.folderList = folders;
+          this.fileList = files;
+          console.log('folder tree  in subfolders', this.folderTree);
+          this.folderTree = currentTree;
+          // Update the tree structure
+          this.updateFolderTree(folderPath, folders, files);
+
+          console.log('Updated folder list:', this.folderList);
+          console.log('Updated file list:', this.fileList);
+        }
+      });
+    }
+
+    private updateFolderTree(path: string, newFolders: FolderNode[], newFiles: FileNode[]) {
+      console.log('updateFolderTree', {folderTree: this.folderTree, path, newFolders, newFiles });
+      
+      // Handle both cases where path might or might not have forward slashes
+      const pathParts = path ? path.split(/[/\\]/).filter(p => p) : [];
+      
+      // If empty path, update root level
       if (!path) {
-        this.folderTree = folders;
+        this.folderTree = newFolders.map(folder => ({
+          ...folder,
+          isExpanded: false,
+          subFolders: [],
+          files: []
+        }));
         return;
       }
 
-      const pathParts = path.split('/').filter(p => p);
-      let currentLevel = tree;
-      let targetFolder: FolderNode = null;
-
-      // Find the target folder
-      for (const part of pathParts) {
-        targetFolder = currentLevel.find(f => f.name === part);
-        if (!targetFolder) {
-          // Create the folder if it doesn't exist
-          targetFolder = {
-            name: part,
-            path: pathParts.slice(0, pathParts.indexOf(part) + 1).join('/'),
-            isExpanded: false,
-            subFolders: [],
-            files: []
+      // If path is just a folder name without slashes (e.g., 'docs')
+      if (pathParts.length === 1) {
+        // Create a new tree array to avoid mutating the original
+        const updatedTree = this.folderTree.length > 0 ? this.folderTree.map(folder => {
+          if (folder.name === pathParts[0]) {
+            // Return updated folder while preserving its existing properties
+            return {
+              ...folder,
+              subFolders: newFolders,
+              files: newFiles,
+              isExpanded: true,
+              isSelected: true
+            };
+          }
+          // Return other folders unchanged
+          return {
+            ...folder,
+            isSelected: false
           };
-          currentLevel.push(targetFolder);
+        }) : [];
+
+        // If folder doesn't exist in tree, add it
+        if (!updatedTree.some(f => f.name === pathParts[0])) {
+          updatedTree.push({
+            name: pathParts[0],
+            path: pathParts[0],
+            isExpanded: true,
+            isSelected: true,
+            subFolders: newFolders,
+            files: newFiles
+          });
         }
-        currentLevel = targetFolder.subFolders;
+
+        // Update the tree with the new state
+        this.folderTree = updatedTree;
+        return;
       }
 
-      // Update only the target folder
-      if (targetFolder) {
-        targetFolder.subFolders = folders;
-        targetFolder.files = files;
-        targetFolder.isExpanded = true;
+      // For nested paths, create a new tree with updated structure
+      const updateNestedPath = (currentTree: FolderNode[]): FolderNode[] => {
+        return currentTree.map(folder => {
+          if (folder.name === pathParts[0]) {
+            // This is part of our path, recurse into it
+            return {
+              ...folder,
+              isExpanded: true,
+              isSelected: pathParts.length === 1,
+              subFolders: pathParts.length === 1 ? newFolders : updateNestedPath(folder.subFolders),
+              files: pathParts.length === 1 ? newFiles : folder.files
+            };
+          }
+          // This is not part of our path
+          return {
+            ...folder,
+            isSelected: false
+          };
+        });
+      };
+
+      // Update the tree structure
+      const updatedTree = updateNestedPath(this.folderTree);
+      
+      // If the folder doesn't exist at root level, create it
+      if (!updatedTree.some(f => f.name === pathParts[0])) {
+        const newFolder: FolderNode = {
+          name: pathParts[0],
+          path: pathParts[0],
+          isExpanded: true,
+          isSelected: pathParts.length === 1,
+          subFolders: pathParts.length === 1 ? newFolders : [],
+          files: pathParts.length === 1 ? newFiles : []
+        };
+        updatedTree.push(newFolder);
       }
+
+      this.folderTree = updatedTree;
     }
 
     private findFolderByPath(tree: FolderNode[], path: string): FolderNode {
       if (!path) return null;
       
-      const pathParts = path.split('/').filter(p => p);
+      // Use the same path splitting logic as updateFolderTree
+      const pathParts = path.split(/[/\\]/).filter(p => p);
+      if (pathParts.length === 0) return null;
+      
       let currentLevel = tree;
       let targetFolder: FolderNode = null;
 
@@ -585,10 +658,11 @@ export class FileManagerComponent implements OnInit {
   // }
 
   navigateToParent(): void {
-    if (this.parentFolderPath) {
-      this.fetchSubFolders(this.parentFolderPath);
-    } else {
-      this.fetchFolders();
+    if (this.currentPath) {
+      const parts = this.currentPath.split('/');
+      parts.pop();
+      const parentPath = parts.join('/');
+      this.fetchFolders(parentPath || null);
     }
   }
 
@@ -683,5 +757,33 @@ export class FileManagerComponent implements OnInit {
     } catch (error) {
       console.error('Error uploading files:', error);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  selectFolder(folder: FolderNode, event?: Event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    // Deselect all folders
+    this.folderList.forEach(f => f.isSelected = false);
+    this.folderTree.forEach(f => this.deselectAllFolders(f));
+
+    // Select the clicked folder
+    folder.isSelected = true;
+    folder.isExpanded = true;
+
+    // Update current path and fetch contents
+    this.fetchFolders(folder.path);
+  }
+
+  private deselectAllFolders(folder: FolderNode) {
+    folder.isSelected = false;
+    folder.subFolders?.forEach(f => this.deselectAllFolders(f));
   }
 }
