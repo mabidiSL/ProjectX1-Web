@@ -32,10 +32,10 @@
                         <div class="form-group">
                           <label for="section_id">{{'Merchant Section' | translate}}<span  class="text-danger">*</span></label>
                           <ng-select  placeholder="{{'Select a section' | translate}}" [items]="sectionlist" bindLabel="translatedName" 
-                          bindValue="id" id="section_id"  formControlName="section_id">
+                          bindValue="id" id="section_id"  formControlName="sections" [multiple]="true">
                           </ng-select>
-                          <div *ngIf=" signupForm.get('section_id').touched &&  signupForm.get('section_id').invalid" class="invalid-feedback d-block">
-                            <span *ngIf=" signupForm.get('section_id').errors?.['required']">{{'Section is required'| translate}}.</span>
+                          <div *ngIf=" signupForm.get('sections').touched &&  signupForm.get('sections').invalid" class="invalid-feedback d-block">
+                            <span *ngIf=" signupForm.get('sections').errors?.['required']">{{'Section is required'| translate}}.</span>
                           </div>   
                         </div>
                       </div>

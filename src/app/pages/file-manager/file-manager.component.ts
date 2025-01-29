@@ -368,7 +368,7 @@ export class FileManagerComponent implements OnInit {
   // Handle folder creation
   createFolder(): void {
     const newFolderName = this.folderNameControl.value.trim();
-      if (newFolderName?.includes('project-x1') && newFolderName.includes('/')) {
+      //if (newFolderName?.includes('project-x1') && newFolderName.includes('/')) {
 
       this.store.dispatch(addFileManagerlist({ folderName: newFolderName }));
 
@@ -377,7 +377,7 @@ export class FileManagerComponent implements OnInit {
 
       // Optionally, refresh the folder list or fetch subfolders
       //this.fetchSubFolders(this.RootFolder$);
-    }
+   // }
   }
 
   toggleFolder(folder: FolderNode, event: Event): void {

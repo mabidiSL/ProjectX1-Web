@@ -34,10 +34,10 @@
                   <div class="form-group">
                     <label for="section_id">{{'Merchant Section' | translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                     <ng-select [readonly]="type === 'view'" placeholder="{{'Select a section' | translate}}" [items]="sectionlist" bindLabel="translatedName" 
-                    bindValue="id" id="section_id"  formControlName="section_id">
+                    bindValue="id" id="section_id" formControlName="sections" [multiple]="true">
                     </ng-select>
-                    <div *ngIf="merchantForm.get('section_id').touched && merchantForm.get('section_id').invalid" class="invalid-feedback d-block">
-                      <span *ngIf="merchantForm.get('section_id').errors?.['required']">{{'Section is required'| translate}}.</span>
+                    <div *ngIf="merchantForm.get('sections').touched && merchantForm.get('sections').invalid" class="invalid-feedback d-block">
+                      <span *ngIf="merchantForm.get('sections').errors?.['required']">{{'Section is required'| translate}}.</span>
                     </div>   
                   </div>
                 </div>
@@ -46,6 +46,7 @@
                     <label for="officeTel" >{{'Merchant Phone Number' |  translate}} <span *ngIf="type !== 'view'" class="text-danger">*</span></label><br>
                    <app-phone-number
                    [disabled]="type === 'view'"
+                   [phoneCode]="phoneCode"
                    *ngIf="merchantForm "
                    [initialPhoneNumber]="merchantForm.get('officeTel')?.value"
                    [inputId]="'officeTel'"

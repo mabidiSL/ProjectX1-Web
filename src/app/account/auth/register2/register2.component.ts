@@ -98,7 +98,7 @@ export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
       jobTitle: [null],
       country_id:[null, Validators.required],   
       merchantName:['', Validators.required],
-      section_id:[null, Validators.required],
+      sections:[[], Validators.required],
       website: [null],
       termsAndConditions: [false, Validators.requiredTrue] 
 
@@ -311,7 +311,7 @@ export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
  
   isStepValid(stepIndex: number): boolean {
     // Logic to validate current step fields
-    const merchantFields = ['merchantName','section_id','country_id', 'website' ]; // Update based on the step
+    const merchantFields = ['merchantName','sections','country_id', 'website' ]; // Update based on the step
     const managerFields = ['f_name','l_name','email', 'password', 'confpassword', 'phone', 'termsAndConditions'];
     
 

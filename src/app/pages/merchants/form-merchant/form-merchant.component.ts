@@ -59,6 +59,7 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
   filteredCountries: Country[] = [];
 
   originalMerchantData: Merchant = {}; 
+  phoneCode: string = null;
 
   fieldTextType: boolean  = false;
   confirmFieldTextType: boolean = false;
@@ -106,7 +107,7 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
     activationCode: [''],
     qrCode: [''],
     officeTel: [''],
-    section_id:[null, Validators.required],
+    sections:[[], Validators.required],
     website: [undefined],
     whatsup:[null],
     facebook: [undefined],
@@ -169,6 +170,14 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
   patchValueForm(merchant: Merchant){
     this.merchantForm.patchValue(merchant);
     this.merchantForm.patchValue(merchant.user);
+    this.merchantForm.get('sections').setValue(merchant.sections.map(section => section.id));
+
+    if(!merchant.officeTel){
+      console.log('office tel',merchant.officeTel, 'countryCode', merchant.user?.country?.ISO2);
+      
+      this.phoneCode = merchant.user?.country?.ISO2
+    }
+
     this.merchantForm.patchValue({
       f_name: merchant.user.translation_data[0].f_name,
       l_name: merchant.user.translation_data[0].l_name,
@@ -355,7 +364,10 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
         { 
           //delete this.merchant.password;
           //delete this.merchant.email;
+          console.log('before detecting changes  form', this.merchantForm.value, 'original', this.originalMerchantData);
           const updatedDta = this.formUtilService.detectChanges(this.merchantForm, this.originalMerchantData);
+          console.log('after detecting changes ', updatedDta);
+
           if (Object.keys(updatedDta).length > 0) {
             this.merchant = this.createMerchantFromForm(updatedDta);
             this.merchant.id = this.globalId;
