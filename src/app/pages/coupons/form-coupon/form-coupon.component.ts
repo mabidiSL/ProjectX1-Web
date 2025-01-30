@@ -87,7 +87,8 @@ export class FormCouponComponent implements OnInit, OnDestroy{
       this.authservice.currentUser$.subscribe(user => {
         this.currentRole = user?.role.translation_data[0].name;
         this.companyId =  user?.companyId;
-        this.sections = user?.sections;
+        this.sections = user?.sections? user?.sections: null;
+        if(this.sections){
         this.sections = [...this.sections].map(section =>{
           const translatedName = section.translation_data && section.translation_data[0]?.name || 'No name available';
           return {
@@ -98,11 +99,11 @@ export class FormCouponComponent implements OnInit, OnDestroy{
         .sort((a, b) => {
           // Sort by translatedName
           return a.translatedName.localeCompare(b.translatedName);
-        })
+        })}
         console.log('sections',this.sections);
-        
-        
+               
       } );
+    
       
 
       if(this.currentRole !== 'Admin' && this.companyId !== 1)
