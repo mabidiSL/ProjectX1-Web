@@ -47,9 +47,22 @@ export class FormUtilService{
  
     // Compare each field and add only the modified fields
     for (const key in form.controls) {
-      if(key.includes('Logo') || key.includes('image')) {
-        if (form.controls[key].value && form.controls[key].value !== data[key]) {
+      if(key.includes('Logo') ){
+                if (form.controls[key].value && form.controls[key].value !== data[key]) {
           changedData[key] = form.controls[key].value;
+        }
+        continue;
+      }
+      if(key.includes('image')){
+        if(data[key]!== undefined){
+          if (form.controls[key].value !== data[key]) {
+            changedData[key] = form.controls[key].value;
+          }
+        }
+        else{
+        if (form.controls[key].value !== data['user'][key]) {
+          changedData[key] = form.controls[key].value;
+        }
         }
         continue;
       }

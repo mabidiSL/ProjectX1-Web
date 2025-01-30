@@ -156,9 +156,9 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
               this.fileName1 = merchant.companyLogo.split('/').pop();
 
             }
-            if(merchant.merchantPicture){
-              this.existantmerchantPicture = merchant.merchantPicture;
-              this.fileName2 = merchant.merchantPicture.split('/').pop();
+            if(merchant.user?.image){
+              this.existantmerchantPicture = merchant.user?.image;
+              this.fileName2 = merchant.user?.image.split('/').pop();
             }
                               
             

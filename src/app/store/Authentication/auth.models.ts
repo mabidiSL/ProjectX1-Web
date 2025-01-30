@@ -44,6 +44,7 @@ status?: string;
 city?: City;
 street?: string;
 building?: string;
+sections?: any[];
 company_registration?: string;
 registrationDate?: string;
 updatedAt?: string;

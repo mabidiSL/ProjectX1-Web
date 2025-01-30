@@ -171,6 +171,7 @@
       "TEXT": "Pending Coupons"
      
     },
+
     "GIFTS":{
       "TEXT": "Approved Gifts Cards"
     },
@@ -785,7 +786,9 @@
         "SpecialDays_List": "Special Days",
         "New_SpecialDay": "New Special Day",
         "Edit_SpecialDay": "Edit Special Day",
-        "View_SpecialDay": "View Special Day"
+        "View_SpecialDay": "View Special Day",
+        "Select_the_section": "Select the section"
+        
         
 
 

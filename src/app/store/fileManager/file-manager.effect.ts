@@ -66,7 +66,7 @@ export class FileManagersEffects {
                     map(() => {
                       
                         this.toastr.success('The new Folder has been added successfully.');
-                        this.router.navigate(['/private/file-manager']);
+                       // this.router.navigate(['/private/file-manager']);
                         // Dispatch the action to fetch the updated FileManager list after adding a new FileManager
                         return addFileManagerlistSuccess({folderName: folderName});
                       }),
@@ -84,10 +84,16 @@ export class FileManagersEffects {
           mergeMap(({ formData }) => {
               // files is already a FormData object, send it directly
               return this.CrudService.addData('/storage/files', formData).pipe(
-                  map(() => {
+                  map((response: any) => {
                       this.toastr.success('Files uploaded successfully.');
-                      this.router.navigate(['/private/file-manager']);
-                      return addFileSuccess({ formData });
+                     // this.router.navigate(['/private/file-manager']);
+                     console.log('response', response);
+                     const fileName_tab = response.result?.fileUrls?.split('/');
+                     console.log('fileName_tab', fileName_tab);
+                     const fileName = fileName_tab[fileName_tab.length - 1];
+                     console.log('fileName', fileName);
+
+                      return addFileSuccess({ formData: fileName });
                   }),
                   catchError((error) => {
                     const errorMessage = this.formUtilService.getErrorMessage(error);

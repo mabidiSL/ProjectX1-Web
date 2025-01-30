@@ -21,6 +21,8 @@ import { Merchant } from 'src/app/store/merchantsList/merchantlist1.model';
 import { selectData } from 'src/app/store/store/store-selector';
 import { fetchStorelistData } from 'src/app/store/store/store.action';
 import { Branch } from 'src/app/store/store/store.model';
+import { fetchSectionlistData } from 'src/app/store/section/section.action';
+import { selectDataSection } from 'src/app/store/section/section-selector';
 
 @Component({
   selector: 'app-form-coupon',
@@ -38,6 +40,7 @@ export class FormCouponComponent implements OnInit, OnDestroy{
   selectedStores: any[];
   merchantList: Merchant[]= [];
   storeList: Branch[]= [];
+  sections: any[]= [];
 
   existantofferLogo: string = null;
   fileName: string = ''; 
@@ -60,6 +63,8 @@ export class FormCouponComponent implements OnInit, OnDestroy{
   offerLogoBase64: string = null;
   isEditing = false;
   isLoading = false;
+  isLoadingSection = false;
+  isLoadingStore = false;
   originalOfferData: Offer = {};
   @ViewChild('formElement', { static: false }) formElement: ElementRef;
 
@@ -82,14 +87,46 @@ export class FormCouponComponent implements OnInit, OnDestroy{
       this.authservice.currentUser$.subscribe(user => {
         this.currentRole = user?.role.translation_data[0].name;
         this.companyId =  user?.companyId;
+        this.sections = user?.sections;
+        this.sections = [...this.sections].map(section =>{
+          const translatedName = section.translation_data && section.translation_data[0]?.name || 'No name available';
+          return {
+            ...section,  
+            translatedName 
+          };
+        })
+        .sort((a, b) => {
+          // Sort by translatedName
+          return a.translatedName.localeCompare(b.translatedName);
+        })
+        console.log('sections',this.sections);
+        
         
       } );
       
 
       if(this.currentRole !== 'Admin' && this.companyId !== 1)
           this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,query:'',status:'', company_id: this.companyId}));
-      else
+      else{
           this.store.dispatch(fetchStorelistData({ page: 1, itemsPerPage: 1000 ,query:'',status:'', company_id: null}));
+         this.store.dispatch(fetchSectionlistData({ page: 1, itemsPerPage: 1000, status:''}));
+         this.store.pipe(select(selectDataSection)).subscribe(data => {
+          if(data && data.length > 0){
+            this.sections = [...data].map(section =>{
+            const translatedName = section.translation_data && section.translation_data[0]?.name || 'No name available';
+            return {
+              ...section,  
+              translatedName 
+            };
+          })
+          .sort((a, b) => {
+            // Sort by translatedName
+            return a.translatedName.localeCompare(b.translatedName);
+          })
+      
+         }
+        });
+      }
 
       this.store.dispatch(fetchMerchantlistData({ page: 1, itemsPerPage: 100 ,query:'', status: 'active'})); 
       
@@ -178,6 +215,7 @@ export class FormCouponComponent implements OnInit, OnDestroy{
       nbr_of_use: [null, Validators.required],
       company_id: [null, Validators.required],
       stores: [[]],
+      section_id: [null, Validators.required],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       category: ['coupon'],
@@ -250,6 +288,7 @@ patchValueForm(offer: Offer){
   this.formOffer.patchValue(offer);
   this.formOffer.get('company_id').setValue(offer.company_id);
   this.formOffer.get('stores').setValue(offer.stores.map(store => store.id));
+
   this.formOffer.patchValue({
     name: offer.translation_data[0].name,
     description: offer.translation_data[0].description,
@@ -288,7 +327,10 @@ fetchStore(id: number){
       // Sort by translatedName
       return a.translatedName.localeCompare(b.translatedName);
     })
+
    }
+   this.isLoadingStore = false;
+
   });
 }
 
@@ -296,27 +338,40 @@ onChangeMerchantSelection(event: Merchant){
   const merchant = event;
   this.storeList = [];
   this.formOffer.get('stores').setValue(null);
+  this.formOffer.get('section_id').setValue(null);
+
   if(merchant){
-    this.isLoading = true;
-    this.store.pipe(select(selectData)).subscribe(data => {
+    // this.isLoadingSection = true;
+    // this.isLoadingStore = true;
+
+    this.fetchStore(merchant.id);
+    this.fetchSections(merchant.sections.map(section => section.id));
+   
+}
+}
+fetchSections(ids: number[]){
+  this.store.pipe(select(selectDataSection)).subscribe(data => {
     if(data && data.length > 0){
-      this.storeList = [...data].map(store =>{
-      const translatedName = store.translation_data && store.translation_data[0]?.name || 'No name available';
+      this.sections = [...data].map(section =>{
+      const translatedName = section.translation_data && section.translation_data[0]?.name || 'No name available';
       return {
-        ...store,  
+        ...section,  
         translatedName 
       };
     })
-    .filter(store => store.company_id === merchant.id)
+    .filter(section => ids.includes(section.id))
     .sort((a, b) => {
       // Sort by translatedName
       return a.translatedName.localeCompare(b.translatedName);
     })
+
    }
   });
-   
+  this.isLoadingSection = false;
+
+
 }
-}
+
 createOfferFromForm(formValue): Offer{
   const offer = formValue;
   offer.translation_data= [];

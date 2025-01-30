@@ -753,7 +753,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
       
       this.closeFileUploadModal();
       // Refresh the file list after upload
-      this.fetchFolders(this.currentPath);
+      this.fetchSubFolders(this.currentPath);
     } catch (error) {
       console.error('Error uploading files:', error);
     }

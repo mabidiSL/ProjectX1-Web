@@ -38,7 +38,7 @@
                    
                   <div class="row">
                       <div class="row">
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-3 mb-3">
                             <label for="name">{{'GiftCard Name'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                             <input class="form-control" id="name" formControlName="name" placeholder="{{'Enter Gift Card Name' |translate}}" type="text" [readonly]="type==='view'"/>
                             <div *ngIf="formOffer.get('name').invalid && formOffer.get('name').touched" class="text-danger">
@@ -54,6 +54,15 @@
                             {{'Merchant Name is required'|translate}}
                           </div>
                         </div>
+                        <div class="col-md-3 mb-3">
+                          <label for="section_id">{{'Section'|translate}}<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                            <ng-select [readonly]="type === 'view'" id="section_id"  placeholder="{{'Select_the_section' |translate}}" [items]="sections" bindLabel="translatedName" 
+                            bindValue="id"  formControlName="section_id" >
+                            </ng-select>
+                            <div *ngIf="formOffer.get('section_id').invalid && formOffer.get('section_id').touched" class="text-danger">
+                              {{'Section is required'|translate}}
+                            </div>
+                          </div>
                         <div class="col-md-3 mb-3" *ngIf="currentRole === 'Admin' || companyId === 1; else nonAdminStores">
                         <label for="stores">{{'Stores'|translate}}</label>
                           <ng-select 

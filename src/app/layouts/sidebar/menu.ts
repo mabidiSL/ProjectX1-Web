@@ -243,7 +243,7 @@ export const MENU: MenuItem[] = [
         {
             id: 39,
             label: 'MENUITEMS.PRODUCTMANAGEMENT.SPECIALDAYS.TEXT',
-            icon: 'fas fa-birthday-cake',
+            icon: 'bx bxs-cake',
             claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.SpecialDay, claimValue: [Permission.All, Permission.ViewAll, Permission.Create]}],
             link:'/private/special-day/list',
            
