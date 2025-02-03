@@ -6,7 +6,7 @@ import { FileManagerComponent } from './file-manager.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'en',
     component: FileManagerComponent,
     canActivate: [RoleGuard],
     data: {
