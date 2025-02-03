@@ -875,7 +875,7 @@ renameItemConfirmed(item: FolderNode | FileNode, newName: string, event?: Event)
     folder.isExpanded = true;
 
     // Update current path and fetch contents
-    this.fetchFolders(folder.path, event);
+    this.fetchFolders(folder, event);
   }
 
   private deselectAllFolders(folder: FolderNode) {
