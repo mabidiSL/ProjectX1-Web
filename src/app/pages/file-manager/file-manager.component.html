@@ -98,7 +98,7 @@
                                         <form class="mt-4 mt-sm-0 float-sm-end d-flex align-items-center">
                                             <div class="search-box mb-2 me-2">
                                                 <div class="position-relative">
-                                                    <input type="text" class="form-control bg-light border-light rounded" placeholder="Search...">
+                                                    <input type="text" class="form-control bg-light border-light rounded" [(ngModel)]="searchTerm" placeholder="Search...">
                                                     <i class="bx bx-search-alt search-icon"></i>
                                                 </div>
                                             </div>
@@ -122,8 +122,8 @@
                                 </div>
                             </div>
                             <div class="scrollable-container">
-                                <div *ngIf="folderList && folderList.length > 0" class="row">
-                                    <div *ngFor="let folder of folderList" class="col-xl-3 col-sm-6">
+                                <div *ngIf="filteredFolders.length > 0" class="row">
+                                    <div *ngFor="let folder of filteredFolders" class="col-xl-3 col-sm-6">
                                         <div class="card shadow-none border" 
                                              [class.bg-light]="folder.isSelected"
                                                >
@@ -210,8 +210,8 @@
 
                                 </div>
                                 
-                                <div *ngIf="fileList && fileList.length > 0" class="row">
-                                    <div *ngFor="let file of fileList" class="col-xl-3 col-sm-6">
+                                <div *ngIf="filteredFiles.length > 0" class="row">
+                                    <div *ngFor="let file of filteredFiles" class="col-xl-3 col-sm-6">
                                         <div class="card shadow-none border">
                                             <div class="card-body p-3">
                                                 <div class="">
@@ -319,7 +319,7 @@
                                                         </a>
 
                                                         <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
-                                                            <a class="dropdown-item" href="javascript: void(0);">{{Open}}</a>
+                                                            <a class="dropdown-item" href="javascript: void(0);"><i class="mdi mdi-eye me-2"></i>Open</a>
                                                            
                                                         </div>
                                                     </div>

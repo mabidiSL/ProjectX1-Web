@@ -10,6 +10,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FileManagerService } from 'src/app/core/services/file-manager.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms'; 
 
 @NgModule({
   declarations: [FileManagerComponent],
@@ -17,6 +18,7 @@ import { TranslateModule } from '@ngx-translate/core';
     CommonModule,
     NgApexchartsModule,
     UIModule,
+    FormsModule,
     ReactiveFormsModule ,
     TranslateModule,
     BsDropdownModule.forRoot(),

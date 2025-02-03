@@ -84,6 +84,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     isFileUploadModalOpen: boolean = false;
     selectedFiles: File[] = [];
     isDragging: boolean = false;
+    searchTerm: string = '';
 
     constructor(
       public router: Router,
@@ -104,6 +105,17 @@ export class FileManagerComponent implements OnInit, OnDestroy {
       this.fetchRecentFiles();
       this.fetchStorageQuota();
       this.initializeRadialChart();
+    }
+    get filteredFolders() {
+      return this.folderList.filter(folder => 
+        folder.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
+  
+    get filteredFiles() {
+      return this.fileList.filter(file => 
+        file.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
     }
     fetchRecentFiles(){
       console.log('i am in fetch recent files ');
