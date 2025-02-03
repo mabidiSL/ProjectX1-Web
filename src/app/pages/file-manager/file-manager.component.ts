@@ -407,8 +407,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
           event.stopPropagation();
         }
         if(dropdown){
-          console.log();
-          
+       
           dropdown.hide();
         }
         //this.isRenamingFolder = !view;
@@ -423,6 +422,15 @@ export class FileManagerComponent implements OnInit, OnDestroy {
           this.editingFolder = item as FolderNode;
         }
         this.editingFolderName = item.name;
+        if(isFile){
+          setTimeout(() => {
+            const input = document.getElementById('rename-file-view') as HTMLInputElement;
+            if (input) {
+              input.focus();
+              input.select();
+            }
+          });
+        }else{
         if (view) {
           setTimeout(() => {
             const input = document.getElementById('rename-input-view') as HTMLInputElement;
@@ -447,7 +455,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         if (inputElement) {
           inputElement.addEventListener('keyup', (e) => this.handleKeyUp(e, item));
         }
-      }
+      }}
        
       }
       cancelRename() {

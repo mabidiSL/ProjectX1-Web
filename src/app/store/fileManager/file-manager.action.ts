@@ -8,7 +8,7 @@ export const fetchFileManagerlistFail = createAction('[Data fetch FileManagerlis
 
 // Add Data
 export const addFileManagerlist = createAction('[Data] Add FileManagerlist',  props<{ folderName: string, name: string}>());
-export const addFileManagerlistSuccess = createAction('[Data] Add FileManagerlist Success', props<{ folderName: string }>());
+export const addFileManagerlistSuccess = createAction('[Data] Add FileManagerlist Success', props<{ folderName: string, id: number }>());
 export const addFileManagerlistFailure = createAction('[Data] Add FileManagerlist Failure', props<{ error: string }>());
 //RenameFileManager
 export const renameFileManager = createAction('[Data] Rename FileManager',  props<{ id: number, new_name: string , file_type: string }>());

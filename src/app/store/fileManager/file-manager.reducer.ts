@@ -63,11 +63,11 @@ export const FileManagerListReducer = createReducer(
     error: null 
   })),
   //Handle adding FileManager success
-  on(addFileManagerlistSuccess, (state, { folderName }) => ({
+  on(addFileManagerlistSuccess, (state, { folderName, id }) => ({
     ...state,
     FileManagerListdata: {
       ...state.FileManagerListdata,
-      folders: [...state.FileManagerListdata.folders, {name: folderName, id: 200}], // Add new folder
+      folders: [...state.FileManagerListdata.folders, {name: folderName, id: id}], // Add new folder
     },
     rootFolder: folderName,
     loading: false,

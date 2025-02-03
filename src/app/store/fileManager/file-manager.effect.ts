@@ -66,12 +66,12 @@ export class FileManagersEffects {
             ofType(addFileManagerlist),
             mergeMap(({ folderName, name }) =>
                 this.CrudService.addData('/storage/folders', {folderName: folderName}).pipe(
-                    map(() => {
+                    map((response: any) => {
                       
                         this.toastr.success('The new Folder has been added successfully.');
                        // this.router.navigate(['/private/file-manager']);
                         // Dispatch the action to fetch the updated FileManager list after adding a new FileManager
-                        return addFileManagerlistSuccess({folderName: name});
+                        return addFileManagerlistSuccess({folderName: name, id: response?.result?.id }); 
                       }),
                     catchError((error) => {
                       const errorMessage = this.formUtilService.getErrorMessage(error);
