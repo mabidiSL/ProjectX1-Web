@@ -29,6 +29,7 @@ interface FileNode {
   id?: number;
   name: string;
   key: string;
+  url: string;
   path: string;
   lastModified: string;
   size: number;
@@ -803,20 +804,21 @@ renameItemConfirmed(item: FolderNode | FileNode, newName: string, event?: Event)
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   }
 
-  // downloadFile(file: FileNode): void {
-  //   // Create a download URL using the file's key
-  //   const downloadUrl = `/api/storage/download/${encodeURIComponent(file.key)}`;
+  downloadFile(file: FileNode): void {
+    // Create a download URL using the file's key
+    const downloadUrl = file.url;
+    window.open(downloadUrl, '_blank');
     
-  //   // Create a temporary anchor element
-  //   const link = document.createElement('a');
-  //   link.href = downloadUrl;
-  //   link.download = file.name; // Set the download filename
+    // // Create a temporary anchor element
+    // const link = document.createElement('a');
+    // link.href = downloadUrl;
+    // link.download = file.name; // Set the download filename
     
-  //   // Append to body, click, and remove
-  //   document.body.appendChild(link);
-  //   link.click();
-  //   document.body.removeChild(link);
-  // }
+    // // Append to body, click, and remove
+    // document.body.appendChild(link);
+    // link.click();
+    // document.body.removeChild(link);
+  }
 
   navigateToParent(): void {
     if (this.currentPath) {

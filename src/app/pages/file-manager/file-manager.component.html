@@ -222,9 +222,9 @@
                                                             </a>
                                                             <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
                                                                 <a class="dropdown-item" 
-                                                                   (click)="openItem(file, $event)"
-                                                                   (keydown.enter)="openItem(file)"
-                                                                   (keydown.space)="openItem(file)"
+                                                                   (click)="downloadFile(file)"                                                                  
+                                                                   (keydown.enter)="downloadFile(file)"
+                                                                   (keydown.space)="downloadFile(file)"
                                                                    tabindex="0"
                                                                    role="button">
                                                                     <i class="mdi mdi-eye me-2"></i>Open
@@ -274,7 +274,7 @@
                                                                     />
                                                                   </ng-container>
                                                                   <ng-template #displayFileMode>
-                                                                    <a class="text-body" (click)="openFile(file, $event)" style="cursor: pointer;">{{file?.name}}</a>
+                                                                    <a class="text-body" (click)="downloadFile(file)" style="cursor: pointer;">{{file?.name}}</a>
                                                                   </ng-template>                                                            </h5>
                                                             <p class="text-muted font-size-13 mb-0">{{file?.size | number}} bytes • {{file?.lastModified}}</p>
                                                         </div>
@@ -643,7 +643,7 @@
                         <div class="file-name-container">
                             <ng-container *ngIf="!isRenamingFile || editingFile?.name !== file.name">
                                 <i class="mdi mdi-file-document font-size-13 text-primary me-2"></i>
-                                <span class="font-size-12">{{file.name}}</span>
+                                <span class="font-size-12" (click)="downloadFile(file)">{{file.name}}</span>
                             </ng-container>
                             <ng-container *ngIf="isRenamingFile && editingFile?.name === file.name">
                                 <input
@@ -685,7 +685,7 @@
             <div class="file-name-container">
                 <ng-container *ngIf="!isRenamingFile || editingFile?.name !== file.name">
                     <i class="mdi mdi-file-document font-size-13 text-primary me-2"></i>
-                    <span class="font-size-12">{{file.name}}</span>
+                    <span class="font-size-12" (click)="downloadFile(file)">{{file.name}}</span>
                 </ng-container>
                 <ng-container *ngIf="isRenamingFile && editingFile?.name === file.name">
                     <input
