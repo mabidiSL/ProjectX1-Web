@@ -64,14 +64,14 @@ export class FileManagersEffects {
     addData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(addFileManagerlist),
-            mergeMap(({ folderName }) =>
+            mergeMap(({ folderName, name }) =>
                 this.CrudService.addData('/storage/folders', {folderName: folderName}).pipe(
                     map(() => {
                       
                         this.toastr.success('The new Folder has been added successfully.');
                        // this.router.navigate(['/private/file-manager']);
                         // Dispatch the action to fetch the updated FileManager list after adding a new FileManager
-                        return addFileManagerlistSuccess({folderName: folderName});
+                        return addFileManagerlistSuccess({folderName: name});
                       }),
                     catchError((error) => {
                       const errorMessage = this.formUtilService.getErrorMessage(error);
@@ -90,13 +90,14 @@ export class FileManagersEffects {
                   map((response: any) => {
                       this.toastr.success('Files uploaded successfully.');
                      // this.router.navigate(['/private/file-manager']);
-                     console.log('response', response);
-                     const fileName_tab = response.result?.fileUrls?.split('/');
-                     console.log('fileName_tab', fileName_tab);
-                     const fileName = fileName_tab[fileName_tab.length - 1];
-                     console.log('fileName', fileName);
-
-                      return addFileSuccess({ formData: fileName, file_type: 'file'});
+                      console.log('response', response);
+                      const files = response.result?.files;
+                        files?.map((file: any) => {
+                          return file.name;
+                        });
+      
+                     console.log('fileTable', files);
+                     return addFileSuccess({ formData: files, file_type: 'file'});
                   }),
                   catchError((error) => {
                     const errorMessage = this.formUtilService.getErrorMessage(error);
@@ -120,7 +121,7 @@ export class FileManagersEffects {
 
             return this.CrudService.updateData(`${url}/${id}`, {name: new_name}).pipe(
               map(() => {
-                this.toastr.success('The FileManager has been updated successfully.');
+                this.toastr.success(`${file_type === 'folder' ? 'Folder' : 'File'}`,' has been renamed successfully.');
                // this.router.navigate(['/private/file-manager']);
                 return renameFileManagerSuccess({ id: id, new_name: new_name, file_type: file_type });
               }),

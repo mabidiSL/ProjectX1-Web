@@ -9,6 +9,7 @@ import { FileManagerService } from 'src/app/core/services/file-manager.service';
 import { RootReducerState } from 'src/app/store';
 import { selectDataFileManager, selectDataLoading, selectStorageQuota } from 'src/app/store/fileManager/file-manager-selector';
 import { addFileManagerlist, fetchFileManagerlistData, deleteFileManagerlist, getStorageQuota, addFile, renameFileManager } from 'src/app/store/fileManager/file-manager.action';
+import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 
 interface TreeNode{
   folders?: FolderNode[];
@@ -67,6 +68,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     //folderTree: FolderNode[] = [];
     folderTree: TreeNode = {};
     currentPath: string = '';
+
     isRenamingFolder: boolean = false;
     editingFolderName: string = '';
     isRenamingFile: boolean = false;
@@ -156,16 +158,21 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         event.stopPropagation();
       }
       this.currentPath = folder?.name;
+      this.currentFolder = folder;
+
       console.log('i am in folder tree', folder);
     
       // Set current folder and path
-      this.currentFolder = folder;
     
       // Set current path and navigation state
       if (folder) {
-        const pathParts = folder.name.split('/').filter(p => p);
-        const parentPath = pathParts.slice(0, -1).join('/');
-        this.parentFolderPath = parentPath;
+        if(folder?.name?.includes('/')){
+          const pathParts = folder?.name?.split('/').filter(p => p);
+          const parentPath = pathParts?.slice(0, -1).join('/');
+          this.parentFolderPath = parentPath;
+        }else{
+          this.parentFolderPath = folder?.name;
+        }
         this.showBackButton = true;
       } else {
         this.currentPath = null;
@@ -395,10 +402,16 @@ export class FileManagerComponent implements OnInit, OnDestroy {
       this.fetchFolders();
       this.isCollapsed = !this.isCollapsed;
     }
-      renameItem(item: FolderNode | FileNode, event?: Event): void {
+      renameItem(item: FolderNode | FileNode, event?: Event,dropdown?: BsDropdownDirective, view?: boolean): void {
         if (event) {
           event.stopPropagation();
         }
+        if(dropdown){
+          console.log();
+          
+          dropdown.hide();
+        }
+        //this.isRenamingFolder = !view;
         
         const isFile = 'key' in item;
         this.isRenamingFolder = !isFile;
@@ -410,7 +423,19 @@ export class FileManagerComponent implements OnInit, OnDestroy {
           this.editingFolder = item as FolderNode;
         }
         this.editingFolderName = item.name;
-        
+        if (view) {
+          setTimeout(() => {
+            const input = document.getElementById('rename-input-view') as HTMLInputElement;
+            if (input) {
+              input.focus();
+              input.select();
+            }
+          });
+         const inputElement = document.getElementById('rename-input-view') as HTMLInputElement;
+          if (inputElement) {
+            inputElement.addEventListener('keyup', (e) => this.handleKeyUp(e, item));
+          }
+        }else{
         setTimeout(() => {
           const input = document.getElementById('rename-input') as HTMLInputElement;
           if (input) {
@@ -422,9 +447,16 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         if (inputElement) {
           inputElement.addEventListener('keyup', (e) => this.handleKeyUp(e, item));
         }
+      }
        
       }
-//       // Handle key up event for the rename input
+      cancelRename() {
+        this.isRenamingFolder = false;
+        this.isRenamingFile = false;
+        this.editingFolder = null;
+        this.editingFile = null;
+      }
+      // Handle key up event for the rename input
 handleKeyUp(event: KeyboardEvent, item: FolderNode | FileNode): void {
   if (event.key === 'Enter') { 
     event.stopPropagation();
@@ -534,7 +566,8 @@ renameItemConfirmed(item: FolderNode | FileNode, newName: string, event?: Event)
        newFolderName = this.folderNameControl.value;
 
       console.log(newFolderName);
-      this.store.dispatch(addFileManagerlist({ folderName: newFolderName }));
+      this.store.dispatch(addFileManagerlist({ folderName: newFolderName, name: this.folderNameControl.value      
+       }));
 
       // Close the modal after folder creation
       this.closeCreateFolderModal();
@@ -760,8 +793,9 @@ renameItemConfirmed(item: FolderNode | FileNode, newName: string, event?: Event)
     }
   }
 
-  openFileUploadModal(folderPath?: string) {
-   // this.currentPath = folderPath;
+  openFileUploadModal(folder?: any) {
+    this.currentPath = folder?.path || folder?.name;
+    this.currentFolder = folder;
     console.log('currentPath', this.currentPath);
     
     this.isFileUploadModalOpen = false;
@@ -827,7 +861,7 @@ renameItemConfirmed(item: FolderNode | FileNode, newName: string, event?: Event)
       const formData = new FormData();
       
       // Add folderName to FormData
-      formData.append('folderName', this.currentPath || '');
+      formData.append('folder_id', this.currentFolder?.id.toString());
       
       // Append each file with a unique key
       Array.from(this.selectedFiles).forEach((file, index) => {
@@ -849,7 +883,7 @@ renameItemConfirmed(item: FolderNode | FileNode, newName: string, event?: Event)
       
       this.closeFileUploadModal();
       // Refresh the file list after upload
-      this.fetchFolders(this.currentPath);
+     // this.fetchFolders(this.currentFolder);
     } catch (error) {
       console.error('Error uploading files:', error);
     }

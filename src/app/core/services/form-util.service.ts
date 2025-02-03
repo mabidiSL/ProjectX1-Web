@@ -131,8 +131,14 @@ export class FormUtilService{
       }
       return 'Bad Request: Validation error';
     }
-    else
-        return error.error.result.error;
+    else if (error.error && error.error.result && typeof error.error.result === 'string') {
+    // If error.result is a string, return it directly
+    return error.error.result;
+  } else if (error.message) {
+    // Generic error message fallback
+    return error.message;
+  }
+  return 'An unknown error occurred';
   }
 
    // Method to disable all form controls

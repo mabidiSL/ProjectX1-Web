@@ -128,19 +128,19 @@
                                     <div *ngFor="let folder of folderList" class="col-xl-4 col-sm-6">
                                         <div class="card shadow-none border" 
                                              [class.bg-light]="folder.isSelected"
-                                              (click)="selectFolder(folder, $event)" style="cursor: pointer;">
+                                               >
                                             <div class="card-body p-3">
                                                 <div >
                                                     <div class="float-end ms-2">
-                                                        <div class="dropdown mb-2" dropdown>
+                                                        <div class="dropdown mb-2" dropdown #dropdownRef="bs-dropdown">
                                                             <a class="font-size-16 text-muted dropdown-toggle" dropdownToggle role="button">
                                                                 <i class="mdi mdi-dots-horizontal"></i>
                                                             </a>
                                                             <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
                                                                 <a class="dropdown-item" 
-                                                                   (click)="openFileUploadModal(folder.path)"
-                                                                   (keydown.enter)="openFileUploadModal(folder.path)"
-                                                                   (keydown.space)="openFileUploadModal(folder.path)"
+                                                                   (click)="openFileUploadModal(folder)"
+                                                                   (keydown.enter)="openFileUploadModal(folder)"
+                                                                   (keydown.space)="openFileUploadModal(folder)"
                                                                    tabindex="0"
                                                                    role="button">
                                                                    <i class="mdi mdi-upload me-2"></i>Upload Files
@@ -154,9 +154,11 @@
                                                                     <i class="mdi mdi-folder-open me-2"></i>Open
                                                                 </a>
                                                                 <a class="dropdown-item" 
-                                                                   (click)="renameItem(folder, $event)"
-                                                                   (keydown.enter)="renameItem(folder)"
-                                                                   (keydown.space)="renameItem(folder)"
+                                                                   (click)="renameItem(folder, $event, dropdownRef,true)"
+                                                                   (keydown.enter)="renameItem(folder,dropdownRef, true)"
+                                                                   (keydown.space)="renameItem(folder,dropdownRef, true)"
+                                                                   (keyup.escape)="cancelRename($event)"
+
                                                                    tabindex="0"
                                                                    role="button">
                                                                     <i class="mdi mdi-pencil me-2"></i>Rename
@@ -181,7 +183,24 @@
                                                     <div class="d-flex">
                                                         <div class="overflow-hidden me-auto">
                                                             <h5 class="font-size-14 text-truncate mb-1">
-                                                                <a class="text-body" (click)="selectFolder(folder, $event)">{{folder?.name}}</a>
+                                                                <ng-container *ngIf="isRenamingFolder && editingFolder?.path === folder.path; else displayMode">
+                                                                    <input 
+                                                                      id="rename-input-view"
+                                                                      type="text" 
+                                                                      [value]="editingFolderName"
+                                                                      (input)="editingFolderName = renameInputView.value"
+                                                                      (click)="$event.stopPropagation()"
+                                                                      (keyup.enter)="renameItemConfirmed(folder, editingFolderName, $event, true)"
+                                                                      (keyup.escape)="cancelRename($event)"
+                                                                      (blur)="renameItemConfirmed(folder, editingFolderName, $event, true)"
+                                                                      #renameInputView
+
+                                                                    />
+                                                                  </ng-container>
+                                                                  <ng-template #displayMode>
+                                                                    <a class="text-body" (click)="selectFolder(folder, $event)" style="cursor: pointer;">{{folder?.name}}</a>
+                                                                  </ng-template>
+                                                                <!-- <a class="text-body" (click)="selectFolder(folder, $event)" style="cursor: pointer;">{{folder?.name}}</a> -->
                                                             </h5>
                                                         </div>
                                                     </div>
@@ -214,9 +233,9 @@
                                                                 </a>
                                                                 <div class="dropdown-divider"></div>
                                                                 <a class="dropdown-item" 
-                                                                   (click)="renameItem(file, $event)"
-                                                                   (keydown.enter)="renameItem(file)"
-                                                                   (keydown.space)="renameItem(file)"
+                                                                   (click)="renameItem(file, $event, false)"
+                                                                   (keydown.enter)="renameItem(file, false)"
+                                                                   (keydown.space)="renameItem(file, false)"
                                                                    tabindex="0"
                                                                    role="button">
                                                                     <i class="mdi mdi-pencil me-2"></i>Rename
@@ -568,15 +587,15 @@
                 </div>
                 <div class="folder-actions ms-auto me-2">
                     <button class="btn btn-link text-muted p-1" 
-                            (click)="renameItem(folder, $event)"
-                            (keydown.enter)="renameItem(folder)"
-                            (keydown.space)="renameItem(folder)"
+                            (click)="renameItem(folder, $event, false)"
+                            (keydown.enter)="renameItem(folder, false)"
+                            (keydown.space)="renameItem(folder, false)"
                             tabindex="0">
                         <i class="mdi mdi-pencil"></i>
                     </button>
                     <button class="btn btn-link text-danger p-1" 
                             (click)="deleteItem(folder, $event)"
-                            (keydown.enter)="deleteItem(folder)"
+                            (keydown.enter)="deleteItem(folder, false)"
                             (keydown.space)="deleteItem(folder)"
                             tabindex="0">
                         <i class="mdi mdi-delete"></i>
@@ -648,3 +667,8 @@
         </div>
     </li>
 </ng-template>
+<div id="elmLoader" class="loader" *ngIf="loading$ | async">
+    <div class="spinner-border text-primary avatar-sm" role="status">
+      <span class="visually-hidden">{{'Loading...' | translate}}</span>
+    </div>
+  </div>  

@@ -162,7 +162,7 @@ on(addFileSuccess, (state, { formData }) => ({
   ...state,
   FileManagerListdata: {
     ...state.FileManagerListdata,
-    files: [...state.FileManagerListdata.files, formData], // Add new folder
+    files: [...state.FileManagerListdata.files, formData], // Add new files
   },
   loading: false,
   error: null 
