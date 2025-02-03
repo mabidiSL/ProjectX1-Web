@@ -8,6 +8,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { UIModule } from 'src/app/shared/ui/ui.module';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FileManagerService } from 'src/app/core/services/file-manager.service';
 
 @NgModule({
   declarations: [FileManagerComponent],
@@ -20,6 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     CollapseModule.forRoot(),
     AlertModule.forRoot(),
     FileManagerRoutingModule
-  ]
+  ],
+  providers:[FileManagerService]
 })
 export class FileManagerModule { }

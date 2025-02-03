@@ -109,6 +109,8 @@
                                                 </a>
 
                                                 <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
+                                                    <a class="dropdown-item" href="javascript: void(0);" (click)="openCreateFolderModal()">Create Folder</a>
+
                                                     <a class="dropdown-item" href="javascript: void(0);" (click)="openFileUploadModal()">Upload Files</a>
                                                     <!-- <a class="dropdown-item" href="javascript: void(0);">Share Files</a>
                                                     <a class="dropdown-item" href="javascript: void(0);">Share with me</a>
@@ -124,11 +126,11 @@
 
                                 <div *ngIf="folderList && folderList.length > 0" class="row">
                                     <div *ngFor="let folder of folderList" class="col-xl-4 col-sm-6">
-                                        <div class="card shadow-none border" 
+                                        <div class="card shadow-none border cursor-pointer" 
                                              [class.bg-light]="folder.isSelected"
-                                             (click)="selectFolder(folder, $event)">
+                                              (click)="selectFolder(folder, $event)" >
                                             <div class="card-body p-3">
-                                                <div class="">
+                                                <div >
                                                     <div class="float-end ms-2">
                                                         <div class="dropdown mb-2" dropdown>
                                                             <a class="font-size-16 text-muted dropdown-toggle" dropdownToggle role="button">
@@ -179,7 +181,7 @@
                                                     <div class="d-flex">
                                                         <div class="overflow-hidden me-auto">
                                                             <h5 class="font-size-14 text-truncate mb-1">
-                                                                <a class="text-body">{{folder?.name}}</a>
+                                                                <a class="text-body" (click)="selectFolder(folder, $event)">{{folder?.name}}</a>
                                                             </h5>
                                                         </div>
                                                     </div>
@@ -202,6 +204,15 @@
                                                                 <i class="mdi mdi-dots-horizontal"></i>
                                                             </a>
                                                             <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
+                                                                <a class="dropdown-item" 
+                                                                   (click)="openItem(file, $event)"
+                                                                   (keydown.enter)="openItem(file)"
+                                                                   (keydown.space)="openItem(file)"
+                                                                   tabindex="0"
+                                                                   role="button">
+                                                                    <i class="mdi mdi-eye me-2"></i>Open
+                                                                </a>
+                                                                <div class="dropdown-divider"></div>
                                                                 <a class="dropdown-item" 
                                                                    (click)="renameItem(file, $event)"
                                                                    (keydown.enter)="renameItem(file)"
@@ -524,11 +535,11 @@
 
 <!-- Replace the existing folderTreeTemplate with this updated version -->
 <ng-template #folderTreeTemplate let-folders>
-    <li *ngFor="let folder of folders">
+    <li *ngFor="let folder of folders.folders">
         <div class="d-flex align-items-center folder-item" [class.bg-light]="folder.isSelected">
-            <a (click)="fetchSubFolders(folder.path, $event)" 
-               (keydown.enter)="fetchSubFolders(folder.path)" 
-               (keydown.space)="fetchSubFolders(folder.path)" 
+            <a (click)="fetchFolders(folder, $event)" 
+               (keydown.enter)="fetchFolders(folder)" 
+               (keydown.space)="fetchFolders(folder)" 
                tabindex="0" 
                role="button" 
                class="d-flex align-items-center flex-grow-1">
@@ -549,9 +560,9 @@
                             [value]="editingFolderName"
                             (input)="editingFolderName = renameInput.value"
                             (click)="$event.stopPropagation()"
-                            (keyup.enter)="saveRename(folder, editingFolderName, $event)"
+                            (keyup.enter)="renameItemConfirmed(folder, editingFolderName, $event)"
                             (keyup.escape)="cancelRename($event)"
-                            (blur)="saveRename(folder, editingFolderName, $event)"
+                            (blur)="renameItemConfirmed(folder, editingFolderName, $event)"
                         />
                     </ng-container>
                 </div>
@@ -580,6 +591,8 @@
                    (keydown.space)="toggleFolder(folder, $event)"
                    tabindex="0"
                    role="button">
+                                      
+
                 </i>
             </a>
         </div>
@@ -612,6 +625,26 @@
                     </div>
                 </li>
             </ul>
+        </div>
+    </li>
+    <li *ngFor="let file of folders.files" class="file-item">
+        <div class="d-flex align-items-center">
+            <div class="file-name-container">
+                <i class="mdi mdi-file-document font-size-13 text-primary me-2"></i>
+                <span class="font-size-12">{{file.name}}</span>
+            </div>
+            <div class="file-actions ms-auto">
+                <button class="btn btn-link text-muted p-1" 
+                        (click)="renameItem(file, $event)"
+                        title="Rename">
+                    <i class="mdi mdi-pencil"></i>
+                </button>
+                <button class="btn btn-link text-danger p-1" 
+                        (click)="deleteItem(file, $event)"
+                        title="Delete">
+                    <i class="mdi mdi-delete"></i>
+                </button>
+            </div>
         </div>
     </li>
 </ng-template>

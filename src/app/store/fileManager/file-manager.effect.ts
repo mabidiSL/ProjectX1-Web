@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, mergeMap, map } from 'rxjs/operators';
+import { catchError, mergeMap, map, switchMap, exhaustMap } from 'rxjs/operators';
 
 import { of } from 'rxjs';
 import { CrudService } from 'src/app/core/services/crud.service';
@@ -31,7 +31,10 @@ import {
     getStorageQuotaFailure,
     addFile,
     addFileFailure,
-    addFileSuccess
+    addFileSuccess,
+    renameFileManager,
+    renameFileManagerFailure,
+    renameFileManagerSuccess
 } from './file-manager.action';
 import { ToastrService } from 'ngx-toastr';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
@@ -44,8 +47,8 @@ export class FileManagersEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchFileManagerlistData),
-            mergeMap(({ folderName }) =>
-                this.CrudService.fetchData('/storage/files-and-folders',{ folderName: folderName }).pipe(
+            exhaustMap(({ folderId }) =>
+                this.CrudService.fetchData('/storage/files-and-folders',{ id: folderId }).pipe(
                     map((response: any) => fetchFileManagerlistSuccess({ FileManagerListdata : response })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
@@ -93,7 +96,7 @@ export class FileManagersEffects {
                      const fileName = fileName_tab[fileName_tab.length - 1];
                      console.log('fileName', fileName);
 
-                      return addFileSuccess({ formData: fileName });
+                      return addFileSuccess({ formData: fileName, file_type: 'file'});
                   }),
                   catchError((error) => {
                     const errorMessage = this.formUtilService.getErrorMessage(error);
@@ -105,26 +108,31 @@ export class FileManagersEffects {
       )
     );
 
-    // updateData$ = createEffect(() =>
-    //     this.actions$.pipe(
-    //       ofType(updateFileManagerlist),
-    //       mergeMap(({ updatedData }) => {
-    //         const { oldPath, newPath } = JSON.parse(updatedData);
-    //         return this.CrudService.renameFolder(oldPath, newPath).pipe(
-    //           map(() => {
-    //             this.toastr.success('The FileManager has been updated successfully.');
-    //             this.router.navigate(['/private/file-manager']);
-    //             return updateFileManagerlistSuccess({ folderName: newPath });
-    //           }),
-    //           catchError((error) => {
-    //             const errorMessage = this.formUtilService.getErrorMessage(error);
-    //             this.toastr.error(errorMessage); 
-    //             return of(updateFileManagerlistFailure({ error: errorMessage }));
-    //           })
-    //         );
-    //       })
-    //     )
-    //   );
+    updateData$ = createEffect(() =>
+        this.actions$.pipe(
+          ofType(renameFileManager),
+          mergeMap(({ id, new_name, file_type }) => {
+            let url = '';
+            if(file_type === 'folder')  
+               url = '/storage/folder';
+            else
+              url = '/storage/file';
+
+            return this.CrudService.updateData(`${url}/${id}`, {name: new_name}).pipe(
+              map(() => {
+                this.toastr.success('The FileManager has been updated successfully.');
+               // this.router.navigate(['/private/file-manager']);
+                return renameFileManagerSuccess({ id: id, new_name: new_name, file_type: file_type });
+              }),
+              catchError((error) => {
+                const errorMessage = this.formUtilService.getErrorMessage(error);
+                this.toastr.error(errorMessage); 
+                return of(renameFileManagerFailure({ error: errorMessage }));
+              })
+            );
+          })
+        )
+      );
       
     
    getFileManagerById$ = createEffect(() =>
@@ -164,14 +172,18 @@ export class FileManagersEffects {
   deleteData$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteFileManagerlist),
-      mergeMap(({ key, typeFile }) => {
-        // Replace forward slash with %2F for the API call if key contains project-x1/
-        const encodedKey = key.includes('/') ? key.replace('/', '%2F') : key;
+      mergeMap(({ id, typeFile }) => {
+        let url = '';
+        if(typeFile === 'folder')  
+           url = '/storage/folder';
+        else
+          url = '/storage/file';
         
-        return this.CrudService.deleteData(`/storage/files-or-folders/${encodedKey}`).pipe(
+        
+        return this.CrudService.deleteData(`${url}/${id}`).pipe(
           map(() => {
             this.toastr.success(`${typeFile === 'file' ? 'File' : 'Folder'} deleted successfully.`);
-            return deleteFileManagerlistSuccess({ key: key, typeFile: typeFile });
+            return deleteFileManagerlistSuccess({ id: id, typeFile: typeFile });
           }),
           catchError((error) => {
             const errorMessage = this.formUtilService.getErrorMessage(error);

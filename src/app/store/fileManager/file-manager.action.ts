@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { FileManager, FileManagerListModel, StorageQuota } from './file-manager.model';
 
 // fetch all list
-export const fetchFileManagerlistData = createAction('[Data] fetch FileManagerlist', props<{ folderName: string }>());
+export const fetchFileManagerlistData = createAction('[Data] fetch FileManagerlist', props<{ folderId: number  }>());
 export const fetchFileManagerlistSuccess = createAction('[Data] fetch FileManagerlist success', props<{ FileManagerListdata: FileManagerListModel }>())
 export const fetchFileManagerlistFail = createAction('[Data fetch FileManagerlist failed]', props<{ error: string }>())
 
@@ -10,9 +10,13 @@ export const fetchFileManagerlistFail = createAction('[Data fetch FileManagerlis
 export const addFileManagerlist = createAction('[Data] Add FileManagerlist',  props<{ folderName: string}>());
 export const addFileManagerlistSuccess = createAction('[Data] Add FileManagerlist Success', props<{ folderName: string }>());
 export const addFileManagerlistFailure = createAction('[Data] Add FileManagerlist Failure', props<{ error: string }>());
+//RenameFileManager
+export const renameFileManager = createAction('[Data] Rename FileManager',  props<{ id: number, new_name: string , file_type: string }>());
+export const renameFileManagerSuccess = createAction('[Data] Rename FileManager Success', props<{ id: number, new_name: string, file_type: string}>());
+export const renameFileManagerFailure = createAction('[Data] Rename FileManager Failure', props<{ error: string }>());
 //Add File 
-export const addFile = createAction('[Data] Add File',  props<{ formData: any  }>());
-export const addFileSuccess = createAction('[Data] Add File Success', props<{ formData: any}>());
+export const addFile = createAction('[Data] Add File',  props<{ formData: any, file_type: string }>());
+export const addFileSuccess = createAction('[Data] Add File Success', props<{ formData: any, file_type: string}>());
 export const addFileFailure = createAction('[Data] Add File Failure', props<{ error: string }>());
 
 //get FileManager by ID
@@ -26,8 +30,8 @@ export const getFileManagerByIdFailure = createAction('[Data] get FileManager Fa
 // export const updateFileManagerlistFailure = createAction('[Data] Update FileManagerlist Failure', props<{ error: string }>());
 
 //Delete Data
-export const deleteFileManagerlist = createAction('[Data] Delete FileManagerlist',   props<{ key: string; typeFile: 'file' | 'folder' }>());
-export const deleteFileManagerlistSuccess = createAction('[Data] Delete FileManagerlist Success',  props<{ key: string; typeFile: 'file' | 'folder' }>());
+export const deleteFileManagerlist = createAction('[Data] Delete FileManagerlist',   props<{ id: number, typeFile: 'file' | 'folder' }>());
+export const deleteFileManagerlistSuccess = createAction('[Data] Delete FileManagerlist Success',  props<{ id:number, typeFile: 'file' | 'folder' }>());
 export const deleteFileManagerlistFailure = createAction('[Data] Delete FileManagerlist Failure',  props<{ error: string }>());
 
 //get Storage Quota

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // src/app/FileManagerlist.reducer.ts
 import { createReducer, on } from '@ngrx/store';
-import {  addFileManagerlist, addFileManagerlistFailure, addFileManagerlistSuccess, deleteFileManagerlistFailure, deleteFileManagerlist, deleteFileManagerlistSuccess, /*deleteFileManagerlist, deleteFileManagerlistFailure, deleteFileManagerlistSuccess,*/ fetchFileManagerlistData, fetchFileManagerlistFail, fetchFileManagerlistSuccess, getFileManagerById, getFileManagerByIdFailure, getFileManagerByIdSuccess, getStorageQuota, getStorageQuotaSuccess, getStorageQuotaFailure, addFile, addFileFailure, addFileSuccess,  /* updateFileManagerlist, updateFileManagerlistFailure, updateFileManagerlistSuccess */
+import {  addFileManagerlist, addFileManagerlistFailure, addFileManagerlistSuccess, deleteFileManagerlistFailure, deleteFileManagerlist, deleteFileManagerlistSuccess, /*deleteFileManagerlist, deleteFileManagerlistFailure, deleteFileManagerlistSuccess,*/ fetchFileManagerlistData, fetchFileManagerlistFail, fetchFileManagerlistSuccess, getFileManagerById, getFileManagerByIdFailure, getFileManagerByIdSuccess, getStorageQuota, getStorageQuotaSuccess, getStorageQuotaFailure, addFile, addFileFailure, addFileSuccess, renameFileManager, renameFileManagerSuccess, renameFileManagerFailure,  /* updateFileManagerlist, updateFileManagerlistFailure, updateFileManagerlistSuccess */
 /*updateFileManagerlist,
 updateFileManagerlistFailure,
 updateFileManagerlistSuccess*/
@@ -10,7 +10,7 @@ import { FileManager, Folder, StorageQuota } from './file-manager.model';
 
 export interface FileManagerlistState {
   FileManagerListdata: FileManager;
-  currentFolder: string;
+  currentFolder: number;
   rootFolder: string;
   totalItems: number;
   storageQuota: StorageQuota;
@@ -32,9 +32,9 @@ export const initialState: FileManagerlistState = {
 
 export const FileManagerListReducer = createReducer(
   initialState,
-  on(fetchFileManagerlistData, (state, { folderName }) => ({
+  on(fetchFileManagerlistData, (state, { folderId }) => ({
     ...state,
-    currentPage: folderName,
+    currentFolder: folderId,
     loading: true,
     error: null
   })),
@@ -45,7 +45,7 @@ export const FileManagerListReducer = createReducer(
       folders: FileManagerListdata.result?.folders || [], // Map the folders from backend response
       files: FileManagerListdata.result?.files || [], // Map the files from backend response
     },
-    rootFolder: FileManagerListdata.result?.folders? FileManagerListdata.result?.folders?.[0]?.split('/')[0]: 'MyFiles',
+    rootFolder: FileManagerListdata.result?.folders? FileManagerListdata.result?.folders?.[0]?.name: 'MyFiles',
     totalItems: FileManagerListdata.totalItems,
     loading: false,
     error: null 
@@ -67,7 +67,7 @@ export const FileManagerListReducer = createReducer(
     ...state,
     FileManagerListdata: {
       ...state.FileManagerListdata,
-      folders: [...state.FileManagerListdata.folders, folderName], // Add new folder
+      folders: [...state.FileManagerListdata.folders, {name: folderName, id: 200}], // Add new folder
     },
     rootFolder: folderName,
     loading: false,
@@ -100,55 +100,59 @@ on(getFileManagerByIdFailure, (state, { error }) => ({
   error,
   loading: false, 
 })),
-// Handle updating Coupon list
-// on(updateFileManagerlist, (state) => ({
-//   ...state,
-//   loading: true,
-//   error: null 
-// })),
-//  // Handle updating FileManager status
-// on(updateFileManagerlistSuccess, (state, { oldName, newNamefolderName }) => {
-//     // Find the folder to update in the list
-//     const updatedFolders = state.FileManagerListdata.folders.map(folder => {
-//       const oldPath = folder.split('/');
-//       const newPath = folderName.split('/');
-      
-//       // If this is the folder being renamed or a subfolder
-//       if (folder.startsWith(oldPath[0])) {
-//         // Replace the old folder name with the new one while keeping the same structure
-//         return folder.replace(oldPath[0], newPath[newPath.length - 1]);
-//       }
-//       return folder;
-//     });
-
-//     // Update files paths if they were in the renamed folder
-//     const updatedFiles = state.FileManagerListdata.files.map(file => {
-//       if (file.name.startsWith(folderName)) {
-//         return {
-//           ...file,
-//           name: file.name.replace(folderName.split('/')[0], folderName.split('/')[newPath.length - 1])
-//         };
-//       }
-//       return file;
-//     });
-
-//     return {
-//       ...state,
-//       FileManagerListdata: {
-//         ...state.FileManagerListdata,
-//         folders: updatedFolders,
-//         files: updatedFiles
-//       },
-//       loading: false,
-//       error: null
-//     };
-//   }),
-//    // Handle updating FileManager failure
-//    on(updateFileManagerlistFailure, (state, { error }) => ({
-//     ...state,
-//     error,
-//     loading: false 
-//   })),
+//Handle updating Coupon list
+on(renameFileManager, (state) => ({
+  ...state,
+  loading: true,
+  error: null 
+})),
+ // Handle updating FileManager status
+on(renameFileManagerSuccess, (state, { id, new_name, file_type }) => {
+  let updatedFolders = []
+  let updatedFiles = []
+  if(file_type === 'folder'){ 
+  // Find the folder to update in the list
+     updatedFolders = state.FileManagerListdata.folders.map(folder => {
+      if(folder.id === id){
+        return {
+          ...folder,
+          name: new_name
+        }
+      }
+      return folder;
+    });
+    console.log('updatedFolders', updatedFolders);
+    
+  }else{
+    // Update files paths if they were in the renamed folder
+     updatedFiles = state.FileManagerListdata.files.map(file => {
+      if (file.id === id) {
+        return {
+          ...file,
+          name: new_name
+        };
+      }
+      return file;
+    });
+    console.log('updatedFiles', updatedFiles);
+  }
+    return {
+      ...state,
+      FileManagerListdata: {
+        ...state.FileManagerListdata,
+        folders: file_type === 'folder' ? updatedFolders : state.FileManagerListdata.folders, // Use the updatedFolders array for foldersupdatedFolders,
+        files: file_type === 'file' ? updatedFiles : state.FileManagerListdata.files // Use the updatedFiles array for filesupdatedFiles
+      },
+      loading: false,
+      error: null
+    };
+  }),
+   // Handle updating FileManager failure
+   on(renameFileManagerFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false 
+  })),
 on(addFile, (state) => ({
   ...state,
   loading: true,
@@ -192,13 +196,13 @@ on(addFileFailure, (state, { error }) => ({
     error: null 
   })),
   // Handle the success of deleting a FileManager
-  on(deleteFileManagerlistSuccess, (state, { key, typeFile }) => {
+  on(deleteFileManagerlistSuccess, (state, { id, typeFile }) => {
     if (typeFile === 'file') {
       return {
         ...state,
         FileManagerListdata: {
           ...state.FileManagerListdata,
-          files: state.FileManagerListdata.files.filter(file => file.name !== key)
+          files: state.FileManagerListdata.files.filter(file => file.id !== id)
         },
         loading: false,
         error: null
@@ -208,7 +212,7 @@ on(addFileFailure, (state, { error }) => ({
         ...state,
         FileManagerListdata: {
           ...state.FileManagerListdata,
-          folders: state.FileManagerListdata.folders.filter(folder => !folder.startsWith(key))
+          folders: state.FileManagerListdata.folders.filter(folder => folder.id!==id)
         },
         loading: false,
         error: null
