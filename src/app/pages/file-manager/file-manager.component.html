@@ -187,12 +187,12 @@
                                                                     <input 
                                                                       id="rename-input-view"
                                                                       type="text" 
-                                                                      [value]="editingFolderName"
-                                                                      (input)="editingFolderName = renameInputView.value"
+                                                                      [value]="editingName"
+                                                                      (input)="editingName = renameInputView.value"
                                                                       (click)="$event.stopPropagation()"
-                                                                      (keyup.enter)="renameItemConfirmed(folder, editingFolderName, $event, true)"
+                                                                      (keyup.enter)="renameItemConfirmed(folder, editingName, $event, true)"
                                                                       (keyup.escape)="cancelRename($event)"
-                                                                      (blur)="renameItemConfirmed(folder, editingFolderName, $event, true)"
+                                                                      (blur)="renameItemConfirmed(folder, editingName, $event, true)"
                                                                       #renameInputView
 
                                                                     />
@@ -261,16 +261,16 @@
                                                     <div class="d-flex">
                                                         <div class="overflow-hidden me-auto">
                                                             <h5 class="font-size-14 text-truncate mb-1">
-                                                                <ng-container *ngIf="isRenamingFile && editingFile?.path === file.path; else displayFileMode">
+                                                                <ng-container *ngIf="isRenamingFile && editingFile?.name === file.name; else displayFileMode">
                                                                     <input 
                                                                       id="rename-file-view"
                                                                       type="text" 
-                                                                      [value]="editingFileName"
-                                                                      (input)="editingFileName = renameFileView.value"
+                                                                      [value]="editingName"
+                                                                      (input)="editingName = renameFileView.value"
                                                                       (click)="$event.stopPropagation()"
-                                                                      (keyup.enter)="renameItemConfirmed(file, editingFileName, $event, true)"
+                                                                      (keyup.enter)="renameItemConfirmed(file, editingName, $event, true)"
                                                                       (keyup.escape)="cancelRename($event)"
-                                                                      (blur)="renameItemConfirmed(file, editingFileName, $event, true)"
+                                                                      (blur)="renameItemConfirmed(file, editingName, $event, true)"
                                                                       #renameFileView
 
                                                                     />
@@ -594,12 +594,12 @@
                             id="rename-input"
                             type="text"
                             class="form-control form-control-sm"
-                            [value]="editingFolderName"
-                            (input)="editingFolderName = renameInput.value"
+                            [value]="editingName"
+                            (input)="editingName = renameInput.value"
                             (click)="$event.stopPropagation()"
-                            (keyup.enter)="renameItemConfirmed(folder, editingFolderName, $event)"
+                            (keyup.enter)="renameItemConfirmed(folder, editingName, $event)"
                             (keyup.escape)="cancelRename($event)"
-                            (blur)="renameItemConfirmed(folder, editingFolderName, $event)"
+                            (blur)="renameItemConfirmed(folder, editingName, $event)"
                         />
                     </ng-container>
                 </div>
@@ -644,12 +644,31 @@
                 <li *ngFor="let file of folder.files" class="file-item">
                     <div class="d-flex align-items-center">
                         <div class="file-name-container">
-                            <i class="mdi mdi-file-document font-size-13 text-primary me-2"></i>
-                            <span class="font-size-12">{{file.name}}</span>
+                            <ng-container *ngIf="!isRenamingFile || editingFile?.name !== file.name">
+                                <i class="mdi mdi-file-document font-size-13 text-primary me-2"></i>
+                                <span class="font-size-12">{{file.name}}</span>
+                            </ng-container>
+                            <ng-container *ngIf="isRenamingFile && editingFile?.name === file.name">
+                                <input
+                                    #renamesubFileInput
+                                    id="rename-file-input"
+                                    type="text"
+                                    class="form-control form-control-sm"
+                                    [value]="editingName"
+                                    (input)="editingName = renamesubFileInput.value"
+                                    (click)="$event.stopPropagation()"
+                                    (keyup.enter)="renameItemConfirmed(file, editingName, $event)"
+                                    (keyup.escape)="cancelRename($event)"
+                                    (blur)="renameItemConfirmed(file, editingName, $event)"
+                                />
+                            </ng-container>
                         </div>
                         <div class="file-actions ms-auto">
                             <button class="btn btn-link text-muted p-1" 
                                     (click)="renameItem(file, $event)"
+                                    (keydown.enter)="renameItem(file, false)"
+                                    (keydown.space)="renameItem(file, false)"
+                                    tabindex="0"
                                     title="Rename">
                                 <i class="mdi mdi-pencil"></i>
                             </button>
@@ -667,12 +686,31 @@
     <li *ngFor="let file of folders.files" class="file-item">
         <div class="d-flex align-items-center">
             <div class="file-name-container">
-                <i class="mdi mdi-file-document font-size-13 text-primary me-2"></i>
-                <span class="font-size-12">{{file.name}}</span>
+                <ng-container *ngIf="!isRenamingFile || editingFile?.name !== file.name">
+                    <i class="mdi mdi-file-document font-size-13 text-primary me-2"></i>
+                    <span class="font-size-12">{{file.name}}</span>
+                </ng-container>
+                <ng-container *ngIf="isRenamingFile && editingFile?.name === file.name">
+                    <input
+                        #renameFileInput
+                        id="rename-file-input"
+                        type="text"
+                        class="form-control form-control-sm"
+                        [value]="editingName"
+                        (input)="editingName = renameFileInput.value"
+                        (click)="$event.stopPropagation()"
+                        (keyup.enter)="renameItemConfirmed(file, editingName, $event)"
+                        (keyup.escape)="cancelRename($event)"
+                        (blur)="renameItemConfirmed(file, editingName, $event)"
+                    />
+                </ng-container>
             </div>
             <div class="file-actions ms-auto">
                 <button class="btn btn-link text-muted p-1" 
                         (click)="renameItem(file, $event)"
+                        (keydown.enter)="renameItem(file, false)"
+                        (keydown.space)="renameItem(file, false)"
+                        tabindex="0"
                         title="Rename">
                     <i class="mdi mdi-pencil"></i>
                 </button>

@@ -70,7 +70,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     currentPath: string = '';
 
     isRenamingFolder: boolean = false;
-    editingFolderName: string = '';
+    editingName: string = '';
     isRenamingFile: boolean = false;
     editingFile: FileNode = null;
     storageQuota: StorageQuota = null;
@@ -421,7 +421,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         } else {
           this.editingFolder = item as FolderNode;
         }
-        this.editingFolderName = item.name;
+        this.editingName = item.name;
         if(isFile){
           setTimeout(() => {
             const input = document.getElementById('rename-file-view') as HTMLInputElement;
@@ -468,7 +468,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 handleKeyUp(event: KeyboardEvent, item: FolderNode | FileNode): void {
   if (event.key === 'Enter') { 
     event.stopPropagation();
-    this.renameItemConfirmed(item, this.editingFolderName);
+    this.renameItemConfirmed(item, this.editingName);
   }
 }
 
