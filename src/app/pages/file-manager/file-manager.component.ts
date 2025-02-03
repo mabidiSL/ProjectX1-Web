@@ -7,8 +7,8 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil, skip, take } from 'rxjs/operators';
 import { FileManagerService } from 'src/app/core/services/file-manager.service';
 import { RootReducerState } from 'src/app/store';
-import { selectDataFileManager, selectDataLoading, selectStorageQuota } from 'src/app/store/fileManager/file-manager-selector';
-import { addFileManagerlist, fetchFileManagerlistData, deleteFileManagerlist, getStorageQuota, addFile, renameFileManager } from 'src/app/store/fileManager/file-manager.action';
+import { selectDataFileManager, selectDataLoading, selectRecentFiles, selectStorageQuota } from 'src/app/store/fileManager/file-manager-selector';
+import { addFileManagerlist, fetchFileManagerlistData, deleteFileManagerlist, getStorageQuota, addFile, renameFileManager, fetchRecentFilesData } from 'src/app/store/fileManager/file-manager.action';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 
 interface TreeNode{
@@ -52,6 +52,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     public isCollapsed: boolean = false;
     dismissible = true;
     Recentfile: any[] = [];
+    recentFiles$: Observable<any[]>;
     RootFolder$: Observable<string> ;
     storageQuota$: Observable<StorageQuota>;
     currentFolder: any = null;
@@ -92,6 +93,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         this.FolderList$ = this.store.pipe(select(selectDataFileManager));
         this.loading$ = this.store.pipe(select(selectDataLoading));  
         this.storageQuota$ = this.store.pipe(select(selectStorageQuota)) as Observable<StorageQuota>;
+        this.recentFiles$ = this.store.pipe(select(selectRecentFiles));
         // this.RootFolder$ = this.store.pipe(select(selectDataRootFolder));
         this.folderNameControl = new FormControl('');
         }
@@ -99,8 +101,20 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
       this.breadCrumbItems = [{ label: 'Files' }, { label: 'File Manager', active: true }];
       this.fetchRootTree();
+      this.fetchRecentFiles();
       this.fetchStorageQuota();
       this.initializeRadialChart();
+    }
+    fetchRecentFiles(){
+      console.log('i am in fetch recent files ');
+    
+      this.store.dispatch(fetchRecentFilesData({ limit: 10 }));
+      this.recentFiles$.subscribe(data=>
+        {
+          this.Recentfile = data; console.log(this.Recentfile)
+
+        });
+
     }
     fetchRootTree(){
       this.store.dispatch(fetchFileManagerlistData({ folderId: null }));

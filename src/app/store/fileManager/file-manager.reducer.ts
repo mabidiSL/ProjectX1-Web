@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // src/app/FileManagerlist.reducer.ts
 import { createReducer, on } from '@ngrx/store';
-import {  addFileManagerlist, addFileManagerlistFailure, addFileManagerlistSuccess, deleteFileManagerlistFailure, deleteFileManagerlist, deleteFileManagerlistSuccess, /*deleteFileManagerlist, deleteFileManagerlistFailure, deleteFileManagerlistSuccess,*/ fetchFileManagerlistData, fetchFileManagerlistFail, fetchFileManagerlistSuccess, getFileManagerById, getFileManagerByIdFailure, getFileManagerByIdSuccess, getStorageQuota, getStorageQuotaSuccess, getStorageQuotaFailure, addFile, addFileFailure, addFileSuccess, renameFileManager, renameFileManagerSuccess, renameFileManagerFailure,  /* updateFileManagerlist, updateFileManagerlistFailure, updateFileManagerlistSuccess */
+import {  addFileManagerlist, addFileManagerlistFailure, addFileManagerlistSuccess, deleteFileManagerlistFailure, deleteFileManagerlist, deleteFileManagerlistSuccess, /*deleteFileManagerlist, deleteFileManagerlistFailure, deleteFileManagerlistSuccess,*/ fetchFileManagerlistData, fetchFileManagerlistFail, fetchFileManagerlistSuccess, getFileManagerById, getFileManagerByIdFailure, getFileManagerByIdSuccess, getStorageQuota, getStorageQuotaSuccess, getStorageQuotaFailure, addFile, addFileFailure, addFileSuccess, renameFileManager, renameFileManagerSuccess, renameFileManagerFailure, fetchRecentFilesData, fetchRecentFilesFailure, fetchRecentFilesSuccess,  /* updateFileManagerlist, updateFileManagerlistFailure, updateFileManagerlistSuccess */
 /*updateFileManagerlist,
 updateFileManagerlistFailure,
 updateFileManagerlistSuccess*/
@@ -14,6 +14,7 @@ export interface FileManagerlistState {
   rootFolder: string;
   totalItems: number;
   storageQuota: StorageQuota;
+  lastUpdatedFiles: any[];
   selectedFileManager: Folder | any;
   loading: boolean;
   error: string;
@@ -24,6 +25,7 @@ export const initialState: FileManagerlistState = {
   currentFolder: null,
   rootFolder: null,
   storageQuota: null,
+  lastUpdatedFiles: null,
   totalItems: 0,
   selectedFileManager: null,
   loading: false,
@@ -52,6 +54,24 @@ export const FileManagerListReducer = createReducer(
 
   })),
   on(fetchFileManagerlistFail, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false
+  })),
+  //Fetch Recent Files
+  on(fetchRecentFilesData, (state) => ({
+    ...state,
+    loading: true,
+    error: null
+  })),
+  on(fetchRecentFilesSuccess, (state, { lastUpdatedFiles }) => ({
+    ...state,
+    lastUpdatedFiles: lastUpdatedFiles,
+    loading: false,
+    error: null 
+
+  })),
+  on(fetchRecentFilesFailure, (state, { error }) => ({
     ...state,
     error,
     loading: false

@@ -288,7 +288,7 @@
                                 </div>
                                 <!-- end row -->
 
-                            <!-- <div class="mt-4">
+                            <div class="mt-4">
                                 <div class="d-flex flex-wrap">
                                     <h5 class="font-size-16 me-3">Recent Files</h5>
 
@@ -312,8 +312,8 @@
                                             <tr>
                                                 <td><a href="javascript: void(0);" class="text-dark fw-medium">
                                                         <i class="{{data.icon}} font-size-16 align-middle text-primary me-2"></i>{{data.name}}</a></td>
-                                                <td>{{data.date}}</td>
-                                                <td>{{data.size}}</td>
+                                                <td>{{data.updatedAt | date:'short'}}</td>
+                                                <td>{{ (data.size / 1024).toFixed(2) }} KB</td>
                                                 <td>
                                                     <div class="dropdown" dropdown>
                                                         <a class="font-size-16 text-muted dropdown-toggle" role="button" dropdownToggle data-toggle="dropdown" aria-haspopup="true">
@@ -331,7 +331,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
                     </div>
                     <!-- end card -->

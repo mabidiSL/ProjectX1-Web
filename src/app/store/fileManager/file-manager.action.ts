@@ -5,7 +5,10 @@ import { FileManager, FileManagerListModel, StorageQuota } from './file-manager.
 export const fetchFileManagerlistData = createAction('[Data] fetch FileManagerlist', props<{ folderId: number  }>());
 export const fetchFileManagerlistSuccess = createAction('[Data] fetch FileManagerlist success', props<{ FileManagerListdata: FileManagerListModel }>())
 export const fetchFileManagerlistFail = createAction('[Data fetch FileManagerlist failed]', props<{ error: string }>())
-
+// fetch all list
+export const fetchRecentFilesData = createAction('[Data] fetch Recent Files', props<{ limit: number  }>());
+export const fetchRecentFilesSuccess = createAction('[Data] fetch Recent Files success', props<{ lastUpdatedFiles: any[] }>())
+export const fetchRecentFilesFailure = createAction('[Data fetch Recent Files failed]', props<{ error: string }>())
 // Add Data
 export const addFileManagerlist = createAction('[Data] Add FileManagerlist',  props<{ folderName: string, name: string}>());
 export const addFileManagerlistSuccess = createAction('[Data] Add FileManagerlist Success', props<{ folderName: string, id: number }>());

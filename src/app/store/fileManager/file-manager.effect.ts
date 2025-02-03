@@ -34,7 +34,10 @@ import {
     addFileSuccess,
     renameFileManager,
     renameFileManagerFailure,
-    renameFileManagerSuccess
+    renameFileManagerSuccess,
+    fetchRecentFilesData,
+    fetchRecentFilesSuccess,
+    fetchRecentFilesFailure
 } from './file-manager.action';
 import { ToastrService } from 'ngx-toastr';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
@@ -60,7 +63,22 @@ export class FileManagersEffects {
             ),
         
     );
-    
+    getData$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fetchRecentFilesData),
+            exhaustMap(({ limit }) =>
+                this.CrudService.fetchData('/storage/files/last-updated',{ limit: limit }).pipe(
+                    map((response: any) => fetchRecentFilesSuccess({ lastUpdatedFiles : response?.result })),
+                    catchError((error) =>{
+                      const errorMessage = this.formUtilService.getErrorMessage(error);
+                      this.toastr.error(errorMessage); 
+                      return of(fetchRecentFilesFailure({ error: errorMessage })); 
+                    })
+                    )
+                ),
+            ),
+        
+    );
     addData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(addFileManagerlist),

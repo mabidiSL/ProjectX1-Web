@@ -8,6 +8,10 @@ export const selectDataFileManager = createSelector(
   selectDataState,
   (state: FileManagerlistState) => state?.FileManagerListdata || null
 );
+export const selectRecentFiles = createSelector(
+  selectDataState,
+  (state: FileManagerlistState) => state?.lastUpdatedFiles || null
+);
 export const selectDataTotalItems = createSelector(
   selectDataState,
   (state: FileManagerlistState) => state?.totalItems || 0
