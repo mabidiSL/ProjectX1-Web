@@ -155,6 +155,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         event.preventDefault();
         event.stopPropagation();
       }
+      this.currentPath = folder?.name;
       console.log('i am in folder tree', folder);
     
       // Set current folder and path
