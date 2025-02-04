@@ -38,7 +38,7 @@ export class MerchantslistEffects1 {
                     map((response: any) => {return fetchMerchantlistSuccess({ MerchantListdata: response.result })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage); 
+                        
                       return of(fetchMerchantlistFail({ error: error.message })); 
                       })
                 )
@@ -59,7 +59,7 @@ export class MerchantslistEffects1 {
                       }),
                       catchError((error) => {
                         const errorMessage = this.formUtilService.getErrorMessage(error);
-                        this.toastr.error(errorMessage); 
+                          
                         return of(addMerchantlistFailure({ error: error.message })); // Dispatch failure action
                       }))
             )
@@ -99,7 +99,7 @@ export class MerchantslistEffects1 {
                     return  updateMerchantlistSuccess({ updatedData })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);  
+                         
                       return of(updateMerchantlistFailure({ error: error.message }));
                       })                 );
             })
@@ -119,7 +119,7 @@ export class MerchantslistEffects1 {
                           }),
                           catchError((error) => {
                             const errorMessage = this.formUtilService.getErrorMessage(error);
-                            this.toastr.error(errorMessage);                          
+                                                       
                             return  of(deleteMerchantlistFailure({ error: error.message }))})                )
             )
         )

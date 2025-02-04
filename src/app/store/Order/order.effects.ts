@@ -36,7 +36,7 @@ export class OrdersEffects {
                     map((response: any) => fetchOrderlistSuccess({ OrderListdata : response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);
+                       
                       return of(fetchOrderlistFail({ error: errorMessage })); 
                     })
                 )
@@ -58,7 +58,7 @@ export class OrdersEffects {
                       }),
                       catchError((error) => {
                         const errorMessage = this.formUtilService.getErrorMessage(error);
-                        this.toastr.error(errorMessage);
+                         
                         return of(addOrderlistFailure({ error: errorMessage })); // Dispatch failure action
                       })                )
             )
@@ -76,7 +76,7 @@ export class OrdersEffects {
               }),
               catchError((error) =>{
                 const errorMessage = this.formUtilService.getErrorMessage(error);
-                this.toastr.error(errorMessage);
+                 
                 return of(updateOrderlistFailure({ error: errorMessage }));
               })             )
           )
@@ -116,7 +116,7 @@ export class OrdersEffects {
                           }),
                           catchError((error) => {
                             const errorMessage = this.formUtilService.getErrorMessage(error);
-                            this.toastr.error(errorMessage);  
+                               
                             return  of(deleteOrderlistFailure({ error: errorMessage }))})      
                                     )
             )

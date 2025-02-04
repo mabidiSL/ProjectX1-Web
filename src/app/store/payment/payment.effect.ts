@@ -39,7 +39,7 @@ export class PaymentEffects {
                     map((response: any) => fetchPaymentlistSuccess({ PaymentListdata : response.paymentMethods })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);
+                       
                       return of(fetchPaymentlistFail({ error: errorMessage })); 
                     })
                 )
@@ -62,7 +62,7 @@ export class PaymentEffects {
                       }),
                     catchError((error) => {
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);
+                       
                       return of(addPaymentlistFailure({ error: errorMessage })); // Dispatch failure action
                     }))
                 
@@ -82,7 +82,7 @@ export class PaymentEffects {
               }),
               catchError((error) =>{
                 const errorMessage = this.formUtilService.getErrorMessage(error);
-                this.toastr.error(errorMessage);
+                 
                 return of(updatePaymentlistFailure({ error: errorMessage }));
               }) 
             )
@@ -121,7 +121,7 @@ export class PaymentEffects {
                           }),
                     catchError((error) => {
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);
+                       
                       return  of(deletePaymentlistFailure({ error: errorMessage }))})
                 )
             )

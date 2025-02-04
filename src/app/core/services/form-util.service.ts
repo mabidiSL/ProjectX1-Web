@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ElementRef, Injectable } from "@angular/core";
 import { FormGroup } from "@angular/forms";
+import { ToastrService } from "ngx-toastr";
 
 @Injectable({
     providedIn: 'root'
 })
 export class FormUtilService{
-
+private toastr: ToastrService;
     /**
    * Focuses on the first invalid control in the form.
    * @param form The FormGroup instance to check for invalid controls.
@@ -126,18 +127,27 @@ export class FormUtilService{
     // Implement logic to convert backend error to user-friendly message
     if (error.status === 400) {
       if (error.error && error.error.result && Array.isArray(error.error.result.error)) {
+        this.toastr.error(error.error.result.error.map(err => `${err.path}: ${err.message}`).join(', '));
+
         // Extract the first validation error message from the list
         return error.error.result.error.map(err => `${err.path}: ${err.message}`).join(', ');
       }
+      this.toastr.error('Bad Request: Validation error');
       return 'Bad Request: Validation error';
     }
     else if (error.error && error.error.result && typeof error.error.result === 'string') {
-    // If error.result is a string, return it directly
-    return error.error.result;
-  } else if (error.message) {
-    // Generic error message fallback
-    return error.message;
-  }
+      if (error.error.result !== 'Token expired' && error.error.result !== 'Invalid refresh token') {
+        this.toastr.error(error.error.result);
+      }  
+      // If error.result is a string, return it directly
+         return error.error.result;
+      } else if (error.message) {
+        if (error.message !== 'Token expired' && error.message !== 'Invalid refresh token') {
+          this.toastr.error(error.message);
+        }  
+        // Generic error message fallback
+        return error.message;
+      }
   return 'An unknown error occurred';
   }
 

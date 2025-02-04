@@ -42,7 +42,7 @@ export class AuthenticationEffects {
             }),
             catchError((error) => {
               const errorMessage = this.formUtilService.getErrorMessage(error);
-              this.toastr.error(errorMessage); 
+                
               return of(RegisterFailure({ error: errorMessage }))
             })
           );
@@ -65,7 +65,7 @@ export class AuthenticationEffects {
             }),
             catchError((error) => {
               const errorMessage = this.formUtilService.getErrorMessage(error);
-              this.toastr.error(errorMessage); 
+                
               return of(verifyEmailFailure({ error: errorMessage }))
             })
           );
@@ -100,7 +100,7 @@ export class AuthenticationEffects {
             }),
             catchError((error) => {
               const errorMessage = this.formUtilService.getErrorMessage(error);
-              this.toastr.error(errorMessage); 
+                
               return of(loginFailure({ error: errorMessage }))})); 
             
         
@@ -119,7 +119,7 @@ export class AuthenticationEffects {
           }),
           catchError((error: any) => {
             const errorMessage = this.formUtilService.getErrorMessage(error);
-              this.toastr.error(errorMessage);
+               
             return of(forgetPasswordFailure({error: errorMessage}));
           }),
           tap(() => {
@@ -141,7 +141,7 @@ export class AuthenticationEffects {
           }),
           catchError((error: any) => {
             const errorMessage = this.formUtilService.getErrorMessage(error);
-              this.toastr.error(errorMessage);
+               
             return of(updatePasswordFailure({error: errorMessage}));}),
           tap(() => {
             // Navigate to another route after successful response
@@ -166,7 +166,7 @@ export class AuthenticationEffects {
         ),
         catchError((error: any) => {
           const errorMessage = this.formUtilService.getErrorMessage(error);
-          this.toastr.error(errorMessage);
+           
           return of(updateProfileFailure({ error:errorMessage }));
         }),
        
@@ -194,7 +194,7 @@ export class AuthenticationEffects {
         ),
         catchError((error: any) => {
           const errorMessage = this.formUtilService.getErrorMessage(error);
-          this.toastr.error(errorMessage);
+           
           return of(updateCompanyProfileFailure({ error:errorMessage }));
         }),
        
@@ -214,7 +214,7 @@ export class AuthenticationEffects {
         ),
         catchError((error: any) => {
           const errorMessage = this.formUtilService.getErrorMessage(error);
-          this.toastr.error(errorMessage);
+           
           return of(getCompanyProfileFailure({ error:errorMessage }));
         }),
        
@@ -238,7 +238,7 @@ export class AuthenticationEffects {
           catchError((error: any) => {
             
             const errorMessage = this.formUtilService.getErrorMessage(error);
-            this.toastr.error(errorMessage);
+             
             return of(updateProfilePasswordFailure({error: errorMessage}));
           }),
          
@@ -264,7 +264,7 @@ export class AuthenticationEffects {
             catchError((error: any) => {
               
               const errorMessage = this.formUtilService.getErrorMessage(error);
-              this.toastr.error(errorMessage);
+               
               return of(logoutFailure({error: errorMessage}));
             }),
            

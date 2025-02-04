@@ -22,7 +22,7 @@ export class CustomerEffects {
                     map((response: any) => fetchCustomerlistSuccess({ CustomerListdata : response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);
+                       
                       return of(fetchCustomerlistFail({ error: errorMessage })); 
                     })
                 )
