@@ -13,8 +13,8 @@ import { Area } from 'src/app/store/area/area.model';
 import { selectDataCity, selectDataLoadingCities } from 'src/app/store/City/city-selector';
 import { getCityByCountryId } from 'src/app/store/City/city.action';
 import { City } from 'src/app/store/City/city.model';
-import { selectDataCountry } from 'src/app/store/country/country-selector';
-import { fetchCountrylistData } from 'src/app/store/country/country.action';
+import { selectDataCountry, selectedCountry } from 'src/app/store/country/country-selector';
+import { fetchCountrylistData, getCountryById } from 'src/app/store/country/country.action';
 import { Country } from 'src/app/store/country/country.model';
 import { selectDataLoading, selectedEmployee } from 'src/app/store/employee/employee-selector';
 import { addEmployeelist, getEmployeeById, updateEmployeelist } from 'src/app/store/employee/employee.action';
@@ -54,7 +54,7 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
   citylist$:  Observable<City[]> ;
   loading$: Observable<boolean>;
   loadingCities$: Observable<boolean>;
-  country: any = null;
+  country: Country = null;
 
   moduleKeys: any[] = [];
   permissionKeys: any[] = [];
@@ -83,8 +83,17 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
       
       // This will be applied when the issue of state user manager is resolved
       this.authservice.currentUser$.subscribe(user => {
-        this.country = user?.country; 
-        this.phoneCode = this.country.ISO2;
+        if(user?.country_id ){
+          this.store.dispatch(getCountryById({CountryId: user?.country_id}));
+          this.store.select(selectedCountry).subscribe((data) => {
+            if(data){
+              this.country = data;
+              this.phoneCode = this.country.ISO2;
+
+
+            }
+          });
+        }
         
       });
      
@@ -164,10 +173,11 @@ export class FormEmployeeComponent implements OnInit, OnDestroy{
   setPhoneCodeByCountry(){
     // this.store.select(selectedCountry).subscribe(
     //   (country)  => {
-        if(this.country)
-          this.phoneCode = this.country.ISO2;
-          this.employeeForm.controls['country_id'].setValue(this.country.id);
-          this.fetchCities(this.country.id);
+        if(this.country){
+          this.employeeForm.controls['country_id'].setValue(this.country?.id);
+          console.log('this.country',this.country);
+          this.fetchCities(this.country?.id);
+        }
      // });
   }
   /**
