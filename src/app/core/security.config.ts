@@ -26,18 +26,16 @@ export class SecurityInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Add security headers and remove technology-revealing headers
+    // Don't add security headers to requests to avoid CORS issues
     request = request.clone({
       headers: request.headers
         .delete('X-Requested-With')
-        .set('X-Content-Type-Options', 'nosniff')
-        .set('Content-Security-Policy', this.getCspDirectives())
     });
 
     return next.handle(request).pipe(
       map(event => {
         if (event instanceof HttpResponse) {
-          // Add security headers and remove technology-revealing headers in response
+          // Only add security headers to responses
           event = event.clone({
             headers: event.headers
               .delete('X-Powered-By')
