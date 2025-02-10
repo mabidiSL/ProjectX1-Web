@@ -3,30 +3,76 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse } fr
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ConfigService } from './config.service';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class SecurityInterceptor implements HttpInterceptor {
   constructor(private configService: ConfigService) {}
 
+  private generateNonce(): string {
+    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  }
+
   private getCspDirectives(): string {
     const allowedUrls = this.configService.getAllowedUrls();
     const apiUrl = this.configService.getApiUrl();
+    const nonce = this.generateNonce();
+
+    // Store nonce in window object for Angular to use
+    (window as any).__cspNonce = nonce;
 
     return [
-      "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com https://fonts.googleapis.com",
+      // Default fallback
+      "default-src 'none'",
+      
+      // Scripts: Strict control over script execution
+      `script-src 'nonce-${nonce}' 'strict-dynamic' https: 'unsafe-inline' https://maps.googleapis.com https://fonts.googleapis.com`,
+      
+      // Styles: Required for Angular
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com",
+      
+      // Images with specific sources
       "img-src 'self' data: https: blob:",
+      
+      // Fonts with specific sources
       "font-src 'self' data: https://fonts.gstatic.com",
-      `connect-src 'self' ${allowedUrls.join(' ')} wss://${new URL(apiUrl).host}/socket.io/ ws://${new URL(apiUrl).host}/socket.io/`,
+      
+      // Connections: API and WebSocket
+      `connect-src 'self' ${allowedUrls.join(' ')} wss://${new URL(apiUrl).host}/socket.io/`,
+      
+      // Frames: Strict control
       "frame-src 'self'",
+      
+      // Block plugins
       "object-src 'none'",
-      "base-uri 'self'"
-    ].join('; ');
+      
+      // Base URI restriction
+      "base-uri 'self'",
+      
+      // Form submissions
+      "form-action 'self'",
+      
+      // Worker restrictions
+      "worker-src 'self' blob:",
+      
+      // Manifest location
+      "manifest-src 'self'",
+      
+      // Media restrictions
+      "media-src 'self'",
+      
+      // Ensure upgraded HTTPS connections
+      "upgrade-insecure-requests",
+      
+      // Report violations (if you have a reporting endpoint)
+      environment.production ? "report-uri /csp-violation-report-endpoint" : null,
+      
+      // Require trusted types for script execution
+      "require-trusted-types-for 'script'"
+    ].filter(Boolean).join('; ');
   }
 
   private hideStackHeaders(headers: any): any {
-    // Only hide headers related to our stack (Angular/Node.js)
     const techHeaders = [
       'x-powered-by',           // Node.js
       'server',                 // Could reveal Node.js
@@ -64,7 +110,6 @@ export class SecurityInterceptor implements HttpInterceptor {
               .set('X-XSS-Protection', '1; mode=block')
               .set('Referrer-Policy', 'strict-origin-when-cross-origin')
               .set('Content-Security-Policy', this.getCspDirectives())
-              // Use a generic server header
               .set('Server', 'Server')
           });
         }
