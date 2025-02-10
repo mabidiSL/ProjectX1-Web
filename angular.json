@@ -37,7 +37,13 @@
               "metismenujs/dist/metismenujs",
               "sweetalert2",
               "polylabel",
-              "@ckeditor/ckeditor5-build-classic"
+              "@ckeditor/ckeditor5-build-classic",
+              "raf",
+              "rgbcolor",
+              "google-libphonenumber",
+              "html2canvas",
+              "intl-tel-input",
+              "canvg"
             ],
             "outputPath": "dist/skote",
             "index": "src/index.html",
@@ -83,8 +89,7 @@
             "aot": true,
             "extractLicenses": true,
             "vendorChunk": false,
-            "buildOptimizer": true,
-            "subresourceIntegrity": true
+            "buildOptimizer": true
           },
           "configurations": {
             "production": {
@@ -95,6 +100,7 @@
                 }
               ],
               "outputHashing": "all",
+              "subresourceIntegrity": true,
               "budgets": [
                 {
                   "type": "initial",

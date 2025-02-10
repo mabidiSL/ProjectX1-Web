@@ -23,10 +23,10 @@ export class SecurityInterceptor implements HttpInterceptor {
 
     return [
       // Default fallback
-      "default-src 'none'",
+      "default-src 'self'",
       
       // Scripts: Strict control over script execution
-      `script-src 'nonce-${nonce}' 'strict-dynamic' https: 'unsafe-inline' https://maps.googleapis.com https://fonts.googleapis.com`,
+      `script-src 'self' 'strict-dynamic' https: 'unsafe-inline' https://maps.googleapis.com https://fonts.googleapis.com`,
       
       // Styles: Required for Angular
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com",
