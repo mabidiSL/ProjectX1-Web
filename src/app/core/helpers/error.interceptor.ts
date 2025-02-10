@@ -55,7 +55,9 @@ export class ErrorInterceptor implements HttpInterceptor {
                      }),
                     catchError((error: HttpErrorResponse) => {
                       console.error('An error occurred during refresh token request:', error);
-                      return throwError(() => new Error('Error during refresh token request.'));
+                      this.authService.clearSession();
+                      this.router.navigate(['/auth/login']);
+                      return throwError(() => 'Refresh token not available.');
 
                     })
                   );
