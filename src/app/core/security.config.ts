@@ -25,11 +25,30 @@ export class SecurityInterceptor implements HttpInterceptor {
     ].join('; ');
   }
 
+  private hideStackHeaders(headers: any): any {
+    // Only hide headers related to our stack (Angular/Node.js)
+    const techHeaders = [
+      'x-powered-by',           // Node.js
+      'server',                 // Could reveal Node.js
+      'x-angular-version',      // Angular version
+      'ng-version',            // Angular version
+      'x-node-version',        // Node.js version
+      'x-runtime',             // Runtime info
+      'x-version',             // Version info
+      'x-powered',             // General technology info
+    ];
+
+    techHeaders.forEach(header => {
+      headers = headers.delete(header.toLowerCase());
+    });
+
+    return headers;
+  }
+
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Add security headers and remove technology-revealing headers
+    // Hide technology headers from requests
     request = request.clone({
-      headers: request.headers
-        .delete('X-Requested-With')
+      headers: this.hideStackHeaders(request.headers)
         .set('X-Content-Type-Options', 'nosniff')
         .set('Content-Security-Policy', this.getCspDirectives())
     });
@@ -37,16 +56,16 @@ export class SecurityInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       map(event => {
         if (event instanceof HttpResponse) {
-          // Add security headers and remove technology-revealing headers in response
+          // Hide technology headers from response and add security headers
           event = event.clone({
-            headers: event.headers
-              .delete('X-Powered-By')
-              .delete('Server')
+            headers: this.hideStackHeaders(event.headers)
               .set('X-Content-Type-Options', 'nosniff')
               .set('X-Frame-Options', 'SAMEORIGIN')
               .set('X-XSS-Protection', '1; mode=block')
               .set('Referrer-Policy', 'strict-origin-when-cross-origin')
               .set('Content-Security-Policy', this.getCspDirectives())
+              // Use a generic server header
+              .set('Server', 'Server')
           });
         }
         return event;
