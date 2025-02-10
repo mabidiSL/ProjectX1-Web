@@ -83,6 +83,7 @@ import { ErrorInterceptor } from './core/helpers/error.interceptor';
 import { SpecialDaysEffects } from './store/specialDay/special.effect';
 import { FileManagersEffects } from './store/fileManager/file-manager.effect';
 import { FileManagerModule } from './pages/file-manager/file-manager.module';
+import { SecurityInterceptor } from './core/security.config';
 
 // Register the Arabic locale
 registerLocaleData(localeAr, 'ar');
@@ -182,6 +183,7 @@ export function createTranslateLoader(http: HttpClient): any {
   ],
   bootstrap: [AppComponent],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: SecurityInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
    {
