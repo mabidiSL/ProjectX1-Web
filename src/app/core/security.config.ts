@@ -2,17 +2,23 @@ import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ConfigService } from './config.service';
 
 @Injectable()
 export class SecurityInterceptor implements HttpInterceptor {
+  constructor(private configService: ConfigService) {}
+
   private getCspDirectives(): string {
+    const allowedUrls = this.configService.getAllowedUrls();
+    const apiUrl = this.configService.getApiUrl();
+
     return [
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com https://fonts.googleapis.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com",
       "img-src 'self' data: https: blob:",
-      "font-src 'self' https://fonts.gstatic.com",
-      "connect-src 'self' https://maps.googleapis.com",
+      "font-src 'self' data: https://fonts.gstatic.com",
+      `connect-src 'self' ${allowedUrls.join(' ')} wss://${new URL(apiUrl).host}/socket.io/ ws://${new URL(apiUrl).host}/socket.io/`,
       "frame-src 'self'",
       "object-src 'none'",
       "base-uri 'self'"
