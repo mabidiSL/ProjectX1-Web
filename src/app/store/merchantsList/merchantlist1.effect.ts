@@ -38,8 +38,9 @@ export class MerchantslistEffects1 {
                     map((response: any) => {return fetchMerchantlistSuccess({ MerchantListdata: response.result })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                        
-                      return of(fetchMerchantlistFail({ error: error.message })); 
+                      this.toastr.error(errorMessage);   
+
+                      return of(fetchMerchantlistFail({ error: errorMessage })); 
                       })
                 )
                 ),
@@ -59,8 +60,8 @@ export class MerchantslistEffects1 {
                       }),
                       catchError((error) => {
                         const errorMessage = this.formUtilService.getErrorMessage(error);
-                          
-                        return of(addMerchantlistFailure({ error: error.message })); // Dispatch failure action
+                        this.toastr.error(errorMessage);   
+                        return of(addMerchantlistFailure({ error: errorMessage })); // Dispatch failure action
                       }))
             )
         )
@@ -99,8 +100,9 @@ export class MerchantslistEffects1 {
                     return  updateMerchantlistSuccess({ updatedData })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                         
-                      return of(updateMerchantlistFailure({ error: error.message }));
+                      this.toastr.error(errorMessage);   
+
+                      return of(updateMerchantlistFailure({ error: errorMessage }));
                       })                 );
             })
         )
@@ -119,8 +121,9 @@ export class MerchantslistEffects1 {
                           }),
                           catchError((error) => {
                             const errorMessage = this.formUtilService.getErrorMessage(error);
-                                                       
-                            return  of(deleteMerchantlistFailure({ error: error.message }))})                )
+                            this.toastr.error(errorMessage);   
+                        
+                            return  of(deleteMerchantlistFailure({ error: errorMessage }))})                )
             )
         )
     );
@@ -137,15 +140,6 @@ export class MerchantslistEffects1 {
 
      }
 
-    private getErrorMessage(error: any): string {
-        // Implement logic to convert backend error to user-friendly message
-        if (error.status === 400) {
-          return 'Invalid Merchant data. Please check your inputs and try again.';
-        } else if (error.status === 409) {
-          return 'A Merchant with this code already exists.';
-        } else {
-          return 'An unexpected error occurred. Please try again later.';
-        }
-      }
+    
      
 }

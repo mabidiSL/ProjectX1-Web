@@ -37,7 +37,8 @@ export class SpecialDaysEffects {
                     map((response: any) => fetchSpecialDaylistSuccess({ SpecialDayListdata : response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                        
+                      this.toastr.error(errorMessage);   
+
                       return of(fetchSpecialDaylistFail({ error: errorMessage })); 
                     })
                     )
@@ -60,7 +61,8 @@ export class SpecialDaysEffects {
                       }),
                     catchError((error) => {
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                        
+                      this.toastr.error(errorMessage);   
+
                       return of(addSpecialDaylistFailure({ error: errorMessage }));})
                 )
             )
@@ -81,7 +83,8 @@ export class SpecialDaysEffects {
               }),
               catchError((error) => {
                 const errorMessage = this.formUtilService.getErrorMessage(error);
-                  
+                this.toastr.error(errorMessage);   
+
                 return of(updateSpecialDaylistFailure({ error: errorMessage }));}) // Catch errors and return the failure action
             )
           )
@@ -120,7 +123,8 @@ export class SpecialDaysEffects {
                           }),
                     catchError((error) => {
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                        
+                      this.toastr.error(errorMessage);   
+
                       return  of(deleteSpecialDaylistFailure({ error: errorMessage }))})
                 )
             )

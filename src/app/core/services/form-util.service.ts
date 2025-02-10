@@ -123,33 +123,77 @@ private toastr: ToastrService;
 /***
    * Creates getErrorMessage
    */
-   getErrorMessage(error: any): string {
-    // Implement logic to convert backend error to user-friendly message
-    if (error.status === 400) {
-      if (error.error && error.error.result && Array.isArray(error.error.result.error)) {
-        this.toastr.error(error.error.result.error.map(err => `${err.path}: ${err.message}`).join(', '));
-
-        // Extract the first validation error message from the list
-        return error.error.result.error.map(err => `${err.path}: ${err.message}`).join(', ');
-      }
-      this.toastr.error('Bad Request: Validation error');
-      return 'Bad Request: Validation error';
+getErrorMessage(error: any): string {
+  // Implement logic to convert backend error to user-friendly message
+  if (error?.status === 400) {
+    if (error?.error && error?.error?.result && Array.isArray(error?.error?.result?.error)) {
+      // Extract the first validation error message from the list
+      return error?.error?.result?.error?.map(err => `${err?.path}: ${err?.message}`).join(', ');
     }
-    else if (error.error && error.error.result && typeof error.error.result === 'string') {
-      if (error.error.result !== 'Token expired' && error.error.result !== 'Invalid refresh token') {
-        this.toastr.error(error.error.result);
-      }  
-      // If error.result is a string, return it directly
-         return error.error.result;
-      } else if (error.message) {
-        if (error.message !== 'Token expired' && error.message !== 'Invalid refresh token') {
-          this.toastr.error(error.message);
-        }  
-        // Generic error message fallback
-        return error.message;
-      }
-  return 'An unknown error occurred';
+    return 'Bad Request: Validation error';
   }
+  else if (error?.error && error?.error?.result && typeof error?.error?.result?.error === 'string') {
+  // If error.result is a string, return it directly
+  return error?.error?.result?.error;
+} else if (error?.message) {
+  // Generic error message fallback
+  return error?.message;
+}
+return 'An unknown error occurred';
+}
+  //  getErrorMessage(error: any): string {
+  //   // Implement logic to convert backend error to user-friendly message
+  //   if (error?.status === 400) {
+  //     if (error?.error && error?.error?.result && Array.isArray(error?.error?.result?.error)) {
+  //       //this.toastr.error(error.error.result.error.map(err => `${err.path}: ${err.message}`).join(', '));
+  //       this.toastr.error('123');
+  //       // Extract the first validation error message from the list
+  //       return error?.error?.result?.error?.map(err => `${err?.path}: ${err?.message}`).join(', ');
+  //     }
+  //     this.toastr.error('Bad Request: Validation error');
+  //     return 'Bad Request: Validation error';
+  //   }
+  //   else{
+  //     console.log('HANDLING ERRORS',error);
+      
+  //     if (error?.error && error?.error?.result && typeof error?.error?.result?.error === 'string') {
+  //       console.log('FIRST IF ERROR',error);
+
+  //     if (error?.error?.result?.error !== 'Token expired' && error?.error?.result?.error !== 'Invalid refresh token') {
+  //       console.log('SECOND IF ERROR',error?.error?.result?.error);
+  //       this.toastr.error(error?.error?.result?.error);
+  //     }  
+  //     // If error.result is a string, return it directly
+  //        return error?.error?.result?.error;
+  //     } else if (error?.message) {
+  //       console.log('ELSE ERROR',error);
+        
+  //       if (error?.message !== 'Token expired' && error?.message !== 'Invalid refresh token') {
+  //         this.toastr.error(error?.message);
+  //       }  
+  //       // Generic error message fallback
+  //       return error?.message;
+  //     }
+  // return 'An unknown error occurred';
+  // }}
+  // getErrorMessage(error: any): string {
+  //   // Implement logic to convert backend error to user-friendly message
+  //   if (error.status === 400) {
+  //     if (error.error && error.error.result && Array.isArray(error.error.result.error)) {
+  //       // Extract the first validation error message from the list
+  //       return error.error.result.error.map(err => `${err.path}: ${err.message}`).join(', ');
+  //     }
+  //     return 'Bad Request: Validation error';
+  //   }
+  //   else if (error.error && error.error.result && typeof error.error.result === 'string') {
+  //   // If error.result is a string, return it directly
+  //   return error.error.result;
+  // } else if (error.message) {
+  //   // Generic error message fallback
+  //   return error.message;
+  // }
+  // return 'An unknown error occurred';
+  // }
 
    // Method to disable all form controls
    disableFormControls(form: FormGroup) {

@@ -36,7 +36,8 @@ export class RolesEffects {
                     map((response: any) => fetchRolelistSuccess({ RoleListdata : response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                       
+                      this.toastr.error(errorMessage);   
+
                       return of(fetchRolelistFail({ error: errorMessage })); 
                     })
                 )
@@ -58,7 +59,8 @@ export class RolesEffects {
                       }),
                       catchError((error) => {
                         const errorMessage = this.formUtilService.getErrorMessage(error);
-                         
+                        this.toastr.error(errorMessage);   
+
                         return of(addRolelistFailure({ error: errorMessage })); // Dispatch failure action
                       })                )
             )
@@ -76,7 +78,8 @@ export class RolesEffects {
               }),
               catchError((error) =>{
                 const errorMessage = this.formUtilService.getErrorMessage(error);
-                 
+                this.toastr.error(errorMessage);   
+ 
                 return of(updateRolelistFailure({ error: errorMessage }));
               })             )
           )
@@ -116,7 +119,8 @@ export class RolesEffects {
                           }),
                           catchError((error) => {
                             const errorMessage = this.formUtilService.getErrorMessage(error);
-                               
+                            this.toastr.error(errorMessage);   
+  
                             return  of(deleteRolelistFailure({ error: errorMessage }))})      
                                     )
             )

@@ -54,7 +54,7 @@ qrCode?: string ;
 activationCode?: string ;
 sections?: any[];
 wallet?: number;
-loyaltyPoint?: number;
+//loyaltyPoint?: number;
 bankName?: string ;
 city_id ?: number;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

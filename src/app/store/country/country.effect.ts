@@ -36,7 +36,8 @@ export class countrieslistEffects {
                     map((response: any) => fetchCountrylistSuccess({ CountryListdata: response.result })),
                     catchError((error) =>{
                         const errorMessage = this.formUtilService.getErrorMessage(error);
-                          
+                        this.toastr.error(errorMessage);   
+ 
                       return of(fetchCountrylistFail({ error: errorMessage }))
                     })
                 )
@@ -56,7 +57,8 @@ export class countrieslistEffects {
                       }),
                       catchError((error) => {
                         const errorMessage = this.formUtilService.getErrorMessage(error);
-                          
+                        this.toastr.error(errorMessage);   
+ 
                         return of(addCountrylistFailure({ error: errorMessage })); // Dispatch failure action
                       })                )
             )
@@ -91,7 +93,8 @@ export class countrieslistEffects {
                         return updateCountrylistSuccess({ updatedData : response.result})}),
                         catchError((error) =>{
                             const errorMessage = this.formUtilService.getErrorMessage(error);
-                              
+                            this.toastr.error(errorMessage);   
+
                             return of(updateCountrylistFailure({ error: errorMessage }));
                           })                );
             })
@@ -111,7 +114,8 @@ export class countrieslistEffects {
                           }),
                           catchError((error) => {
                             const errorMessage = this.formUtilService.getErrorMessage(error);
-                              
+                            this.toastr.error(errorMessage);   
+ 
                             return  of(deleteCountrylistFailure({ error: errorMessage }))})                )
             )
         )

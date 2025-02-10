@@ -71,7 +71,8 @@ export class FileManagersEffects {
                     map((response: any) => fetchRecentFilesSuccess({ lastUpdatedFiles : response?.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                        
+                      this.toastr.error(errorMessage);   
+
                       return of(fetchRecentFilesFailure({ error: errorMessage })); 
                     })
                     )
@@ -93,7 +94,8 @@ export class FileManagersEffects {
                       }),
                     catchError((error) => {
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                        
+                      this.toastr.error(errorMessage);   
+  
                       return of(addFileManagerlistFailure({ error: errorMessage }));})
                 )
             )
@@ -119,7 +121,8 @@ export class FileManagersEffects {
                   }),
                   catchError((error) => {
                     const errorMessage = this.formUtilService.getErrorMessage(error);
-                      
+                    this.toastr.error(errorMessage);   
+
                     return of(addFileFailure({ error: errorMessage }));
                   })
               );
@@ -145,7 +148,8 @@ export class FileManagersEffects {
               }),
               catchError((error) => {
                 const errorMessage = this.formUtilService.getErrorMessage(error);
-                  
+                this.toastr.error(errorMessage);   
+
                 return of(renameFileManagerFailure({ error: errorMessage }));
               })
             );
@@ -180,7 +184,8 @@ export class FileManagersEffects {
         map((response: any) => getStorageQuotaSuccess({ storageQuota: response.result })),
         catchError((error) => {
             const errorMessage = this.formUtilService.getErrorMessage(error);
-              
+            this.toastr.error(errorMessage);   
+
             return of(getStorageQuotaFailure({ error: errorMessage }));
           })
         )
@@ -206,7 +211,8 @@ export class FileManagersEffects {
           }),
           catchError((error) => {
             const errorMessage = this.formUtilService.getErrorMessage(error);
-              
+            this.toastr.error(errorMessage);   
+
             return of(deleteFileManagerlistFailure({ error: errorMessage }));
           })
         );

@@ -22,7 +22,8 @@ export class EmployeeslistEffects {
                     map((response: any) => fetchEmployeelistSuccess({ EmployeeListdata : response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                       
+                      this.toastr.error(errorMessage);   
+
                       return of(fetchEmployeelistFail({ error: errorMessage })); 
                     })
                 )
@@ -43,7 +44,8 @@ export class EmployeeslistEffects {
                       }),
                       catchError((error) => {
                         const errorMessage = this.formUtilService.getErrorMessage(error);
-                         
+                        this.toastr.error(errorMessage);   
+
                         return of(addEmployeelistFailure({ error: errorMessage })); // Dispatch failure action
                       })                )
             )
@@ -61,7 +63,8 @@ export class EmployeeslistEffects {
               }),
               catchError((error) =>{
                 const errorMessage = this.formUtilService.getErrorMessage(error);
-                 
+                this.toastr.error(errorMessage);   
+
                 return of(updateEmployeelistFailure({ error: errorMessage }));
               })             )
           )
@@ -100,7 +103,8 @@ export class EmployeeslistEffects {
                           }),
                           catchError((error) => {
                             const errorMessage = this.formUtilService.getErrorMessage(error);
-                              
+                            this.toastr.error(errorMessage);   
+
                             return  of(deleteEmployeelistFailure({ error: errorMessage }))})                )
             )
         )

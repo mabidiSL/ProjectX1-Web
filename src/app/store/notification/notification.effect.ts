@@ -40,7 +40,8 @@ export class NotificationsEffects {
                     map((response: any) => fetchNotificationlistSuccess({ NotificationListdata : response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                       
+                      this.toastr.error(errorMessage);   
+ 
                       return of(fetchNotificationlistFail({ error: errorMessage })); 
                     })
                 )
@@ -55,7 +56,8 @@ export class NotificationsEffects {
                   map((response: any) => fetchMyNotificationlistSuccess({ NotificationListdata : response.result })),
                   catchError((error) =>{
                     const errorMessage = this.formUtilService.getErrorMessage(error);
-                     
+                    this.toastr.error(errorMessage);   
+
                     return of(fetchMyNotificationlistFail({ error: errorMessage })); 
                   })
               )
@@ -77,7 +79,8 @@ export class NotificationsEffects {
                       }),
                       catchError((error) => {
                         const errorMessage = this.formUtilService.getErrorMessage(error);
-                         
+                        this.toastr.error(errorMessage);   
+
                         return of(addNotificationlistFailure({ error: errorMessage })); // Dispatch failure action
                       })                )
             )
@@ -103,7 +106,8 @@ export class NotificationsEffects {
               }),
               catchError((error) =>{
                 const errorMessage = this.formUtilService.getErrorMessage(error);
-                 
+                this.toastr.error(errorMessage);   
+
                 return of(updateNotificationlistFailure({ error: errorMessage }));
               })             )
           )
@@ -144,8 +148,9 @@ export class NotificationsEffects {
                           }),
                           catchError((error) => {
                           const errorMessage = this.formUtilService.getErrorMessage(error);
-                           
-                          return  of(deleteNotificationlistFailure({ error: error.message }))})
+                          this.toastr.error(errorMessage);   
+
+                          return  of(deleteNotificationlistFailure({ error: errorMessage }))})
                 )
             )
         )
