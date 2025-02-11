@@ -2,36 +2,32 @@ const TerserPlugin = require('terser-webpack-plugin');
 const JavaScriptObfuscator = require('webpack-obfuscator');
 
 module.exports = {
+  output: {
+    clean: true,
+    filename: '[contenthash].js',
+    chunkFilename: '[contenthash].js',
+  },
   optimization: {
+    moduleIds: 'deterministic',
+    chunkIds: 'deterministic',
+    removeEmptyChunks: true,
+    minimize: true,
     minimizer: [
       new TerserPlugin({
         terserOptions: {
+          format: {
+            comments: false,
+          },
           compress: {
             drop_console: true,
             drop_debugger: true,
-            pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn'],
-            passes: 3,
-            dead_code: true,
-            toplevel: true,
-            keep_classnames: false,
-            keep_fnames: false
+            pure_funcs: ['console.log']
           },
-          mangle: {
-            properties: {
-              regex: /.*/  // Mangle all properties
-            },
-            toplevel: true,
-            safari10: true
-          },
-          format: {
-            comments: false
-          },
-          ecma: 2020,
-          module: true
+          mangle: true
         },
-        extractComments: false
-      })
-    ]
+        extractComments: false,
+      }),
+    ],
   },
   plugins: [
     new JavaScriptObfuscator({
