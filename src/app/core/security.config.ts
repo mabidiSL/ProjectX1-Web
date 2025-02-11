@@ -94,15 +94,23 @@ export class SecurityInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    // Check if the request is going to our API
+    const isApiRequest = request.url.includes('legislative-eveleen-infiniteee-d57d0fbe.koyeb.app');
+    
     // Remove any headers that might reveal technology information
-    request = request.clone({
-      headers: this.hideStackHeaders(request.headers)
-        .set('Server', 'Server')  // Generic server name
+    let headers = this.hideStackHeaders(request.headers);
+
+    // Only add security headers for same-origin requests
+    if (!isApiRequest) {
+      headers = headers
+        .set('Server', 'Server')
         .set('X-Content-Type-Options', 'nosniff')
         .set('X-Frame-Options', 'SAMEORIGIN')
         .set('X-XSS-Protection', '1; mode=block')
-        .set('Content-Security-Policy', this.getCspDirectives())
-    });
+        .set('Content-Security-Policy', this.getCspDirectives());
+    }
+
+    request = request.clone({ headers });
 
     return next.handle(request).pipe(
       map(event => {
