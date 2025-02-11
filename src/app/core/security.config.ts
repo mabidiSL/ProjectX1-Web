@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ConfigService } from './config.service';
@@ -75,25 +75,23 @@ export class SecurityInterceptor implements HttpInterceptor {
     ].filter(Boolean).join('; ');
   }
 
-  private hideStackHeaders(headers: any): any {
-    const techHeaders = [
-      'x-powered-by',           // Node.js
-      'server',                 // Could reveal Node.js
-      'x-angular-version',      // Angular version
-      'ng-version',            // Angular version
-      'x-node-version',        // Node.js version
-      'x-runtime',             // Runtime info
-      'x-version',             // Version info
-      'x-powered',             // General technology info
+  private hideStackHeaders(headers: HttpHeaders): HttpHeaders {
+    // List of headers that might reveal technology information
+    const sensitiveHeaders = [
+      'Server',
+      'X-Powered-By',
       'X-AspNet-Version',
       'X-AspNetMvc-Version'
     ];
 
-    techHeaders.forEach(header => {
-      headers = headers.delete(header.toLowerCase());
+    let newHeaders = headers;
+    sensitiveHeaders.forEach(header => {
+      if (newHeaders.has(header)) {
+        newHeaders = newHeaders.delete(header);
+      }
     });
 
-    return headers;
+    return newHeaders;
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -106,18 +104,36 @@ export class SecurityInterceptor implements HttpInterceptor {
     // Only add security headers for same-origin requests
     if (!isApiRequest) {
       headers = headers
-        .set('Server', 'Server')
         .set('X-Content-Type-Options', 'nosniff')
         .set('X-Frame-Options', 'SAMEORIGIN')
-        .set('X-XSS-Protection', '1; mode=block')
-        .set('Content-Security-Policy', this.getCspDirectives())
-        .set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
-        .set('Permissions-Policy', 'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()')
-        .set('X-Content-Type-Options', 'nosniff')
-        .set('Referrer-Policy', 'strict-origin-when-cross-origin');
+        .set('X-XSS-Protection', '0')
+        .set('Cross-Origin-Opener-Policy', 'same-origin')
+        .set('Cross-Origin-Resource-Policy', 'same-origin')
+        .set('Referrer-Policy', 'strict-origin-when-cross-origin')
+        .set('Content-Security-Policy', [
+          "default-src 'self'",
+          "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com https://fonts.googleapis.com",
+          "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com",
+          "img-src 'self' data: https: blob:",
+          "font-src 'self' data: https://fonts.gstatic.com",
+          "connect-src 'self' https://maps.googleapis.com https://legislative-eveleen-infiniteee-d57d0fbe.koyeb.app wss://legislative-eveleen-infiniteee-d57d0fbe.koyeb.app/socket.io/ ws://legislative-eveleen-infiniteee-d57d0fbe.koyeb.app/socket.io/",
+          "frame-ancestors 'none'",
+          "object-src 'none'",
+          "base-uri 'self'",
+          "form-action 'self'",
+          "script-src-attr 'none'"
+        ].join('; '));
     }
 
-    request = request.clone({ headers });
+    // For API requests, ensure we include credentials
+    if (isApiRequest) {
+      request = request.clone({
+        headers,
+        withCredentials: true
+      });
+    } else {
+      request = request.clone({ headers });
+    }
 
     return next.handle(request).pipe(
       map(event => {
