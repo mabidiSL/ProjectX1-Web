@@ -82,6 +82,8 @@ export class SecurityInterceptor implements HttpInterceptor {
       'x-runtime',             // Runtime info
       'x-version',             // Version info
       'x-powered',             // General technology info
+      'X-AspNet-Version',
+      'X-AspNetMvc-Version'
     ];
 
     techHeaders.forEach(header => {
@@ -92,25 +94,22 @@ export class SecurityInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Hide technology headers from requests
+    // Remove any headers that might reveal technology information
     request = request.clone({
       headers: this.hideStackHeaders(request.headers)
+        .set('Server', 'Server')  // Generic server name
         .set('X-Content-Type-Options', 'nosniff')
+        .set('X-Frame-Options', 'SAMEORIGIN')
+        .set('X-XSS-Protection', '1; mode=block')
         .set('Content-Security-Policy', this.getCspDirectives())
     });
 
     return next.handle(request).pipe(
       map(event => {
         if (event instanceof HttpResponse) {
-          // Hide technology headers from response and add security headers
+          // Remove response headers that might reveal technology information
           event = event.clone({
             headers: this.hideStackHeaders(event.headers)
-              .set('X-Content-Type-Options', 'nosniff')
-              .set('X-Frame-Options', 'SAMEORIGIN')
-              .set('X-XSS-Protection', '1; mode=block')
-              .set('Referrer-Policy', 'strict-origin-when-cross-origin')
-              .set('Content-Security-Policy', this.getCspDirectives())
-              .set('Server', 'Server')
           });
         }
         return event;

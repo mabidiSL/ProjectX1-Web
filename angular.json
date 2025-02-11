@@ -54,6 +54,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
+              "src/robots.txt",
               {
                 "glob": "**/*",
                 "input": "./node_modules/@fortawesome/fontawesome-free/webfonts",
@@ -82,14 +83,34 @@
               "node_modules/intl-tel-input/build/js/utils.js"
 
             ],
-            "optimization": true,
+            "optimization": {
+              "scripts": true,
+              "styles": {
+                "minify": true,
+                "inlineCritical": false
+              },
+              "fonts": true
+            },
             "outputHashing": "all",
             "sourceMap": false,
             "namedChunks": false,
             "aot": true,
             "extractLicenses": true,
             "vendorChunk": false,
-            "buildOptimizer": true
+            "buildOptimizer": true,
+            "subresourceIntegrity": true,
+            "budgets": [
+              {
+                "type": "initial",
+                "maximumWarning": "6mb",
+                "maximumError": "7mb"
+              },
+              {
+                "type": "anyComponentStyle",
+                "maximumWarning": "6kb",
+                "maximumError": "10kb"
+              }
+            ]
           },
           "configurations": {
             "production": {
