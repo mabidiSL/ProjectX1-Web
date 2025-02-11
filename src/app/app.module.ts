@@ -183,6 +183,10 @@ export function createTranslateLoader(http: HttpClient): any {
   ],
   bootstrap: [AppComponent],
   providers: [
+    {
+      provide: 'CSP_NONCE',
+      useValue: crypto.getRandomValues(new Uint8Array(16)).join('')
+    },
     { provide: HTTP_INTERCEPTORS, useClass: SecurityInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

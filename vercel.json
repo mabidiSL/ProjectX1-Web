@@ -53,7 +53,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://maps.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://maps.googleapis.com https://*.vercel.app wss://*.vercel.app/ https://fonts.googleapis.com https://fonts.gstatic.com; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; manifest-src 'self'; worker-src 'self' blob:;"
+          "value": "default-src 'self'; script-src 'self' 'nonce-{{nonce}}' https://maps.googleapis.com; style-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://maps.googleapis.com https://*.vercel.app wss://*.vercel.app/ https://fonts.googleapis.com https://fonts.gstatic.com; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; manifest-src 'self'; worker-src 'self' blob:; upgrade-insecure-requests; block-all-mixed-content"
         },
         {
           "key": "Permissions-Policy",
