@@ -26,10 +26,10 @@ export class SecurityInterceptor implements HttpInterceptor {
       "default-src 'self'",
       
       // Scripts: Strict control over script execution
-      `script-src 'self' 'strict-dynamic' https: 'unsafe-inline' https://maps.googleapis.com https://fonts.googleapis.com`,
+      `script-src 'self' 'strict-dynamic' 'nonce-${nonce}' https://maps.googleapis.com https://fonts.googleapis.com`,
       
       // Styles: Required for Angular
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com",
+      `style-src 'self' 'nonce-${nonce}' https://fonts.googleapis.com https://fonts.gstatic.com`,
       
       // Images with specific sources
       "img-src 'self' data: https: blob:",
@@ -68,7 +68,10 @@ export class SecurityInterceptor implements HttpInterceptor {
       environment.production ? "report-uri /csp-violation-report-endpoint" : null,
       
       // Require trusted types for script execution
-      "require-trusted-types-for 'script'"
+      "require-trusted-types-for 'script'",
+      
+      // Frame ancestors restriction
+      "frame-ancestors 'self'"
     ].filter(Boolean).join('; ');
   }
 
@@ -107,7 +110,11 @@ export class SecurityInterceptor implements HttpInterceptor {
         .set('X-Content-Type-Options', 'nosniff')
         .set('X-Frame-Options', 'SAMEORIGIN')
         .set('X-XSS-Protection', '1; mode=block')
-        .set('Content-Security-Policy', this.getCspDirectives());
+        .set('Content-Security-Policy', this.getCspDirectives())
+        .set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
+        .set('Permissions-Policy', 'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()')
+        .set('X-Content-Type-Options', 'nosniff')
+        .set('Referrer-Policy', 'strict-origin-when-cross-origin');
     }
 
     request = request.clone({ headers });

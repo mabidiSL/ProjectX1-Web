@@ -1,7 +1,0 @@
-User-agent: *
-Disallow: /assets/
-Disallow: /api/
-Disallow: /config/
-Disallow: /*.js$
-Disallow: /*.css$
-Disallow: /*.json$

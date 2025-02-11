@@ -54,7 +54,6 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/robots.txt",
               {
                 "glob": "**/*",
                 "input": "./node_modules/@fortawesome/fontawesome-free/webfonts",
