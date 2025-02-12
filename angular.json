@@ -65,6 +65,7 @@
               "./node_modules/ngx-ui-switch/ui-switch.component.css",
               "node_modules/@ctrl/ngx-emoji-mart/picker.css",
               "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
+              "src/assets/scss/bootstrap.scss",
               "src/assets/scss/app.scss",
               "src/assets/scss/icons.scss",
               "./node_modules/ngx-toastr/toastr.css",
@@ -96,7 +97,6 @@
             "extractLicenses": true,
             "vendorChunk": false,
             "buildOptimizer": true,
-            "subresourceIntegrity": true,
             "budgets": [
               {
                 "type": "initial",
@@ -123,7 +123,6 @@
                 }
               ],
               "outputHashing": "all",
-              "subresourceIntegrity": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -143,7 +142,10 @@
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              "outputHashing": "none",
+              "subresourceIntegrity": false
+
             }
           },
           "defaultConfiguration": "production"
