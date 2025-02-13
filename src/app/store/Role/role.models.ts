@@ -34,6 +34,7 @@ export  enum Modules
 
         All = 0,
         Dashboard = 1,
+        Crm = 42,
         Customers = 3,
         Customer_Wallet = 14,
         Customer_Invoice = 18,

@@ -18,7 +18,7 @@ import { UIModule } from '../shared/ui/ui.module';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { PagesRoutingModule } from './pages-routing.module';
 import { DashboardsModule } from './dashboards/dashboards.module';
-import { ContactsModule } from './contacts/contacts.module';
+import { ContactsModule } from './contacts/profile.module';
 import { HttpClientModule } from '@angular/common/http';
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageService } from '../core/services/language.service';

@@ -1,0 +1,37 @@
+{
+    "companies": [
+      {
+        "id": 1,
+        "name": "Tech Innovators Inc.",
+        "country": "USA",
+        "sector": "Technology",
+        "contacts": 25,
+        "owner": "John Doe"
+      },
+      {
+        "id": 2,
+        "name": "Green Energy Solutions",
+        "country": "Germany",
+        "sector": "Renewable Energy",
+        "contacts": 12,
+        "owner": "Jane Smith"
+      },
+      {
+        "id": 3,
+        "name": "FinTech Global",
+        "country": "UK",
+        "sector": "Finance",
+        "contacts": 30,
+        "owner": "Michael Johnson"
+      },
+      {
+        "id": 4,
+        "name": "Healthcare First",
+        "country": "Canada",
+        "sector": "Healthcare",
+        "contacts": 8,
+        "owner": "Emily White"
+      }
+    ]
+  }
+  

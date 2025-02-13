@@ -1,0 +1,34 @@
+ 
+  <div class="container-fluid">
+
+    <app-custom-table
+      [pageTitle] = "'Companies List'| translate"  
+      [columns]="columns"
+      [viewButtonLink]="'/private/companies/view'"
+      [viewButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All,Permission.View]}]"
+      [deleteButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All,Permission.Delete]}]"
+      [ArrayData]="originalArray"
+      [totalItems]="(totalItems$ | async)"
+      [countrylist] = "countrylist"
+      [searchPlaceholder]="searchPlaceholder"
+      [checkedStatus] = "{status: 'active', label: 'Active'}"
+      [uncheckedStatus] = "{status: 'inactive', label: 'inActive'}"
+      (pageChanged)="onPageChanged($event)"
+      (onPageSizeChanged)="onPageSizeChanged($event)"
+      (onFilter)="onFilterEvent($event)"
+      (onsearch)="onSearchEvent($event)"
+      (onChangeEvent)="onChangeEvent($event)"
+      (onDelete)="onDelete($event)">
+</app-custom-table>
+   
+  </div>
+
+  
+  <div id="elmLoader" class="loader" *ngIf="loading$ | async">
+    <div class="spinner-border text-primary avatar-sm" role="status">
+      <span class="visually-hidden">{{'Loading...' | translate}}</span>
+    </div>
+  </div>    
+  
+  
+  

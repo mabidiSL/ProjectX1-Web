@@ -10,7 +10,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 
 import { WidgetModule } from '../../shared/widget/widget.module';
 import { UIModule } from '../../shared/ui/ui.module';
-import { ContactsRoutingModule } from './contacts-routing.module';
+import { ContactsRoutingModule } from './profile-routing.module';
 
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';

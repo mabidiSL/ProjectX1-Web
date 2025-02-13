@@ -13,7 +13,7 @@ const routes: Routes = [
   },
   { path: 'dashboard', component: DefaultComponent },
   { path: 'dashboards', loadChildren: () => import('./dashboards/dashboards.module').then(m => m.DashboardsModule) },
-  { path: 'contacts', loadChildren: () => import('./contacts/contacts.module').then(m => m.ContactsModule) },
+  { path: 'contacts', loadChildren: () => import('./contacts/profile.module').then(m => m.ContactsModule) },
   { path: 'merchants', loadChildren: () => import('./merchants/merchants.module').then(m => m.MerchantsModule),canActivate: [RoleGuard]  },
   { path: 'stores', loadChildren: () => import('./stores/stores.module').then(m => m.StoresModule), canActivate: [RoleGuard] },
   { path: 'coupons',loadChildren: () => import('./coupons/coupons.module').then(m => m.CouponsModule), canActivate: [RoleGuard] },
@@ -33,6 +33,8 @@ const routes: Routes = [
   { path: 'calendar', component: CalendarComponent, canActivate: [RoleGuard] },
   { path: 'special-day', loadChildren: () => import('./special-day/special-day.module').then(m => m.SpecialDayModule), canActivate: [RoleGuard] },
   { path: 'file-manager', loadChildren: () => import('./file-manager/file-manager.module').then(m => m.FileManagerModule), canActivate: [RoleGuard] },
+  { path: 'companies', loadChildren: () => import('./companies/companies.module').then(m => m.CompaniesModule), canActivate: [RoleGuard] },
+
 ];
 
 @NgModule({

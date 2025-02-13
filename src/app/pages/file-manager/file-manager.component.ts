@@ -4,7 +4,7 @@ import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil, skip, take } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { FileManagerService } from 'src/app/core/services/file-manager.service';
 import { RootReducerState } from 'src/app/store';
 import { selectDataFileManager, selectDataLoading, selectRecentFiles, selectStorageQuota } from 'src/app/store/fileManager/file-manager-selector';
@@ -149,7 +149,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
       }
     
       // Process folders for the tree
-      let rootFolders: { folders: any[], files: any[] } = { folders: [], files: [] };
+      const rootFolders: { folders: any[], files: any[] } = { folders: [], files: [] };
     
        
       // Update folderList for the current view
@@ -500,7 +500,7 @@ handleKeyUp(event: KeyboardEvent, item: FolderNode | FileNode): void {
 }
 
 // Rename the item and dispatch the action
-renameItemConfirmed(item: FolderNode | FileNode, newName: string, event?: Event): void {
+renameItemConfirmed(item: FolderNode | FileNode, newName: string): void {
   const isFile = 'key' in item;
   if (newName && newName !== item.name) {
       if (isFile) {
@@ -900,7 +900,7 @@ renameItemConfirmed(item: FolderNode | FileNode, newName: string, event?: Event)
       formData.append('folder_id', this.currentFolder?.id.toString());
       
       // Append each file with a unique key
-      Array.from(this.selectedFiles).forEach((file, index) => {
+      Array.from(this.selectedFiles).forEach((file) => {
         formData.append(`files`, file);
       });
       

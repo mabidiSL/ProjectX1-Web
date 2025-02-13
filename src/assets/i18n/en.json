@@ -98,6 +98,15 @@
         "SCROLLABLE": "Scrollable"
       }
     },
+    "CRMMANAGEMENT": {
+      "TEXT": "CRM"
+    },
+    "CONTACTS": {
+      "TEXT": "Contacts"
+    },
+    "COMPANIES": {
+      "TEXT": "Companies"
+    },
     "CUSTOMERMANAGEMENT": {
       "TEXT": "Customer Management"
     },

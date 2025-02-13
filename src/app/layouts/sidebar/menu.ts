@@ -17,6 +17,28 @@ export const MENU: MenuItem[] = [
         isLayout: true
     },
     {
+        id: 40,
+        label: 'MENUITEMS.CRMMANAGEMENT.TEXT',
+        isTitle: true,
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All, Permission.ViewAll, Permission.Create]}]
+
+    },
+    {
+        id: 41,
+        label: 'MENUITEMS.CONTACTS.TEXT',
+        icon: 'bx bxs-user-voice',
+        link:'/private/contacts/list',
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All,Permission.ViewAll, Permission.Create]}]
+
+    },
+    {
+        id: 42,
+        label: 'MENUITEMS.COMPANIES.TEXT',
+        icon: 'bx bxs-buildings',
+        claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All, Permission.ViewAll]}],
+        link:'/private/companies/list',
+    }, 
+    {
         id: 3,
         label: 'MENUITEMS.CUSTOMERMANAGEMENT.TEXT',
         isTitle: true,
