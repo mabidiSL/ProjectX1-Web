@@ -54,6 +54,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
+              "src/.well-known",
               {
                 "glob": "**/*",
                 "input": "./node_modules/@fortawesome/fontawesome-free/webfonts",
