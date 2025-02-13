@@ -20,10 +20,11 @@ import { UiSwitchModule } from 'ngx-ui-switch';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { UIModule } from 'src/app/shared/ui/ui.module';
 import { WidgetModule } from 'src/app/shared/widget/widget.module';
+import { EditCompanyComponent } from './edit-company/edit-company.component';
 
 
 @NgModule({
-  declarations: [CompaniesComponent, ViewCompanyComponent, FormCompanyComponent, CreateCompanyComponent],
+  declarations: [CompaniesComponent, ViewCompanyComponent, FormCompanyComponent, CreateCompanyComponent, EditCompanyComponent],
   imports: [
     CommonModule,
      WidgetModule,

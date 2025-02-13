@@ -27,6 +27,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { HttpClient } from '@angular/common/http';
+import { Company } from './companies.model';
 
 
 @Injectable()
@@ -52,7 +53,7 @@ export class CompaniesEffects {
                 ),
         ),
     );
-  
+   
     addData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(addCompanies),
@@ -76,12 +77,24 @@ export class CompaniesEffects {
       this.actions$.pipe(
         ofType(getCompanyById),
         mergeMap(({ CompanyId }) => {
-          // get Company by id
-          return this.CrudService.getDataById('/Companies', CompanyId).pipe(
-            map((Company: any) => {
-              if (Company ) {
+          // get Company by id     
+          return this.http.get(`${this.url}`).pipe(
+
+         // return this.CrudService.getDataById('/Companies', CompanyId).pipe(
+            map((data: any) => {
+              if (data ) {
+                console.log(data);
+                console.log(CompanyId);
+                
+                const company = data?.companies?.find((item: Company) => {
+                  console.log('Checking item id:', item.id);  // Debugging the check
+                  return item.id === CompanyId;
+                });
+                
+                console.log(company);
+                
                 // Dispatch success action with the Company data
-                return getCompanyByIdSuccess({ Company: Company.result });
+                return getCompanyByIdSuccess({ Company: company });
               } else {
                 this.toastr.error('Company not found.'); // Show error notification
                 return getCompanyByIdFailure({ error: 'Company not found' });
@@ -97,8 +110,8 @@ export class CompaniesEffects {
         this.actions$.pipe(
             ofType(updateCompanies),
             mergeMap(({ updatedData }) => {
-                
-                return this.CrudService.updateData(`/Companies/${updatedData.id}`, updatedData).pipe(
+                return this.http.post(`${this.url}/${updatedData.id}`, updatedData).pipe(
+               // return this.CrudService.updateData(`/Companies/${updatedData.id}`, updatedData).pipe(
                 map(() => 
                 {
                     this.toastr.success('The Company has been updated successfully.');

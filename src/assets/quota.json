@@ -1,0 +1,26 @@
+{
+    "quotes": [
+      {
+        "id": "AEPPEWPQ87510",
+        "category": "Auto Loans",
+        "amount": 9500.00,
+        "currency": "USD",
+        "date": "2022-04-05"
+      },
+      {
+        "id": "AEPPEWPQ87511",
+        "category": "Life Insurance",
+        "amount": 9500.00,
+        "currency": "USD",
+        "date": "2022-04-05"
+      },
+      {
+        "id": "AEPPEWPQ87512",
+        "category": "Auto Loans",
+        "amount": 9500.00,
+        "currency": "USD",
+        "date": "2022-04-05"
+      }
+    ]
+  }
+  

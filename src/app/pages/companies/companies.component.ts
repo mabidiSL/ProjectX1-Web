@@ -47,8 +47,8 @@ export class CompaniesComponent implements OnInit {
   columns : any[]= [
     { property: 'name', label: 'Company Name' },
     { property: 'country', label: 'Country' },
-    { property: 'sector', label: 'Sector' },
-    { property: 'contacts', label: 'Contacts' },
+    { property: 'sectors', label: 'Sections' },
+    { property: 'contact_nbr', label: 'Contacts' },
     { property: 'owner', label: 'Owner' },
   ];
 

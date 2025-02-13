@@ -1,37 +1,145 @@
 {
-    "companies": [
-      {
-        "id": 1,
-        "name": "Tech Innovators Inc.",
-        "country": "USA",
-        "sector": "Technology",
-        "contacts": 25,
-        "owner": "John Doe"
-      },
-      {
-        "id": 2,
-        "name": "Green Energy Solutions",
-        "country": "Germany",
-        "sector": "Renewable Energy",
-        "contacts": 12,
-        "owner": "Jane Smith"
-      },
-      {
-        "id": 3,
-        "name": "FinTech Global",
-        "country": "UK",
-        "sector": "Finance",
-        "contacts": 30,
-        "owner": "Michael Johnson"
-      },
-      {
-        "id": 4,
-        "name": "Healthcare First",
-        "country": "Canada",
-        "sector": "Healthcare",
-        "contacts": 8,
-        "owner": "Emily White"
-      }
-    ]
-  }
-  
+  "companies": [
+    {
+      "id": 1,
+      "name": "Tech Innovators Inc.",
+      "country": "USA",
+      "sectors": ["Technology", "Software"],
+      "socialActivities":[
+        {
+          "platform": "Twitter",
+          "name": "Launch of New Feature",
+          "description": "Announcing the launch of a new feature.. ",
+          "date": "2025-02-10"
+        },
+        {
+          "platform": "Facebook",
+          "name": "Community Meetup Event",
+          "description": "Join us for a virtual community meetup to discuss ...",
+          "date": "2025-02-12"
+        }
+        
+       
+      ],
+      
+      "contacts": [
+        {
+          "name": "John Doe",
+          "jobTitle": "Software Engineer",
+          "email": "john.doe@example.com",
+          "phone": "+1 555-1234"
+        },
+        {
+          "name": "Jane Smith",
+          "jobTitle": "Product Manager",
+          "email": "jane.smith@example.com",
+          "phone": "+1 555-5678"
+        },
+        {
+          "name": "Michael Johnson",
+          "jobTitle": "UX Designer",
+          "email": "michael.johnson@example.com",
+          "phone": "+1 555-8765"
+        },
+        {
+          "name": "Emily Davis",
+          "jobTitle": "Data Scientist",
+          "email": "emily.davis@example.com",
+          "phone": "+1 555-4321"
+        }
+      ]
+      ,
+      
+      "quotes": [
+        {
+          "id": "AEPPEWPQ87510",
+          "category": "Auto Loans",
+          "amount": 9500.00,
+          "currency": "USD",
+          "date": "2022-04-05"
+        },
+        {
+          "id": "AEPPEWPQ87511",
+          "category": "Life Insurance",
+          "amount": 9500.00,
+          "currency": "USD",
+          "date": "2022-04-05"
+        },
+        {
+          "id": "AEPPEWPQ87512",
+          "category": "Auto Loans",
+          "amount": 9500.00,
+          "currency": "USD",
+          "date": "2022-04-05"
+        }
+      ],
+      "purchaseHistory": [
+        {
+          "purchaseId": "PURC12345",
+          "item": "Enterprise Software Suite",
+          "amount": 50000.00,
+          "currency": "USD",
+          "date": "2023-06-15",
+          "status": "Completed"
+        },
+        {
+          "purchaseId": "PURC12346",
+          "item": "Cloud Hosting Services",
+          "amount": 12000.00,
+          "currency": "USD",
+          "date": "2023-08-22",
+          "status": "Completed"
+        },
+        {
+          "purchaseId": "PURC12347",
+          "item": "Cybersecurity Package",
+          "amount": 18000.00,
+          "currency": "USD",
+          "date": "2023-10-10",
+          "status": "Pending"
+        }
+      ],
+      "owner": "John Doe",
+      "description": "Tech Innovators Inc. is a leading software development firm specializing in cutting-edge technologies. Known for its innovative solutions in AI, machine learning, and cloud computing, the company works with businesses to streamline operations and boost productivity.",
+      "phone": "+1 212-987-1435",
+      "address": "3387 Chandler Hollow Road, Homestead, USA",
+      "website": "https://www.techinnovators.com"
+    },    
+    {
+      "id": 2,
+      "name": "Green Energy Solutions",
+      "country": "Germany",
+      "sectors": ["Renewable Energy", "Sustainability"],
+      "contacts": 12,
+      "owner": "Jane Smith",
+      "description": "Green Energy Solutions is dedicated to promoting sustainable energy solutions across Europe. The company focuses on solar, wind, and geothermal power, helping businesses and households reduce their carbon footprint while saving on energy costs.",
+      "phone": "+49 89-456-7890",
+      "address": "127 Renewable Street, Berlin, Germany",
+      "website": "https://www.greenenergysolutions.de"
+    },
+    {
+      "id": 3,
+      "name": "FinTech Global",
+      "country": "UK",
+      "sectors": ["Finance", "Banking"],
+      "contacts": 30,
+      "owner": "Michael Johnson",
+      "description": "FinTech Global is a global leader in financial technology, providing innovative software solutions to financial institutions. Their products range from mobile banking apps to blockchain solutions, all aimed at improving efficiency, security, and accessibility in finance.",
+      "phone": "+44 20-7890-1234",
+      "address": "56 Bank Street, London, UK",
+      "website": "https://www.fintechglobal.co.uk"
+    },
+    {
+      "id": 4,
+      "name": "Healthcare First",
+      "country": "Canada",
+      "sectors": ["Healthcare", "Medical"],
+      "contacts": 8,
+      "owner": "Emily White",
+      "description": "Healthcare First is a healthcare technology company focused on improving patient care through digital health solutions. Their products include telemedicine platforms and electronic health records (EHR) systems, helping healthcare providers deliver more efficient and personalized care.",
+      "phone": "+1 416-654-7890",
+      "address": "789 Health Avenue, Toronto, Canada",
+      "website": "https://www.healthcarefirst.ca"
+    }
+  ]
+}

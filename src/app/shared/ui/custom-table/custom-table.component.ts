@@ -163,6 +163,11 @@ export class CustomTableComponent implements OnInit, OnChanges  {
       const dayName = startDate.toLocaleDateString('en-CA', { weekday: 'long' });  // 'long' returns the full day name like 'Monday'
       return dayName;
      }
+     if(propertyPath === 'sectors'){
+      return   data.sectors.join(', ');
+
+       
+     }
     if (propertyPath === 'totalAmount') {
       return '£ '+ data.totalAmount;
     }

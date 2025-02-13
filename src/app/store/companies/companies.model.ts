@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { PaginateModel, Translation } from "src/app/core/interfaces/core.interface";
-import { CityListModel } from "../City/city.model";
+import { PaginateModel } from "src/app/core/interfaces/core.interface";
 
 export interface CompaniesModel  extends PaginateModel
 {   
@@ -9,24 +9,20 @@ export interface CompaniesModel  extends PaginateModel
 export interface Company{
     id?: number;
     name?: string;
-    contact_nbr?: string;
+    sectors: string[];
+    quotes: any[],
+    purchaseHistory?: any[],
+    socialActivities?: any[],
+    description?: string;
+    website?: string;
+    address?: string;
+    contacts?: any[];
+    owner?: string;
+    contact_nbr?: number;
     status?: string;
     email?: string;
     phone?: string;
     logo?: string;
-    wallet?: number;
-    bankName?: string;
-    url?: string;
-    totalOrder?: number;
-    emailVerifiedAt?: string;
-    image?: string;
-    referCount?: string;
-    country?: string;
-    city?: CityListModel;
-    street?: string;
-    building?: string;
-    company_registration?: string;
-    registrationDate?: string;
-    updatedAt?: string;
+    
 }
 

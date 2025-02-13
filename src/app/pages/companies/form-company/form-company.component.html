@@ -1,1 +1,217 @@
-<p>form-company works!</p>
+ 
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex border-bottom">
+              <div class="flex-shrink-0 me-4">
+                <img src="assets/images/companies/img-1.png" alt="" class="avatar-sm">
+              </div>
+  
+              <div class="flex-grow-1 overflow-hidden">
+                <h5 class="text-truncate font-size-15">{{Company?.name}}</h5>
+                <p class="text-truncate font-size-12 text-secondary">[{{Company?.sectors.join(', ')}}]</p>
+
+              </div>
+            </div>
+            <div class="d-flex flex-column py-3 border-bottom">
+              <h5 class="font-size-15 mt-4">About:</h5>
+              <p class="text-muted" style="text-align: justify;">{{Company?.description}}</p>
+            </div>
+   
+            <div class="d-flex flex-column py-3 border-bottom">
+                <div class="d-flex">
+                    <div class="flex-shrink-0 me-3">
+                        <h5 class="mb-1 font-size-15">Phone Number:</h5>
+                    </div>
+                    <div class="flex-grow-1">
+                        <p class="text-muted">{{Company?.phone}}</p>
+                    </div>
+                </div>
+            
+                <div class="d-flex">
+                    <div class="flex-shrink-0 me-3">
+                        <h5 class="mb-1 font-size-15">Address:</h5>
+                    </div>
+                    <div class="flex-grow-1">
+                        <p class="text-muted"><strong>{{Company?.address}}</strong></p>
+                    </div>
+                </div>
+            
+                <div class="d-flex">
+                    <div class="flex-shrink-0 me-3">
+                        <h5 class="mb-1 font-size-15">Web:</h5>
+                    </div>
+                    <div class="flex-grow-1">
+                        <a href="http://www.abcenter.com" target="_blank" class="text-muted">{{Company?.website}}</a>
+                    </div>
+                </div>
+            </div>
+            
+            
+  
+            
+          </div>
+        </div>
+      </div>
+      <!-- end col -->
+  
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title mb-4">Contacts</h4>
+  
+            <div class="table-responsive">
+              <table class="table align-middle table-nowrap">
+                <tbody>
+                    <tr *ngFor="let contact of Company?.contacts">
+                    <td style="width: 50px;"><img src="assets/images/users/avatar-2.jpg" class="rounded-circle avatar-xs"
+                        alt="">
+                    </td>
+                    <td>
+                      <h5 class="font-size-14 m-0"><a href="" class="text-dark">{{contact.name}}</a></h5>
+                    </td>
+                    <td>
+                        <h5 class="font-size-14 m-0"><a href="" class="text-dark">{{contact.jobTitle}}</a></h5>
+                      </td>
+                      <td>
+                        <h5 class="font-size-14 m-0"><a href="" class="text-dark">{{contact.email}}</a></h5>
+                      </td>
+                      <td>
+                        <h5 class="font-size-14 m-0"><a href="" class="text-dark">{{contact.phone}}</a></h5>
+                      </td>
+                    
+                  </tr>
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end col -->
+    </div>
+    <!-- end row -->
+  
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title mb-4">Social Activities</h4>
+      <div class="table-responsive">
+                <table class="table table-borderless mb-0">
+                    <tbody>
+                      <tr *ngFor="let social of Company?.socialActivities">
+                        <td class="align-middle">
+                          <!-- Placeholder for avatar -->
+                          <i class="fa {{ social.platform === 'Twitter' ? 'bx bxl-twitter' : social.platform === 'Facebook' ? 'bx bxl-facebook-circle' : social.platform === 'Instagram' ? 'bx bxl-instagram' : social.platform === 'LinkedIn' ? 'fa-linkedin' : 'fa-file-alt' }} text-primary font-size-16"></i>
+    
+                        </td>
+                        <td class="align-middle">
+                          <h5 class="font-size-13 mb-1">{{ social.name }}</h5>
+                         <p class="text-muted mb-1">
+                            {{ social.description }}
+                        </p>
+                        </td>
+                       
+                        <td class="align-middle">
+                            <p class="text-muted mb-1">
+                                {{ social.date| date:'dd MMM yy' }}</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  </div>
+                <div class="text-center mt-4 pt-2">
+                  <a href="javascript: void(0);" class="btn btn-primary btn-sm">View more</a>
+                </div>
+              </div>
+            </div>
+          </div>
+      <!-- end col -->
+  
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title mb-4">Quotes</h4>
+            <div class="table-responsive">
+            <table class="table table-borderless mb-0">
+                <tbody>
+                  <tr *ngFor="let quote of Company?.quotes">
+                    <td class="align-middle">
+                      <!-- Placeholder for avatar -->
+                      <i class="fa fa-file-alt text-primary font-size-16"></i>
+
+                    </td>
+                    <td class="align-middle">
+                      <h5 class="font-size-13 mb-1">{{ quote.category }}</h5>
+                     <p class="text-muted mb-1">
+                        #{{ quote.id }}
+                    </p>
+                    </td>
+                    <td class="align-middle">
+                        <p class="text-muted mb-1">
+                            {{ quote.currency }} {{ quote.amount }}
+                        </p>
+                    </td>
+                    <td class="align-middle">
+                        <p class="text-muted mb-1">
+                            {{ quote.date | date:'dd MMM yy'  }}</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              </div>
+        
+  
+            <div class="text-center mt-4 pt-2">
+              <a href="javascript: void(0);" class="btn btn-primary btn-sm">View more</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end col -->
+  
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title mb-4">Purchase History</h4>
+  
+            <div class="table-responsive">
+                <table class="table table-borderless mb-0">
+                    <tbody>
+                      <tr *ngFor="let purchase of Company?.purchaseHistory">
+                        <td class="align-middle">
+                          <!-- Placeholder for avatar -->
+                          <i class="bx bx-time text-primary font-size-16"></i>
+    
+                        </td>
+                        <td class="align-middle">
+                          <h5 class="font-size-13 mb-1">{{ purchase.item }}</h5>
+                         <p class="text-muted mb-1">
+                            #{{ purchase.purchaseId }}
+                        </p>
+                        </td>
+                        <td class="align-middle">
+                            <p class="text-muted mb-1">
+                                {{ purchase.currency }} {{ purchase.amount }}
+                            </p>
+                        </td>
+                        <td class="align-middle">
+                            <p class="text-muted mb-1">
+                                {{ purchase.date| date:'dd MMM yy' }}</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  </div>
+            <div class="text-center mt-4 pt-2">
+              <a href="javascript: void(0);" class="btn btn-primary btn-sm">View more</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end col -->
+    </div>
+    <!-- end row -->
+  

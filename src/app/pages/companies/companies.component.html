@@ -4,6 +4,8 @@
     <app-custom-table
       [pageTitle] = "'Companies List'| translate"  
       [columns]="columns"
+      [editButtonLink]="'/private/companies/edit'"
+      [editButtonPermission]="[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All,Permission.Update]}]"
       [viewButtonLink]="'/private/companies/view'"
       [viewButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All,Permission.View]}]"
       [deleteButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All,Permission.Delete]}]"
