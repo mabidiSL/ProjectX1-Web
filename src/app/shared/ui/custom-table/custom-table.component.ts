@@ -381,7 +381,17 @@ sortData(column: string): void {
       this.router.navigate([`${link}`, data?.id]);}
 
     }
-
+  onColumnClick(event: any, column: any, data: any) {
+      event.stopPropagation(); // Prevent row click event from firing
+      if (column.property === 'contact_nbr') {
+        // Takes user to contacts list
+        console.log(data);
+        // this.router.navigate(['/flag-page', data.id]);
+      }
+      else{
+        this.navigateToView(data);
+      }
+    }
   
 navigateToView(data: any) {
   
