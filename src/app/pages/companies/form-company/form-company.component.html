@@ -64,6 +64,8 @@
             <div class="table-responsive">
               <table class="table align-middle table-nowrap">
                 <tbody>
+                  <ng-container *ngIf="Company?.contacts.length>0; else nocontacts">
+
                     <tr *ngFor="let contact of Company?.contacts">
                     <td style="width: 50px;"><img src="assets/images/users/avatar-2.jpg" class="rounded-circle avatar-xs"
                         alt="">
@@ -82,7 +84,12 @@
                       </td>
                     
                   </tr>
-                  
+                  </ng-container>
+                <ng-template #nocontacts>
+                    <tr>
+                        <td colspan="2" class="text-center font-size-12">No Contacts available</td>
+                    </tr>
+                </ng-template>
                 </tbody>
               </table>
             </div>
@@ -101,6 +108,8 @@
       <div class="table-responsive">
                 <table class="table table-borderless mb-0">
                     <tbody>
+                      <ng-container *ngIf="Company?.socialActivities.length>0; else nosocial">
+
                       <tr *ngFor="let social of Company?.socialActivities">
                         <td class="align-middle">
                           <!-- Placeholder for avatar -->
@@ -119,12 +128,16 @@
                                 {{ social.date| date:'dd MMM yy' }}</p>
                         </td>
                       </tr>
+                    </ng-container>
+                    <ng-template #nosocial>
+                        <tr>
+                            <td colspan="2" class="text-center font-size-12">No Social Activities available</td>
+                        </tr>
+                    </ng-template>
                     </tbody>
                   </table>
                   </div>
-                <div class="text-center mt-4 pt-2">
-                  <a href="javascript: void(0);" class="btn btn-primary btn-sm">View more</a>
-                </div>
+                
               </div>
             </div>
           </div>
@@ -137,6 +150,7 @@
             <div class="table-responsive">
             <table class="table table-borderless mb-0">
                 <tbody>
+                  <ng-container *ngIf="Company?.quotes.length>0; else noquotes">
                   <tr *ngFor="let quote of Company?.quotes">
                     <td class="align-middle">
                       <!-- Placeholder for avatar -->
@@ -159,14 +173,18 @@
                             {{ quote.date | date:'dd MMM yy'  }}</p>
                     </td>
                   </tr>
+                  </ng-container>
+                  <ng-template #noquotes>
+                      <tr>
+                          <td colspan="2" class="text-center font-size-12">No Quotes available</td>
+                      </tr>
+                  </ng-template>
                 </tbody>
               </table>
               </div>
         
   
-            <div class="text-center mt-4 pt-2">
-              <a href="javascript: void(0);" class="btn btn-primary btn-sm">View more</a>
-            </div>
+           
           </div>
         </div>
       </div>
@@ -180,6 +198,8 @@
             <div class="table-responsive">
                 <table class="table table-borderless mb-0">
                     <tbody>
+                      <ng-container *ngIf="Company?.purchaseHistory.length>0; else nopurchase">
+
                       <tr *ngFor="let purchase of Company?.purchaseHistory">
                         <td class="align-middle">
                           <!-- Placeholder for avatar -->
@@ -202,12 +222,16 @@
                                 {{ purchase.date| date:'dd MMM yy' }}</p>
                         </td>
                       </tr>
+                      </ng-container>
+                      <ng-template #nopurchase>
+                        <tr>
+                            <td colspan="2" class="text-center font-size-12">No Purchase History available</td>
+                        </tr>
+                    </ng-template>
                     </tbody>
                   </table>
                   </div>
-            <div class="text-center mt-4 pt-2">
-              <a href="javascript: void(0);" class="btn btn-primary btn-sm">View more</a>
-            </div>
+            
           </div>
         </div>
       </div>

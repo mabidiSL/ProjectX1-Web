@@ -54,6 +54,7 @@
         </tr>
       </thead>
       <tbody>
+        <ng-container *ngIf="contactList && contactList.length > 0; else noContacts">
         <!-- Loop through the contacts array and display each contact -->
         <tr *ngFor="let contact of contactList; let i = index">
           <td>{{ i + 1 }}</td>
@@ -62,6 +63,12 @@
           <td>{{ contact.email }}</td>
           <td>{{ contact.phone }}</td>
         </tr>
+        </ng-container>
+        <ng-template #noContacts>
+          <tr>
+            <td colspan="5">No contacts found.</td>
+          </tr>
+        </ng-template>
       </tbody>
     </table>
     </div>

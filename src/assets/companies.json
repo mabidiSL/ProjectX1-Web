@@ -124,6 +124,9 @@
       "owner": "Jane Smith",
       "description": "Green Energy Solutions is dedicated to promoting sustainable energy solutions across Europe. The company focuses on solar, wind, and geothermal power, helping businesses and households reduce their carbon footprint while saving on energy costs.",
       "phone": "+49 89-456-7890",
+      "quotes":[],
+      "socialActivities": [],
+      "purchaseHistory": [],
       "address": "127 Renewable Street, Berlin, Germany",
       "website": "https://www.greenenergysolutions.de"
     },
@@ -146,6 +149,9 @@
           "phone": "+44 20-2345-6789"
         }
       ],
+      "quotes":[],
+      "purchaseHistory": [],
+      "socialActivities": [],
       "contact_nbr": 2,
       "owner": "Michael Johnson",
       "description": "FinTech Global is a global leader in financial technology, providing innovative software solutions to financial institutions. Their products range from mobile banking apps to blockchain solutions, all aimed at improving efficiency, security, and accessibility in finance.",
@@ -172,6 +178,9 @@
           "phone": "+1 416-765-4321"
         }
       ],
+      "quotes":[],
+      "purchaseHistory": [],
+      "socialActivities": [],
       "contact_nbr": 2,
       "owner": "Emily White",
       "description": "Healthcare First is a healthcare technology company focused on improving patient care through digital health solutions. Their products include telemedicine platforms and electronic health records (EHR) systems, helping healthcare providers deliver more efficient and personalized care.",
