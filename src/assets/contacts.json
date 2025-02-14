@@ -1,0 +1,245 @@
+{
+    "contacts": [
+      { "id": 1,
+        "first_name": "John",
+        "last_name": "Doe",
+        "company_id": 1,
+        "socialActivities": [
+        {
+          "platform": "Twitter",
+          "name": "Launch of New Feature",
+          "description": "Announcing the launch of a new feature.. ",
+          "date": "2025-02-10"
+        },
+        {
+          "platform": "Facebook",
+          "name": "Community Meetup Event",
+          "description": "Join us for a virtual community meetup to discuss ...",
+          "date": "2025-02-12"
+        }
+      ],
+        "quotes": [
+            {
+              "id": "AEPPEWPQ87510",
+              "category": "Auto Loans",
+              "amount": 9500.00,
+              "currency": "USD",
+              "date": "2022-04-05"
+            },
+            {
+              "id": "AEPPEWPQ87511",
+              "category": "Life Insurance",
+              "amount": 9500.00,
+              "currency": "USD",
+              "date": "2022-04-05"
+            },
+            {
+              "id": "AEPPEWPQ87512",
+              "category": "Auto Loans",
+              "amount": 9500.00,
+              "currency": "USD",
+              "date": "2022-04-05"
+            }
+          ],
+          "purchaseHistory": [
+            {
+              "purchaseId": "PURC12345",
+              "item": "Enterprise Software Suite",
+              "amount": 50000.00,
+              "currency": "USD",
+              "date": "2023-06-15",
+              "status": "Completed"
+            },
+            {
+              "purchaseId": "PURC12346",
+              "item": "Cloud Hosting Services",
+              "amount": 12000.00,
+              "currency": "USD",
+              "date": "2023-08-22",
+              "status": "Completed"
+            },
+            {
+              "purchaseId": "PURC12347",
+              "item": "Cybersecurity Package",
+              "amount": 18000.00,
+              "currency": "USD",
+              "date": "2023-10-10",
+              "status": "Pending"
+            }
+          ],
+        "activities": [
+        {
+          "lavatr": "D",
+          "name": "Develop Software",
+          "owner": "John Doe",
+          "status": "In Progress",
+          "level_of_priority": "High",
+          "privacy": "Public",
+          "date": "2025-02-01"
+        },
+        {
+          "lavatr": "C",
+          "name": "Code Review",
+          "owner": "David Brown",
+          "status": "Completed",
+          "level_of_priority": "Medium",
+          "privacy": "Private",
+          "date": "2025-01-20"
+        }
+      ],
+        "company_name": "Tech Innovators Inc.",
+        "country": "USA",
+        "job_description": "Software Engineer",
+        "owner": "John Doe",
+        "phone": "+1 555-1234",
+        "address": "123 Tech Ave, Silicon Valley, USA",
+        "email": "john.doe@example.com"
+      },
+      {
+        "id": 2,
+        "first_name": "Jane",
+        "last_name": "Smith",
+        "company_id": 2,
+        "quotes":[],
+      "purchaseHistory": [],
+      "socialActivities": [],
+        "activities": [
+        {
+          "lavatr": "D",
+          "name": "Develop Software",
+          "owner": "John Doe",
+          "status": "In Progress",
+          "level_of_priority": "High",
+          "privacy": "Public",
+          "date": "2025-02-01"
+        },
+        {
+          "lavatr": "C",
+          "name": "Code Review",
+          "owner": "David Brown",
+          "status": "Completed",
+          "level_of_priority": "Medium",
+          "privacy": "Private",
+          "date": "2025-01-20"
+        }
+      ],
+        "company_name": "Green Energy Solutions",
+        "country": "Germany",
+        "job_description": "Product Manager",
+        "owner": "Jane Smith",
+        "phone": "+49 170-567890",
+        "address": "45 Green St, Berlin, Germany",
+        "email": "jane.smith@example.com"
+      },
+      {
+        "id": 3,
+        "first_name": "Michael",
+        "last_name": "Johnson",
+        "company_id": 3,
+        "quotes":[],
+        "purchaseHistory": [],
+         "socialActivities": [],
+        "activities": [
+        {
+          "lavatr": "D",
+          "name": "Develop Software",
+          "owner": "John Doe",
+          "status": "In Progress",
+          "level_of_priority": "High",
+          "privacy": "Public",
+          "date": "2025-02-01"
+        },
+        {
+          "lavatr": "C",
+          "name": "Code Review",
+          "owner": "David Brown",
+          "status": "Completed",
+          "level_of_priority": "Medium",
+          "privacy": "Private",
+          "date": "2025-01-20"
+        }
+      ],
+        "company_name": "FinTech Global",
+        "country": "UK",
+        "job_description": "UX Designer",
+        "owner": "Michael Johnson",
+        "phone": "+44 20-7890-1234",
+        "address": "56 Bank St, London, UK",
+        "email": "michael.johnson@example.com"
+      },
+      {
+        "id": 4,
+        "first_name": "Emily",
+        "last_name": "Davis",
+        "company_id": 1,
+        "quotes":[],
+      "purchaseHistory": [],
+      "socialActivities": [],
+        "activities": [
+        {
+          "lavatr": "D",
+          "name": "Develop Software",
+          "owner": "John Doe",
+          "status": "In Progress",
+          "level_of_priority": "High",
+          "privacy": "Public",
+          "date": "2025-02-01"
+        },
+        {
+          "lavatr": "C",
+          "name": "Code Review",
+          "owner": "David Brown",
+          "status": "Completed",
+          "level_of_priority": "Medium",
+          "privacy": "Private",
+          "date": "2025-01-20"
+        }
+      ]  ,
+        "company_name": "Healthcare First",
+        "country": "Canada",
+        "job_description": "Data Scientist",
+        "owner": "Emily White",
+        "phone": "+1 416-654-7890",
+        "address": "789 Health Ave, Toronto, Canada",
+        "email": "emily.davis@example.com"
+      },
+      {
+        "id": 5,
+        "first_name": "David",
+        "last_name": "Brown",
+        "company_id": 1,
+        "quotes":[],
+        "purchaseHistory": [],
+        "socialActivities": [],
+        "activities": [
+        {
+          "lavatr": "D",
+          "name": "Develop Software",
+          "owner": "John Doe",
+          "status": "In Progress",
+          "level_of_priority": "High",
+          "privacy": "Public",
+          "date": "2025-02-01"
+        },
+        {
+          "lavatr": "C",
+          "name": "Code Review",
+          "owner": "David Brown",
+          "status": "Completed",
+          "level_of_priority": "Medium",
+          "privacy": "Private",
+          "date": "2025-01-20"
+        }
+      ],
+        "company_name": "Tech Innovators Inc.",
+        "country": "USA",
+        "job_description": "Software Developer",
+        "owner": "John Doe",
+        "phone": "+1 555-2345",
+        "address": "234 Developer Rd, Silicon Valley, USA",
+        "email": "david.brown@example.com"
+      }
+      
+    ]
+  }
+  

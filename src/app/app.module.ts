@@ -87,6 +87,7 @@ import { CompaniesModule } from './pages/companies/companies.module';
 import { CompaniesEffects } from './store/companies/companies.effect';
 import { CrmContactModule } from './pages/crm-contact/crm-contact.module';
 //import { SecurityInterceptor } from './core/security.config';
+import { ContactsEffects } from './store/contacts/contacts.effect';
 
 // Register the Arabic locale
 registerLocaleData(localeAr, 'ar');
@@ -140,6 +141,7 @@ export function createTranslateLoader(http: HttpClient): any {
     RolesModule,
     OrdersModule,
     CompaniesModule,
+    CrmContactModule,
     CustomerReviewsModule,
     CustomersModule,
     PaymentModule,
@@ -182,7 +184,8 @@ export function createTranslateLoader(http: HttpClient): any {
       InvoicesEffects,
       SpecialDaysEffects,
       FileManagersEffects,
-      CompaniesEffects
+      CompaniesEffects,
+      ContactsEffects
 
       
     ]),

@@ -159,6 +159,7 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   }
   
   getProperty(data: any, propertyPath: string): any {
+    
     if (propertyPath === 'dayName') {
       const startDate = new Date(data.startDate);  // Ensure data.startDate is a valid date string
       const dayName = startDate.toLocaleDateString('en-CA', { weekday: 'long' });  // 'long' returns the full day name like 'Monday'
@@ -390,9 +391,14 @@ sortData(column: string): void {
         this.onViewContacts.emit(data.contacts);
         // this.router.navigate(['/flag-page', data.id]);
       }
-      else{
-        this.navigateToView(data);
-      }
+      else 
+        if(column.property === 'company_name'){
+          this.router.navigate(['/private/companies/view', data.company_id]);
+        }
+        else
+        {
+          this.navigateToView(data);
+        }
     }
   
 navigateToView(data: any) {

@@ -20,6 +20,7 @@ import { InvoiceListReducer, InvoicelistState } from "./invoices/invoice.reducer
 import { SpecialDayListReducer, SpecialDaylistState } from "./specialDay/special.reducer";
 import { FileManagerListReducer, FileManagerlistState } from "./fileManager/file-manager.reducer";
 import { CompaniesReducer, CompaniesState } from "./companies/companies.reducer";
+import { ContactsReducer, ContactsState } from "./contacts/contacts.reducer";
 
 
 export interface RootReducerState {
@@ -45,6 +46,7 @@ export interface RootReducerState {
     SpecialDayList: SpecialDaylistState;
     FileManagerList: FileManagerlistState;
     CompanyList: CompaniesState;
+    ContactList: ContactsState;
 
     
 }
@@ -70,7 +72,8 @@ export const rootReducer: ActionReducerMap<RootReducerState> = {
     InvoiceList: InvoiceListReducer,
     SpecialDayList: SpecialDayListReducer,
     FileManagerList: FileManagerListReducer,
-    CompanyList: CompaniesReducer
+    CompanyList: CompaniesReducer,
+    ContactList: ContactsReducer 
 
 
 }

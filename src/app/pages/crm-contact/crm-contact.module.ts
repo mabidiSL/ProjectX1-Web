@@ -21,7 +21,7 @@ import { ViewCrmContactComponent } from './view-crm-contact/view-crm-contact.com
 
 
 @NgModule({
-  declarations: [CrmContactComponent, ViewCrmContactComponent, FormCrmContactComponent, EditCrmContactComponent ],
+  declarations: [CrmContactComponent, FormCrmContactComponent,ViewCrmContactComponent, EditCrmContactComponent ],
   imports: [
     CommonModule,
      BsDatepickerModule,

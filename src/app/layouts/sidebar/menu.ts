@@ -27,7 +27,7 @@ export const MENU: MenuItem[] = [
         id: 41,
         label: 'MENUITEMS.CONTACTS.TEXT',
         icon: 'bx bxs-user-voice',
-        link:'/private/contacts/list',
+        link:'/private/crm-contact/list',
         claims: [{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All,Permission.ViewAll, Permission.Create]}]
 
     },
