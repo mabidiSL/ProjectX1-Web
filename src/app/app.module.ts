@@ -85,6 +85,7 @@ import { FileManagersEffects } from './store/fileManager/file-manager.effect';
 import { FileManagerModule } from './pages/file-manager/file-manager.module';
 import { CompaniesModule } from './pages/companies/companies.module';
 import { CompaniesEffects } from './store/companies/companies.effect';
+import { CrmContactModule } from './pages/crm-contact/crm-contact.module';
 //import { SecurityInterceptor } from './core/security.config';
 
 // Register the Arabic locale
@@ -135,6 +136,7 @@ export function createTranslateLoader(http: HttpClient): any {
     EmployeesModule,
     StoresModule,
     InvoicesModule,
+    CrmContactModule,
     RolesModule,
     OrdersModule,
     CompaniesModule,

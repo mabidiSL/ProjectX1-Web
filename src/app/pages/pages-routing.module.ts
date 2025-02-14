@@ -34,6 +34,7 @@ const routes: Routes = [
   { path: 'special-day', loadChildren: () => import('./special-day/special-day.module').then(m => m.SpecialDayModule), canActivate: [RoleGuard] },
   { path: 'file-manager', loadChildren: () => import('./file-manager/file-manager.module').then(m => m.FileManagerModule), canActivate: [RoleGuard] },
   { path: 'companies', loadChildren: () => import('./companies/companies.module').then(m => m.CompaniesModule), canActivate: [RoleGuard] },
+  { path: 'crm-contact', loadChildren: () => import('./crm-contact/crm-contact.module').then(m => m.CrmContactModule), canActivate: [RoleGuard] },
 
 ];
 

@@ -1,10 +1,10 @@
- 
+<!--  
   <div class="container-fluid">
 
     <app-custom-table
-      [pageTitle] = "'Companies List'| translate"  
+      [pageTitle] = "'Contacts List'| translate"  
       [columns]="columns"
-      [viewButtonLink]="'/private/companies/view'"
+      [viewButtonLink]="'/private/crm-contact/view'"
       [viewButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All,Permission.View]}]"
       [deleteButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All,Permission.Delete]}]"
       [ArrayData]="originalArray"
@@ -17,7 +17,6 @@
       (onPageSizeChanged)="onPageSizeChanged($event)"
       (onFilter)="onFilterEvent($event)"
       (onsearch)="onSearchEvent($event)"
-      (onViewContacts)="onViewContacts($event)"
       (onChangeEvent)="onChangeEvent($event)"
       (onDelete)="onDelete($event)">
 </app-custom-table>
@@ -30,47 +29,8 @@
       <span class="visually-hidden">{{'Loading...' | translate}}</span>
     </div>
   </div>    
-   <!-- [editButtonLink]="'/private/companies/edit'"
+    [editButtonLink]="'/private/companies/edit'"
       [editButtonPermission]="[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All,Permission.Update]}]" -->
   
   
-    <!-- Modal Template -->
-<ng-template #ViewContent role="document" let-modal>
-  <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Contact List</h5>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef?.hide()"></button>
-  </div>
-  <div class="modal-body">
-    <!-- Table of Contacts -->
-    <div class="table-responsive">
-      <table class="table align-middle table-nowrap">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>JobTitle</th>
-          <th>Email</th>
-          <th>Phone</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Loop through the contacts array and display each contact -->
-        <tr *ngFor="let contact of contactList; let i = index">
-          <td>{{ i + 1 }}</td>
-          <td>{{ contact.name }}</td>
-          <td>{{ contact.jobTitle }}</td>
-          <td>{{ contact.email }}</td>
-          <td>{{ contact.phone }}</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="modalRef?.hide()">Close</button>
-  </div>
-</ng-template>
-
-
-
-  
+ 

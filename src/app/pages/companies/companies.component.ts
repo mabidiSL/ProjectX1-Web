@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { Observable } from 'rxjs';
 import { selectDataCompany, selectDataLoading, selectDataTotalItems } from 'src/app/store/companies/companies-selector';
@@ -23,7 +24,7 @@ export class CompaniesComponent implements OnInit {
   breadCrumbItems: Array<object>;
   public Modules = Modules;
   public Permission = Permission;
-
+  contactList: any[] = [];
   CompanyList$: Observable<Company[]>;
   totalItems$: Observable<number>;
   loading$: Observable<boolean>;
@@ -31,6 +32,8 @@ export class CompaniesComponent implements OnInit {
   filterTerm: string = '';
   searchTerm: string = '';
   countrylist: Country[] = [];
+  modalRef?: BsModalRef | null = null;
+  @ViewChild('ViewContent', { static: false }) showModal?: TemplateRef<any>;
 
 
   isDropdownOpen : boolean = false;
@@ -51,8 +54,13 @@ export class CompaniesComponent implements OnInit {
     { property: 'contact_nbr', label: 'Contacts' },
     { property: 'owner', label: 'Owner' },
   ];
-
-  constructor(public store: Store) {
+  config:any = {
+    class: 'modal-lg',
+    backdrop: true,
+    ignoreBackdropClick: true
+  };
+  
+  constructor(public store: Store, private readonly modalService: BsModalService) {
       this.store.dispatch(fetchCountrylistData({page: 1, itemsPerPage: 1000, query:'', status: 'active' }));
       this.CompanyList$ = this.store.pipe(select(selectDataCompany)); // Observing the Company list from Company
       this.totalItems$ = this.store.pipe(select(selectDataTotalItems));
@@ -86,8 +94,11 @@ export class CompaniesComponent implements OnInit {
             });
           });
         }
-   
- onFilterEvent(event: any){
+    onViewContacts(event: any){
+      this.contactList = event;
+      this.modalRef = this.modalService.show(this.showModal, this.config);
+    }
+    onFilterEvent(event: any){
 
       if(event.status && event.status !== 'all')
          this.filterTerm = event.status;
@@ -119,7 +130,6 @@ export class CompaniesComponent implements OnInit {
   // Delete Company
   onDelete(id: any) {
     console.log(id);
-    
     //this.store.dispatch(deleteCompanies({employeeId: id }));
   }
 

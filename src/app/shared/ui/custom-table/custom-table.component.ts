@@ -83,6 +83,7 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   @Output() onApprove? = new EventEmitter();
   @Output() onFilter? = new EventEmitter();
   @Output() onViewDetail? = new EventEmitter();
+  @Output() onViewContacts? = new EventEmitter();
   @Output() onClick: EventEmitter<{event: string, type: string, data?: number}> = new EventEmitter();
 
 
@@ -386,6 +387,7 @@ sortData(column: string): void {
       if (column.property === 'contact_nbr') {
         // Takes user to contacts list
         console.log(data);
+        this.onViewContacts.emit(data.contacts);
         // this.router.navigate(['/flag-page', data.id]);
       }
       else{
