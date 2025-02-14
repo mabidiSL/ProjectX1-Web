@@ -5,7 +5,7 @@
       "name": "Tech Innovators Inc.",
       "country": "USA",
       "sectors": ["Technology", "Software"],
-      "socialActivities":[
+      "socialActivities": [
         {
           "platform": "Twitter",
           "name": "Launch of New Feature",
@@ -18,10 +18,7 @@
           "description": "Join us for a virtual community meetup to discuss ...",
           "date": "2025-02-12"
         }
-        
-       
       ],
-      
       "contacts": [
         {
           "name": "John Doe",
@@ -47,9 +44,8 @@
           "email": "emily.davis@example.com",
           "phone": "+1 555-4321"
         }
-      ]
-      ,
-      
+      ],
+      "contact_nbr": 4,
       "quotes": [
         {
           "id": "AEPPEWPQ87510",
@@ -104,13 +100,27 @@
       "phone": "+1 212-987-1435",
       "address": "3387 Chandler Hollow Road, Homestead, USA",
       "website": "https://www.techinnovators.com"
-    },    
+    },
     {
       "id": 2,
       "name": "Green Energy Solutions",
       "country": "Germany",
       "sectors": ["Renewable Energy", "Sustainability"],
-      "contacts": 12,
+      "contacts": [
+        {
+          "name": "Lukas Meyer",
+          "jobTitle": "Senior Engineer",
+          "email": "lukas.meyer@greenenergysolutions.de",
+          "phone": "+49 89-123-4567"
+        },
+        {
+          "name": "Anna Richter",
+          "jobTitle": "Project Manager",
+          "email": "anna.richter@greenenergysolutions.de",
+          "phone": "+49 89-234-5678"
+        }
+      ],
+      "contact_nbr": 2,
       "owner": "Jane Smith",
       "description": "Green Energy Solutions is dedicated to promoting sustainable energy solutions across Europe. The company focuses on solar, wind, and geothermal power, helping businesses and households reduce their carbon footprint while saving on energy costs.",
       "phone": "+49 89-456-7890",
@@ -122,7 +132,21 @@
       "name": "FinTech Global",
       "country": "UK",
       "sectors": ["Finance", "Banking"],
-      "contacts": 30,
+      "contacts": [
+        {
+          "name": "Oliver Brown",
+          "jobTitle": "Senior Developer",
+          "email": "oliver.brown@fintechglobal.co.uk",
+          "phone": "+44 20-1234-5678"
+        },
+        {
+          "name": "Sophia Green",
+          "jobTitle": "Operations Manager",
+          "email": "sophia.green@fintechglobal.co.uk",
+          "phone": "+44 20-2345-6789"
+        }
+      ],
+      "contact_nbr": 2,
       "owner": "Michael Johnson",
       "description": "FinTech Global is a global leader in financial technology, providing innovative software solutions to financial institutions. Their products range from mobile banking apps to blockchain solutions, all aimed at improving efficiency, security, and accessibility in finance.",
       "phone": "+44 20-7890-1234",
@@ -134,7 +158,21 @@
       "name": "Healthcare First",
       "country": "Canada",
       "sectors": ["Healthcare", "Medical"],
-      "contacts": 8,
+      "contacts": [
+        {
+          "name": "James Black",
+          "jobTitle": "Clinical Lead",
+          "email": "james.black@healthcarefirst.ca",
+          "phone": "+1 416-987-6543"
+        },
+        {
+          "name": "Isabelle White",
+          "jobTitle": "Health IT Specialist",
+          "email": "isabelle.white@healthcarefirst.ca",
+          "phone": "+1 416-765-4321"
+        }
+      ],
+      "contact_nbr": 2,
       "owner": "Emily White",
       "description": "Healthcare First is a healthcare technology company focused on improving patient care through digital health solutions. Their products include telemedicine platforms and electronic health records (EHR) systems, helping healthcare providers deliver more efficient and personalized care.",
       "phone": "+1 416-654-7890",
