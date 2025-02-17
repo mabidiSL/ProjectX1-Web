@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { selectDataLoading } from 'src/app/store/companies/companies-selector';
@@ -21,11 +21,14 @@ isEditing: boolean;
 private  readonly destroy$ = new Subject<void>();
 
 
-constructor(private readonly route: ActivatedRoute, private readonly store: Store) {
+constructor(private readonly route: ActivatedRoute, private readonly store: Store, private readonly router: Router) {
   this.loading$ = this.store.pipe(select(selectDataLoading)); 
   this.store.dispatch(fetchCompaniesData())
   this.companies$ = this.store.select(selectDataCompany);
   
+}
+toggleViewMode(){
+  this.router.navigate(['/private/companies/list']);
 }
 ngOnInit() {
   const companyId = this.route.snapshot.params['id'];
