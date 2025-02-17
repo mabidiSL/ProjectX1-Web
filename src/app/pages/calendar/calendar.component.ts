@@ -97,7 +97,14 @@ export class CalendarComponent implements OnInit {
      coupon: {
       text: 'Coupon',
       click: () => {
-        this._fetchOffers('coupon');  // Go to today when clicked
+        this._fetchOffers('coupon').subscribe({
+          next: () => {
+              console.log('Offer Data Loaded');
+          },
+          error: (err) => {
+              console.error('Error loading Offers:', err);
+          }
+      }); 
      },
      // Add a render function to style the button
    
@@ -106,14 +113,27 @@ export class CalendarComponent implements OnInit {
 
       text: 'Special Days',
       click: () => {
-        this._fetchSpecialDays('special'  );  
-     }
+        this._fetchSpecialDays('special').subscribe({
+          next: () => {
+              console.log('Special Days Data Loaded');
+          },
+          error: (err) => {
+              console.error('Error loading Special Days:', err);
+          }
+      });     }
     }
      ,
      giftcard: {
       text: 'Gift Card',
       click: () => {
-        this._fetchOffers('gift-card');  
+        this._fetchOffers('gift-card').subscribe({
+          next: () => {
+              console.log('Offer Data Loaded');
+          },
+          error: (err) => {
+              console.error('Error loading Offers:', err);
+          }
+      });  
      }
      },
      
@@ -213,19 +233,9 @@ export class CalendarComponent implements OnInit {
         this.specialDaysList$.subscribe({ next:data => {
           const mappedSpecialDays = this._mapSpecialDaysToEvents(data); // Offer the full Special Days list
           if(category === null){
-            if (this.eventList.length === 0) {
-              // If eventList is empty, set it to mappedSpecialDays directly
-              this.eventList = [...this.eventList, ...mappedSpecialDays];
-            } 
-            else {
-              mappedSpecialDays.forEach(event => {
-                if (!this.eventList.some(e => e.id === event.id)) {
-                  this.eventList.push(event);
-                }
-            
-              });
-              //this.eventList = [...this.eventList, ...mappedSpecialDays]; // Add special days to the event list
-            }
+            this.eventList = [...this.eventList, ...mappedSpecialDays.filter(event => 
+              !this.eventList.some(e => e.id === event.id)
+          )];
           }else{
             this.eventList = mappedSpecialDays;
           }
@@ -249,18 +259,9 @@ export class CalendarComponent implements OnInit {
     this.offerList$.subscribe({ next:data => {
       const mappedOffers = this._mapOffersToEvents(data); // Offer the full Offer list
       if(category === null){
-        if (this.eventList.length === 0) {
-          // If eventList is empty, set it to mappedSpecialDays directly
-          this.eventList = [...this.eventList, ...mappedOffers];
-        } 
-        else {
-          mappedOffers.forEach(event => {
-            if (!this.eventList.some(e => e.id === event.id)) {
-              this.eventList.push(event);
-            }
-          });
-        //this.eventList = [...this.eventList, ...mappedOffers]; // Add offers to the event list
-      }
+        this.eventList = [...this.eventList, ...mappedOffers.filter(event => 
+          !this.eventList.some(e => e.id === event.id)
+      )];
      }else{
       this.eventList = mappedOffers;
      }
