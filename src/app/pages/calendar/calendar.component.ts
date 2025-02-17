@@ -13,7 +13,7 @@ import { category,  createEventId } from './data';
 import Swal from 'sweetalert2';
 import { select, Store } from '@ngrx/store';
 import { selectDataLoading, selectDataOffer } from 'src/app/store/offer/offer-selector';
-import { combineLatest, filter, map, Observable, take } from 'rxjs';
+import { combineLatest, filter, forkJoin, map, Observable, take } from 'rxjs';
 import { fetchOfferlistData } from 'src/app/store/offer/offer.action';
 import { Offer } from 'src/app/store/offer/offer.model';
 import multiMonthPlugin from '@fullcalendar/multimonth';
@@ -46,6 +46,8 @@ export class CalendarComponent implements OnInit {
   editEvent: any;
   calendarEvents: any[] = [];
   offerList: any[] = [];
+  eventList: any[] = [];
+
   loading$: Observable<boolean>;
   loadingDays$: Observable<boolean>;
   loadingState$: Observable<boolean>;
@@ -69,13 +71,14 @@ export class CalendarComponent implements OnInit {
     headerToolbar: {
       left: 'multiMonth12Month,dayGridMonth,dayGridWeek,timeGridDay today',
       center: 'title',
-      right: 'special coupon giftcard prevYear,prev,next,nextYear'
+      right: 'all special coupon giftcard prevYear,prev,next,nextYear'
     },
     buttonText: {
       multiMonth12Month: 'Year',
       dayGridMonth: 'Month',
       dayGridWeek: 'Week',
       dayGridDay: 'Day',
+      all: 'All',
     },
     customButtons: {
     //   todayButton: {
@@ -85,6 +88,12 @@ export class CalendarComponent implements OnInit {
     //    },
        
     //  },
+    all: {
+      text: 'All',
+      click: () => {
+        this._fetchallEvents();
+      }
+    },
      coupon: {
       text: 'Coupon',
       click: () => {
@@ -97,7 +106,7 @@ export class CalendarComponent implements OnInit {
 
       text: 'Special Days',
       click: () => {
-        this._fetchSpecialDays();  
+        this._fetchSpecialDays('special'  );  
      }
     }
      ,
@@ -168,7 +177,7 @@ export class CalendarComponent implements OnInit {
     }
   ngOnInit(): void {
    
-    this._fetchOffers(null);
+    this._fetchallEvents();
     this.formData = this.formBuilder.group({
       title: ['', [Validators.required]],
       category: ['', [Validators.required]],
@@ -180,58 +189,118 @@ export class CalendarComponent implements OnInit {
     });
 
   }
-    
-  private _fetchSpecialDays() {
-if(this.companyId === null){
-  this.companyId = 1;}
+  private _mergeEvents() {
+    // At this point, we have both special days and offers merged into eventList
+    console.log('Merged Event List', this.eventList);
+    this._fetchData();  // Call any final steps after merging events
+  }
+  private _fetchallEvents() {
+    this.eventList = [];  // Clear the list at the start of a fresh fetch
+    forkJoin([this._fetchOffers(null), this._fetchSpecialDays(null)])
+    .subscribe({ 
+      next:() => {
+        console.log("Both fetch operations completed.");
 
-    this.store.dispatch(fetchSpecialDaylistData({ page: null, itemsPerPage: null, query:null, startDate: null, endDate: null, company_id: this.companyId }));
-    this.specialDaysList$.subscribe(data => {
-      this.offerList = this._mapSpecialDaysToEvents(data); // Offer the full Special Days list
-      console.log(this.offerList);
-      this._fetchData();
-      
-    });
+        // After both offers and special days are fetched, process the data
+        this._mergeEvents();
+      }});
   }
-  //function to map special days to events
-  private _mapSpecialDaysToEvents(specialDays: any[]): EventInput[] {
-    console.log(specialDays);
-    
-     return specialDays.map(special =>{
-      const translatedName = special.translation_data?.[0]?.name || 'Unnamed Special Day';
-      return {
-        id: special.id.toString(),
-        title: translatedName,
-        start: new Date(special.startDate).toISOString(),
-        end: new Date(special.endDate).toISOString(),
-        description: special.translation_data?.[0]?.description,
-        className:  'bg-warning text-white',
-        extendedProps: {
-          category: 'Special Day',
-          price: 'No Pricing',
-          quantity: 0,
-          status: null,
-          description: special.translation_data?.[0]?.description,
-          image: null,
-          company: special.company_id
-        }
-        
-      }
-     })
+  private _fetchSpecialDays(category: string): Observable<void> {
+    return new Observable<void>(observer => {  
+      if(this.companyId === null){
+      this.companyId = 1;}
+        this.store.dispatch(fetchSpecialDaylistData({ page: null, itemsPerPage: null, query:null, startDate: null, endDate: null, company_id: this.companyId }));
+        this.specialDaysList$.subscribe({ next:data => {
+          const mappedSpecialDays = this._mapSpecialDaysToEvents(data); // Offer the full Special Days list
+          if(category === null){
+            if (this.eventList.length === 0) {
+              // If eventList is empty, set it to mappedSpecialDays directly
+              this.eventList = [...this.eventList, ...mappedSpecialDays];
+            } 
+            else {
+              mappedSpecialDays.forEach(event => {
+                if (!this.eventList.some(e => e.id === event.id)) {
+                  this.eventList.push(event);
+                }
+            
+              });
+              //this.eventList = [...this.eventList, ...mappedSpecialDays]; // Add special days to the event list
+            }
+          }else{
+            this.eventList = mappedSpecialDays;
+          }
+            observer.next();  // Notify the observer that the fetching is done
+            observer.complete();  // Complete the observable
+          },
+          error: err => {
+            console.error("Error fetching special days:", err);
+            observer.error(err);  // Notify the observer in case of an error
+          }
+        });
+      });
   }
-  private _fetchOffers(category: string) {
+  
+  private _fetchOffers(category: string) : Observable<void>{
+    return new Observable<void>(observer => {
     if(this.companyId === 1){
       this.companyId = null;
     }
     this.store.dispatch(fetchOfferlistData({ page: null, itemsPerPage: null, category: category, query:null, startDate: null, endDate: null, company_id: this.companyId, status: 'active' }));
-    this.offerList$.subscribe(data => {
-      this.offerList = this._mapOffersToEvents(data); // Offer the full Offer list
-      console.log(this.offerList);
-      this._fetchData();
-      
+    this.offerList$.subscribe({ next:data => {
+      const mappedOffers = this._mapOffersToEvents(data); // Offer the full Offer list
+      if(category === null){
+        if (this.eventList.length === 0) {
+          // If eventList is empty, set it to mappedSpecialDays directly
+          this.eventList = [...this.eventList, ...mappedOffers];
+        } 
+        else {
+          mappedOffers.forEach(event => {
+            if (!this.eventList.some(e => e.id === event.id)) {
+              this.eventList.push(event);
+            }
+          });
+        //this.eventList = [...this.eventList, ...mappedOffers]; // Add offers to the event list
+      }
+     }else{
+      this.eventList = mappedOffers;
+     }
+      console.log('Event List',this.eventList);
+      observer.next();  // Notify the observer that the fetching is done
+      observer.complete();  // Complete the observable
+      },
+      error: err => {
+        console.error("Error fetching offers:", err);
+        observer.error(err);  // Notify the observer in case of an error
+      }
     });
+  });
+
   }
-  _
+  //function to map special days to events
+  private _mapSpecialDaysToEvents(specialDays: any[]): EventInput[] {
+    
+    return specialDays.map(special =>{
+     const translatedName = special.translation_data?.[0]?.name || 'Unnamed Special Day';
+     return {
+       id: special.id.toString(),
+       title: translatedName,
+       start: new Date(special.startDate).toISOString(),
+       end: new Date(special.endDate).toISOString(),
+       description: special.translation_data?.[0]?.description,
+       className:  'bg-warning text-white',
+       extendedProps: {
+         category: 'Special Day',
+         price: 'No Pricing',
+         quantity: 0,
+         status: null,
+         description: special.translation_data?.[0]?.description,
+         image: null,
+         company: special.company_id
+       }
+       
+     }
+    })
+ }
   _getEventColor(category: string): string {
     switch (category) {
       case 'gift-card':
