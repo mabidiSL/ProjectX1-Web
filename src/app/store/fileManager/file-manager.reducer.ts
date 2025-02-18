@@ -222,9 +222,12 @@ on(addFileFailure, (state, { error }) => ({
         ...state,
         FileManagerListdata: {
           ...state.FileManagerListdata,
-          files: state.FileManagerListdata.files.filter(file => file.id !== id),
-          lastUpdatedFiles: (from === 'recent') ? state.lastUpdatedFiles?.filter(file => file.id !== id) : state.lastUpdatedFiles
+          files: state.FileManagerListdata.files.filter(file => file.id !== id)
         },
+        // Move lastUpdatedFiles to root level
+        lastUpdatedFiles: from === 'recent' 
+          ? state.lastUpdatedFiles?.filter(file => file.id !== id) 
+          : state.lastUpdatedFiles,
         loading: false,
         error: null
       };
@@ -233,7 +236,7 @@ on(addFileFailure, (state, { error }) => ({
         ...state,
         FileManagerListdata: {
           ...state.FileManagerListdata,
-          folders: state.FileManagerListdata.folders.filter(folder => folder.id!==id)
+          folders: state.FileManagerListdata.folders.filter(folder => folder.id !== id)
         },
         loading: false,
         error: null

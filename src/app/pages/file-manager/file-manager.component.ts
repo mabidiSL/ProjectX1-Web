@@ -833,7 +833,7 @@ renameItemConfirmed(item: FolderNode | FileNode, newName: string): void {
 
   openFileUploadModal(folder?: any) {
     this.currentPath = folder?.path || folder?.name;
-    this.currentFolder = folder;
+    this.currentFolder = folder? folder : null;
     console.log('currentPath', this.currentPath);
     
     this.isFileUploadModalOpen = false;
@@ -899,7 +899,9 @@ renameItemConfirmed(item: FolderNode | FileNode, newName: string): void {
       const formData = new FormData();
       
       // Add folderName to FormData
-      formData.append('folder_id', this.currentFolder?.id.toString());
+      if(this.currentFolder){
+        formData.append('folder_id', this.currentFolder?.id);
+      }
       
       // Append each file with a unique key
       Array.from(this.selectedFiles).forEach((file) => {

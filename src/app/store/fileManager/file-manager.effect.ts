@@ -43,6 +43,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class FileManagersEffects {
@@ -112,12 +113,12 @@ export class FileManagersEffects {
                      // this.router.navigate(['/private/file-manager']);
                       console.log('response', response);
                       const files = response.result?.files;
-                        files?.map((file: any) => {
-                          return file.name;
-                        });
+                        // files?.map((file: any) => {
+                        //   return file.name;
+                        // });
       
                      console.log('fileTable', files);
-                     return addFileSuccess({ formData: files, file_type: 'file'});
+                     return addFileSuccess({ formData: files[0], file_type: 'file'});
                   }),
                   catchError((error) => {
                     const errorMessage = this.formUtilService.getErrorMessage(error);
@@ -203,10 +204,13 @@ export class FileManagersEffects {
         else
           url = '/storage/file';
         
-        
         return this.CrudService.deleteData(`${url}/${id}`).pipe(
           map(() => {
             this.toastr.success(`${typeFile === 'file' ? 'File' : 'Folder'} deleted successfully.`);
+            // After successful deletion, we should fetch the recent files again
+            if (from === 'recent') {
+              this.store.dispatch(fetchRecentFilesData({ limit: 10 })); // or whatever limit you use
+            }
             return deleteFileManagerlistSuccess({ id: id, typeFile: typeFile, from: from });
           }),
           catchError((error) => {
@@ -227,7 +231,8 @@ export class FileManagersEffects {
         private readonly router: Router,
         private readonly formUtilService: FormUtilService,
         private readonly authservice: AuthenticationService,
-        public toastr:ToastrService
+        public toastr:ToastrService,
+        private readonly store: Store
     ) {
         this.authservice.currentUser$.subscribe(user => {
         this.userRole = user?.role.translation_data[0]?.name;
