@@ -149,7 +149,7 @@ export class CalendarComponent implements OnInit {
       }
     },
     themeSystem: "bootstrap",
-    initialEvents: this.offerList,
+    initialEvents: this.eventList,
     weekends: true,
     editable: false,
     selectable: true,
@@ -344,18 +344,23 @@ export class CalendarComponent implements OnInit {
   handleEventClick(clickInfo: EventClickArg) {
     this.editEvent = clickInfo.event;
     console.log(clickInfo.event);
-    
-    this.formEditData = this.formBuilder.group({
+      if(this.modalRef){
+        this.modalRef.hide();
+        this.modalRef.onHidden.subscribe(() => {
+          document.body.classList.remove('modal-open');
+        });
+      }
+      this.formEditData = this.formBuilder.group({
       editTitle: clickInfo.event.title,
       editCategory: clickInfo.event.extendedProps.category,
       editDescription: clickInfo.event.extendedProps.description,
 
     });
-    this.modalRef = this.modalService.show(this.editmodalShow);
+    this.modalRef = this.modalService.show(this.editmodalShow,  { class: 'modal-custom' } );
   }
 
   /**
-   * Events bind in calender
+   * Events bind in calendar
    * @param events events
    */
   handleEvents(events: EventApi[]) {
@@ -503,5 +508,37 @@ export class CalendarComponent implements OnInit {
       title: event.item.data,
       date: event.dateStr,
     });
+  }
+  topPosition: number = 100;
+  leftPosition: number = 100;
+  private isDragging: boolean = false;
+  private offsetX: number;
+  private offsetY: number;
+   // Mouse down event to start dragging
+   onMouseDown(event: MouseEvent): void {
+    this.isDragging = true;
+    this.offsetX = event.clientX - this.leftPosition;
+    this.offsetY = event.clientY - this.topPosition;
+
+    // Add mousemove and mouseup events to the window
+    window.addEventListener('mousemove', this.onMouseMove);
+    window.addEventListener('mouseup', this.onMouseUp);
+  }
+
+  // Mouse move event to drag the modal
+  onMouseMove = (event: MouseEvent) => {
+    if (!this.isDragging) return;
+
+    // Calculate the new position based on the mouse movement
+    this.leftPosition = event.clientX - this.offsetX;
+    this.topPosition = event.clientY - this.offsetY;
+  };
+
+  // Mouse up event to stop dragging
+  onMouseUp = () => {
+    this.isDragging = false;
+    // Remove mousemove and mouseup listeners
+    window.removeEventListener('mousemove', this.onMouseMove);
+    window.removeEventListener('mouseup', this.onMouseUp);
   }
 }

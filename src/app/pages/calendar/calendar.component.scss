@@ -17,3 +17,6 @@
     border-color: #f0ad4e !important;
 }
 
+.modal-custom {
+    z-index: 9999 !important;  /* Make sure it's higher than any other modal */
+}

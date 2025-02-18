@@ -87,10 +87,10 @@
 <!-- end modal-->
 
 <!-- Edit event modal -->
-<ng-template #editmodalShow let-modal>
+<ng-template #editmodalShow role="document"let-modal>
   <div class="modal-header">
     <h5 class="modal-title">Edit Event</h5>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef?.hide()"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modalRef?.hide()"></button>
   </div>
   <div class="modal-body p-4">
     <form [formGroup]="formEditData" (ngSubmit)="editEventSave()">
