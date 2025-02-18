@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, mergeMap, map, switchMap, exhaustMap } from 'rxjs/operators';
+import { catchError, mergeMap, map, exhaustMap } from 'rxjs/operators';
 
 import { of } from 'rxjs';
 import { CrudService } from 'src/app/core/services/crud.service';
@@ -196,7 +196,7 @@ export class FileManagersEffects {
   deleteData$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteFileManagerlist),
-      mergeMap(({ id, typeFile }) => {
+      mergeMap(({ id, typeFile, from }) => {
         let url = '';
         if(typeFile === 'folder')  
            url = '/storage/folder';
@@ -207,7 +207,7 @@ export class FileManagersEffects {
         return this.CrudService.deleteData(`${url}/${id}`).pipe(
           map(() => {
             this.toastr.success(`${typeFile === 'file' ? 'File' : 'Folder'} deleted successfully.`);
-            return deleteFileManagerlistSuccess({ id: id, typeFile: typeFile });
+            return deleteFileManagerlistSuccess({ id: id, typeFile: typeFile, from: from });
           }),
           catchError((error) => {
             const errorMessage = this.formUtilService.getErrorMessage(error);

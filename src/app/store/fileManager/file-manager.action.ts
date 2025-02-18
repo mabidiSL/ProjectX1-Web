@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAction, props } from '@ngrx/store';
 import { FileManager, FileManagerListModel, StorageQuota } from './file-manager.model';
 
@@ -33,8 +34,8 @@ export const getFileManagerByIdFailure = createAction('[Data] get FileManager Fa
 // export const updateFileManagerlistFailure = createAction('[Data] Update FileManagerlist Failure', props<{ error: string }>());
 
 //Delete Data
-export const deleteFileManagerlist = createAction('[Data] Delete FileManagerlist',   props<{ id: number, typeFile: 'file' | 'folder' }>());
-export const deleteFileManagerlistSuccess = createAction('[Data] Delete FileManagerlist Success',  props<{ id:number, typeFile: 'file' | 'folder' }>());
+export const deleteFileManagerlist = createAction('[Data] Delete FileManagerlist',   props<{ id: number, typeFile: 'file' | 'folder', from: 'recent' | 'fileManager' }>());
+export const deleteFileManagerlistSuccess = createAction('[Data] Delete FileManagerlist Success',  props<{ id:number, typeFile: 'file' | 'folder', from: 'recent' | 'fileManager' }>());
 export const deleteFileManagerlistFailure = createAction('[Data] Delete FileManagerlist Failure',  props<{ error: string }>());
 
 //get Storage Quota

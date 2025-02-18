@@ -216,13 +216,14 @@ on(addFileFailure, (state, { error }) => ({
     error: null 
   })),
   // Handle the success of deleting a FileManager
-  on(deleteFileManagerlistSuccess, (state, { id, typeFile }) => {
+  on(deleteFileManagerlistSuccess, (state, { id, typeFile, from }) => {
     if (typeFile === 'file') {
       return {
         ...state,
         FileManagerListdata: {
           ...state.FileManagerListdata,
-          files: state.FileManagerListdata.files.filter(file => file.id !== id)
+          files: state.FileManagerListdata.files.filter(file => file.id !== id),
+          lastUpdatedFiles: (from === 'recent') ? state.lastUpdatedFiles.filter(file => file.id !== id) : state.lastUpdatedFiles
         },
         loading: false,
         error: null

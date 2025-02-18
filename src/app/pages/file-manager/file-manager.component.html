@@ -163,9 +163,9 @@
                                                                 </a>
                                                                 <div class="dropdown-divider"></div>
                                                                 <a class="dropdown-item text-danger" 
-                                                                   (click)="deleteItem(folder, $event)"
-                                                                   (keydown.enter)="deleteItem(folder)"
-                                                                   (keydown.space)="deleteItem(folder)"
+                                                                   (click)="deleteItem(folder, $event, 'fileManager')"
+                                                                   (keydown.enter)="deleteItem(folder, 'fileManager')"
+                                                                   (keydown.space)="deleteItem(folder, 'fileManager')"
                                                                    tabindex="0"
                                                                    role="button">
                                                                     <i class="mdi mdi-delete me-2"></i>Delete
@@ -196,7 +196,7 @@
                                                                     />
                                                                   </ng-container>
                                                                   <ng-template #displayMode>
-                                                                    <a class="text-body" (click)="selectFolder(folder, $event)" style="cursor: pointer;">{{folder?.name}}</a>
+                                                                    <a class="text-body" (click)="selectFolder(folder, $event)" (keydown.enter)="selectFolder(folder)" (keydown.space)="selectFolder(folder)" tabindex="0" role="button" style="cursor: pointer;">{{folder?.name}}</a>
                                                                   </ng-template>
                                                                 <!-- <a class="text-body" (click)="selectFolder(folder, $event)" style="cursor: pointer;">{{folder?.name}}</a> -->
                                                             </h5>
@@ -241,9 +241,9 @@
                                                                 </a>
                                                                 <div class="dropdown-divider"></div>
                                                                 <a class="dropdown-item text-danger" 
-                                                                   (click)="deleteItem(file, $event)"
-                                                                   (keydown.enter)="deleteItem(file)"
-                                                                   (keydown.space)="deleteItem(file)"
+                                                                   (click)="deleteItem(file, $event, 'fileManager')"
+                                                                   (keydown.enter)="deleteItem(file, 'fileManager')"
+                                                                   (keydown.space)="deleteItem(file, 'fileManager')"
                                                                    tabindex="0"
                                                                    role="button">
                                                                     <i class="mdi mdi-delete me-2"></i>Delete
@@ -274,7 +274,7 @@
                                                                     />
                                                                   </ng-container>
                                                                   <ng-template #displayFileMode>
-                                                                    <a class="text-body" (click)="downloadFile(file)" style="cursor: pointer;">{{file?.name}}</a>
+                                                                    <a class="text-body" (click)="downloadFile(file)" (keydown.enter)="downloadFile(file)" (keydown.space)="downloadFile(file)" tabindex="0" role="button" style="cursor: pointer;">{{file?.name}}</a>
                                                                   </ng-template>                                                            </h5>
                                                             <p class="text-muted font-size-13 mb-0">{{file?.size | number}} bytes • {{file?.lastModified}}</p>
                                                         </div>
@@ -307,19 +307,22 @@
                                         </thead>
                                         <tbody>
                                             @for(data of Recentfile;track $index){
-                                            <tr>
+                                            <tr (click)="downloadFile(data)" (keydown.enter)="downloadFile(data)" (keydown.space)="downloadFile(data)" tabindex="0" role="button">
                                                 <td><a href="javascript: void(0);" class="text-dark fw-medium">
                                                         <i class="{{data.icon}} font-size-16 align-middle text-primary me-2"></i>{{data.name}}</a></td>
                                                 <td>{{data.updatedAt | date:'short'}}</td>
                                                 <td>{{ (data.size / 1024).toFixed(2) }} KB</td>
-                                                <td>
+                                                <td (click)="$event.stopPropagation($event)" (keydown.enter)="$event.stopPropagation($event)" (keydown.space)="$event.stopPropagation($event)" tabindex="0" role="button">  
                                                     <div class="dropdown" dropdown>
                                                         <a class="font-size-16 text-muted dropdown-toggle" role="button" dropdownToggle data-toggle="dropdown" aria-haspopup="true">
                                                             <i class="mdi mdi-dots-horizontal"></i>
                                                         </a>
 
                                                         <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
-                                                            <a class="dropdown-item"(click)="downloadFile(data)"><i class="mdi mdi-eye me-2"></i>Open</a>
+                                                            <a class="dropdown-item"(click)="downloadFile(data)" (keydown.enter)="downloadFile(data)" (keydown.space)="downloadFile(data)" tabindex="0" role="button"><i class="mdi mdi-eye me-2"></i>Open</a>
+                                                            <a class="dropdown-item"(click)="renameItem(data, $event, dropdownRef,true)" (keydown.enter)="renameItem(data,dropdownRef, true)" (keydown.space)="renameItem(data,dropdownRef, true)" tabindex="0" role="button"><i class="mdi mdi-pencil me-2"></i>Rename</a>
+                                                            <a class="dropdown-item"(click)="deleteItem(data, $event)" (keydown.enter)="deleteItem(data)" (keydown.space)="deleteItem(data)" tabindex="0" role="button"><i class="mdi mdi-delete me-2"></i>Delete</a>
+
                                                            
                                                         </div>
                                                     </div>
@@ -476,7 +479,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Upload Files</h5>
-                <button type="button" class="btn-close" (click)="closeFileUploadModal()"></button>
+                <button type="button" class="btn-close" (click)="closeFileUploadModal()" (keydown.enter)="closeFileUploadModal()" (keydown.space)="closeFileUploadModal()" tabindex="0" ><i class="mdi mdi-close"></i></button>
             </div>
             <div class="modal-body">
                 <!-- Drag and Drop Zone -->
@@ -609,9 +612,9 @@
                         <i class="mdi mdi-pencil"></i>
                     </button>
                     <button class="btn btn-link text-danger p-1" 
-                            (click)="deleteItem(folder, $event)"
-                            (keydown.enter)="deleteItem(folder, false)"
-                            (keydown.space)="deleteItem(folder)"
+                            (click)="deleteItem(folder, $event, 'fileManager')"
+                            (keydown.enter)="deleteItem(folder, false, 'fileManager')"
+                            (keydown.space)="deleteItem(folder, false, 'fileManager')"
                             tabindex="0">
                         <i class="mdi mdi-delete"></i>
                     </button>
@@ -643,7 +646,7 @@
                         <div class="file-name-container">
                             <ng-container *ngIf="!isRenamingFile || editingFile?.name !== file.name">
                                 <i class="mdi mdi-file-document font-size-13 text-primary me-2"></i>
-                                <span class="font-size-12" (click)="downloadFile(file)">{{file.name}}</span>
+                                <span class="font-size-12" (click)="downloadFile(file)" (keydown.enter)="downloadFile(file)" (keydown.space)="downloadFile(file)" tabindex="0" role="button">{{file.name}}</span>
                             </ng-container>
                             <ng-container *ngIf="isRenamingFile && editingFile?.name === file.name">
                                 <input
@@ -670,7 +673,7 @@
                                 <i class="mdi mdi-pencil"></i>
                             </button>
                             <button class="btn btn-link text-danger p-1" 
-                                    (click)="deleteItem(file, $event)"
+                                    (click)="deleteItem(file, $event, 'fileManager')"
                                     title="Delete">
                                 <i class="mdi mdi-delete"></i>
                             </button>
@@ -685,7 +688,7 @@
             <div class="file-name-container">
                 <ng-container *ngIf="!isRenamingFile || editingFile?.name !== file.name">
                     <i class="mdi mdi-file-document font-size-13 text-primary me-2"></i>
-                    <span class="font-size-12" (click)="downloadFile(file)">{{file.name}}</span>
+                    <span class="font-size-12" (click)="downloadFile(file)" (keydown.enter)="downloadFile(file)" (keydown.space)="downloadFile(file)" tabindex="0" role="button">{{file.name}}</span>
                 </ng-container>
                 <ng-container *ngIf="isRenamingFile && editingFile?.name === file.name">
                     <input
@@ -712,7 +715,7 @@
                     <i class="mdi mdi-pencil"></i>
                 </button>
                 <button class="btn btn-link text-danger p-1" 
-                        (click)="deleteItem(file, $event)"
+                        (click)="deleteItem(file, $event, 'fileManager')"
                         title="Delete">
                     <i class="mdi mdi-delete"></i>
                 </button>

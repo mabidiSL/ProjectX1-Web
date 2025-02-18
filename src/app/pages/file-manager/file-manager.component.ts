@@ -28,7 +28,7 @@ interface FolderNode {
 interface FileNode {
   id?: number;
   name: string;
-  key: string;
+  s3Key: string;
   url: string;
   path: string;
   lastModified: string;
@@ -538,27 +538,29 @@ renameItemConfirmed(item: FolderNode | FileNode, newName: string): void {
       //   this.editingFile = null;
       // }
 
-      async deleteItem(item: FolderNode | FileNode, event?: Event): Promise<void> {
+      async deleteItem(item: FolderNode | FileNode, event?: Event, from?: 'recent' | 'fileManager'): Promise<void> {
         if (event) {
           event.stopPropagation();
         }
         console.log('delete File', item);
         
-        const isFile = 'key' in item;
+        const isFile = 's3Key' in item;
         const itemType = isFile ? 'file' : 'folder';
         const confirmDelete = await this.showDeleteConfirmDialog(itemType, item.name);
         
         if (confirmDelete) {
           this.store.dispatch(deleteFileManagerlist({ 
             id: item.id,
-            typeFile: isFile ? 'file' : 'folder'
+            typeFile: isFile ? 'file' : 'folder',
+            from: from
           }));
 
           // Update local tree structure
           if (isFile) {
-            const parentFolder = this.findParentFolder(this.folderTree.folders, item.key);
+            this.fetchRecentFiles();
+            const parentFolder = this.findParentFolder(this.folderTree.folders, item.s3Key);
             if (parentFolder) {
-              parentFolder.files = parentFolder.files.filter(f => f.key !== item.key);
+              parentFolder.files = parentFolder.files.filter(f => f.s3Key !== item.s3Key);
             }
           } else {
             const parentFolder = this.findParentFolder(this.folderTree.folders, item.path);
