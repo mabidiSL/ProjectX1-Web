@@ -217,6 +217,7 @@ on(addFileFailure, (state, { error }) => ({
   })),
   // Handle the success of deleting a FileManager
   on(deleteFileManagerlistSuccess, (state, { id, typeFile, from }) => {
+
     if (typeFile === 'file') {
       return {
         ...state,

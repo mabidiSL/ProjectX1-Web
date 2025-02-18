@@ -207,10 +207,6 @@ export class FileManagersEffects {
         return this.CrudService.deleteData(`${url}/${id}`).pipe(
           map(() => {
             this.toastr.success(`${typeFile === 'file' ? 'File' : 'Folder'} deleted successfully.`);
-            // After successful deletion, we should fetch the recent files again
-            if (from === 'recent') {
-              this.store.dispatch(fetchRecentFilesData({ limit: 10 })); // or whatever limit you use
-            }
             return deleteFileManagerlistSuccess({ id: id, typeFile: typeFile, from: from });
           }),
           catchError((error) => {

@@ -321,7 +321,7 @@
                                                         <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
                                                             <a class="dropdown-item"(click)="downloadFile(data)" (keydown.enter)="downloadFile(data)" (keydown.space)="downloadFile(data)" tabindex="0" role="button"><i class="mdi mdi-eye me-2"></i>Open</a>
                                                             <a class="dropdown-item"(click)="renameItem(data, $event, dropdownRef,true)" (keydown.enter)="renameItem(data,dropdownRef, true)" (keydown.space)="renameItem(data,dropdownRef, true)" tabindex="0" role="button"><i class="mdi mdi-pencil me-2"></i>Rename</a>
-                                                            <a class="dropdown-item"(click)="deleteItem(data, $event)" (keydown.enter)="deleteItem(data)" (keydown.space)="deleteItem(data)" tabindex="0" role="button"><i class="mdi mdi-delete me-2"></i>Delete</a>
+                                                            <a class="dropdown-item"(click)="deleteItem(data, $event, 'recent')" (keydown.enter)="deleteItem(data, 'recent')" (keydown.space)="deleteItem(data, 'recent')" tabindex="0" role="button"><i class="mdi mdi-delete me-2"></i>Delete</a>
 
                                                            
                                                         </div>

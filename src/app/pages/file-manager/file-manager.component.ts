@@ -539,6 +539,7 @@ renameItemConfirmed(item: FolderNode | FileNode, newName: string): void {
       // }
 
       async deleteItem(item: FolderNode | FileNode, event?: Event, from?: 'recent' | 'fileManager'): Promise<void> {
+        
         if (event) {
           event.stopPropagation();
         }
