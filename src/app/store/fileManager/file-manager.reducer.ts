@@ -223,7 +223,7 @@ on(addFileFailure, (state, { error }) => ({
         FileManagerListdata: {
           ...state.FileManagerListdata,
           files: state.FileManagerListdata.files.filter(file => file.id !== id),
-          lastUpdatedFiles: (from === 'recent') ? state.lastUpdatedFiles.filter(file => file.id !== id) : state.lastUpdatedFiles
+          lastUpdatedFiles: (from === 'recent') ? state.lastUpdatedFiles?.filter(file => file.id !== id) : state.lastUpdatedFiles
         },
         loading: false,
         error: null

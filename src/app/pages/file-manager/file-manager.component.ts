@@ -102,8 +102,8 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
       this.breadCrumbItems = [{ label: 'Files' }, { label: 'File Manager', active: true }];
-      this.fetchRootTree();
       this.fetchRecentFiles();
+      this.fetchRootTree();
       this.fetchStorageQuota();
       this.initializeRadialChart();
     }
