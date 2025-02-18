@@ -832,7 +832,8 @@ renameItemConfirmed(item: FolderNode | FileNode, newName: string): void {
   }
 
   openFileUploadModal(folder?: any) {
-    this.currentPath = folder?.path || folder?.name;
+
+    this.currentPath = folder ? folder?.path || folder?.name : this.currentPath;
     this.currentFolder = folder? folder : null;
     console.log('currentPath', this.currentPath);
     
