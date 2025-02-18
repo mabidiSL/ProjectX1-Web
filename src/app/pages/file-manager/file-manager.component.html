@@ -338,7 +338,7 @@
                                                 <td>{{data.updatedAt | date:'short'}}</td>
                                                 <td>{{ (data.size / 1024).toFixed(2) }} KB</td>
                                                 <td (click)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()" tabindex="0" role="button">  
-                                                    <div class="dropdown" dropdown>
+                                                    <div class="dropdown" dropdown #dropdownRef="bs-dropdown">
                                                         <a class="font-size-16 text-muted dropdown-toggle" role="button" dropdownToggle data-toggle="dropdown" aria-haspopup="true">
                                                             <i class="mdi mdi-dots-horizontal"></i>
                                                         </a>
