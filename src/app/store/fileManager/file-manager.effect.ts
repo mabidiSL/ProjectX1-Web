@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, mergeMap, map, exhaustMap } from 'rxjs/operators';
+import { catchError, mergeMap, map, exhaustMap, switchMap } from 'rxjs/operators';
 
 import { of } from 'rxjs';
 import { CrudService } from 'src/app/core/services/crud.service';
@@ -134,7 +134,7 @@ export class FileManagersEffects {
     updateData$ = createEffect(() =>
         this.actions$.pipe(
           ofType(renameFileManager),
-          mergeMap(({ id, new_name, file_type }) => {
+          mergeMap(({ id, new_name, file_type, from }) => {
             let url = '';
             if(file_type === 'folder')  
                url = '/storage/folder';
@@ -143,9 +143,9 @@ export class FileManagersEffects {
 
             return this.CrudService.updateData(`${url}/${id}`, {name: new_name}).pipe(
               map(() => {
-                this.toastr.success(`${file_type === 'folder' ? 'Folder' : 'File'}`,' has been renamed successfully.');
+                this.toastr.success(`${file_type === 'folder' ? 'Folder' : 'File'} has been renamed successfully.`);
                // this.router.navigate(['/private/file-manager']);
-                return renameFileManagerSuccess({ id: id, new_name: new_name, file_type: file_type });
+                return renameFileManagerSuccess({ id: id, new_name: new_name, file_type: file_type, from: from });
               }),
               catchError((error) => {
                 const errorMessage = this.formUtilService.getErrorMessage(error);

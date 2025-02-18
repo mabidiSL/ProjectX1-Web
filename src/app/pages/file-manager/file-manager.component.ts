@@ -74,6 +74,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     isRenamingFolder: boolean = false;
     editingName: string = '';
     isRenamingFile: boolean = false;
+    isRenamingRecentFile: boolean = false;
     editingFile: FileNode = null;
     storageQuota: StorageQuota = null;
     currentLevel: number = 0;
@@ -429,7 +430,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
       this.fetchFolders();
       this.isCollapsed = !this.isCollapsed;
     }
-      renameItem(item: FolderNode | FileNode, event?: Event,dropdown?: BsDropdownDirective, view?: boolean): void {
+      renameItem(item: FolderNode | FileNode, event?: Event,dropdown?: BsDropdownDirective, view?: boolean, id?: string, recent?: boolean,): void {
         if (event) {
           event.stopPropagation();
         }
@@ -439,9 +440,14 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         }
         //this.isRenamingFolder = !view;
         
-        const isFile = 'key' in item;
+        const isFile = 's3Key' in item;
+        if(recent){
+            this.isRenamingRecentFile = isFile;
+        }else{
+            this.isRenamingFile = isFile;
+        }
+
         this.isRenamingFolder = !isFile;
-        this.isRenamingFile = isFile;
         
         if (isFile) {
           this.editingFile = item as FileNode;
@@ -450,8 +456,9 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         }
         this.editingName = item.name;
         if(isFile){
+          
           setTimeout(() => {
-            const input = document.getElementById('rename-file-view') as HTMLInputElement;
+            const input = document.getElementById(id) as HTMLInputElement;
             if (input) {
               input.focus();
               input.select();
@@ -501,19 +508,21 @@ handleKeyUp(event: KeyboardEvent, item: FolderNode | FileNode): void {
 
 // Rename the item and dispatch the action
 renameItemConfirmed(item: FolderNode | FileNode, newName: string): void {
-  const isFile = 'key' in item;
+  const isFile = 's3Key' in item;
   if (newName && newName !== item.name) {
       if (isFile) {
         console.log('rename file', item);
-        this.store.dispatch(renameFileManager({ id: item.id, new_name: newName, file_type: 'file' }));
+        
+        this.store.dispatch(renameFileManager({ id: item.id, new_name: newName, file_type: 'file', from: this.isRenamingRecentFile ? 'recent' : 'fileManager' }));
       } else {
         console.log('rename folder', item);
-        this.store.dispatch(renameFileManager({ id: item.id, new_name: newName, file_type: 'folder' }));
+        this.store.dispatch(renameFileManager({ id: item.id, new_name: newName, file_type: 'folder', from: 'recent' }));
       }
 
       // Reset editing state
       this.isRenamingFolder = false;
       this.isRenamingFile = false;
+      this.isRenamingRecentFile = false;
       this.editingFolder = null;
       this.editingFile = null;
     }

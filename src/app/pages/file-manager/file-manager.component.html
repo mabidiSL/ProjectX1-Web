@@ -231,9 +231,9 @@
                                                                 </a>
                                                                 <div class="dropdown-divider"></div>
                                                                 <a class="dropdown-item" 
-                                                                   (click)="renameItem(file, $event, dropdownRef,true)"
-                                                                   (keydown.enter)="renameItem(file,dropdownRef, true)"
-                                                                   (keydown.space)="renameItem(file,dropdownRef, true)"
+                                                                   (click)="renameItem(file, $event, dropdownRef,true, 'rename-file-view', false)"
+                                                                   (keydown.enter)="renameItem(file,dropdownRef, true, 'rename-file-view', false)"
+                                                                   (keydown.space)="renameItem(file,dropdownRef, true, 'rename-file-view', false)"
                                                                    (keyup.escape)="cancelRename($event)"
                                                                    tabindex="0"
                                                                    role="button">
@@ -307,23 +307,52 @@
                                         </thead>
                                         <tbody>
                                             @for(data of Recentfile;track $index){
-                                            <tr (click)="downloadFile(data)" (keydown.enter)="downloadFile(data)" (keydown.space)="downloadFile(data)" tabindex="0" role="button">
-                                                <td><a href="javascript: void(0);" class="text-dark fw-medium">
-                                                        <i class="{{data.icon}} font-size-16 align-middle text-primary me-2"></i>{{data.name}}</a></td>
+                                            <tr (click)="!isRenamingRecentFile && downloadFile(data)" 
+                                                (keydown.enter)="!isRenamingRecentFile && downloadFile(data)" 
+                                                (keydown.space)="!isRenamingRecentFile && downloadFile(data)" 
+                                                tabindex="0" 
+                                                role="button">
+                                                <td>
+                                                    <a href="javascript: void(0);" class="text-dark fw-medium">
+                                                        <i class="{{data.icon}} font-size-16 align-middle text-primary me-2"></i>
+                                                        <ng-container *ngIf="isRenamingRecentFile && editingFile?.id === data.id; else displayFileName">
+                                                            <input 
+                                                                #renameRecentFileInput
+                                                                type="text" 
+                                                                [value]="editingName"
+                                                                (input)="editingName = renameRecentFileInput.value"
+                                                                (click)="$event.stopPropagation()"
+                                                                (keydown)="$event.stopPropagation()"
+                                                                (keyup)="$event.stopPropagation()"
+                                                                (keyup.enter)="renameItemConfirmed(data, editingName); $event.preventDefault(); $event.stopPropagation();"
+                                                                (keyup.escape)="cancelRename($event)"
+                                                                (blur)="renameItemConfirmed(data, editingName)"
+                                                                class="form-control form-control-sm d-inline-block w-auto"
+                                                            />
+                                                        </ng-container>
+                                                        <ng-template #displayFileName>
+                                                            {{data.name}}
+                                                        </ng-template>
+                                                    </a>
+                                                </td>
                                                 <td>{{data.updatedAt | date:'short'}}</td>
                                                 <td>{{ (data.size / 1024).toFixed(2) }} KB</td>
-                                                <td (click)="$event.stopPropagation($event)" (keydown.enter)="$event.stopPropagation($event)" (keydown.space)="$event.stopPropagation($event)" tabindex="0" role="button">  
+                                                <td (click)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()" (keydown.space)="$event.stopPropagation()" tabindex="0" role="button">  
                                                     <div class="dropdown" dropdown>
                                                         <a class="font-size-16 text-muted dropdown-toggle" role="button" dropdownToggle data-toggle="dropdown" aria-haspopup="true">
                                                             <i class="mdi mdi-dots-horizontal"></i>
                                                         </a>
 
                                                         <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
-                                                            <a class="dropdown-item"(click)="downloadFile(data)" (keydown.enter)="downloadFile(data)" (keydown.space)="downloadFile(data)" tabindex="0" role="button"><i class="mdi mdi-eye me-2"></i>Open</a>
-                                                            <a class="dropdown-item"(click)="renameItem(data, $event, dropdownRef,true)" (keydown.enter)="renameItem(data,dropdownRef, true)" (keydown.space)="renameItem(data,dropdownRef, true)" tabindex="0" role="button"><i class="mdi mdi-pencil me-2"></i>Rename</a>
-                                                            <a class="dropdown-item"(click)="deleteItem(data, $event, 'recent')" (keydown.enter)="deleteItem(data, 'recent')" (keydown.space)="deleteItem(data, 'recent')" tabindex="0" role="button"><i class="mdi mdi-delete me-2"></i>Delete</a>
-
-                                                           
+                                                            <a class="dropdown-item" (click)="downloadFile(data)" (keydown.enter)="downloadFile(data)" (keydown.space)="downloadFile(data)" tabindex="0" role="button">
+                                                                <i class="mdi mdi-eye me-2"></i>Open
+                                                            </a>
+                                                            <a class="dropdown-item" (click)="renameItem(data, $event, dropdownRef, true, 'renameRecentFileInput', true)" (keydown.enter)="renameItem(data, dropdownRef, true, 'renameRecentFileInput', true)" (keydown.space)="renameItem(data, dropdownRef, true, 'renameRecentFileInput', true)" tabindex="0" role="button">
+                                                                <i class="mdi mdi-pencil me-2"></i>Rename
+                                                            </a>
+                                                            <a class="dropdown-item" (click)="deleteItem(data, $event, 'recent')" (keydown.enter)="deleteItem(data, 'recent')" (keydown.space)="deleteItem(data, 'recent')" tabindex="0" role="button">
+                                                                <i class="mdi mdi-delete me-2"></i>Delete
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </td>

@@ -15,8 +15,8 @@ export const addFileManagerlist = createAction('[Data] Add FileManagerlist',  pr
 export const addFileManagerlistSuccess = createAction('[Data] Add FileManagerlist Success', props<{ folderName: string, id: number }>());
 export const addFileManagerlistFailure = createAction('[Data] Add FileManagerlist Failure', props<{ error: string }>());
 //RenameFileManager
-export const renameFileManager = createAction('[Data] Rename FileManager',  props<{ id: number, new_name: string , file_type: string }>());
-export const renameFileManagerSuccess = createAction('[Data] Rename FileManager Success', props<{ id: number, new_name: string, file_type: string}>());
+export const renameFileManager = createAction('[Data] Rename FileManager',  props<{ id: number, new_name: string , file_type: string, from?: 'recent' | 'fileManager' }>());
+export const renameFileManagerSuccess = createAction('[Data] Rename FileManager Success', props<{ id: number, new_name: string, file_type: string, from?: 'recent' | 'fileManager' }>());
 export const renameFileManagerFailure = createAction('[Data] Rename FileManager Failure', props<{ error: string }>());
 //Add File 
 export const addFile = createAction('[Data] Add File',  props<{ formData: any, file_type: string }>());

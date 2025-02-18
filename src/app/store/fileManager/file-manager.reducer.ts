@@ -7,6 +7,7 @@ updateFileManagerlistFailure,
 updateFileManagerlistSuccess*/
 } from './file-manager.action';
 import { FileManager, Folder, StorageQuota } from './file-manager.model';
+import { from } from 'rxjs';
 
 export interface FileManagerlistState {
   FileManagerListdata: FileManager;
@@ -127,7 +128,7 @@ on(renameFileManager, (state) => ({
   error: null 
 })),
  // Handle updating FileManager status
-on(renameFileManagerSuccess, (state, { id, new_name, file_type }) => {
+on(renameFileManagerSuccess, (state, { id, new_name, file_type, from}) => { 
   let updatedFolders = []
   let updatedFiles = []
   if(file_type === 'folder'){ 
@@ -144,7 +145,18 @@ on(renameFileManagerSuccess, (state, { id, new_name, file_type }) => {
     console.log('updatedFolders', updatedFolders);
     
   }else{
-    // Update files paths if they were in the renamed folder
+    if(from === 'recent'){
+      updatedFiles = state.lastUpdatedFiles.map(file => {
+        if(file.id === id){
+          return {
+            ...file,
+            name: new_name
+          };
+        }
+        return file;
+      });
+    }else{
+      // Update files paths if they were in the renamed folder
      updatedFiles = state.FileManagerListdata.files.map(file => {
       if (file.id === id) {
         return {
@@ -161,12 +173,13 @@ on(renameFileManagerSuccess, (state, { id, new_name, file_type }) => {
       FileManagerListdata: {
         ...state.FileManagerListdata,
         folders: file_type === 'folder' ? updatedFolders : state.FileManagerListdata.folders, // Use the updatedFolders array for foldersupdatedFolders,
-        files: file_type === 'file' ? updatedFiles : state.FileManagerListdata.files // Use the updatedFiles array for filesupdatedFiles
+        files: file_type === 'file' && from !== 'recent' ? updatedFiles : state.FileManagerListdata.files,   // Use the updatedFiles array for filesupdatedFiles
       },
+      lastUpdatedFiles: from === 'recent' ? updatedFiles : state.lastUpdatedFiles,
       loading: false,
       error: null
     };
-  }),
+  }}),
    // Handle updating FileManager failure
    on(renameFileManagerFailure, (state, { error }) => ({
     ...state,
