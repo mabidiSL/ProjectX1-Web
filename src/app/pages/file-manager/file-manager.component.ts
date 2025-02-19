@@ -132,10 +132,14 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     }
     fetchRootTree(){
       this.store.dispatch(fetchFileManagerlistData({ folderId: null }));
+      console.log('i am in fetch root tree');
       this.FolderList$.pipe(
         takeUntil(this.destroy$)
       ).subscribe({
-        next: (data) => this.handleFolderData(data),
+        next: (data) => {
+          console.log('i am in fetch root tree next');
+          this.handleFolderData(data)
+        },
         error: (error) => console.error('Error fetching folders:', error)
       });
     }
@@ -452,6 +456,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
         if (isFile) {
           this.editingFile = item as FileNode;
         } else {
+          console.log('i am in renaming folder', item);
           this.editingFolder = item as FolderNode;
         }
         this.editingName = item.name;
@@ -466,6 +471,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
           });
         }else{
         if (view) {
+          console.log('i am in view mode');
           setTimeout(() => {
             const input = document.getElementById('rename-input-view') as HTMLInputElement;
             if (input) {
@@ -478,6 +484,8 @@ export class FileManagerComponent implements OnInit, OnDestroy {
             inputElement.addEventListener('keyup', (e) => this.handleKeyUp(e, item));
           }
         }else{
+          console.log('i am in tree mode');
+
         setTimeout(() => {
           const input = document.getElementById('rename-input') as HTMLInputElement;
           if (input) {
@@ -494,14 +502,19 @@ export class FileManagerComponent implements OnInit, OnDestroy {
       }
       cancelRename() {
         this.isRenamingFolder = false;
+        this.isRenamingRecentFile = false;
         this.isRenamingFile = false;
         this.editingFolder = null;
         this.editingFile = null;
       }
       // Handle key up event for the rename input
 handleKeyUp(event: KeyboardEvent, item: FolderNode | FileNode): void {
-  if (event.key === 'Enter') { 
+  if (event) {
+    event.preventDefault();
     event.stopPropagation();
+  }
+  if (event.key === 'Enter') {
+    console.log('key up event', event.key); 
     this.renameItemConfirmed(item, this.editingName);
   }
 }
@@ -514,9 +527,10 @@ renameItemConfirmed(item: FolderNode | FileNode, newName: string): void {
         console.log('rename file', item);
         
         this.store.dispatch(renameFileManager({ id: item.id, new_name: newName, file_type: 'file', from: this.isRenamingRecentFile ? 'recent' : 'fileManager' }));
-      } else {
+      }
+      else {
         console.log('rename folder', item);
-        this.store.dispatch(renameFileManager({ id: item.id, new_name: newName, file_type: 'folder', from: 'recent' }));
+        this.store.dispatch(renameFileManager({ id: item.id, new_name: newName, file_type: 'folder', from: this.isRenamingRecentFile ? 'recent' : 'fileManager' }));
       }
 
       // Reset editing state

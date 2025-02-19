@@ -7,7 +7,6 @@ updateFileManagerlistFailure,
 updateFileManagerlistSuccess*/
 } from './file-manager.action';
 import { FileManager, Folder, StorageQuota } from './file-manager.model';
-import { from } from 'rxjs';
 
 export interface FileManagerlistState {
   FileManagerListdata: FileManager;
@@ -167,7 +166,7 @@ on(renameFileManagerSuccess, (state, { id, new_name, file_type, from}) => {
       return file;
     });
     console.log('updatedFiles', updatedFiles);
-  }
+  }}
     return {
       ...state,
       FileManagerListdata: {
@@ -179,7 +178,7 @@ on(renameFileManagerSuccess, (state, { id, new_name, file_type, from}) => {
       loading: false,
       error: null
     };
-  }}),
+  }),
    // Handle updating FileManager failure
    on(renameFileManagerFailure, (state, { error }) => ({
     ...state,

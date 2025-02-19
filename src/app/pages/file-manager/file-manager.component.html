@@ -604,9 +604,7 @@
     <li *ngFor="let folder of folders.folders">
         <div class="d-flex align-items-center folder-item" [class.bg-light]="folder.isSelected">
             <a (click)="fetchFolders(folder, $event)" 
-               (keydown.enter)="fetchFolders(folder)" 
-               (keydown.space)="fetchFolders(folder)" 
-               tabindex="0" 
+                           tabindex="0" 
                role="button" 
                class="d-flex align-items-center flex-grow-1">
                 <div class="folder-name-container">
@@ -626,7 +624,7 @@
                             [value]="editingName"
                             (input)="editingName = renameInput.value"
                             (click)="$event.stopPropagation()"
-                            (keyup.enter)="renameItemConfirmed(folder, editingName, $event)"
+                            (keyup.enter)="renameItemConfirmed(folder, editingName, $event);$event.stopPropagation()"
                             (keyup.escape)="cancelRename($event)"
                             (blur)="renameItemConfirmed(folder, editingName, $event)"
                         />
