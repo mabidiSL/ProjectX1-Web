@@ -88,6 +88,8 @@ import { CompaniesEffects } from './store/companies/companies.effect';
 import { CrmContactModule } from './pages/crm-contact/crm-contact.module';
 //import { SecurityInterceptor } from './core/security.config';
 import { ContactsEffects } from './store/contacts/contacts.effect';
+import { QuotesEffects } from './store/quotes/quotes.effect';
+import { WinsEffects } from './store/wins/wins.effect';
 
 // Register the Arabic locale
 registerLocaleData(localeAr, 'ar');
@@ -185,7 +187,9 @@ export function createTranslateLoader(http: HttpClient): any {
       SpecialDaysEffects,
       FileManagersEffects,
       CompaniesEffects,
-      ContactsEffects
+      ContactsEffects,
+      QuotesEffects,
+      WinsEffects
 
       
     ]),

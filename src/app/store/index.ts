@@ -21,6 +21,8 @@ import { SpecialDayListReducer, SpecialDaylistState } from "./specialDay/special
 import { FileManagerListReducer, FileManagerlistState } from "./fileManager/file-manager.reducer";
 import { CompaniesReducer, CompaniesState } from "./companies/companies.reducer";
 import { ContactsReducer, ContactsState } from "./contacts/contacts.reducer";
+import { QuotesReducer, QuotesState } from "./quotes/quotes.reducer";
+import { WinsReducer, WinsState } from "./wins/wins.reducer";
 
 
 export interface RootReducerState {
@@ -47,6 +49,8 @@ export interface RootReducerState {
     FileManagerList: FileManagerlistState;
     CompanyList: CompaniesState;
     ContactList: ContactsState;
+    QuoteList: QuotesState;
+    WinList: WinsState;
 
     
 }
@@ -73,7 +77,9 @@ export const rootReducer: ActionReducerMap<RootReducerState> = {
     SpecialDayList: SpecialDayListReducer,
     FileManagerList: FileManagerListReducer,
     CompanyList: CompaniesReducer,
-    ContactList: ContactsReducer 
+    ContactList: ContactsReducer,
+    QuoteList: QuotesReducer,
+    WinList: WinsReducer
 
 
 }

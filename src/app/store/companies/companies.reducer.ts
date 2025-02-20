@@ -23,14 +23,16 @@ export const initialState: CompaniesState = {
 
 export const CompaniesReducer = createReducer(
   initialState,
-  on(fetchCompaniesData,(state) => ({
+  on(fetchCompaniesData,(state, { page }) => ({
     ...state,
+    currentPage: page,
     loading: true,
     error: null
   })),
   on(fetchCompaniesSuccess, (state, { Companiesdata }) => ({
     ...state,
-    Companiesdata: Companiesdata,
+    Companiesdata: Companiesdata.data,
+    totalItems: Companiesdata.totalItems,
     loading: false,
     error: null
 

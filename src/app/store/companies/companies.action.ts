@@ -1,9 +1,9 @@
 import { createAction, props } from '@ngrx/store';
-import { Company } from './companies.model';
+import { CompaniesModel, Company } from './companies.model';
 
 // fetch all list
-export const fetchCompaniesData = createAction('[Data] fetch Companies');
-export const fetchCompaniesSuccess = createAction('[Data] fetch Companies success', props<{ Companiesdata: Company[]}>())
+export const fetchCompaniesData = createAction('[Data] fetch Companies', props<{page: number, itemsPerPage: number, query?: string}>());
+export const fetchCompaniesSuccess = createAction('[Data] fetch Companies success', props<{ Companiesdata: CompaniesModel}>())
 export const fetchCompaniesFail = createAction('[Data fetch Companies failed]', props<{ error: string }>())
 
 

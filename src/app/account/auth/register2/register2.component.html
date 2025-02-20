@@ -208,18 +208,18 @@
                           <div class="form-group">
                             <label for="termsAndConditions">
                               <input type="checkbox" id="termsAndConditions" formControlName="termsAndConditions" (change)="onTermsChange($event)">
-                              {{ 'I agree to the terms and conditions' | translate }} <span class="text-danger">*</span>
+                              I agree to the <a [href]="'assets/terms-conditions.html'" target="_blank">terms</a> and conditions <span class="text-danger">*</span>
                             </label>
                             <div *ngIf="signupForm.get('termsAndConditions').touched && signupForm.get('termsAndConditions').invalid" class="invalid-feedback d-block">
                               <span *ngIf="signupForm.get('termsAndConditions').errors?.['required']">{{'You must agree to the terms and conditions' | translate}}.</span>
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-12 mb-3" *ngIf="showTerms">
+                        <!-- <div class="col-md-12 mb-3" *ngIf="showTerms">
                           <div class="form-group">
                             <div class="html-container" [innerHTML]="termsText"></div>
                           </div>
-                        </div> 
+                        </div>  -->
                          
 
                   </div>

@@ -159,17 +159,18 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   }
   
   getProperty(data: any, propertyPath: string): any {
-    
+    if(propertyPath === 'user'){
+      return data.user?.translation_data[0]?.f_name +' '+ data.user?.translation_data[0]?.l_name;
+    }
+    if(propertyPath === 'crm_contacts'){
+      return data.crm_contacts?.length;
+    }
     if (propertyPath === 'dayName') {
       const startDate = new Date(data.startDate);  // Ensure data.startDate is a valid date string
       const dayName = startDate.toLocaleDateString('en-CA', { weekday: 'long' });  // 'long' returns the full day name like 'Monday'
       return dayName;
      }
-     if(propertyPath === 'sectors'){
-      return   data.sectors.join(', ');
-
-       
-     }
+    
     if (propertyPath === 'totalAmount') {
       return '£ '+ data.totalAmount;
     }

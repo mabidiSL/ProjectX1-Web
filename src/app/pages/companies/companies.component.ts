@@ -48,11 +48,11 @@ export class CompaniesComponent implements OnInit {
     {status: 'active', label: 'Active'},
     {status: 'inactive', label: 'inActive'}];
   columns : any[]= [
-    { property: 'name', label: 'Company Name' },
-    { property: 'country', label: 'Country' },
-    { property: 'sectors', label: 'Sections' },
-    { property: 'contact_nbr', label: 'Contacts' },
-    { property: 'owner', label: 'Owner' },
+    { property: 'translation_data[0]?.name', label: 'Company Name' },
+    { property: 'address_county', label: 'Country' },
+    { property: 'sector', label: 'Sector' },
+    { property: 'crm_contacts', label: 'Contacts' },
+    { property: 'user', label: 'Owner' },
   ];
   config:any = {
     class: 'modal-lg',
@@ -71,7 +71,7 @@ export class CompaniesComponent implements OnInit {
 
   ngOnInit() {
         this.fetchCountry();
-        this.store.dispatch(fetchCompaniesData());
+        this.store.dispatch(fetchCompaniesData({page: 1, itemsPerPage: 10, query: ''}));
         this.CompanyList$.subscribe(data => {
         this.originalArray = data; // Company the full Company list
         this.filteredArray = [...this.originalArray];
@@ -94,36 +94,35 @@ export class CompaniesComponent implements OnInit {
             });
           });
         }
-    onViewContacts(event: any){
+  onViewContacts(event: any){
       this.contactList = event;
       this.modalRef = this.modalService.show(this.showModal, this.config);
     }
-    onFilterEvent(event: any){
+  onFilterEvent(event: any){
 
       if(event.status && event.status !== 'all')
          this.filterTerm = event.status;
       else
         this.filterTerm = '';
-
-      
-      this.store.dispatch(fetchCompaniesData());
+  
+      this.store.dispatch(fetchCompaniesData({page: 1, itemsPerPage: 10, query: this.filterTerm}));
    
-    }
-     onSearchEvent(event: any){
+  }
+  onSearchEvent(event: any){
         this.searchTerm = event;
-        this.store.dispatch(fetchCompaniesData( ));
+        this.store.dispatch(fetchCompaniesData({page: 1, itemsPerPage: 10, query: this.searchTerm}));
     
-       }
+  }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
     console.log(totalItems);
     
-    this.store.dispatch(fetchCompaniesData( ));
+    this.store.dispatch(fetchCompaniesData({page: 1, itemsPerPage: totalItems, query: this.filterTerm}));
    }
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchCompaniesData());
+    this.store.dispatch(fetchCompaniesData({page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.filterTerm} ));
     
   }
 

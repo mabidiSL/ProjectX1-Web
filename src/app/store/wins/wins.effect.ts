@@ -6,43 +6,44 @@ import { catchError, mergeMap, map } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { CrudService } from 'src/app/core/services/crud.service';
 import {
-    fetchCompaniesData, fetchCompaniesSuccess,
-    fetchCompaniesFail,
-    addCompaniesFailure,
-    addCompaniesSuccess,
-    addCompanies,
-    updateCompaniesFailure,
-    updateCompaniesSuccess,
-    updateCompanies,
-    deleteCompaniesFailure,
-    deleteCompaniesSuccess,
-    deleteCompanies,
-    getCompanyById,
-    getCompanyByIdSuccess,
-    getCompanyByIdFailure,
+    fetchWinsData, fetchWinsSuccess,
+    fetchWinsFail,
+    addWinsFailure,
+    addWinsSuccess,
+    addWins,
+    updateWinsFailure,
+    updateWinsSuccess,
+    updateWins,
+    deleteWinsFailure,
+    deleteWinsSuccess,
+    deleteWins,
+    getWinById,
+    getWinByIdSuccess,
+    getWinByIdFailure,
    
-} from './companies.action';
+} from './wins.action';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { HttpClient } from '@angular/common/http';
+import { Win } from './wins.model';
 
 
 @Injectable()
-export class CompaniesEffects {
+export class WinsEffects {
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(fetchCompaniesData),
+            ofType(fetchWinsData),
             mergeMap(({page, itemsPerPage, query}) => 
               //this.http.get(this.url).pipe(
-                  this.CrudService.fetchData('/crm/companies',{ limit: itemsPerPage, page: page, query: query}).pipe(
+                  this.CrudService.fetchData('/crm/wins',{ limit: itemsPerPage, page: page, query: query}).pipe(
                     map((response: any) => {
-                    return fetchCompaniesSuccess({ Companiesdata: response.result })}),
+                    return fetchWinsSuccess({ Winsdata: response.result })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
                       this.toastr.error(errorMessage);   
-                      return of(fetchCompaniesFail({ error: errorMessage })); 
+                      return of(fetchWinsFail({ error: errorMessage })); 
                       })
                 )
                 ),
@@ -51,39 +52,48 @@ export class CompaniesEffects {
    
     addData$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(addCompanies),
+            ofType(addWins),
             mergeMap(({ newData }) =>
-                this.CrudService.addData('/crm/companies', newData).pipe(
+                this.CrudService.addData('/crm/wins', newData).pipe(
                     map((newData) => {
-                        this.toastr.success('The new Company has been added successfully.');
-                        this.router.navigate(['/private/Companies/list']);
-                        // Dispatch the action to fetch the updated Company list after adding a new Company
-                        return addCompaniesSuccess({newData});
+                        this.toastr.success('The new Win has been added successfully.');
+                        this.router.navigate(['/private/Wins/list']);
+                        // Dispatch the action to fetch the updated Win list after adding a new Win
+                        return addWinsSuccess({newData});
                       }),
                       catchError((error) => {
                         const errorMessage = this.formUtilService.getErrorMessage(error);
                         this.toastr.error(errorMessage);   
-                        return of(addCompaniesFailure({ error: errorMessage })); // Dispatch failure action
+                        return of(addWinsFailure({ error: errorMessage })); // Dispatch failure action
                       }))
             )
         )
     );
-    getLoggedCompany$ =  createEffect(() =>
+    getLoggedWin$ =  createEffect(() =>
       this.actions$.pipe(
-        ofType(getCompanyById),
-        mergeMap(({ CompanyId }) => {
-          // get Company by id     
+        ofType(getWinById),
+        mergeMap(({ WinId }) => {
+          // get Win by id     
            //   return this.http.get(`${this.url}`).pipe(
 
-          return this.CrudService.getDataById('/crm/companies', CompanyId).pipe(
+          return this.CrudService.getDataById('/crm/wins', WinId).pipe(
             map((data: any) => {
               if (data ) {
-                   
-                // Dispatch success action with the Company data
-                return getCompanyByIdSuccess({ Company: data.result });
+                console.log(data);
+                console.log(WinId);
+                
+                const quote = data?.wins?.find((item: Win) => {
+                  console.log('Checking item id:', item.id);  // Debugging the check
+                  return item.id === WinId;
+                });
+                
+                console.log(quote);
+                
+                // Dispatch success action with the Win data
+                return getWinByIdSuccess({ Win: quote });
               } else {
-                this.toastr.error('Company not found.'); // Show error notification
-                return getCompanyByIdFailure({ error: 'Company not found' });
+                this.toastr.error('Win not found.'); // Show error notification
+                return getWinByIdFailure({ error: 'Win not found' });
               }
             })
           );
@@ -94,20 +104,20 @@ export class CompaniesEffects {
   
     updateData$ = createEffect(() => 
         this.actions$.pipe(
-            ofType(updateCompanies),
+            ofType(updateWins),
             mergeMap(({ updatedData }) => {
                 //return this.http.post(`${this.url}/${updatedData.id}`, updatedData).pipe(
-                return this.CrudService.updateData(`/crm/companies/${updatedData.id}`, updatedData).pipe(
+                return this.CrudService.updateData(`/crm/wins/${updatedData.id}`, updatedData).pipe(
                 map(() => 
                 {
-                    this.toastr.success('The Company has been updated successfully.');
-                    this.router.navigate(['/private/Companies/list']);
-                    return  updateCompaniesSuccess({ updatedData })}),
+                    this.toastr.success('The Win has been updated successfully.');
+                    this.router.navigate(['/private/Wins/list']);
+                    return  updateWinsSuccess({ updatedData })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
                       this.toastr.error(errorMessage);   
 
-                      return of(updateCompaniesFailure({ error: errorMessage }));
+                      return of(updateWinsFailure({ error: errorMessage }));
                       })                 );
             })
         )
@@ -117,18 +127,18 @@ export class CompaniesEffects {
    deleteData$ = createEffect(() =>
     
         this.actions$.pipe(
-            ofType(deleteCompanies),
+            ofType(deleteWins),
             mergeMap(({ userId }) =>
-                    this.CrudService.deleteData(`/crm/companies/${userId}`).pipe(
+                    this.CrudService.deleteData(`/crm/wins/${userId}`).pipe(
                         map(() => {
-                            this.toastr.success('Company deleted successfully.');
-                            return deleteCompaniesSuccess({ userId });
+                            this.toastr.success('Win deleted successfully.');
+                            return deleteWinsSuccess({ userId });
                           }),
                           catchError((error) => {
                             const errorMessage = this.formUtilService.getErrorMessage(error);
                             this.toastr.error(errorMessage);   
                         
-                            return  of(deleteCompaniesFailure({ error: errorMessage }))})                )
+                            return  of(deleteWinsFailure({ error: errorMessage }))})                )
             )
         )
     );
