@@ -18,10 +18,11 @@ import { CrmContactComponent } from './crm-contact.component';
 import { EditCrmContactComponent } from './edit-crm-contact/edit-crm-contact.component';
 import { FormCrmContactComponent } from './form-crm-contact/form-crm-contact.component';
 import { ViewCrmContactComponent } from './view-crm-contact/view-crm-contact.component';
+import { CreateCrmContactComponent } from './create-crm-contact/create-crm-contact.component';
 
 
 @NgModule({
-  declarations: [CrmContactComponent, FormCrmContactComponent,ViewCrmContactComponent, EditCrmContactComponent ],
+  declarations: [CrmContactComponent, FormCrmContactComponent,ViewCrmContactComponent, EditCrmContactComponent, CreateCrmContactComponent ],
   imports: [
     CommonModule,
      BsDatepickerModule,

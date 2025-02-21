@@ -38,7 +38,9 @@ export class MerchantslistEffects1 {
                     map((response: any) => {return fetchMerchantlistSuccess({ MerchantListdata: response.result })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);   
+                      if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
 
                       return of(fetchMerchantlistFail({ error: errorMessage })); 
                       })
@@ -60,7 +62,9 @@ export class MerchantslistEffects1 {
                       }),
                       catchError((error) => {
                         const errorMessage = this.formUtilService.getErrorMessage(error);
-                        this.toastr.error(errorMessage);   
+                        if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
                         return of(addMerchantlistFailure({ error: errorMessage })); // Dispatch failure action
                       }))
             )
@@ -100,7 +104,9 @@ export class MerchantslistEffects1 {
                     return  updateMerchantlistSuccess({ updatedData })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);   
+                      if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
 
                       return of(updateMerchantlistFailure({ error: errorMessage }));
                       })                 );
@@ -121,7 +127,9 @@ export class MerchantslistEffects1 {
                           }),
                           catchError((error) => {
                             const errorMessage = this.formUtilService.getErrorMessage(error);
-                            this.toastr.error(errorMessage);   
+                            if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
                         
                             return  of(deleteMerchantlistFailure({ error: errorMessage }))})                )
             )

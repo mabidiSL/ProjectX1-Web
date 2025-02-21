@@ -4,6 +4,11 @@
     <app-custom-table
       [pageTitle] = "'Contacts List'| translate"  
       [columns]="columns"
+      [addButtonLabel] ="'New Contact'"
+      [addButtonLink]="'/private/crm-contact/create'"
+      [addButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All,Permission.Create]}]"
+      [editButtonLink]="'/private/crm-contact/edit'"
+      [editButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All,Permission.Update]}]"
       [viewButtonLink]="'/private/crm-contact/view'"
       [viewButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All,Permission.View]}]"
       [deleteButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All,Permission.Delete]}]"
@@ -18,7 +23,9 @@
       (onFilter)="onFilterEvent($event)"
       (onsearch)="onSearchEvent($event)"
       (onChangeEvent)="onChangeEvent($event)"
-      (onDelete)="onDelete($event)">
+      (onDelete)="onDelete($event)"
+      (onClick)="onClick($event)">
+
 </app-custom-table>
    
   </div>
@@ -31,6 +38,6 @@
   </div>    
     <!--[editButtonLink]="'/private/companies/edit'"
       [editButtonPermission]="[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All,Permission.Update]}]" -->
-  
+     
   
   

@@ -5,7 +5,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { Observable } from 'rxjs';
 import { selectDataCompany, selectDataLoading, selectDataTotalItems } from 'src/app/store/companies/companies-selector';
-import { fetchCompaniesData } from 'src/app/store/companies/companies.action';
+import { deleteCompanies, fetchCompaniesData } from 'src/app/store/companies/companies.action';
 import { Company } from 'src/app/store/companies/companies.model';
 import { selectDataCountry } from 'src/app/store/country/country-selector';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
@@ -105,7 +105,7 @@ export class CompaniesComponent implements OnInit {
       else
         this.filterTerm = '';
   
-      this.store.dispatch(fetchCompaniesData({page: 1, itemsPerPage: 10, query: this.filterTerm}));
+      this.store.dispatch(fetchCompaniesData({page: 1, itemsPerPage: 10, query: this.searchTerm}));
    
   }
   onSearchEvent(event: any){
@@ -117,19 +117,19 @@ export class CompaniesComponent implements OnInit {
     const totalItems =  event.target.value;
     console.log(totalItems);
     
-    this.store.dispatch(fetchCompaniesData({page: 1, itemsPerPage: totalItems, query: this.filterTerm}));
+    this.store.dispatch(fetchCompaniesData({page: 1, itemsPerPage: totalItems, query: this.searchTerm}));
    }
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchCompaniesData({page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.filterTerm} ));
+    this.store.dispatch(fetchCompaniesData({page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm} ));
     
   }
 
   // Delete Company
   onDelete(id: any) {
     console.log(id);
-    //this.store.dispatch(deleteCompanies({employeeId: id }));
+    this.store.dispatch(deleteCompanies({userId: id }));
   }
 
  

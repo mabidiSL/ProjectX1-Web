@@ -27,25 +27,24 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
 import { HttpClient } from '@angular/common/http';
-import { Contact } from './contacts.model';
 
 
 @Injectable()
 export class ContactsEffects {
-  url = 'assets/contacts.json';
     fetchData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fetchContactsData),
-            mergeMap(() => 
-              this.http.get(this.url).pipe(
-                  //this.CrudService.fetchData(this.url).pipe(
+              mergeMap(({page, itemsPerPage, query}) => 
+             // this.http.get(this.url).pipe(
+                this.CrudService.fetchData('/crm/contacts', {page, itemsPerPage, query}).pipe(
                     map((response: any) => {
-                      console.log(response.contacts);
                       
-                      return fetchContactsSuccess({ Contactsdata: response.contacts })}),
+                      return fetchContactsSuccess({ Contactsdata: response.result })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);   
+                      if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
 
                       return of(fetchContactsFail({ error: errorMessage })); 
                       })
@@ -58,7 +57,7 @@ export class ContactsEffects {
         this.actions$.pipe(
             ofType(addContacts),
             mergeMap(({ newData }) =>
-                this.CrudService.addData('/Contacts', newData).pipe(
+                this.CrudService.addData('/crm/contacts', newData).pipe(
                     map((newData) => {
                         this.toastr.success('The new Contact has been added successfully.');
                         this.router.navigate(['/private/crm-contact/list']);
@@ -67,7 +66,9 @@ export class ContactsEffects {
                       }),
                       catchError((error) => {
                         const errorMessage = this.formUtilService.getErrorMessage(error);
-                        this.toastr.error(errorMessage);   
+                        if (errorMessage !== 'An unknown error occurred') {
+                          this.toastr.error(errorMessage);
+                           }   
                         return of(addContactsFailure({ error: errorMessage })); // Dispatch failure action
                       }))
             )
@@ -78,23 +79,12 @@ export class ContactsEffects {
         ofType(getContactById),
         mergeMap(({ ContactId }) => {
           // get Contact by id     
-          return this.http.get(`${this.url}`).pipe(
-
-         // return this.CrudService.getDataById('/Contacts', ContactId).pipe(
+          return this.CrudService.getDataById('/crm/contacts', ContactId).pipe(
             map((data: any) => {
               if (data ) {
-                console.log(data);
-                console.log(ContactId);
-                
-                const company = data?.contacts?.find((item: Contact) => {
-                  console.log('Checking item id:', item.id);  // Debugging the check
-                  return item.id === ContactId;
-                });
-                
-                console.log(company);
-                
+                            
                 // Dispatch success action with the Contact data
-                return getContactByIdSuccess({ Contact: company });
+                return getContactByIdSuccess({ Contact: data.result });
               } else {
                 this.toastr.error('Contact not found.'); // Show error notification
                 return getContactByIdFailure({ error: 'Contact not found' });
@@ -110,8 +100,7 @@ export class ContactsEffects {
         this.actions$.pipe(
             ofType(updateContacts),
             mergeMap(({ updatedData }) => {
-                return this.http.post(`${this.url}/${updatedData.id}`, updatedData).pipe(
-               // return this.CrudService.updateData(`/Contacts/${updatedData.id}`, updatedData).pipe(
+              return this.CrudService.updateData(`/crm/contacts/${updatedData.id}`, updatedData).pipe(
                 map(() => 
                 {
                     this.toastr.success('The Contact has been updated successfully.');
@@ -119,7 +108,9 @@ export class ContactsEffects {
                     return  updateContactsSuccess({ updatedData })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);   
+                      if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
 
                       return of(updateContactsFailure({ error: errorMessage }));
                       })                 );
@@ -133,14 +124,16 @@ export class ContactsEffects {
         this.actions$.pipe(
             ofType(deleteContacts),
             mergeMap(({ userId }) =>
-                    this.CrudService.deleteData(`/Contacts/${userId}`).pipe(
+                  this.CrudService.deleteData(`/crm/contacts/${userId}`).pipe(
                         map(() => {
                             this.toastr.success('Contact deleted successfully.');
                             return deleteContactsSuccess({ userId });
                           }),
                           catchError((error) => {
                             const errorMessage = this.formUtilService.getErrorMessage(error);
-                            this.toastr.error(errorMessage);   
+                            if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
                         
                             return  of(deleteContactsFailure({ error: errorMessage }))})                )
             )
@@ -149,13 +142,13 @@ export class ContactsEffects {
     
     
     constructor(
-        private actions$: Actions,
-        private CrudService: CrudService,
-        public toastr:ToastrService,
-        private router: Router,
+        private readonly actions$: Actions,
+        private readonly CrudService: CrudService,
+        public readonly toastr:ToastrService,
+        private readonly router: Router,
         private readonly http: HttpClient,
-        private formUtilService: FormUtilService,
-        private store: Store
+        private readonly formUtilService: FormUtilService,
+        private readonly store: Store
     ) {
 
      }

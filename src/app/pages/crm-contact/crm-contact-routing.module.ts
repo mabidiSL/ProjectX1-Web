@@ -5,6 +5,7 @@ import { Modules, Permission } from 'src/app/store/Role/role.models';
 import { ViewCrmContactComponent } from './view-crm-contact/view-crm-contact.component';
 import { EditCrmContactComponent } from './edit-crm-contact/edit-crm-contact.component';
 import { CrmContactComponent } from './crm-contact.component';
+import { CreateCrmContactComponent } from './create-crm-contact/create-crm-contact.component';
 
 const routes: Routes = [
   {
@@ -16,15 +17,15 @@ const routes: Routes = [
     },
     component: CrmContactComponent
   },
-  // {
-  //   path: "create",
-  //   component: CreateCompanyComponent,
-  //   canActivate: [RoleGuard],
-  //   data: {
-  //     claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Crm, claimValue:[Permission.All,Permission.ViewAll,Permission.Create]}]
+  {
+    path: "create",
+    component: CreateCrmContactComponent,
+    canActivate: [RoleGuard],
+    data: {
+      claim: [{claimType: Modules.All, claimValue: [Permission.All]},{ claimType:Modules.Crm, claimValue:[Permission.All,Permission.ViewAll,Permission.Create]}]
   
-  //   }
-  // },
+    }
+  },
   {
     path: "edit/:id",
     component: EditCrmContactComponent,

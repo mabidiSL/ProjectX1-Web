@@ -31,7 +31,9 @@ export class InvoicesEffects {
                     map((response: any) => fetchInvoicelistSuccess({ InvoiceListdata : response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);   
+                      if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
  
                       return of(fetchInvoicelistFail({ error: errorMessage })); 
                     })
@@ -75,7 +77,9 @@ export class InvoicesEffects {
                           }),
                           catchError((error) => {
                             const errorMessage = this.formUtilService.getErrorMessage(error);
-                            this.toastr.error(errorMessage);   
+                            if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
  
                             return  of(deleteInvoicelistFailure({ error: errorMessage }))})      
                                     )

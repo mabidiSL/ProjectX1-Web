@@ -58,10 +58,10 @@
         <!-- Loop through the contacts array and display each contact -->
         <tr *ngFor="let contact of contactList; let i = index">
           <td>{{ i + 1 }}</td>
-          <td>{{ contact.name }}</td>
-          <td>{{ contact.jobTitle }}</td>
+          <td>{{contact.translation_data[0]?.first_name}} {{contact.translation_data[0]?.last_name}}</td>
+          <td>{{ contact.job_title }}</td>
           <td>{{ contact.email }}</td>
-          <td>{{ contact.phone }}</td>
+          <td>{{contact.mob_tel_country_dial_code_id}} {{contact.mob_tel_number}}</td>
         </tr>
         </ng-container>
         <ng-template #noContacts>

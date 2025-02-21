@@ -42,7 +42,9 @@ export class QuotesEffects {
                     return fetchQuotesSuccess({ Quotesdata: response.result })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);   
+                      if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
                       return of(fetchQuotesFail({ error: errorMessage })); 
                       })
                 )
@@ -63,7 +65,9 @@ export class QuotesEffects {
                       }),
                       catchError((error) => {
                         const errorMessage = this.formUtilService.getErrorMessage(error);
-                        this.toastr.error(errorMessage);   
+                        if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
                         return of(addQuotesFailure({ error: errorMessage })); // Dispatch failure action
                       }))
             )
@@ -115,7 +119,9 @@ export class QuotesEffects {
                     return  updateQuotesSuccess({ updatedData })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);   
+                      if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
 
                       return of(updateQuotesFailure({ error: errorMessage }));
                       })                 );
@@ -136,7 +142,9 @@ export class QuotesEffects {
                           }),
                           catchError((error) => {
                             const errorMessage = this.formUtilService.getErrorMessage(error);
-                            this.toastr.error(errorMessage);   
+                            if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
                         
                             return  of(deleteQuotesFailure({ error: errorMessage }))})                )
             )

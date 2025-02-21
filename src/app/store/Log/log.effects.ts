@@ -27,7 +27,9 @@ export class LogsEffects {
                     map((response: any) => fetchLoglistSuccess({ LogListdata : response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);   
+                      if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
    
                       return of(fetchLoglistFail({ error: errorMessage })); 
                     })

@@ -39,7 +39,9 @@ export class CityEffects {
                     map((response: any) => fetchCitylistSuccess({ CityListdata: response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);   
+                      if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
  
                         return of(fetchCitylistFail({ error: errorMessage })); 
                       })
@@ -55,7 +57,9 @@ export class CityEffects {
                   map((response: any) => getCityByCountryIdSuccess({ CityListdata: response.result })),
                   catchError((error) =>{
                     const errorMessage = this.formUtilService.getErrorMessage(error);
-                    this.toastr.error(errorMessage);   
+                    if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
   
                       return of(getCityByCountryIdFailure({ error: errorMessage })); 
                     })
@@ -76,7 +80,9 @@ export class CityEffects {
                       }),
                       catchError((error) => {
                         const errorMessage = this.formUtilService.getErrorMessage(error);
-                        this.toastr.error(errorMessage);   
+                        if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
  
                         return of(addCitylistFailure({ error: errorMessage })); // Dispatch failure action
                       })                )
@@ -117,7 +123,9 @@ export class CityEffects {
                     }),
                     catchError((error) =>{
                         const errorMessage = this.formUtilService.getErrorMessage(error);
-                        this.toastr.error(errorMessage);   
+                        if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
    
                         return of(updateCitylistFailure({ error: errorMessage }));
                       })                );
@@ -138,7 +146,9 @@ export class CityEffects {
                           }),
                           catchError((error) => {
                             const errorMessage = this.formUtilService.getErrorMessage(error);
-                            this.toastr.error(errorMessage);   
+                            if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
 
                             return  of(deleteCitylistFailure({ error: errorMessage }))})                )
             )

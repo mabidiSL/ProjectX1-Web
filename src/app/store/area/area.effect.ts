@@ -37,7 +37,9 @@ export class AreaEffects {
                     map((response: any) => fetchArealistSuccess({ AreaListdata: response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage); 
+                      if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  } 
                       return of(fetchArealistFail({ error: errorMessage })); 
                       })
                 )
@@ -57,7 +59,9 @@ export class AreaEffects {
                       }),
                       catchError((error) => {
                         const errorMessage = this.formUtilService.getErrorMessage(error);
-                        this.toastr.error(errorMessage); 
+                        if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  } 
                         return of(addArealistFailure({ error: errorMessage })); // Dispatch failure action
                       })                )
             )
@@ -95,7 +99,9 @@ export class AreaEffects {
                     }),
                     catchError((error) =>{
                         const errorMessage = this.formUtilService.getErrorMessage(error);
-                        this.toastr.error(errorMessage); 
+                        if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  } 
                         return of(updateArealistFailure({ error:errorMessage  }));
                       }));
             }))
@@ -114,7 +120,9 @@ export class AreaEffects {
                           }),
                           catchError((error) => {
                             const errorMessage = this.formUtilService.getErrorMessage(error);
-                            this.toastr.error(errorMessage);     
+                            if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }     
                             return  of(deleteArealistFailure({ error: errorMessage }))})                )
             ))
     );

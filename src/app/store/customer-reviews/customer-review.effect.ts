@@ -22,7 +22,9 @@ export class CustomerReviewEffects {
                     map((response: any) => fetchCustomerReviewlistSuccess({ CustomerReviewListdata : response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);   
+                      if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
 
                       return of(fetchCustomerReviewlistFail({ error: errorMessage })); 
                     })

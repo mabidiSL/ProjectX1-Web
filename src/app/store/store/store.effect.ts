@@ -36,7 +36,9 @@ export class StoreslistEffects {
                     return fetchStorelistSuccess({ StoreListdata: response.result })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);   
+                      if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
 
                       return of(fetchStorelistFail({ error: errorMessage })); 
                       })
@@ -60,7 +62,9 @@ export class StoreslistEffects {
                       }),
                       catchError((error) => {
                         const errorMessage = this.formUtilService.getErrorMessage(error);
-                        this.toastr.error(errorMessage);   
+                        if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
 
                         return of(addStorelistFailure({ error: errorMessage })); // Dispatch failure action
                       })                )
@@ -98,7 +102,9 @@ export class StoreslistEffects {
                 return  updateStorelistSuccess({ updatedData: response.result })}),
                 catchError((error) =>{
                   const errorMessage = this.formUtilService.getErrorMessage(error);
-                  this.toastr.error(errorMessage);   
+                  if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
 
                     return of(updateStorelistFailure({ error: errorMessage}));
              }) 
@@ -121,7 +127,9 @@ export class StoreslistEffects {
                           }),
                           catchError((error) => {
                             const errorMessage = this.formUtilService.getErrorMessage(error);
-                            this.toastr.error(errorMessage);   
+                            if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
  
                             return  of(deleteStorelistFailure({ error: errorMessage }))
                         })

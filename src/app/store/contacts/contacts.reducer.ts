@@ -23,14 +23,16 @@ export const initialState: ContactsState = {
 
 export const ContactsReducer = createReducer(
   initialState,
-  on(fetchContactsData,(state) => ({
+  on(fetchContactsData,(state,{page}) => ({
     ...state,
+    currentPage: page,
     loading: true,
     error: null
   })),
   on(fetchContactsSuccess, (state, { Contactsdata }) => ({
     ...state,
-    Contactsdata: Contactsdata,
+    Contactsdata: Contactsdata.data,
+    totalItems: Contactsdata.totalItems,
     loading: false,
     error: null
 

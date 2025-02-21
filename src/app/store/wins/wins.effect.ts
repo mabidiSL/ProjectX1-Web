@@ -42,7 +42,9 @@ export class WinsEffects {
                     return fetchWinsSuccess({ Winsdata: response.result })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);   
+                      if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
                       return of(fetchWinsFail({ error: errorMessage })); 
                       })
                 )
@@ -63,7 +65,9 @@ export class WinsEffects {
                       }),
                       catchError((error) => {
                         const errorMessage = this.formUtilService.getErrorMessage(error);
-                        this.toastr.error(errorMessage);   
+                        if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
                         return of(addWinsFailure({ error: errorMessage })); // Dispatch failure action
                       }))
             )
@@ -115,7 +119,9 @@ export class WinsEffects {
                     return  updateWinsSuccess({ updatedData })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);   
+                      if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
 
                       return of(updateWinsFailure({ error: errorMessage }));
                       })                 );
@@ -136,7 +142,9 @@ export class WinsEffects {
                           }),
                           catchError((error) => {
                             const errorMessage = this.formUtilService.getErrorMessage(error);
-                            this.toastr.error(errorMessage);   
+                            if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
                         
                             return  of(deleteWinsFailure({ error: errorMessage }))})                )
             )

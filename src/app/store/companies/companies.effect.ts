@@ -41,7 +41,9 @@ export class CompaniesEffects {
                     return fetchCompaniesSuccess({ Companiesdata: response.result })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);   
+                      if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
                       return of(fetchCompaniesFail({ error: errorMessage })); 
                       })
                 )
@@ -62,7 +64,9 @@ export class CompaniesEffects {
                       }),
                       catchError((error) => {
                         const errorMessage = this.formUtilService.getErrorMessage(error);
-                        this.toastr.error(errorMessage);   
+                        if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
                         return of(addCompaniesFailure({ error: errorMessage })); // Dispatch failure action
                       }))
             )
@@ -105,7 +109,9 @@ export class CompaniesEffects {
                     return  updateCompaniesSuccess({ updatedData })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);   
+                      if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
 
                       return of(updateCompaniesFailure({ error: errorMessage }));
                       })                 );
@@ -126,7 +132,9 @@ export class CompaniesEffects {
                           }),
                           catchError((error) => {
                             const errorMessage = this.formUtilService.getErrorMessage(error);
-                            this.toastr.error(errorMessage);   
+                            if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
                         
                             return  of(deleteCompaniesFailure({ error: errorMessage }))})                )
             )

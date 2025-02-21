@@ -37,7 +37,9 @@ export class OffersEffects {
                     map((response: any) => fetchOfferlistSuccess({ OfferListdata : response.result })),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);   
+                      if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
 
                       return of(fetchOfferlistFail({ error: errorMessage })); 
                     })
@@ -68,7 +70,9 @@ export class OffersEffects {
                       }),
                     catchError((error) => {
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);   
+                      if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
 
                       return of(addOfferlistFailure({ error: errorMessage }));})
                 )
@@ -93,7 +97,9 @@ export class OffersEffects {
               }),
               catchError((error) => {
                 const errorMessage = this.formUtilService.getErrorMessage(error);
-                this.toastr.error(errorMessage);   
+                if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
   
                 return of(updateOfferlistFailure({ error: errorMessage }));}) // Catch errors and return the failure action
             )
@@ -133,7 +139,9 @@ export class OffersEffects {
                           }),
                     catchError((error) => {
                       const errorMessage = this.formUtilService.getErrorMessage(error);
-                      this.toastr.error(errorMessage);   
+                      if (errorMessage !== 'An unknown error occurred') {
+    this.toastr.error(errorMessage);
+  }   
  
                       return  of(deleteOfferlistFailure({ error: errorMessage }))})
                 )

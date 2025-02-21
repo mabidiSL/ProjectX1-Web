@@ -159,9 +159,10 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   }
   
   getProperty(data: any, propertyPath: string): any {
-    if(propertyPath === 'user'){
-      return data.user?.translation_data[0]?.f_name +' '+ data.user?.translation_data[0]?.l_name;
+    if(propertyPath === 'mob_tel_number'){
+      return data.mob_tel_country_dial_code_id + ' ' + data.mob_tel_number;
     }
+    
     if(propertyPath === 'crm_contacts'){
       return data.crm_contacts?.length;
     }
@@ -369,13 +370,14 @@ sortData(column: string): void {
  
   _onClick(link: string, type: string, data?: any) {
     //emits event to open modal
-    if (link.includes('special-day')) {
+    if (link.includes('special-day')||link.includes('crm-contact')) {
+      console.log('i am the add link',link);
       //emits event to open modal
       if(type === 'add'){
-      this.onClick.emit({event:type, type:'special-day'});
+      this.onClick.emit({event:type, type: (link.includes('special-day') ? 'special-day' : 'crm-contact')});
       }
       else
-      this.onClick.emit({event:type, type:'special-day', data: data.id});
+      this.onClick.emit({event:type, type: (link.includes('special-day') ? 'special-day' : 'crm-contact'), data: data.id});
 
     } else if(!data){
         this.router.navigate([`${link}`]);
@@ -386,17 +388,17 @@ sortData(column: string): void {
     }
   onColumnClick(event: any, column: any, data: any) {
       event.stopPropagation(); // Prevent row click event from firing
-      if (column.property === 'contact_nbr') {
+      if (column.property === 'crm_contacts') {
         // Takes user to contacts list
         console.log(data);
-        this.onViewContacts.emit(data.contacts);
+        this.onViewContacts.emit(data.crm_contacts);
         // this.router.navigate(['/flag-page', data.id]);
       }
       else 
-        if(column.property === 'company_name'){
-          this.router.navigate(['/private/companies/view', data.company_id]);
-        }
-        else
+        // if(column.property === 'company_name'){
+        //   this.router.navigate(['/private/companies/view', data.company_id]);
+        // }
+        // else
         {
           this.navigateToView(data);
         }

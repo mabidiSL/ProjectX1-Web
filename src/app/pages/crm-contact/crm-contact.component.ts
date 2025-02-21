@@ -4,13 +4,15 @@ import { select, Store } from '@ngrx/store';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { fetchCountrylistData } from 'src/app/store/country/country.action';
 import { selectDataContact, selectDataLoading, selectDataTotalItems } from 'src/app/store/contacts/contacts-selector';
-import { fetchContactsData } from 'src/app/store/contacts/contacts.action';
+import { deleteContacts, fetchContactsData } from 'src/app/store/contacts/contacts.action';
 import { Contact } from 'src/app/store/contacts/contacts.model';
 import { selectDataCountry } from 'src/app/store/country/country-selector';
 import { Country } from 'src/app/store/country/country.model';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { Observable } from 'rxjs';
 import { Modules, Permission } from 'src/app/store/Role/role.models';
+import { CreateCrmContactComponent } from './create-crm-contact/create-crm-contact.component';
+import { EditCrmContactComponent } from './edit-crm-contact/edit-crm-contact.component';
 @Component({
   selector: 'app-crm-contact',
   templateUrl: './crm-contact.component.html',
@@ -25,7 +27,7 @@ export class CrmContactComponent implements OnInit {
   ContactList$: Observable<Contact[]>;
   totalItems$: Observable<number>;
   loading$: Observable<boolean>;
-  searchPlaceholder: string ='Search By Contact Name, Owner'
+  searchPlaceholder: string ='Search By Name, Email, Job Title or Company Name'
   filterTerm: string = '';
   searchTerm: string = '';
   countrylist: Country[] = [];
@@ -45,12 +47,12 @@ export class CrmContactComponent implements OnInit {
     {status: 'active', label: 'Active'},
     {status: 'inactive', label: 'inActive'}];
   columns : any[]= [
-    { property: 'first_name', label: 'First Name' },
-    { property: 'last_name', label: 'Last Name' },
-    { property: 'company_name', label: 'Company Name' },
-    { property: 'country', label: 'Country' },
-    { property: 'job_description', label: 'Job Description' },
-    { property: 'owner', label: 'Owner' },
+    { property: 'translation_data[0]?.first_name', label: 'First Name' },
+    { property: 'translation_data[0]?.last_name', label: 'Last Name' },
+    { property: 'email', label: 'Email' },
+    { property: 'job_title', label: 'Job Description' },
+    { property: 'mob_tel_number', label: 'Mobile' },
+    { property: 'company.translation_data[0]?.name', label: 'Company Name' },
   ];
   config:any = {
     class: 'modal-lg',
@@ -69,7 +71,7 @@ export class CrmContactComponent implements OnInit {
 
   ngOnInit() {
         this.fetchCountry();
-        this.store.dispatch(fetchContactsData());
+        this.store.dispatch(fetchContactsData({page: 1, itemsPerPage: 10, query: ''}));
         this.ContactList$.subscribe(data => {
         this.originalArray = data; // Contact the full Contact list
         this.filteredArray = [...this.originalArray];
@@ -104,31 +106,31 @@ export class CrmContactComponent implements OnInit {
         this.filterTerm = '';
 
       
-      this.store.dispatch(fetchContactsData());
+      this.store.dispatch(fetchContactsData({page: 1, itemsPerPage: 10, query: this.searchTerm}));
    
     }
      onSearchEvent(event: any){
         this.searchTerm = event;
-        this.store.dispatch(fetchContactsData( ));
+        this.store.dispatch(fetchContactsData({page: 1, itemsPerPage: 10, query: this.searchTerm}));
     
        }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
     console.log(totalItems);
     
-    this.store.dispatch(fetchContactsData( ));
+    this.store.dispatch(fetchContactsData({page: 1, itemsPerPage: totalItems, query: this.searchTerm}));
    }
   // pagechanged
   onPageChanged(event: PageChangedEvent): void {
     this.currentPage = event.page;
-    this.store.dispatch(fetchContactsData());
+    this.store.dispatch(fetchContactsData({page: this.currentPage, itemsPerPage: this.itemPerPage, query: this.searchTerm}));
     
   }
 
   // Delete Contact
   onDelete(id: any) {
     console.log(id);
-    //this.store.dispatch(deleteContacts({employeeId: id }));
+    this.store.dispatch(deleteContacts({userId: id }));
   }
 
  
@@ -139,6 +141,28 @@ export class CrmContactComponent implements OnInit {
     
     //this.store.dispatch(updateContacts({ updatedData: newData }));
   }
-
+  onClick(event: any) {
+    if (event.type === 'crm-contact') {
+      if (event.event === 'add') {
+        this.openAddModal();
+      } else if (event.event === 'edit') {
+        this.openEditModal(event.data);
+      }}
+    }
+    openAddModal() {
+      this.modalRef = this.modalService.show(CreateCrmContactComponent, {
+       
+        class: 'modal-lg',  // Optional: Adjust modal size
+        backdrop: 'static', // Optional: Prevent closing when clicking outside
+        keyboard: false     // Optional: Prevent closing with ESC key
+      });
+    }
+    openEditModal(data: any) {
+      this.modalRef = this.modalService.show(EditCrmContactComponent, {
+        initialState: {
+          data: data // Pass the data to configure the form with existing data
+        },
+      });
+    }
 
 }

@@ -1,9 +1,9 @@
 import { createAction, props } from '@ngrx/store';
-import { Contact } from './contacts.model';
+import { Contact, ContactsModel } from './contacts.model';
 
 // fetch all list
-export const fetchContactsData = createAction('[Data] fetch Contacts');
-export const fetchContactsSuccess = createAction('[Data] fetch Contacts success', props<{ Contactsdata: Contact[]}>())
+export const fetchContactsData = createAction('[Data] fetch Contacts', props<{page: number, itemsPerPage: number, query: string}>());
+export const fetchContactsSuccess = createAction('[Data] fetch Contacts success', props<{ Contactsdata: ContactsModel}>())
 export const fetchContactsFail = createAction('[Data fetch Contacts failed]', props<{ error: string }>())
 
 

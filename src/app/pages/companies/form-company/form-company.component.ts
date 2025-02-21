@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
@@ -31,7 +32,20 @@ wins: Win[] = [];
 Company : Company = null;
 isEditing: boolean;
 private  readonly destroy$ = new Subject<void>();
-
+socialActivities: any[] = [
+        {
+          "platform": "Twitter",
+          "name": "Launch of New Feature",
+          "description": "Announcing the launch of a new feature.. ",
+          "date": "2025-02-10"
+        },
+        {
+          "platform": "Facebook",
+          "name": "Community Meetup Event",
+          "description": "Join us for a virtual community meetup to discuss ...",
+          "date": "2025-02-12"
+        }
+      ];
 
 constructor(private readonly route: ActivatedRoute, private readonly store: Store, private readonly router: Router) {
   this.loading$ = this.store.pipe(select(selectDataLoading)); 
