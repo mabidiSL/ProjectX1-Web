@@ -1,4 +1,261 @@
-<div class="container-fluid">
-    <app-page-title title="{{'view company'| translate}}" [breadcrumbItems]="breadCrumbItems"></app-page-title>
-        <app-form-company [type]="'view'"></app-form-company>
-</div>
+<div id="elmLoader" class="loader" *ngIf="loading$ | async">
+    <div class="spinner-border text-primary avatar-sm" role="status">
+    <span class="visually-hidden">{{'Loading...' | translate}}</span>
+    </div>
+  </div> 
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex border-bottom">
+                <div class="flex-shrink-0 me-4">
+                  <img src="assets/images/companies/img-1.png" alt="" class="avatar-sm">
+                </div>
+    
+                <div class="flex-grow-1 overflow-hidden">
+                  <h5 class="text-truncate font-size-15">{{Company?.translation_data?.[0]?.name}}</h5>
+                  <p class="text-truncate font-size-12 text-secondary">[{{Company?.sector}}]</p>
+                </div>
+              </div>
+              <!-- <div class="d-flex flex-column py-3 border-bottom">
+                <h5 class="font-size-15 mt-4">About:</h5>
+                <p class="text-muted" style="text-align: justify;">{{Company?.translation_data[0]?.description}}</p>
+              </div> -->
+     
+              <div class="d-flex flex-column py-3 border-bottom">
+                  <div class="d-flex">
+                      <div class="flex-shrink-0 me-3">
+                          <h5 class="mb-1 font-size-15">Phone Number:</h5>
+                      </div>
+                      <div class="flex-grow-1">
+                          <p class="text-muted">{{Company?.tel_country_dial_code_id}} {{Company?.tel_number}}</p>
+                      </div>
+                  </div>
+              
+                  <div class="d-flex">
+                      <div class="flex-shrink-0 me-3">
+                          <h5 class="mb-1 font-size-15">Address:</h5>
+                      </div>
+                      <div class="flex-grow-1">
+                          <p class="text-muted">
+                            {{ Company?.address_building }} {{ Company?.address_street }} {{ Company?.address_town }} {{ Company?.address_county }} {{ Company?.address_city }} {{ Company?.address_postcode }}
+                          </p>
+                      </div>
+                  </div>
+              
+                  <div class="d-flex">
+                      <div class="flex-shrink-0 me-3">
+                          <h5 class="mb-1 font-size-15">Web:</h5>
+                      </div>
+                      <div class="flex-grow-1">
+                          <a [href]="Company?.web_url" target="_blank" class="text-muted">{{Company?.web_url}}</a>
+                      </div>
+                  </div>
+              </div>     
+    
+              
+            </div>
+          </div>
+        </div>
+        <!-- end col -->
+    
+        <div class="col-lg-8">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title mb-4">Contacts</h4>
+    
+              <div class="table-responsive">
+                <table class="table align-middle table-nowrap">
+                  <tbody>
+                    <ng-container *ngIf="Company?.crm_contacts.length>0; else nocontacts">
+                      <tr *ngFor="let contact of Company?.crm_contacts">
+                       <td style="width: 50px;"><img src="assets/images/users/avatar-2.jpg" class="rounded-circle avatar-xs"
+                          alt="">
+                       </td>
+                       <td>
+                        <h5 class="font-size-14 m-0"><a href="" class="text-dark">{{contact.translation_data[0]?.first_name}} {{contact.translation_data[0]?.last_name}}</a></h5>
+                       </td>
+                        <td>
+                          <h5 class="font-size-14 m-0"><a href="" class="text-dark">{{contact.job_title}}</a></h5>
+                        </td>
+                        <td>
+                          <h5 class="font-size-14 m-0"><a href="" class="text-dark">{{contact.email}}</a></h5>
+                        </td>
+                        <td>
+                          <h5 class="font-size-14 m-0"><a href="" class="text-dark">{{contact.mob_tel_country_dial_code_id}} {{contact.mob_tel_number}}</a></h5>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  <ng-template #nocontacts>
+                      <tr>
+                          <td colspan="2" class="text-center font-size-12">No Contacts available</td>
+                      </tr>
+                  </ng-template>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end col -->
+      </div>
+      <!-- end row -->
+    
+      <div class="row">
+          <div class="col-lg-4">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title mb-4">Social Activities</h4>
+                 <div class="table-responsive">
+                  <table class="table table-borderless mb-0">
+                      <tbody>
+                        <ng-container *ngIf="socialActivities.length>0; else nosocial">
+  
+                          <tr *ngFor="let social of socialActivities">
+                          <td class="align-middle">
+                            <!-- Placeholder for avatar -->
+                           <i class="fa {{ social.platform === 'Twitter' ? 'bx bxl-twitter' : social.platform === 'Facebook' ? 'bx bxl-facebook-circle' : social.platform === 'Instagram' ? 'bx bxl-instagram' : social.platform === 'LinkedIn' ? 'fa-linkedin' : 'fa-file-alt' }} text-primary font-size-16"></i>
+      
+                          </td>
+                          <td class="align-middle">
+                            <h5 class="font-size-13 mb-1">{{ social.name }}</h5>
+                           <p class="text-muted mb-1">
+                              {{ social.description }}
+                          </p>
+                          </td>
+                         
+                          <td class="align-middle">
+                              <p class="text-muted mb-1">
+                                  {{ social.date| date:'dd MMM yy' }}</p>
+                          </td>
+                        </tr>
+                      </ng-container>
+                      <ng-template #nosocial>
+                          <tr>
+                              <td colspan="2" class="text-center font-size-12">No Social Activities available</td>
+                          </tr>
+                      </ng-template>
+                      </tbody>
+                    </table>
+                    </div>
+                  
+                </div>
+              </div>
+            </div>
+        <!-- end col -->
+    
+        <div class="col-lg-4">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title mb-4">Quotes</h4>
+              <div class="table-responsive">
+              <table class="table table-borderless mb-0">
+                  <tbody>
+                    <tr *ngIf="loadingQuotes$ | async">
+                      <td colspan="4" class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </td>
+                    </tr>
+                    <ng-container *ngIf="quotes?.length>0; else noquotes">
+                    <tr *ngFor="let quote of quotes">
+                      <td class="align-middle">
+                        <!-- Placeholder for avatar -->
+                        <i class="fa fa-file-alt text-primary font-size-16"></i>
+  
+                      </td>
+                      <td class="align-middle">
+                        <h5 class="font-size-13 mb-1">{{ quote?.translation_data[0]?.name }}</h5>
+                       <p class="text-muted mb-1">
+                          #{{ quote.id }}
+                      </p>
+                      </td>
+                      <td class="align-middle">
+                          <p class="text-muted mb-1">
+                             ${{ quote.total_cost }}
+                          </p>
+                      </td>
+                      <td class="align-middle">
+                          <p class="text-muted mb-1">
+                              {{ quote.createdAt | date:'dd MMM yy'  }}</p>
+                      </td>
+                    </tr>
+                    </ng-container>
+                    <ng-template #noquotes>
+                        <tr>
+                            <td colspan="2" class="text-center font-size-12">No Quotes available</td>
+                        </tr>
+                    </ng-template>
+                  </tbody>
+                </table>
+                </div>
+          
+    
+             
+            </div>
+          </div>
+        </div>
+        <!-- end col -->
+    
+        <div class="col-lg-4">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title mb-4">Purchase History</h4>
+    
+              <div class="table-responsive">
+                  <table class="table table-borderless mb-0">
+                      <tbody>
+                        <tr *ngIf="loadingWins$ | async">
+                          <td colspan="4" class="text-center">
+                            <div class="spinner-border text-primary" role="status">
+                              <span class="sr-only">Loading...</span>
+                            </div>
+                          </td>
+                        </tr>
+                        <ng-container *ngIf="wins.length>0; else nopurchase">
+  
+                        <tr *ngFor="let win of wins">
+                          <td class="align-middle">
+                            <!-- Placeholder for avatar -->
+                            <i class="bx bx-time text-primary font-size-16"></i>
+      
+                          </td>
+                          <td class="align-middle">
+                            <h5 class="font-size-13 mb-1">{{ win.translation_data[0]?.name }}</h5>
+                           <p class="text-muted mb-1">
+                              #{{ win.id }}
+                          </p>
+                          </td>
+                          <td class="align-middle">
+                              <p class="text-muted mb-1">
+                                  ${{ win.total_cost }}
+                              </p>
+                          </td>
+                          <td class="align-middle">
+                              <p class="text-muted mb-1">
+                                  {{ win.createdAt| date:'dd MMM yy' }}</p>
+                          </td>
+                        </tr>
+                        </ng-container>
+                        <ng-template #nopurchase>
+                          <tr>
+                              <td colspan="2" class="text-center font-size-12">No Purchase History available</td>
+                          </tr>
+                      </ng-template>
+                      </tbody>
+                    </table>
+                    </div>
+              
+            </div>
+          </div>
+        </div>
+        <!-- end col -->
+      </div>
+      <div class="row mb-4">
+        <div class="col-lg-12 d-flex justify-content-end">
+                    <button class="btn btn-primary" style="width: 200px;" onclick="window.history.back();">OK</button>
+        </div>
+     </div>
+      <!-- end row -->
+    

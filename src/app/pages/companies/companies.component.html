@@ -4,8 +4,12 @@
     <app-custom-table
       [pageTitle] = "'Companies List'| translate"  
       [columns]="columns"
+      [addButtonLabel] ="'New Company'"
+      [addButtonLink]="'/private/companies/create'"
+      [addButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All,Permission.Create]}]"
+      [editButtonLink]="'/private/companies/edit'"
+      [editButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All,Permission.Update]}]"
       [viewButtonLink]="'/private/companies/view'"
-      [viewButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All,Permission.View]}]"
       [deleteButtonPermission] = "[{claimType: Modules.All, claimValue: [Permission.All]},{claimType: Modules.Crm, claimValue: [Permission.All,Permission.Delete]}]"
       [ArrayData]="originalArray"
       [totalItems]="(totalItems$ | async)"
@@ -19,7 +23,8 @@
       (onsearch)="onSearchEvent($event)"
       (onViewContacts)="onViewContacts($event)"
       (onChangeEvent)="onChangeEvent($event)"
-      (onDelete)="onDelete($event)">
+      (onDelete)="onDelete($event)"
+      (onClick)="onClick($event)">
 </app-custom-table>
    
   </div>
@@ -61,7 +66,7 @@
           <td>{{contact.translation_data[0]?.first_name}} {{contact.translation_data[0]?.last_name}}</td>
           <td>{{ contact.job_title }}</td>
           <td>{{ contact.email }}</td>
-          <td>{{contact.mob_tel_country_dial_code_id}} {{contact.mob_tel_number}}</td>
+          <td>+{{contact.mob_tel_country_dial_code_id}} {{contact.mob_tel_number}}</td>
         </tr>
         </ng-container>
         <ng-template #noContacts>

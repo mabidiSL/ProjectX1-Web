@@ -3,13 +3,12 @@ import { Component, ElementRef, Input, OnInit, TemplateRef, ViewChild } from '@a
 import { selectDataLoading, selectedContact } from 'src/app/store/contacts/contacts-selector';
 import { addContacts, getContactById, updateContacts } from 'src/app/store/contacts/contacts.action';
 import { Contact } from 'src/app/store/contacts/contacts.model';
-import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { selectDataCompany } from 'src/app/store/companies/companies-selector';
 import { FormUtilService } from 'src/app/core/services/form-util.service';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Company } from 'src/app/store/companies/companies.model';
 import { fetchCompaniesData } from 'src/app/store/companies/companies.action';
 
@@ -43,10 +42,8 @@ contactForm: UntypedFormGroup;
 
 constructor(
   public modalRef: BsModalRef,
-  private readonly route: ActivatedRoute,
     private readonly store: Store,
     private readonly formBuilder: UntypedFormBuilder,
-    private readonly modalService: BsModalService,
     private readonly formUtilService: FormUtilService) {
   this.loading$ = this.store.pipe(select(selectDataLoading)); 
   this.initForm();
@@ -78,7 +75,6 @@ ngOnInit() {
   this.fetchCompanies();
   // Log the data passed in the data property
   console.log('data', this.data);
-  
   const contactId = this.data;
   if(contactId){
     if (this.type === 'view') {

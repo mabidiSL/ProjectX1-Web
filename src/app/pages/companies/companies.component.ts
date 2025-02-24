@@ -12,6 +12,8 @@ import { fetchCountrylistData } from 'src/app/store/country/country.action';
 import { Country } from 'src/app/store/country/country.model';
 
 import { Modules, Permission } from 'src/app/store/Role/role.models';
+import { EditCompanyComponent } from './edit-company/edit-company.component';
+import { CreateCompanyComponent } from './create-company/create-company.component';
 
 @Component({
   selector: 'app-companies',
@@ -33,6 +35,7 @@ export class CompaniesComponent implements OnInit {
   searchTerm: string = '';
   countrylist: Country[] = [];
   modalRef?: BsModalRef | null = null;
+  modalRef1?: BsModalRef | null = null;
   @ViewChild('ViewContent', { static: false }) showModal?: TemplateRef<any>;
 
 
@@ -52,7 +55,7 @@ export class CompaniesComponent implements OnInit {
     { property: 'address_county', label: 'Country' },
     { property: 'sector', label: 'Sector' },
     { property: 'crm_contacts', label: 'Contacts' },
-    { property: 'user', label: 'Owner' },
+   // { property: 'user', label: 'Owner' },
   ];
   config:any = {
     class: 'modal-lg',
@@ -140,6 +143,35 @@ export class CompaniesComponent implements OnInit {
     
     //this.store.dispatch(updateCompanies({ updatedData: newData }));
   }
-
+  onClick(event: any) {
+    if (event.type === 'companies') {
+      if (event.event === 'add') {
+        this.openAddModal();
+      } else if (event.event === 'edit') {
+        this.openEditModal(event.data);
+      }}
+    }
+  openAddModal() {
+      this.modalRef1 = this.modalService.show(CreateCompanyComponent, {
+       
+        class: 'modal-lg',  // Optional: Adjust modal size
+        backdrop: 'static', // Optional: Prevent closing when clicking outside
+        keyboard: false     // Optional: Prevent closing with ESC key
+      });
+    }
+  openEditModal(data: any) {
+    console.log('data', data);
+      this.modalRef1 = this.modalService.show(EditCompanyComponent, {
+        initialState: {
+          data: data // Pass the data to configure the form with existing data
+        },
+        class: 'modal-lg',  // Optional: Adjust modal size
+        backdrop: 'static', // Optional: Prevent closing when clicking outside
+        keyboard: false     // Optional: Prevent closing with ESC key
+      });
+    }
 
 }
+
+
+

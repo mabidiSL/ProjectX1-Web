@@ -370,14 +370,14 @@ sortData(column: string): void {
  
   _onClick(link: string, type: string, data?: any) {
     //emits event to open modal
-    if (link.includes('special-day')||link.includes('crm-contact')) {
+    if (link.includes('special-day')||link.includes('crm-contact') || link.includes('companies')) {
       console.log('i am the add link',link);
       //emits event to open modal
       if(type === 'add'){
-      this.onClick.emit({event:type, type: (link.includes('special-day') ? 'special-day' : 'crm-contact')});
+      this.onClick.emit({event:type, type: link.includes('special-day') ? 'special-day' : link.includes('crm-contact') ? 'crm-contact' : 'companies'});
       }
       else
-      this.onClick.emit({event:type, type: (link.includes('special-day') ? 'special-day' : 'crm-contact'), data: data.id});
+      this.onClick.emit({event:type, type: (link.includes('special-day') ? 'special-day' : link.includes('crm-contact') ? 'crm-contact' : 'companies'), data: data.id});
 
     } else if(!data){
         this.router.navigate([`${link}`]);
