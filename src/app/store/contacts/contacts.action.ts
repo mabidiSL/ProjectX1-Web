@@ -19,12 +19,8 @@ export const getContactByIdSuccess = createAction('[Data] get Contact success', 
 export const getContactByIdFailure = createAction('[Data] get Contact Failure', props<{ error: string }>());
 
 // Update Data
-export const updateContacts = createAction(
-    '[Data] Update Contacts',
-   // props<{ updatedData: ContactsModel }>()
-   props<{ updatedData: Contact }>()
+export const updateContacts = createAction('[Data] Update Contacts', props<{ updatedData: Contact }>());
 
-);
 export const updateContactsSuccess = createAction(
     '[Data] Update Contacts Success',
     props<{ updatedData: Contact }>()

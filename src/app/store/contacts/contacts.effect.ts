@@ -43,8 +43,8 @@ export class ContactsEffects {
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
                       if (errorMessage !== 'An unknown error occurred') {
-    this.toastr.error(errorMessage);
-  }   
+                        this.toastr.error(errorMessage);
+                      }   
 
                       return of(fetchContactsFail({ error: errorMessage })); 
                       })
@@ -58,11 +58,13 @@ export class ContactsEffects {
             ofType(addContacts),
             mergeMap(({ newData }) =>
                 this.CrudService.addData('/crm/contacts', newData).pipe(
-                    map((newData) => {
+                    map((response: any) => {
                         this.toastr.success('The new Contact has been added successfully.');
-                        this.router.navigate(['/private/crm-contact/list']);
+                        //this.router.navigate(['/private/crm-contact/list']);
+                        const contact = newData
+                        contact.id = response?.result?.id
                         // Dispatch the action to fetch the updated Contact list after adding a new Contact
-                        return addContactsSuccess({newData});
+                        return addContactsSuccess({newData: contact});
                       }),
                       catchError((error) => {
                         const errorMessage = this.formUtilService.getErrorMessage(error);
@@ -101,16 +103,15 @@ export class ContactsEffects {
             ofType(updateContacts),
             mergeMap(({ updatedData }) => {
               return this.CrudService.updateData(`/crm/contacts/${updatedData.id}`, updatedData).pipe(
-                map(() => 
+                map((response: any) => 
                 {
                     this.toastr.success('The Contact has been updated successfully.');
-                    this.router.navigate(['/private/Contacts/list']);
-                    return  updateContactsSuccess({ updatedData })}),
+                    return  updateContactsSuccess({ updatedData: response.result })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
                       if (errorMessage !== 'An unknown error occurred') {
-    this.toastr.error(errorMessage);
-  }   
+                         this.toastr.error(errorMessage);
+                      }   
 
                       return of(updateContactsFailure({ error: errorMessage }));
                       })                 );

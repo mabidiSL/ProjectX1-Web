@@ -160,7 +160,7 @@ export class CustomTableComponent implements OnInit, OnChanges  {
   
   getProperty(data: any, propertyPath: string): any {
     if(propertyPath === 'mob_tel_number'){
-      return data.mob_tel_country_dial_code_id + ' ' + data.mob_tel_number;
+      return '+' + data.mob_tel_country_dial_code_id + ' ' + data.mob_tel_number;
     }
     
     if(propertyPath === 'crm_contacts'){
@@ -394,14 +394,16 @@ sortData(column: string): void {
         this.onViewContacts.emit(data.crm_contacts);
         // this.router.navigate(['/flag-page', data.id]);
       }
-      else 
-        // if(column.property === 'company_name'){
-        //   this.router.navigate(['/private/companies/view', data.company_id]);
-        // }
-        // else
+      else {
+        console.log(column.property)
+        if(column.property === 'company.translation_data[0]?.name'){
+          this.router.navigate(['/private/companies/view', data.company_id]);
+        }
+        else
         {
           this.navigateToView(data);
         }
+      }
     }
   
 navigateToView(data: any) {

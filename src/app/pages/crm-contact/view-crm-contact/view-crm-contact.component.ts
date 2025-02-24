@@ -90,10 +90,10 @@ ngOnInit() {
     .subscribe(contact => {
       if(contact){
         console.log(contact);
-        this.userAddress = contact.address_building + ' ' + contact.address_street + ' ' + contact.address_town + ' ' + contact.address_county + ' ' + contact.address_city + ' ' + contact.address_postcode;
-        if(this.userAddress.trim() === '' || this.userAddress.includes('null')){
-          this.userAddress = 'No Address';
-        }
+        this.userAddress = [contact.address_building, contact.address_street, contact.address_town, 
+          contact.address_county, contact.address_city, contact.address_postcode]
+         .filter(address => address) // Removes null, undefined, and empty strings
+         .join(', ');
         this.Contact = contact;
         this.isEditing = true;
       }

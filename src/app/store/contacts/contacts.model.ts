@@ -11,6 +11,8 @@ export interface Contact{
     translation_data?: any[];
     company?: any;
     first_name?: string;
+    tel_number?: string;
+    tel_country_dial_code_id?: string;
     sectors: string[];
     quotes: any[],
     purchaseHistory?: any[],

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-edit-crm-contact',
@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './edit-crm-contact.component.scss'
 })
 export class EditCrmContactComponent {
-
+  @Input() data: number;
 }

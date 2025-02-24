@@ -8,34 +8,49 @@
     <div class="modal-body">
     <div #formElement class="row">
          
-            <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+            <form [formGroup]="contactForm">
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label for="f_name">First Name</label>
-                  <input type="text" id="f_name" formControlName="f_name" class="form-control" placeholder="Enter First Name" />
-                  <div *ngIf="contactForm.get('f_name').invalid && contactForm.get('f_name').touched" class="text-danger">
+                  <label for="first_name">First Name<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                  <input type="text" id="first_name" formControlName="first_name" class="form-control" placeholder="Enter First Name" />
+                  <div *ngIf="contactForm.get('first_name').invalid && contactForm.get('first_name').touched" class="text-danger">
                     First name is required.
                   </div>
                 </div>
       
                 <div class="col-md-6 mb-3">
-                  <label for="l_name">Last Name</label>
-                  <input type="text" id="l_name" formControlName="l_name" class="form-control" placeholder="Enter Last Name" />
-                  <div *ngIf="contactForm.get('l_name').invalid && contactForm.get('l_name').touched" class="text-danger">
+                  <label for="last_name">Last Name<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                  <input type="text" id="last_name" formControlName="last_name" class="form-control" placeholder="Enter Last Name" />
+                  <div *ngIf="contactForm.get('last_name').invalid && contactForm.get('last_name').touched" class="text-danger">
                     Last name is required.
                   </div>
                 </div>
-      
                 <div class="col-md-6 mb-3">
-                  <label for="contact_type">Contact Type</label>
-                  <input type="text" id="contact_type" formControlName="contact_type" class="form-control" placeholder="Enter Contact Type" />
-                  <div *ngIf="contactForm.get('contact_type').invalid && contactForm.get('contact_type').touched" class="text-danger">
-                    Contact type is required.
+                  <label for="email">Email<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                  <input type="email" id="email" formControlName="email" class="form-control" placeholder="Enter Email" />
+                  <div *ngIf="contactForm.get('email').invalid && contactForm.get('email').touched" class="text-danger">
+                    A valid email is required.
                   </div>
                 </div>
+                <div class="col-md-6 mb-3">
+                  <label for="mob_tel_number">Mobile</label>
+                  <app-phone-number
+                  [disabled]="type === 'view'"
+                  [phoneCode]="mob_tel_country_dial_code_id"
+                  *ngIf="contactForm "
+                  [initialPhoneNumber]="contactForm.get('mob_tel_number')?.value"
+                  [inputId]="'mob_tel_number'"
+                  [placeholder]="'Enter contact phone' | translate"
+                   (phoneNumberChanged)="onContactPhoneNumberChanged($event)" >
+                 </app-phone-number>
+                  <div *ngIf="contactForm.get('mob_tel_number').invalid && contactForm.get('mob_tel_number').touched" class="text-danger">
+                    Mobile number is required.
+                  </div>
+                </div>
+                
       
                 <div class="col-md-6 mb-3">
-                  <label for="job_title">Job Title</label>
+                  <label for="job_title">Job Title<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
                   <input type="text" id="job_title" formControlName="job_title" class="form-control" placeholder="Enter Job Title" />
                   <div *ngIf="contactForm.get('job_title').invalid && contactForm.get('job_title').touched" class="text-danger">
                     Job title is required.
@@ -43,9 +58,8 @@
                 </div>
       
                 <div class="col-md-6 mb-3">
-                  <label for="company_id">Company</label>
-                  <input type="text" id="company_id" formControlName="company_id" class="form-control" placeholder="Enter Company ID" />
-                  <ng-select [readonly]="type === 'view'" placeholder="{{'Select the company' | translate}}" [items]="companies" bindLabel="name" 
+                  <label for="company_id">Company<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+                  <ng-select [readonly]="type === 'view'" placeholder="{{'Select the company' | translate}}" [items]="companies" bindLabel="translatedName" 
                     bindValue="id" id="company_id" formControlName="company_id" >
                     </ng-select>
                   <div *ngIf="contactForm.get('company_id').invalid && contactForm.get('company_id').touched" class="text-danger">
@@ -54,80 +68,65 @@
                 </div>
       
                 <div class="col-md-6 mb-3">
-                  <label for="email">Email</label>
-                  <input type="email" id="email" formControlName="email" class="form-control" placeholder="Enter Email" />
-                  <div *ngIf="contactForm.get('email').invalid && contactForm.get('email').touched" class="text-danger">
-                    A valid email is required.
-                  </div>
+                  <label for="contact_type">Contact Type</label>
+                  <input type="text" id="contact_type" formControlName="contact_type" class="form-control" placeholder="Enter Contact Type" />
+                  
                 </div>
       
-                <div class="col-md-6 mb-3">
-                  <label for="mobile">Mobile</label>
-                  <input type="text" id="mobile" formControlName="mobile" class="form-control" placeholder="Enter Mobile" />
-                 
-                  <div *ngIf="contactForm.get('mobile').invalid && contactForm.get('mobile').touched" class="text-danger">
-                    Mobile number is required.
-                  </div>
-                </div>
+               
       
                 <div class="col-md-6 mb-3">
-                  <label for="phone">Phone</label>
-                  <input type="text" id="phone" formControlName="phone" class="form-control" placeholder="Enter Phone" />
-                  <div *ngIf="contactForm.get('phone').invalid && contactForm.get('phone').touched" class="text-danger">
-                    Phone number is required.
-                  </div>
+                  <label for="tel_number">Telephone</label>
+                  <app-phone-number
+                  [disabled]="type === 'view'"
+                  [phoneCode]="tel_country_dial_code_id"
+                  *ngIf="contactForm "
+                  [initialPhoneNumber]="contactForm.get('tel_number')?.value"
+                  [inputId]="'tel_number'"
+                  [placeholder]="'Enter contact telephone' | translate"
+                   (phoneNumberChanged)="onContactTelephoneNumberChanged($event)" >
+                 </app-phone-number>
+                  
                 </div>
       
                 <div class="col-md-6 mb-3">
                   <label for="address_building">Building</label>
                   <input type="text" id="address_building" formControlName="address_building" class="form-control" placeholder="Enter Building" />
-                  <div *ngIf="contactForm.get('address_building').invalid && contactForm.get('address_building').touched" class="text-danger">
-                    Building is required.
-                  </div>
+                  
                 </div>
       
                 <div class="col-md-6 mb-3">
                   <label for="address_street">Street</label>
                   <input type="text" id="address_street" formControlName="address_street" class="form-control" placeholder="Enter Street" />
-                  <div *ngIf="contactForm.get('address_street').invalid && contactForm.get('address_street').touched" class="text-danger">
-                    Street is required.
-                  </div>
+                  
                 </div>
       
                 <div class="col-md-6 mb-3">
                   <label for="address_town">Town</label>
                   <input type="text" id="address_town" formControlName="address_town" class="form-control" placeholder="Enter Town" />
-                  <div *ngIf="contactForm.get('address_town').invalid && contactForm.get('address_town').touched" class="text-danger">
-                    Town is required.
-                  </div>
+                  
                 </div>
       
                 <div class="col-md-6 mb-3">
-                  <label for="address_county">County</label>
+                  <label for="address_county">Country</label>
                   <input type="text" id="address_county" formControlName="address_county" class="form-control" placeholder="Enter County" />
-                  <div *ngIf="contactForm.get('address_county').invalid && contactForm.get('address_county').touched" class="text-danger">
-                    County is required.
-                  </div>
+                  
                 </div>
       
                 <div class="col-md-6 mb-3">
                   <label for="address_city">City</label>
                   <input type="text" id="address_city" formControlName="address_city" class="form-control" placeholder="Enter City" />
-                  <div *ngIf="contactForm.get('address_city').invalid && contactForm.get('address_city').touched" class="text-danger">
-                    City is required.
-                  </div>
+                  
                 </div>
       
                 <div class="col-md-6 mb-3">
                   <label for="address_postcode">Postcode</label>
                   <input type="text" id="address_postcode" formControlName="address_postcode" class="form-control" placeholder="Enter Postcode" />
-                  <div *ngIf="contactForm.get('address_postcode').invalid && contactForm.get('address_postcode').touched" class="text-danger">
-                    Postcode is required.
-                  </div>
+                  
                 </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" [disabled]="contactForm.invalid">Save Contact</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="onClose()">Cancel</button>
+                <button type="submit" class="btn btn-primary"  (click)="onSubmit()">{{ (type === 'create' ? 'Add Contact' : 'Update Contact') | translate }}</button>
               </div>
             </div>
             </form>

@@ -427,7 +427,6 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
   onCancel(){
-   
     this.merchantForm.reset();
     this.router.navigateByUrl('/private/merchants/list');
   }

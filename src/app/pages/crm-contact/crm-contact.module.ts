@@ -19,13 +19,15 @@ import { EditCrmContactComponent } from './edit-crm-contact/edit-crm-contact.com
 import { FormCrmContactComponent } from './form-crm-contact/form-crm-contact.component';
 import { ViewCrmContactComponent } from './view-crm-contact/view-crm-contact.component';
 import { CreateCrmContactComponent } from './create-crm-contact/create-crm-contact.component';
+import { WidgetModule } from 'src/app/shared/widget/widget.module';
 
 
 @NgModule({
   declarations: [CrmContactComponent, FormCrmContactComponent,ViewCrmContactComponent, EditCrmContactComponent, CreateCrmContactComponent ],
   imports: [
-    CommonModule,
-     BsDatepickerModule,
+            CommonModule,
+            BsDatepickerModule,
+            WidgetModule,
             UIModule,
             NgSelectModule,
             NgApexchartsModule,

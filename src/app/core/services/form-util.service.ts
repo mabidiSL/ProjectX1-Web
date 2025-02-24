@@ -67,14 +67,17 @@ private toastr: ToastrService;
         }
         continue;
       }
-      if(key.includes('phone') ||key.includes('Phone')|| key.includes('Tel')){
+      if (/phone|tel|mob_tel_number|tel_number/i.test(key)) {
         if(data[key]){
           if (form.controls[key].value !== data[key]) {
             changedData[key] = form.controls[key].value;
           }
         }else
         {
-          if (form.controls[key].value !== data['user'][key]) {
+          if(data[key] === null && form.controls[key].value!== null){
+          changedData[key] = form.controls[key].value;
+          }
+          if (data['user'] && form.controls[key].value !== data['user'][key]) {
             changedData[key] = form.controls[key].value;
           }
         }

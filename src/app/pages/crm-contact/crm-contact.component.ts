@@ -79,8 +79,8 @@ export class CrmContactComponent implements OnInit {
            
         });
    }
-    fetchCountry(){
-          this.store.select(selectDataCountry).subscribe((data) =>{
+  fetchCountry(){
+        this.store.select(selectDataCountry).subscribe((data) =>{
             this.countrylist = [...data].map(country =>{
               const translatedName = country?.translation_data?.[0]?.name || 'No name available';
           
@@ -94,11 +94,11 @@ export class CrmContactComponent implements OnInit {
             });
           });
         }
-    onViewContacts(event: any){
+  onViewContacts(event: any){
       this.contactList = event;
       this.modalRef = this.modalService.show(this.showModal, this.config);
     }
-    onFilterEvent(event: any){
+  onFilterEvent(event: any){
 
       if(event.status && event.status !== 'all')
          this.filterTerm = event.status;
@@ -109,11 +109,11 @@ export class CrmContactComponent implements OnInit {
       this.store.dispatch(fetchContactsData({page: 1, itemsPerPage: 10, query: this.searchTerm}));
    
     }
-     onSearchEvent(event: any){
+  onSearchEvent(event: any){
         this.searchTerm = event;
         this.store.dispatch(fetchContactsData({page: 1, itemsPerPage: 10, query: this.searchTerm}));
     
-       }
+    }
    onPageSizeChanged(event: any): void {
     const totalItems =  event.target.value;
     console.log(totalItems);
@@ -149,7 +149,7 @@ export class CrmContactComponent implements OnInit {
         this.openEditModal(event.data);
       }}
     }
-    openAddModal() {
+  openAddModal() {
       this.modalRef = this.modalService.show(CreateCrmContactComponent, {
        
         class: 'modal-lg',  // Optional: Adjust modal size
@@ -157,11 +157,15 @@ export class CrmContactComponent implements OnInit {
         keyboard: false     // Optional: Prevent closing with ESC key
       });
     }
-    openEditModal(data: any) {
+  openEditModal(data: any) {
+    console.log('data', data);
       this.modalRef = this.modalService.show(EditCrmContactComponent, {
         initialState: {
           data: data // Pass the data to configure the form with existing data
         },
+        class: 'modal-lg',  // Optional: Adjust modal size
+        backdrop: 'static', // Optional: Prevent closing when clicking outside
+        keyboard: false     // Optional: Prevent closing with ESC key
       });
     }
 
