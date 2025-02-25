@@ -60,8 +60,8 @@ initForm(){
     name: [null, Validators.required],
     email: [null, [Validators.required, Validators.email]],
     sector: [null, Validators.required],
-    web_url: [null, [Validators.required, Validators.email]],
-    tel_number: [''],
+    web_url: [null, [Validators.pattern('^(https?:\\/\\/)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?$')]],
+    tel_number: [null],
     tel_country_dial_code_id: [null],
     address_building: [null],
     address_street: [null],
@@ -123,8 +123,11 @@ fetchCountry(){
 }
 patchValueForm(company: Company){
   this.companyForm.patchValue(company);
+  this.companyForm.patchValue({
+  name: company.translation_data[0]?.name,
+});
   this.companyForm.get('tel_number').setValue( '+'+ company.tel_country_dial_code_id+ ' ' + company.tel_number);
-        
+    
 }
 fetchCompanies(){
   this.store.dispatch(fetchCompaniesData({page: 1, itemsPerPage: 100, query: ''}));
@@ -145,8 +148,7 @@ createCompanyObject(formValue): Company {
   const company = formValue;
   company.translation_data = [];
   const enFields = [
-    { field: 'first_name', name: 'first_name' },
-    { field: 'last_name', name: 'last_name' },
+    { field: 'name', name: 'name' }
   ];
  
  // Create the English translation if valid
@@ -163,18 +165,14 @@ createCompanyObject(formValue): Company {
         delete company[key];  // Delete property if it's undefined or null
      }
   });
- delete company.first_name;
- delete company.last_name;
+ delete company.name;
  return company;
 }
 
 onCompanyPhoneNumberChanged(event: { number: string; countryCode: string }) {
-  this.handlePhoneNumberChange(event, 'mob_tel_country_dial_code_id', 'mob_tel_number');
-}
-
-onCompanyTelephoneNumberChanged(event: { number: string; countryCode: string }) {
   this.handlePhoneNumberChange(event, 'tel_country_dial_code_id', 'tel_number');
 }
+
 handlePhoneNumberChange(event: { number: string; countryCode: string }, countryCodeField: string, numberField: string) {
   this.companyForm.get(countryCodeField).setValue(event.countryCode);
 

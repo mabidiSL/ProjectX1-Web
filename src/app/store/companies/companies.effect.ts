@@ -56,11 +56,13 @@ export class CompaniesEffects {
             ofType(addCompanies),
             mergeMap(({ newData }) =>
                 this.CrudService.addData('/crm/companies', newData).pipe(
-                    map((newData) => {
+                    map((response: any) => {
                         this.toastr.success('The new Company has been added successfully.');
-                        this.router.navigate(['/private/Companies/list']);
+                        //this.router.navigate(['/private/Companies/list']);
+                        const company = newData
+                        company.id = response?.result?.id
                         // Dispatch the action to fetch the updated Company list after adding a new Company
-                        return addCompaniesSuccess({newData});
+                        return addCompaniesSuccess({newData: company});
                       }),
                       catchError((error) => {
                         const errorMessage = this.formUtilService.getErrorMessage(error);
@@ -102,11 +104,10 @@ export class CompaniesEffects {
             mergeMap(({ updatedData }) => {
                 //return this.http.post(`${this.url}/${updatedData.id}`, updatedData).pipe(
                 return this.CrudService.updateData(`/crm/companies/${updatedData.id}`, updatedData).pipe(
-                map(() => 
+                map((response: any) => 
                 {
                     this.toastr.success('The Company has been updated successfully.');
-                    this.router.navigate(['/private/Companies/list']);
-                    return  updateCompaniesSuccess({ updatedData })}),
+                    return  updateCompaniesSuccess({ updatedData: response.result })}),
                     catchError((error) =>{
                       const errorMessage = this.formUtilService.getErrorMessage(error);
                       if (errorMessage !== 'An unknown error occurred') {

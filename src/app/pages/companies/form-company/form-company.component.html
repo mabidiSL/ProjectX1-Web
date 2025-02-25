@@ -16,7 +16,7 @@
         <form [formGroup]="companyForm">
           <div class="row">
             <div class="col-md-6 mb-3">
-              <label for="name">company Name<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
+              <label for="name">Company Name<span *ngIf="type !== 'view'" class="text-danger">*</span></label>
               <input type="text" id="name" formControlName="name" class="form-control" placeholder="Enter Company Name" />
               <div *ngIf="companyForm.get('name').invalid && companyForm.get('name').touched" class="text-danger">
                 Company name is required.
@@ -59,12 +59,8 @@
             <div class="col-md-6 mb-3">
               <label for="web_url">Website</label>
               <input type="text" id="web_url" formControlName="web_url" class="form-control" placeholder="Enter Website" />
-              <div *ngIf="companyForm.get('web_url').invalid && companyForm.get('web_url').touched" class="text-danger">
-                Website is required.
-              </div>
+              
             </div>
-  
-           
   
   
             <div class="col-md-6 mb-3">
@@ -104,7 +100,7 @@
 
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="onClose()">Cancel</button>
-            <button type="submit" class="btn btn-primary"  (click)="onSubmit()">{{ (type === 'create' ? 'Add Contact' : 'Update Contact') | translate }}</button>
+            <button type="submit" class="btn btn-primary"  (click)="onSubmit()">{{ (type === 'create' ? 'Add Company' : 'Update Company') | translate }}</button>
           </div>
         </div>
         </form>
