@@ -167,19 +167,20 @@ export class Register2Component implements OnInit, OnDestroy, AfterViewInit {
   fetchSection(){
     this.store.select(selectDataSection).subscribe((data) => {
       this.sectionlist = [...data].map(section => {
-        if(section.translation_data[0]?.language==='en'){
+       // if(section.translation_data[0]?.language==='en'){
         // Extract the translated name (assuming translation_data[0] exists)
         const translatedName = section.translation_data?.[0]?.name || 'No name available';
         return {
           ...section,  // Spread the original section data
           translatedName // Add the translatedName property for easy binding
         };
-     }}).sort((a, b) => {
+    /* }*/
+     }).sort((a, b) => {
         // Sort by translatedName
         return a.translatedName.localeCompare(b.translatedName);
       });
     });
-
+  console.log(this.sectionlist);
   }
  
 

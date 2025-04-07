@@ -206,7 +206,7 @@ export class FormMerchantComponent implements OnInit, OnDestroy {
     this.store.select(selectDataSection).subscribe((data) => {
       this.sectionlist = [...data].map(section => {
         // Extract the translated name (assuming translation_data[0] exists)
-        const translatedName = section.translation_data && section.translation_data[0]?.name || 'No name available';
+        const translatedName = section.translation_data?.[0]?.name || 'No name available';
     
         return {
           ...section,  // Spread the original section data
